@@ -1,0 +1,227 @@
+import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { getUserData } from './userSlice';
+import {realDb} from '../../../../../@fake-db/db/firebase'
+
+export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts', 
+	
+	// const response = await axios.get('/api/bonus-plan/contacts', {
+	// 	params: routeParams
+	// });
+	// const data = await response.data;
+
+	// return { data, routeParams };
+	(routeParams, { getState }) =>
+		new Promise((resolve, reject) => {
+			var starCountRef = realDb.ref(`BonusPlan/`);
+			var bonusPlans = [];
+			starCountRef.on('value', snapshot => {
+				const data = snapshot.val();
+
+				if (data) {
+					Object.keys(data).map(item => {
+						bonusPlans.push(data[item]);
+					});
+				}
+				console.log(data)
+				if(data){
+					resolve([data])
+				} else {
+					resolve([]);
+				}
+				
+			});
+		})
+);
+
+export const addContact = createAsyncThunk(
+	'bonusPlan/autoBonus/addContact',
+	async (contact, { dispatch, getState }) => {
+		const response = await axios.post('/api/bonus-plan/add-contact', { contact });
+		const data = await response.data;
+
+		dispatch(getAutoBonus());
+
+		return data;
+	}
+);
+
+export const updateContact = createAsyncThunk(
+	'bonusPlan/autoBonus/updateContact',
+	async (contact, { dispatch, getState }) => {
+		const response = await axios.post('/api/bonus-plan/update-contact', { contact });
+		const data = await response.data;
+
+		dispatch(getAutoBonus());
+
+		return data;
+	}
+);
+
+export const removeContact = createAsyncThunk(
+	'bonusPlan/autoBonus/removeContact',
+	async (contact, { dispatch, getState }) => {
+		
+		const response = await axios.post('/api/bonus-plan/remove-contact', { contact });
+		const data = await response.data;
+		
+		realDb.ref(`BonusPlan/${contact.planType}/${contact.id}`).remove();
+		dispatch(getAutoBonus());
+
+		return data;
+	}
+);
+
+export const removeContacts = createAsyncThunk(
+	'bonusPlan/autoBonus/removeContacts',
+	async (contactIds, { dispatch, getState }) => {
+		const response = await axios.post('/api/bonus-plan/remove-contacts', { contactIds });
+		const data = await response.data;
+
+		dispatch(getAutoBonus());
+
+		return data;
+	}
+);
+
+export const toggleStarredContact = createAsyncThunk(
+	'bonusPlan/autoBonus/toggleStarredContact',
+	async (contactId, { dispatch, getState }) => {
+		const response = await axios.post('/api/bonus-plan/toggle-starred-contact', { contactId });
+		const data = await response.data;
+
+		dispatch(getUserData());
+
+		dispatch(getAutoBonus());
+
+		return data;
+	}
+);
+
+export const toggleStarredContacts = createAsyncThunk(
+	'bonusPlan/autoBonus/toggleStarredContacts',
+	async (contactIds, { dispatch, getState }) => {
+		const response = await axios.post('/api/bonus-plan/toggle-starred-contacts', { contactIds });
+		const data = await response.data;
+
+		dispatch(getUserData());
+
+		dispatch(getAutoBonus());
+
+		return data;
+	}
+);
+
+export const setContactsStarred = createAsyncThunk(
+	'bonusPlan/autoBonus/setContactsStarred',
+	async (contactIds, { dispatch, getState }) => {
+		const response = await axios.post('/api/bonus-plan/set-contacts-starred', { contactIds });
+		const data = await response.data;
+
+		dispatch(getUserData());
+
+		dispatch(getAutoBonus());
+
+		return data;
+	}
+);
+
+export const setContactsUnstarred = createAsyncThunk(
+	'bonusPlan/autoBonus/setContactsUnstarred',
+	async (contactIds, { dispatch, getState }) => {
+		const response = await axios.post('/api/bonus-plan/set-contacts-unstarred', { contactIds });
+		const data = await response.data;
+
+		dispatch(getUserData());
+
+		dispatch(getAutoBonus());
+
+		return data;
+	}
+);
+
+const contactsAdapter = createEntityAdapter({});
+
+export const { selectAll: selectContacts, selectById: selectContactsById } = contactsAdapter.getSelectors(
+	state => state.bonusPlan.autoBonus
+);
+
+const contactsSlice = createSlice({
+	name: 'bonusPlan/autoBonus',
+	initialState: contactsAdapter.getInitialState({
+		searchText: '',
+		routeParams: {},
+		contactDialog: {
+			type: 'new',
+			props: {
+				open: false
+			},
+			data: null
+		}
+	}),
+	reducers: {
+		setContactsSearchText: {
+			reducer: (state, action) => {
+				state.searchText = action.payload;
+			},
+			prepare: event => ({ payload: event.target.value || '' })
+		},
+		openNewContactDialog: (state, action) => {
+			state.contactDialog = {
+				type: 'new',
+				props: {
+					open: true
+				},
+				data: action.payload
+			};
+		},
+		closeNewContactDialog: (state, action) => {
+			state.contactDialog = {
+				type: 'new',
+				props: {
+					open: false
+				},
+				data: null
+			};
+		},
+		openEditContactDialog: (state, action) => {
+			state.contactDialog = {
+				type: 'edit',
+				props: {
+					open: true
+				},
+				data: action.payload
+			};
+		},
+		closeEditContactDialog: (state, action) => {
+			state.contactDialog = {
+				type: 'edit',
+				props: {
+					open: false
+				},
+				data: null
+			};
+		}
+	},
+	extraReducers: {
+		[updateContact.fulfilled]: contactsAdapter.upsertOne,
+		[addContact.fulfilled]: contactsAdapter.addOne,
+		[getAutoBonus.fulfilled]: contactsAdapter.setAll
+		// (state, action) => {
+			// const { data, routeParams } = action.payload;
+			// contactsAdapter.setAll;
+			// state.routeParams = routeParams;
+			// state.searchText = '';
+		// }
+	}
+});
+
+export const {
+	setContactsSearchText,
+	openNewContactDialog,
+	closeNewContactDialog,
+	openEditContactDialog,
+	closeEditContactDialog
+} = contactsSlice.actions;
+
+export default contactsSlice.reducer;
