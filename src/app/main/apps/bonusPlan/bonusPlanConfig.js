@@ -9,13 +9,14 @@ const ContactsAppConfig = {
 	},
 	routes: [
 		{
-			path: '/apps/bonus-plan/:id',
+			path: '/apps/setup/bonus-plan/:id',
 			component: React.lazy(() => import('./BonusPlanApp'))
 		},
 		{
-			path: '/apps/bonus-plan',
-			component: () => <Redirect to="/apps/bonus-plan/all" />
+			path: '/apps/setup/bonus-plan',
+			component: () => <Redirect to="/apps/setup/bonus-plan/all" />
 		}
+		
 	]
 };
 

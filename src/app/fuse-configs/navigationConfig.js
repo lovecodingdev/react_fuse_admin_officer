@@ -19,6 +19,37 @@ const navigationConfig = [
 		icon: 'apps',
 		children: [
 			{
+				id: 'setup',
+				title: 'Set Up',
+				translate: 'Set Up',
+				type: 'collapse',
+				icon: 'settings',
+				url: '/apps/setup/bonus-plan/all',
+				children: [
+					{
+						id: 'goals-actual',
+						title: 'Bonus Plan',
+						type: 'item',
+						url: '/apps/setup/bonus-plan/all',
+						exact: true
+					},
+					{
+						id: 'users',
+						title: 'Users',
+						type: 'item',
+						url: '/apps/setup/users',
+						exact: true
+					},
+					{
+						id: 'marketing',
+						title: 'Marketing',
+						type: 'item',
+						url: '/apps/setup/marketing',
+						exact: true
+					},
+				]
+			},
+			{
 				id: 'producer',
 				title: 'Producer',
 				translate: 'Producer',
@@ -204,14 +235,6 @@ const navigationConfig = [
 				exact: true
 			},
 
-			{
-				id: 'bonus-plan',
-				title: 'Bonus Plan',
-				type: 'item',
-				url: '/apps/bonus-plan/all',
-				icon: 'money',
-				exact: true
-			}
 
 			// {
 			// 	id: 'dashboards',
