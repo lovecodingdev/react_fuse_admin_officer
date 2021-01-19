@@ -20,7 +20,7 @@ import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
-import { agencyGoalsHeader, otherActivitiesHeader } from '../Headers';
+import { autoAndFireHeader, lifeAndHealthHeader, bankHeader } from '../Headers';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function GoalsAndActual(props) {
+function PoliciesAndBank(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
@@ -41,17 +41,18 @@ function GoalsAndActual(props) {
 	const report = useSelector(({ producerApp }) => producerApp.products.report);
 	const user = useSelector(({ producerApp }) => producerApp.products.user);
 	const [loading, setLoading] = useState(true);
-	const [data, setData] = useState({ widgets });
+	const [data, setData] = useState(users);
 	const [tabValue, setTabValue] = useState(0);
-	const [title, setTitle] = useState('Goals & Actual');
+	const [title, setTitle] = useState('Policies & Bank');
 	
 	useEffect(() => {
-		dispatch(getWidgets()).then(() => setLoading(false));
+		dispatch(getUsers()).then(() => setLoading(false));
+		dispatch(getWidgets());
 	}, [dispatch]);
 
 	useEffect(() => {	
-		setData({ widgets });
-	}, [widgets]);
+		setData({ users, widgets });
+	}, [users, widgets]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -102,30 +103,78 @@ function GoalsAndActual(props) {
 					</div>
 				</Header>
 			}
+			contentToolbar={
+				<Tabs
+					value={tabValue}
+					onChange={handleChangeTab}
+					indicatorColor="primary"
+					textColor="primary"
+					variant="scrollable"
+					scrollButtons="auto"
+					classes={{ root: 'w-full h-64' }}
+				>
+					<Tab className="h-64 normal-case" label="POLICIES" />
+					<Tab className="h-64 normal-case" label="PREMIUM" />
+					<Tab className="h-64 normal-case" label="AVERAGES" />
+					<Tab className="h-64 normal-case" label="BANK" />					
+				</Tabs>
+			}
 			content={
-				<div className="p-12">
-					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-2/3 p-12">
-							<Table header={agencyGoalsHeader} leftHeader={data.users} widget={widgets.Producer_GoalsAndActual_AgencyGoals_Table} entries fires lifes healthes />
+				<div className="w-full">					
+					{tabValue === 0 && 
+						<div>
+							<div className='pb-24'>
+								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
+							</div>	
+							<div className='pb-24'>
+								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
+							</div>
+							<div className='pb-24'>
+								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
+							</div>							
 						</div>
-						<div className="widget flex w-1/3 p-12">
-							<Chart widget={data.widgets.Producer_GoalsAndActual_SalesGoals_Chart} />
+					}				
+					{tabValue === 1 && 
+						<div>
+							<div className='pb-24'>
+								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
+							</div>	
+							<div className='pb-24'>
+								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
+							</div>
+							<div className='pb-24'>
+								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
+							</div>	
 						</div>
-					</FuseAnimateGroup>
-					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-2/3 p-12">
-							<Table header={otherActivitiesHeader} leftHeader={data.users} widget={widgets.Producer_GoalsAndActual_OtherActivities_Table} entries fires lifes healthes />
+					}			
+					{tabValue === 2 && 
+						<div>
+							<div className='pb-24'>
+								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
+							</div>	
+							<div className='pb-24'>
+								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
+							</div>
+							<div className='pb-24'>
+								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
+							</div>	
 						</div>
-						<div className="widget flex w-1/3 p-12">
-							<Chart widget={data.widgets.Producer_GoalsAndActual_ActivityGoals_Chart} />
+					}	
+					{tabValue === 3 && 
+						<div>							
+							<div className='pb-24'>
+								<Table header={bankHeader} widget={widgets.Producer_PoliciesAndBank_Bank_Table} entries fires lifes healthes />
+							</div>
+							<div className='pb-24'>
+								<Chart widget={widgets.Producer_PolicesAndBank_Bank_Chart} />
+							</div>	
 						</div>
-					</FuseAnimateGroup>
+					}						
 				</div>
-				
 			}
 			ref={pageLayout}
 		/>
 	);
 }
 
-export default withReducer('producerApp', reducer)(GoalsAndActual);
+export default withReducer('producerApp', reducer)(PoliciesAndBank);

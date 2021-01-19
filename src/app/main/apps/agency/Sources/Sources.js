@@ -18,9 +18,9 @@ import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
-import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
+import { setProduction, setPeriod, setUser, setReport, setProduct } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
-import { StaffSources_Header, ViewGrid_Header } from '../Headers';
+import { Agency_Sources_ViewYearTotalsByProduct_Table, Agency_Sources_ViewMonthlyTotals_Table } from '../Headers';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -30,20 +30,21 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function StaffSources(props) {
+function Sources(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
 	const users = useSelector(selectUsers);
 	const widgets = useSelector(selectWidgets);
-	const production = useSelector(({ producerApp }) => producerApp.products.production);
-	const period = useSelector(({ producerApp }) => producerApp.products.period);	
-	const report = useSelector(({ producerApp }) => producerApp.products.report);
-	const user = useSelector(({ producerApp }) => producerApp.products.user);
+	const production = useSelector(({ agencyApp }) => agencyApp.products.production);
+	const period = useSelector(({ agencyApp }) => agencyApp.products.period);	
+	const report = useSelector(({ agencyApp }) => agencyApp.products.report);
+	const product = useSelector(({ agencyApp }) => agencyApp.products.product);
+	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [tabValue, setTabValue] = useState(0);
-	const [title, setTitle] = useState('Staff Sources');
+	const [title, setTitle] = useState('Sources');
 	
 	useEffect(() => {
 		dispatch(getWidgets()).then(() => setLoading(false));
@@ -82,15 +83,6 @@ function StaffSources(props) {
 			}}
 			header={
 				<Header title={title}>
-					<div className="flex flex-1 items-center justify-center px-12">
-						<FuseAnimate animation="transition.slideUpIn" delay={300}>
-							<SelectBox
-								value={production}
-								onChange={ev => dispatch(setProduction(ev))}
-								type="production"
-							/>
-						</FuseAnimate>
-					</div>
 					{tabValue === 0 &&
 						<div className="flex flex-1 items-center justify-center px-12 w-40">
 							<FuseAnimate animation="transition.slideUpIn" delay={300}>
@@ -106,13 +98,22 @@ function StaffSources(props) {
 						<div className="flex flex-1 items-center justify-center px-12 w-40">
 							<FuseAnimate animation="transition.slideUpIn" delay={300}>
 								<SelectBox
-									value={user}
-									onChange={ev => dispatch(setUser(ev))}
-									type="users"
+									value={product}
+									onChange={ev => dispatch(setProduct(ev))}
+									type="product"
 								/>
 							</FuseAnimate>
 						</div>	
-					}				
+					}	
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
+								value={production}
+								onChange={ev => dispatch(setProduction(ev))}
+								type="production"
+							/>
+						</FuseAnimate>
+					</div>								
 				</Header>
 			}
 			contentToolbar={
@@ -125,8 +126,8 @@ function StaffSources(props) {
 					scrollButtons="auto"
 					classes={{ root: 'w-full h-64' }}
 				>
-					<Tab className="h-64 normal-case" label="VIEW THE CHART" />
-					<Tab className="h-64 normal-case" label="VIEW THE GRID" />									
+					<Tab className="h-64 normal-case" label="View Year Total by Product" />
+					<Tab className="h-64 normal-case" label="View Monthly Totals" />									
 				</Tabs>
 			}
 			content={
@@ -134,46 +135,29 @@ function StaffSources(props) {
 					{tabValue === 0 &&
 						<div>
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-								<div className="widget flex w-full p-12">
-									<Chart widget={widgets.Producer_StaffSources_SourcesOfBusiness_Chart} />
-								</div>						
-							</FuseAnimateGroup>
-							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-								<div className="widget flex w-full p-12">
-									<Table header={StaffSources_Header} widget={widgets.Producer_StaffSources_Auto_Table} entries fires lifes healthes />
+								<div className="widget flex w-2/3 p-12">
+									<Chart widget={data.widgets.Agency_Sources_ViewYearTotalsByProduct_Chart} />
 								</div>	
-								<div className="widget flex w-full p-12">
-									<Table header={StaffSources_Header} widget={widgets.Producer_StaffSources_Fire_Table} entries fires lifes healthes />
-								</div>	
-								<div className="widget flex w-full p-12">
-									<Table header={StaffSources_Header} widget={widgets.Producer_StaffSources_Life_Table} entries fires lifes healthes />
-								</div>
-								<div className="widget flex w-full p-12">
-									<Table header={StaffSources_Header} widget={widgets.Producer_StaffSources_Health_Table} entries fires lifes healthes />
-								</div>
-								<div className="widget flex w-full p-12">
-									<Table header={StaffSources_Header} widget={widgets.Producer_StaffSources_Bank_Table} entries fires lifes healthes />
-								</div>
-								<div className="widget flex w-full p-12">
-									<Table header={StaffSources_Header} widget={widgets.Producer_StaffSources_All_Table} entries fires lifes healthes />
-								</div>					
-							</FuseAnimateGroup>
-						</div>
-					}	
-					{tabValue === 1 && 
-						<div>
-							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-								<div className="widget flex w-2/4 p-12">
-									<PieChart widget={widgets.Producer_StaffSources_ProductSales_PieChart} />
-								</div>	
-								<div className="widget flex w-2/4 p-12">
-									<PieChart widget={widgets.Producer_StaffSources_Production_PieChart} />
+								<div className="widget flex w-1/3 p-12">
+									<PieChart widget={data.widgets.Agency_Sources_ViewYearTotalsByProduct_PieChart} />
 								</div>				
 							</FuseAnimateGroup>	
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>	
 								<div className='widget flex w-full p-12'>
-									<Table header={ViewGrid_Header} widget={widgets.Producer_StaffSources_ViewGrid_Table} entries fires lifes healthes />
+									<Table header={Agency_Sources_ViewYearTotalsByProduct_Table} widget={data.widgets.Agency_Sources_ViewYearTotalsByProduct_Table} entries fires lifes healthes />
 								</div>	
+							</FuseAnimateGroup>	
+						</div>
+					}	
+					{tabValue === 1 && 
+						<div>							
+							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
+								<div className="widget flex w-2/3 p-12">
+									<Chart widget={data.widgets.Agency_Sources_ViewYearTotalsByProduct_Chart} />
+								</div>	
+								<div className="widget flex w-1/3 p-12">
+									<Table header={Agency_Sources_ViewMonthlyTotals_Table} widget={data.widgets.Agency_Sources_ViewMonthlyTotals_Table} entries fires lifes healthes />
+								</div>				
 							</FuseAnimateGroup>	
 						</div>
 					}				
@@ -186,4 +170,4 @@ function StaffSources(props) {
 	);
 }
 
-export default withReducer('producerApp', reducer)(StaffSources);
+export default withReducer('agencyApp', reducer)(Sources);
