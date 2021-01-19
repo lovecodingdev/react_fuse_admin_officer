@@ -25,6 +25,7 @@ import './db/vision-db';
 import './db/activity-db';
 import './db/production-db';
 import './db/bonus-plan-db';
+import './db/producer-db';
 
 import mock from './mock';
 

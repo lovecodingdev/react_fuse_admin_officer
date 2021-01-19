@@ -18,8 +18,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import reducer from '../store';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import Table from '../../../components/widgets/Table';
-import Chat from '../../../components/widgets/Chat';
-import PieChat from '../../../components/widgets/PieChat';
+import Chat from '../../../components/widgets/Chart';
+import PieChat from '../../../components/widgets/PieChart';
 import MultilineHeader from './MultilineHeader';
 
 
@@ -114,13 +114,7 @@ function ProjectDashboardApp(props) {
 			classes={{
 				content: 'flex',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
-			}}
-		// <FusePageSimple
-		// 	classes={{
-		// 		header: 'min-h-80 h-80',
-		// 		rightSidebar: 'w-288',
-		// 		content: classes.content,
-		// 	}}		
+			}}		
 			header={<MultilineHeader />}
 			content={
 				<div className="p-12">

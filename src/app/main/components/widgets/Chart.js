@@ -6,7 +6,7 @@ import _ from '@lodash';
 import React, { useState } from 'react';
 import { Bar, Line } from 'react-chartjs-2';
 
-function Widget5(props) {
+function Chart(props) {
 	const [currentRange, setCurrentRange] = useState('TW');
 	const theme = useTheme();
 
@@ -51,4 +51,4 @@ function Widget5(props) {
 	);
 }
 
-export default React.memo(Widget5);
+export default React.memo(Chart);
