@@ -1,3 +1,36 @@
+export const agencyGoalsHeader = [
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+];
+export const otherActivitiesHeader = [
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+];
+
 export const autoAndFireHeader = [
 	{ id: 1, value: 'Personally Produced', type: true, color: 'bg-yellow-500' },
 	{ id: 2, value: 'Raw New', type: true, color: 'bg-yellow-500' },

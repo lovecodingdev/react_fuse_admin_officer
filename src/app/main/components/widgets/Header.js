@@ -5,7 +5,7 @@ import React from 'react';
 
 function Header(props) {
 	return (
-		<div className="flex flex-1 w-full items-center justify-between">
+		<div className="flex flex-1 w-full items-center justify-between pl-24">
 			<div className="flex items-center">
 				<FuseAnimate animation="transition.expandIn" delay={300}>
 					<Icon className="text-32">shopping_basket</Icon>

@@ -1,5 +1,6 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import FusePageSimple from '@fuse/core/FusePageSimple';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
@@ -36,6 +37,7 @@ function StaffMultiline(props) {
 	const [title, setTitle] = useState('Staff Multiline');
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState(widgets);
+	const classes = useStyles(props);
 	
 	useEffect(() => {
 		dispatch(getWidgets());
@@ -71,10 +73,11 @@ function StaffMultiline(props) {
 	}
 
 	return (
-		<FusePageCarded
+		<FusePageSimple
 			classes={{
-				content: 'flex',
-				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
+				header: 'min-h-80 h-80',
+				rightSidebar: 'w-288',
+				content: classes.content,
 			}}
 			header={
 				<Header title={title}>
