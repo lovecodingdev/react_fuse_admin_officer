@@ -37,7 +37,7 @@ class FirebaseService {
 		
 		return new Promise((resolve, reject) => {
 			this.db
-				.ref(`users/${userId}`)
+				.ref(`admins/${userId}`)
 				.once('value')
 				.then(snapshot => {
 					const user = snapshot.val();					
@@ -52,7 +52,7 @@ class FirebaseService {
 		}
 		console.log(user)
 		localStorage.setItem("@UID", user.uid)
-		return realDb.ref(`users/${user.uid}`).set(user);
+		return realDb.ref(`admins/${user.uid}`).set(user);
 	};
 
 	onAuthStateChanged = callback => {
