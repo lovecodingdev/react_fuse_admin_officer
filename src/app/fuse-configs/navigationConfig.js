@@ -19,6 +19,44 @@ const navigationConfig = [
 		icon: 'apps',
 		children: [
 			{
+				id: 'producer',
+				title: 'Producer',
+				translate: 'Producer',
+				type: 'collapse',
+				icon: 'monetization_on',
+				url: '/apps/producer',
+				children: [
+					{
+						id: 'goals-actual',
+						title: 'Goals & Actual',
+						type: 'item',
+						url: '/apps/producer/goals-actual',
+						exact: true
+					},
+					{
+						id: 'policies-bank',
+						title: 'Policies & Bank',
+						type: 'item',
+						url: '/apps/producer/policies-bank',
+						exact: true
+					},
+					{
+						id: 'staff-sources',
+						title: 'Staff Sources',
+						type: 'item',
+						url: '/apps/producer/staff-sources',
+						exact: true
+					},
+					{
+						id: 'staff-multiline',
+						title: 'Staff Multiline',
+						type: 'item',
+						url: '/apps/producer/staff-multiline',
+						exact: true
+					}
+				]
+			},
+			{
 				id: 'vision',
 				title: 'Vision',
 				translate: 'Vision',
