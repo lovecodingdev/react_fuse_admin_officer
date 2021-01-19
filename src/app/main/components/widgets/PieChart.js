@@ -4,7 +4,7 @@ import React from 'react';
 import { Doughnut } from 'react-chartjs-2';
 import _ from '@lodash';
 
-function Widget8(props) {
+function PieChart(props) {
 	const widget = _.merge({}, props.widget);
 
 	return (
@@ -25,4 +25,4 @@ function Widget8(props) {
 	);
 }
 
-export default React.memo(Widget8);
+export default React.memo(PieChart);

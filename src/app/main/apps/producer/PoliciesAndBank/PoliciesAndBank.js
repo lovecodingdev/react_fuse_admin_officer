@@ -5,20 +5,34 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
+import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import reducer from '../store';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import Table from '../../../components/widgets/Table';
-import ProductLineHeader from './PoliciesAndBankHeader';
-import { autoHeader1, autoHeader2, autoHeader3, autoHeader4 } from './Headers';
+import Chart from '../../../components/widgets/Chart';
+import SelectBox from '../../../components/CustomSelectBox';
+import Header from '../../../components/widgets/Header';
+import { autoAndFireHeader, lifeAndHealthHeader, bankHeader } from '../Headers';
+import { setProduction, setPeriod } from '../store/productsSlice';
+
+const useStyles = makeStyles(theme => ({
+	content: {
+		'& canvas': {
+			maxHeight: '100%'
+		}
+	},
+}));
 
 function PoliciesAndBank(props) {
 	const dispatch = useDispatch();
-	const production = useSelector(({ productionApp }) => productionApp.products.production);
+	const production = useSelector(({ producerApp }) => producerApp.products.production);
+	const period = useSelector(({ producerApp }) => producerApp.products.period);
 	const widgets = useSelector(selectWidgets);
 	const [tabValue, setTabValue] = useState(0);
+	const [title, setTitle] = useState('Policies & Bank');
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState(widgets);
 	
@@ -61,7 +75,28 @@ function PoliciesAndBank(props) {
 				content: 'flex',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-			header={<ProductLineHeader />}
+			header={
+				<Header title={title}>
+					<div className="flex flex-1 items-center justify-center px-12 w-40">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
+								value={period}
+								onChange={ev => dispatch(setPeriod(ev))}
+								type="period"
+							/>
+						</FuseAnimate>
+					</div>
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
+								value={production}
+								onChange={ev => dispatch(setProduction(ev))}
+								type="production"
+							/>
+						</FuseAnimate>
+					</div>
+				</Header>
+			}
 			contentToolbar={
 				<Tabs
 					value={tabValue}
@@ -72,12 +107,10 @@ function PoliciesAndBank(props) {
 					scrollButtons="auto"
 					classes={{ root: 'w-full h-64' }}
 				>
-					<Tab className="h-64 normal-case" label="AUTO" />
-					<Tab className="h-64 normal-case" label="FIRE" />
-					<Tab className="h-64 normal-case" label="LIFE" />
-					<Tab className="h-64 normal-case" label="HEALTH" />
-					<Tab className="h-64 normal-case" label="BANK" />
-					<Tab className="h-64 normal-case" label="OTHER" />
+					<Tab className="h-64 normal-case" label="POLICIES" />
+					<Tab className="h-64 normal-case" label="PREMIUM" />
+					<Tab className="h-64 normal-case" label="AVERAGES" />
+					<Tab className="h-64 normal-case" label="BANK" />					
 				</Tabs>
 			}
 			content={
@@ -85,69 +118,52 @@ function PoliciesAndBank(props) {
 					{tabValue === 0 && 
 						<div>
 							<div className='pb-24'>
-								<Table header={autoHeader1} widget={widgets.productionLineTable1} entries fires lifes healthes />
-							</div>
-							<div className='pb-24'>
-								<Table header={autoHeader2} widget={widgets.productionLineTable2} entries fires lifes healthes />
+								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
 							</div>	
 							<div className='pb-24'>
-								<Table header={autoHeader3} widget={widgets.productionLineTable3} entries fires lifes healthes />
+								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
 							</div>
 							<div className='pb-24'>
-								<Table header={autoHeader4} widget={widgets.productionLineTable4} entries fires lifes healthes />
-							</div>
+								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
+							</div>							
 						</div>
 					}				
 					{tabValue === 1 && 
 						<div>
 							<div className='pb-24'>
-								<Table header={autoHeader1} widget={widgets.productionLineTable1} entries fires lifes healthes />
+								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
+							</div>	
+							<div className='pb-24'>
+								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
 							</div>
-							<div>	
-								<Table header={autoHeader2} widget={widgets.productionLineTable2} entries fires lifes healthes />
+							<div className='pb-24'>
+								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
 							</div>	
 						</div>
 					}			
 					{tabValue === 2 && 
 						<div>
 							<div className='pb-24'>
-								<Table header={autoHeader1} widget={widgets.productionLineTable1} entries fires lifes healthes />
+								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
+							</div>	
+							<div className='pb-24'>
+								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
 							</div>
-							<div>	
-								<Table header={autoHeader2} widget={widgets.productionLineTable2} entries fires lifes healthes />
+							<div className='pb-24'>
+								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
 							</div>	
 						</div>
 					}	
 					{tabValue === 3 && 
-						<div>
+						<div>							
 							<div className='pb-24'>
-								<Table header={autoHeader1} widget={widgets.productionLineTable1} entries fires lifes healthes />
+								<Table header={bankHeader} widget={widgets.Producer_PoliciesAndBank_Bank_Table} entries fires lifes healthes />
 							</div>
-							<div>	
-								<Table header={autoHeader2} widget={widgets.productionLineTable2} entries fires lifes healthes />
+							<div className='pb-24'>
+								<Chart widget={widgets.Producer_PolicesAndBank_Bank_Chart} />
 							</div>	
 						</div>
-					}	
-					{tabValue === 4 && 
-						<div>
-							<div className='pb-24'>
-								<Table header={autoHeader1} widget={widgets.productionLineTable1} entries fires lifes healthes />
-							</div>
-							<div>	
-								<Table header={autoHeader2} widget={widgets.productionLineTable2} entries fires lifes healthes />
-							</div>	
-						</div>
-					}	
-					{tabValue === 5 && 
-						<div>
-							<div className='pb-24'>
-								<Table header={autoHeader1} widget={widgets.productionLineTable1} entries fires lifes healthes />
-							</div>
-							<div>	
-								<Table header={autoHeader2} widget={widgets.productionLineTable2} entries fires lifes healthes />
-							</div>	
-						</div>
-					}	
+					}						
 				</div>
 			}
 			innerScroll
@@ -155,4 +171,4 @@ function PoliciesAndBank(props) {
 	);
 }
 
-export default withReducer('productionApp', reducer)(PoliciesAndBank);
+export default withReducer('producerApp', reducer)(PoliciesAndBank);

@@ -1,27 +1,22 @@
-import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
-import FusePageSimple from '@fuse/core/FusePageSimple';
+import FuseAnimate from '@fuse/core/FuseAnimate';
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import Hidden from '@material-ui/core/Hidden';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
+import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
-import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import reducer from '../store';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import Table from '../../../components/widgets/Table';
-import Chat from '../../../components/widgets/Chat';
-import PieChat from '../../../components/widgets/PieChat';
-import StaffMultilineHeader from './StaffMultilineHeader';
-
+import Chart from '../../../components/widgets/Chart';
+import SelectBox from '../../../components/CustomSelectBox';
+import Header from '../../../components/widgets/Header';
+import { Producer_StaffMultiline_Ratios_Table, Producer_StaffMultiline_Summary_Table } from '../Headers';
+import { setProduction, setPeriod, setReport } from '../store/productsSlice';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -29,84 +24,50 @@ const useStyles = makeStyles(theme => ({
 			maxHeight: '100%'
 		}
 	},
-	selectedProject: {
-		background: theme.palette.primary.main,
-		color: theme.palette.primary.contrastText,
-		borderRadius: '8px 0 0 0'
-	},
-	projectMenuButton: {
-		background: theme.palette.primary.main,
-		color: theme.palette.primary.contrastText,
-		borderRadius: '0 8px 0 0',
-		marginLeft: 1
-	}
 }));
-
-const header1 = [
-	// {value:'GOALS', type:false, color:''},
-	{value:'Sales Goal', type:false, color:''},
-	{value:'Actual Sales', type:false, color:''},
-	{value:'Total Premium / Dollars', type:true, color:''},
-	{value:'Average Premium / Dollars', type:false, color:''},
-];
-
-const header2 = [
-	// {value:'GOALS', type:false, color:''},
-	// {value:'Sales Goal', type:false, color:''},
-	{value:'Actual Sales', type:false, color:''},
-	{value:'Total Premium / Dollars', type:true, color:''},
-	{value:'Average Premium / Dollars', type:false, color:''},
-];
-
-const header3 = [
-	// { id: 1, value: 'GOALS', type: true },
-	{ id: 2, value: 'Center of Influence', type: true },
-	{ id: 3, value: 'Client Request', type: true },
-	{ id: 4, value: 'Direct Mail Letter', type: true },
-	{ id: 5, value: 'Internet Read >>', type: true },
-	{ id: 6, value: 'Multiline Review', type: true },
-	{ id: 7, value: 'label', type: true },
-	{ id: 8, value: 'label', type: true },
-	{ id: 9, value: 'Park Bench', type: true },
-	{ id: 10, value: 'Personal Visit', type: true },
-	{ id: 11, value: 'Postcard', type: true },
-	{ id: 12, value: 'Referral', type: true },
-	{ id: 13, value: 'Salesperson Pilvot', type: true },
-	{ id: 14, value: 'Sign', type: true },
-	{ id: 15, value: 'Television', type: true },
-	{ id: 16, value: 'Transfer', type: true },
-	{ id: 17, value: 'Walk-In', type: true },
-	{ id: 18, value: 'Website', type: true },
-	{ id: 19, value: 'WebSearch', type: true },
-	{ id: 20, value: 'Yellow Pages', type: true },
-	{ id: 21, value: 'Other', type: true },
-];
-
-const header4 = [
-	// {value:'GOALS', type:false, color:''},
-	{value:'Intitial Item Bonuses', type:false, color:''},
-	{value:'Individual Target Bonuses', type:false, color:''},
-	{value:'Team Target Bonuses', type:true, color:''},
-	{value:'Policy Growth Bonuses', type:false, color:''},
-	{value:'Lapse Rate Bonuses', type:false, color:''},
-	{value:'Special Promotion', type:false, color:''},
-	{value:'TOTAL BONUSES', type:false, color:''},
-]
 
 function StaffMultiline(props) {
 	const dispatch = useDispatch();
-	const production = useSelector(({ productionApp }) => productionApp.products.production);
-	const period = useSelector(({ productionApp }) => productionApp.products.period);
+	const production = useSelector(({ producerApp }) => producerApp.products.production);
+	const period = useSelector(({ producerApp }) => producerApp.products.period);
+	const report = useSelector(({ producerApp }) => producerApp.products.report);
 	const widgets = useSelector(selectWidgets);
-	const classes = useStyles(props);
-	const pageLayout = useRef(null);
-
+	const [tabValue, setTabValue] = useState(0);
+	const [title, setTitle] = useState('Staff Multiline');
+	const [loading, setLoading] = useState(true);
+	const [data, setData] = useState(widgets);
+	
 	useEffect(() => {
 		dispatch(getWidgets());
 	}, [dispatch]);
 
+	useEffect(() => {		
+		setLoading(false);
+		setData(widgets);
+	}, [widgets]);
+
+	function handleChangeTab(event, value) {
+		setTabValue(value);
+	}
+
 	if (_.isEmpty(widgets)) {
 		return null;
+	}
+	
+	if (loading) {
+		return <FuseLoading />;
+	}
+
+	if (data.length === 0) {
+		return (
+			<FuseAnimate delay={100}>
+				<div className="flex flex-1 items-center justify-center h-full">
+					<Typography color="textSecondary" variant="h5">
+						There are no data!
+					</Typography>
+				</div>
+			</FuseAnimate>
+		);
 	}
 
 	return (
@@ -115,66 +76,86 @@ function StaffMultiline(props) {
 				content: 'flex',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
-		// <FusePageSimple
-		// 	classes={{
-		// 		header: 'min-h-80 h-80',
-		// 		rightSidebar: 'w-288',
-		// 		content: classes.content,
-		// 	}}		
-			header={<StaffMultilineHeader />}
-			content={
-				<div className="p-12">
-					<FuseAnimateGroup
-						className="flex flex-wrap"
-						enter={{
-							animation: 'transition.slideUpBigIn'
-						}}
-					>
-						<div className="widget flex w-1/4 p-12">
-							<Table header={header1} widget={widgets.IndividualTable} entries fires lifes healthes />
+			header={
+				<Header title={title}>
+					<div className="flex flex-1 items-center justify-center px-12 w-40">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
+								value={period}
+								onChange={ev => dispatch(setPeriod(ev))}
+								type="period"
+							/>
+						</FuseAnimate>
+					</div>
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
+								value={production}
+								onChange={ev => dispatch(setProduction(ev))}
+								type="production"
+							/>
+						</FuseAnimate>
+					</div>
+					{tabValue === 0 &&
+						<div className="flex flex-1 items-center justify-center px-12">
+							<FuseAnimate animation="transition.slideUpIn" delay={300}>
+								<SelectBox
+									value={report}
+									onChange={ev => dispatch(setReport(ev))}
+									type="report"
+								/>
+							</FuseAnimate>
 						</div>
-						<div className="widget flex w-1/4 p-12">
-							<Chat widget={widgets.IndividualSalesGoalsChat} />
-						</div>
-						<div className="widget flex w-1/4 p-12">
-							<Table header={header2} widget={widgets.AgencyTable} entries fires lifes healthes />
-						</div>
-						<div className="widget flex w-1/4 p-12">
-							<Chat widget={widgets.TeamSalesGoalsChat} />
-						</div>
-					</FuseAnimateGroup>
-					<FuseAnimateGroup
-						className="flex flex-wrap"
-						enter={{
-							animation: 'transition.slideUpBigIn'
-						}}
-					>
-						<div className="widget flex w-full p-12">
-							<Table header={header3} widget={widgets.SourcesOfBonusesTable} entries fires lifes healthes />
-						</div>					
-					</FuseAnimateGroup>	
-					<FuseAnimateGroup
-						className="flex flex-wrap"
-						enter={{
-							animation: 'transition.slideUpBigIn'
-						}}
-					>
-						<div className="widget flex w-1/4 p-12">
-							<PieChat widget={widgets.ProductPieChat} />
-						</div>	
-						<div className="widget flex w-2/4 p-12">
-							<Table header={header4} widget={widgets.BonusesEarnedThisPeriodTable} entries fires lifes healthes />
-						</div>	
-						<div className="widget flex w-1/4 p-12">
-							<PieChat widget={widgets.BonusPieChat} />
-						</div>					
-					</FuseAnimateGroup>					
-				</div>
-				
+					}
+				</Header>
 			}
-			ref={pageLayout}
+			contentToolbar={
+				<Tabs
+					value={tabValue}
+					onChange={handleChangeTab}
+					indicatorColor="primary"
+					textColor="primary"
+					variant="scrollable"
+					scrollButtons="auto"
+					classes={{ root: 'w-full h-64' }}
+				>
+					<Tab className="h-64 normal-case" label="RATIOS" />
+					<Tab className="h-64 normal-case" label="SUMMARY" />									
+				</Tabs>
+			}
+			content={
+				<div className="w-full">					
+					{tabValue === 0 && 
+						<div>
+							<div className='pb-24'>
+								<Table header={Producer_StaffMultiline_Ratios_Table} widget={widgets.Producer_StaffMultiline_Ratios_Table} entries fires lifes healthes />
+							</div>	
+							<div className='pb-24'>
+								<Chart widget={widgets.StaffMultiline_Ratios_Policies_Chart} />
+							</div>
+							<div className='pb-24'>
+								<Chart widget={widgets.StaffMultiline_Ratios_Producer_Chart} />
+							</div>							
+						</div>
+					}				
+					{tabValue === 1 && 
+						<div>
+							<div className='pb-24'>
+								<Chart widget={widgets.Producer_StaffMultiline_Summary_Chart_1} />
+							</div>
+							<div className='pb-24'>
+								<Chart widget={widgets.Producer_StaffMultiline_Summary_Chart_2} />
+							</div>	
+							<div className='pb-24'>
+								<Table header={Producer_StaffMultiline_Summary_Table} widget={widgets.Producer_StaffMultiline_Summary_Table} entries fires lifes healthes />
+							</div>	
+						</div>
+					}													
+				</div> 
+			}
+			innerScroll
 		/>
 	);
 }
 
-export default withReducer('productionApp', reducer)(StaffMultiline);
+export default withReducer('producerApp', reducer)(StaffMultiline);

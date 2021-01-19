@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getProducts = createAsyncThunk('productionApp/products/getProducts', async () => {
-	const response = await axios.get('/api/production-app/products');
+export const getProducts = createAsyncThunk('producerApp/products/getProducts', async () => {
+	const response = await axios.get('/api/producer-app/products');
 	const data = await response.data;
 
 	return data;
@@ -11,14 +11,16 @@ export const getProducts = createAsyncThunk('productionApp/products/getProducts'
 const productsAdapter = createEntityAdapter({});
 
 export const { selectAll: selectProducts, selectById: selectProductById } = productsAdapter.getSelectors(
-	state => state.productionApp.products
+	state => state.producerApp.products
 );
 
 const productsSlice = createSlice({
-	name: 'productionApp/products',
+	name: 'producerApp/products',
 	initialState: productsAdapter.getInitialState({
 		production: '',
 		period: '',
+		user: '',
+		report: '',
 	}),
 	reducers: {
 		setProduction: {
@@ -32,6 +34,18 @@ const productsSlice = createSlice({
 				state.period = action.payload;
 			},
 			prepare: event => ({ payload: event.target.value || '' })
+		},
+		setUser: {
+			reducer: (state, action) => {
+				state.user = action.payload;
+			},
+			prepare: event => ({ payload: event.target.value || '' })
+		},
+		setReport: {
+			reducer: (state, action) => {
+				state.user = action.payload;
+			},
+			prepare: event => ({ payload: event.target.value || '' })
 		}
 	},
 	extraReducers: {
@@ -39,6 +53,6 @@ const productsSlice = createSlice({
 	}
 });
 
-export const { setProduction, setPeriod } = productsSlice.actions;
+export const { setProduction, setPeriod, setUser, setReport } = productsSlice.actions;
 
 export default productsSlice.reducer;

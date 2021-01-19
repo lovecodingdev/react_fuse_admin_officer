@@ -1,8 +1,8 @@
 import { createEntityAdapter, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const getWidgets = createAsyncThunk('productionApp/widgets/getWidgets', async () => {
-	const response = await axios.get('/api/production-app/widgets');
+export const getWidgets = createAsyncThunk('producerApp/widgets/getWidgets', async () => {
+	const response = await axios.get('/api/producer-app/widgets');
 	const data = await response.data;
 
 	return data;
@@ -11,11 +11,11 @@ export const getWidgets = createAsyncThunk('productionApp/widgets/getWidgets', a
 const widgetsAdapter = createEntityAdapter({});
 
 export const { selectEntities: selectWidgets, selectById: selectWidgetById } = widgetsAdapter.getSelectors(
-	state => state.productionApp.widgets
+	state => state.producerApp.widgets
 );
 
 const widgetsSlice = createSlice({
-	name: 'productionApp/widgets',
+	name: 'producerApp/widgets',
 	initialState: widgetsAdapter.getInitialState(),
 	reducers: {},
 	extraReducers: {
