@@ -1,4 +1,5 @@
 import mock from '../mock';
+import { db, realDb } from './firebase';
 
 const producerAppDB = {
 	widgets: [
@@ -5425,7 +5426,8 @@ const producerAppDB = {
 			id: 4,
 			name: 'Withinpixels'
 		}
-	]
+	],
+	users: [],
 };
 
 mock.onGet('/api/producer-app/widgets').reply(config => {
@@ -5435,3 +5437,18 @@ mock.onGet('/api/producer-app/widgets').reply(config => {
 mock.onGet('/api/producer-app/projects').reply(config => {
 	return [200, producerAppDB.projects];
 });
+
+mock.onGet('/api/producer-app/users').reply(() => new Promise((resolve, reject) => { 
+	var starCountRef = realDb.ref(`users/`);
+	starCountRef.on('value', snapshot => {
+		const data = snapshot.val();
+		
+		if(data) {
+			Object.keys(data).map(item => {
+				producerAppDB.users.push(data[item])
+			});
+		}
+
+		resolve(producerAppDB.users);
+	})
+}));
