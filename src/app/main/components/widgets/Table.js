@@ -1,3 +1,4 @@
+import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -12,8 +13,8 @@ function Widget(props) {
 	const tableData = props.widget.table.tableContent;
 	return (
 		// <Paper className="w-full rounded-8 shadow">
-			<div className="table-responsive">
-				<Table className="w-full min-w-full" size="small">
+			<FuseScrollbars className="flex-grow overflow-x-auto">
+				<Table stickyHeader className="min-w-full" size="small" aria-labelledby="tableTitle">
 					<TableHead>
 						<TableRow>
 							{props.widget.table.columns.map(column => {
@@ -86,7 +87,7 @@ function Widget(props) {
 						))}
 					</TableBody>
 				</Table>
-			</div>
+			</FuseScrollbars>
 		// </Paper>
 	);
 }

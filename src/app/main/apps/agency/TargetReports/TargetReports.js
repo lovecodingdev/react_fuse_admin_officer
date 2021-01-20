@@ -74,11 +74,11 @@ function TargetReports(props) {
 	}
 
 	return (
-		<FusePageSimple
+		<FusePageCarded
 			classes={{
-				header: 'min-h-80 h-80',
-				rightSidebar: 'w-288',
-				content: classes.content,
+				content: 'flex',
+				contentCard: 'overflow-hidden',
+				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
 				<Header title={title}>
@@ -94,13 +94,14 @@ function TargetReports(props) {
 				</Header>
 			}
 			content={
-				<div className="w-full">					
-					<div className='pb-24'>
+				<div className="w-full p-12">	
+					<div className="p-12">
 						<Table header={Agency_TargetReports_Table} widget={data.widgets.Agency_TargetReports_Table} entries fires lifes healthes />
 					</div>
-				</div>
+					
+				</div>				
 			}
-			ref={pageLayout}
+			innerScroll
 		/>
 	);
 }

@@ -75,11 +75,11 @@ function Multiline(props) {
 	}
 
 	return (
-		<FusePageSimple
+		<FusePageCarded
 			classes={{
-				header: 'min-h-80 h-80',
-				rightSidebar: 'w-288',
-				content: classes.content,
+				content: 'flex',
+				contentCard: 'overflow-hidden',
+				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
 				<Header title={title}>				
@@ -109,7 +109,7 @@ function Multiline(props) {
 				</Tabs>
 			}
 			content={
-				<div className="p-12">
+				<div className="w-full p-12">
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-1/3 p-12">
 							<Table header={Agency_Multiline_AgencyGoalsAndProduction_Table} widget={data.widgets.Agency_Multiline_AgencyGoalsAndProduction_Table} entries fires lifes healthes />
@@ -129,7 +129,7 @@ function Multiline(props) {
 				</div>
 				
 			}
-			ref={pageLayout}
+			innerScroll
 		/>
 	);
 }
