@@ -22,6 +22,7 @@ const productsSlice = createSlice({
 		user: '',
 		report: '',
 		product: '',
+		bonus: '',
 	}),
 	reducers: {
 		setProduction: {
@@ -44,13 +45,19 @@ const productsSlice = createSlice({
 		},
 		setReport: {
 			reducer: (state, action) => {
-				state.user = action.payload;
+				state.report = action.payload;
 			},
 			prepare: event => ({ payload: event.target.value || '' })
 		},
 		setProduct: {
 			reducer: (state, action) => {
-				state.user = action.payload;
+				state.product = action.payload;
+			},
+			prepare: event => ({ payload: event.target.value || '' })
+		},
+		setBonus: {
+			reducer: (state, action) => {
+				state.bonus = action.payload;
 			},
 			prepare: event => ({ payload: event.target.value || '' })
 		}
@@ -60,6 +67,6 @@ const productsSlice = createSlice({
 	}
 });
 
-export const { setProduction, setPeriod, setUser, setReport, setProduct } = productsSlice.actions;
+export const { setProduction, setPeriod, setUser, setReport, setProduct, setBonus } = productsSlice.actions;
 
 export default productsSlice.reducer;
