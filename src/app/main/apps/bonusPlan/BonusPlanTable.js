@@ -15,11 +15,7 @@ import ContactsTablePaginationActions from './BonusPlanTablePaginationActions';
 import { openNewContactDialog } from './store/bonusPlanSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
-
-
-const EnhancedTable = ({ columns, data, onRowClick, title }) => {
-
-	
+const EnhancedTable = ({ columns, data, onRowClick, title, id }) => {
 	const {
 		getTableProps,
 		headerGroups,
@@ -44,27 +40,27 @@ const EnhancedTable = ({ columns, data, onRowClick, title }) => {
 				// {
 				// 	id: 'selection',
 				// 	sortable: false,
-					// The header can use the table's getToggleAllRowsSelectedProps method
-					// to render a checkbox.  Pagination is a problem since this will select all
-					// rows even though not all rows are on the current page.  The solution should
-					// be server side pagination.  For one, the clients should not download all
-					// rows in most cases.  The client should only download data for the current page.
-					// In that case, getToggleAllRowsSelectedProps works fine.
-					// Header: ({ getToggleAllRowsSelectedProps }) => (
-					// 	<div>
-					// 		<IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
-					// 	</div>
-					// ),
-					// The cell can use the individual row's getToggleRowSelectedProps method
-					// to the render a checkbox
-					// Cell: ({ row }) => (
-					// 	<div>
-					// 		<IndeterminateCheckbox
-					// 			{...row.getToggleRowSelectedProps()}
-					// 			onClick={ev => ev.stopPropagation()}
-					// 		/>
-					// 	</div>
-					// )
+				// The header can use the table's getToggleAllRowsSelectedProps method
+				// to render a checkbox.  Pagination is a problem since this will select all
+				// rows even though not all rows are on the current page.  The solution should
+				// be server side pagination.  For one, the clients should not download all
+				// rows in most cases.  The client should only download data for the current page.
+				// In that case, getToggleAllRowsSelectedProps works fine.
+				// Header: ({ getToggleAllRowsSelectedProps }) => (
+				// 	<div>
+				// 		<IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+				// 	</div>
+				// ),
+				// The cell can use the individual row's getToggleRowSelectedProps method
+				// to the render a checkbox
+				// Cell: ({ row }) => (
+				// 	<div>
+				// 		<IndeterminateCheckbox
+				// 			{...row.getToggleRowSelectedProps()}
+				// 			onClick={ev => ev.stopPropagation()}
+				// 		/>
+				// 	</div>
+				// )
 				// },
 				..._columns
 			]);
@@ -76,30 +72,39 @@ const EnhancedTable = ({ columns, data, onRowClick, title }) => {
 		<div className="flex flex-col min-h-full sm:border-1 sm:rounded-16 overflow-hidden w-full">
 			<TableContainer className="flex flex-1 w-full">
 				<Table {...getTableProps()} stickyHeader>
-					<TableHead>
-						<TableRow>
-							<TableCell className="whitespace-nowrap p-0 text-xs p-12" size="small" colSpan={6}>
-								{title}
-							</TableCell>
-						</TableRow>
-					</TableHead>
+					{title && (
+						<TableHead>
+							<TableRow>
+								<TableCell
+									className={clsx('whitespace-wrap  p-0 text-xs p-12 ')}
+									size="small"
+									colSpan={6}
+								>
+									{title}
+								</TableCell>
+							</TableRow>
+						</TableHead>
+					)}
+
 					<TableHead>
 						{headerGroups.map(headerGroup => (
 							<TableRow {...headerGroup.getHeaderGroupProps()}>
 								{headerGroup.headers.map((column, index) => {
-									return(
-									<TableCell
-										className={`whitespace-nowrap p-0 text-xs p-4 ${index===3?`border-r-0`:`border-r-1`}`}
-										size="small"
-										align='center'
-										{...(!column.sortable
-											? column.getHeaderProps()
-											: column.getHeaderProps(column.getSortByToggleProps()))}
-									>
-										{column.render('Header')}
-									
-									</TableCell>
-								)})}
+									return (
+										<TableCell
+											className={clsx(
+												`w-md p-0 text-xs p-4 ${index === 3 ? `border-r-0` : `border-r-1`}`
+											)}
+											size="small"
+											align="center"
+											{...(!column.sortable
+												? column.getHeaderProps()
+												: column.getHeaderProps(column.getSortByToggleProps()))}
+										>
+											{column.render('Header')}
+										</TableCell>
+									);
+								})}
 							</TableRow>
 						))}
 					</TableHead>
@@ -114,14 +119,27 @@ const EnhancedTable = ({ columns, data, onRowClick, title }) => {
 									size="small"
 								>
 									{row.cells.map((cell, index) => {
-										console.log()
 										return (
 											<TableCell
 												{...cell.getCellProps()}
-												align='center'
-												className={clsx(`p-0 text-xs  ${index===3?`border-r-0`:`border-r-1`}`, cell.column.className)}
+												align="center"
+												className={clsx(
+													`p-0 text-xs truncate ${
+														index === 3 ? `border-r-0` : `border-r-1 `
+													}`,
+													cell.column.className
+												)}
 											>
+												{cell.render('Cell').props.row.original.amount &&
+													index === 2 &&
+													id === 'teamAutoTargetBonus' &&
+													'$'}
 												{cell.render('Cell')}
+												{cell.render('Cell').props.row.original.amount &&
+													index === 2 &&
+													(id === 'individualAutoTargetBonus' ||
+														id === 'individualFireTargetBonus') &&
+													'%'}
 											</TableCell>
 										);
 									})}
@@ -131,24 +149,7 @@ const EnhancedTable = ({ columns, data, onRowClick, title }) => {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			{/* <TablePagination
-				component="div"
-				classes={{
-					root: 'flex-shrink-0 border-t-1'
-				}}
-				rowsPerPageOptions={[5, 10, 25, { label: 'All', value: data.length + 1 }]}
-				colSpan={5}
-				count={data.length}
-				rowsPerPage={pageSize}
-				page={pageIndex}
-				SelectProps={{
-					inputProps: { 'aria-label': 'rows per page' },
-					native: false
-				}}
-				onChangePage={handleChangePage}
-				onChangeRowsPerPage={handleChangeRowsPerPage}
-				ActionsComponent={ContactsTablePaginationActions}
-			/> */}
+
 		</div>
 	);
 };

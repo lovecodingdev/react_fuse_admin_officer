@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import ContactDialog from './BonusPlanDialog';
+import TargetBonusPlanDialog from './TargetBonusPlanDialog';
+import TeamTargetBonusPlanDialog from './TeamTargetBonusPlanDialog';
 import ContactsHeader from './BonusPlanHeader';
 import ContactsList from './BonusPlanList';
 import reducer from './store';
@@ -39,6 +41,8 @@ function BonusPlanApp(props) {
 				innerScroll
 			/>
 			<ContactDialog />
+			<TargetBonusPlanDialog />
+			<TeamTargetBonusPlanDialog />
 		</>
 	);
 }
