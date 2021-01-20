@@ -157,6 +157,20 @@ const contactsSlice = createSlice({
 				open: false
 			},
 			data: null
+		},
+		targetBonusDialog: {
+			type: 'new',
+			props: {
+				open: false
+			},
+			data: null
+		},
+		teamTargetBonusDialog: {
+			type: 'new',
+			props: {
+				open: false
+			},
+			data: null
 		}
 	}),
 	reducers: {
@@ -169,6 +183,60 @@ const contactsSlice = createSlice({
 		openNewContactDialog: (state, action) => {
 			state.contactDialog = {
 				type: 'new',
+				props: {
+					open: true
+				},
+				data: action.payload
+			};
+		},
+		openNewTargetBonusDialog: (state, action) => {
+			state.targetBonusDialog = {
+				type: 'new',
+				props: {
+					open: true
+				},
+				data: action.payload
+			};
+		},
+		openNewTeamTargetBonusDialog: (state, action) => {
+			state.teamTargetBonusDialog = {
+				type: 'new',
+				props: {
+					open: true
+				},
+				data: action.payload
+			};
+		},
+		closeNewTargetBonusDialog: (state, action) => {
+			state.targetBonusDialog = {
+				type: 'new',
+				props: {
+					open: false
+				},
+				data: null
+			};
+		},
+		closeNewTeamTargetBonusDialog: (state, action) => {
+			state.teamTargetBonusDialog = {
+				type: 'new',
+				props: {
+					open: false
+				},
+				data: null
+			};
+		},
+		openEditTargetBonusDialog: (state, action) => {
+			state.targetBonusDialog = {
+				type: 'edit',
+				props: {
+					open: true
+				},
+				data: action.payload
+			};
+		},
+		openEditTeamTargetBonusDialog: (state, action) => {
+			state.teamTargetBonusDialog = {
+				type: 'edit',
 				props: {
 					open: true
 				},
@@ -201,6 +269,24 @@ const contactsSlice = createSlice({
 				},
 				data: null
 			};
+		},
+		closeEditTargetBonusDialog: (state, action) => {
+			state.targetBonusDialog = {
+				type: 'edit',
+				props: {
+					open: false
+				},
+				data: null
+			};
+		},
+		closeEditTeamTargetBonusDialog: (state, action) => {
+			state.teamTargetBonusDialog = {
+				type: 'edit',
+				props: {
+					open: false
+				},
+				data: null
+			};
 		}
 	},
 	extraReducers: {
@@ -221,7 +307,15 @@ export const {
 	openNewContactDialog,
 	closeNewContactDialog,
 	openEditContactDialog,
-	closeEditContactDialog
+	closeEditContactDialog,
+	openNewTargetBonusDialog,
+	closeNewTargetBonusDialog,
+	openEditTargetBonusDialog,
+	closeEditTargetBonusDialog,
+	openNewTeamTargetBonusDialog,
+	closeNewTeamTargetBonusDialog,
+	openEditTeamTargetBonusDialog,
+	closeEditTeamTargetBonusDialog
 } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

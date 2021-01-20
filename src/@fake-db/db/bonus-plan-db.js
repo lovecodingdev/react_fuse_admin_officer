@@ -109,7 +109,7 @@ mock.onPost('/api/bonus-plan/add-contact').reply(request => {
 		...contact,
 		dollar: contact.dollar?parseFloat(contact.dollar):'',
 		percent: contact.percent?parseFloat(contact.percent):'',
-		id: FuseUtils.generateGUID()
+		id: Date.now()
 	};
 	realDb.ref(`BonusPlan/${contact.planType}/${newContact.id}`).set({
 		...newContact
