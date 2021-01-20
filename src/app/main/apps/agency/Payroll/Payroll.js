@@ -30,28 +30,28 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function GoalsAndActual(props) {
+function Payroll(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
 	const users = useSelector(selectUsers);
 	const widgets = useSelector(selectWidgets);
-	const production = useSelector(({ producerApp }) => producerApp.products.production);
-	const period = useSelector(({ producerApp }) => producerApp.products.period);	
-	const report = useSelector(({ producerApp }) => producerApp.products.report);
-	const user = useSelector(({ producerApp }) => producerApp.products.user);
+	const production = useSelector(({ agencyApp }) => agencyApp.products.production);
+	const period = useSelector(({ agencyApp }) => agencyApp.products.period);	
+	const report = useSelector(({ agencyApp }) => agencyApp.products.report);
+	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [tabValue, setTabValue] = useState(0);
-	const [title, setTitle] = useState('Goals & Actual');
+	const [title, setTitle] = useState('Payroll');
 	
 	useEffect(() => {
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
 	useEffect(() => {	
-		setData({ widgets });
-	}, [widgets]);
+		setData({  widgets });
+	}, [ widgets]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -128,4 +128,4 @@ function GoalsAndActual(props) {
 	);
 }
 
-export default withReducer('producerApp', reducer)(GoalsAndActual);
+export default withReducer('agencyApp', reducer)(Payroll);

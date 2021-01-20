@@ -20,7 +20,8 @@ import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
-import { agencyGoalsHeader, otherActivitiesHeader } from '../Headers';
+import { Agency_Multiline_AgencyGoalsAndProduction_Table, Agency_Multiline_Production_Table } from '../Headers';
+
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -30,20 +31,20 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function GoalsAndActual(props) {
+function Multiline(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
 	const users = useSelector(selectUsers);
 	const widgets = useSelector(selectWidgets);
-	const production = useSelector(({ producerApp }) => producerApp.products.production);
-	const period = useSelector(({ producerApp }) => producerApp.products.period);	
-	const report = useSelector(({ producerApp }) => producerApp.products.report);
-	const user = useSelector(({ producerApp }) => producerApp.products.user);
+	const production = useSelector(({ agencyApp }) => agencyApp.products.production);
+	const period = useSelector(({ agencyApp }) => agencyApp.products.period);	
+	const report = useSelector(({ agencyApp }) => agencyApp.products.report);
+	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [tabValue, setTabValue] = useState(0);
-	const [title, setTitle] = useState('Goals & Actual');
+	const [title, setTitle] = useState('Multiline');
 	
 	useEffect(() => {
 		dispatch(getWidgets()).then(() => setLoading(false));
@@ -81,8 +82,8 @@ function GoalsAndActual(props) {
 				content: classes.content,
 			}}
 			header={
-				<Header title={title}>
-					<div className="flex flex-1 items-center justify-center px-12 w-40">
+				<Header title={title}>				
+					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
 								value={period}
@@ -91,35 +92,40 @@ function GoalsAndActual(props) {
 							/>
 						</FuseAnimate>
 					</div>
-					<div className="flex flex-1 items-center justify-center px-12">
-						<FuseAnimate animation="transition.slideUpIn" delay={300}>
-							<SelectBox
-								value={production}
-								onChange={ev => dispatch(setProduction(ev))}
-								type="production"
-							/>
-						</FuseAnimate>
-					</div>
 				</Header>
+			}
+			contentToolbar={
+				<Tabs
+					value={tabValue}
+					onChange={handleChangeTab}
+					indicatorColor="primary"
+					textColor="primary"
+					variant="scrollable"
+					scrollButtons="auto"
+					classes={{ root: 'w-full h-64' }}
+				>
+					<Tab className="h-64 normal-case" label="View Written Report" />
+					<Tab className="h-64 normal-case" label="View Issued Report" />									
+				</Tabs>
 			}
 			content={
 				<div className="p-12">
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-2/3 p-12">
-							<Table header={agencyGoalsHeader} leftHeader={data.users} widget={widgets.Producer_GoalsAndActual_AgencyGoals_Table} entries fires lifes healthes />
+						<div className="widget flex w-1/3 p-12">
+							<Table header={Agency_Multiline_AgencyGoalsAndProduction_Table} widget={data.widgets.Agency_Multiline_AgencyGoalsAndProduction_Table} entries fires lifes healthes />
 						</div>
 						<div className="widget flex w-1/3 p-12">
-							<Chart widget={data.widgets.Producer_GoalsAndActual_SalesGoals_Chart} />
+							<Chart widget={data.widgets.Agency_Multiline_Chart} />
 						</div>
+						<div className="widget flex w-1/3 p-12">
+						<PieChart widget={data.widgets.Agency_Multiline_ViewYearTotalsByProduct_PieChart} />
+						</div>						
 					</FuseAnimateGroup>
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-2/3 p-12">
-							<Table header={otherActivitiesHeader} leftHeader={data.users} widget={widgets.Producer_GoalsAndActual_OtherActivities_Table} entries fires lifes healthes />
-						</div>
-						<div className="widget flex w-1/3 p-12">
-							<Chart widget={data.widgets.Producer_GoalsAndActual_ActivityGoals_Chart} />
-						</div>
-					</FuseAnimateGroup>
+						<div className="widget flex w-full p-12">
+							<Table header={Agency_Multiline_Production_Table} widget={data.widgets.Agency_Multiline_Production_Table} entries fires lifes healthes />
+						</div>					
+					</FuseAnimateGroup>						
 				</div>
 				
 			}
@@ -128,4 +134,4 @@ function GoalsAndActual(props) {
 	);
 }
 
-export default withReducer('producerApp', reducer)(GoalsAndActual);
+export default withReducer('agencyApp', reducer)(Multiline);

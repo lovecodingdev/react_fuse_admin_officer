@@ -88,6 +88,58 @@ const navigationConfig = [
 				]
 			},
 			{
+				id: 'agency',
+				title: 'Agency',
+				translate: 'Agency',
+				type: 'collapse',
+				icon: 'monetization_on',
+				url: '/apps/agency',
+				children: [
+					{
+						id: 'payroll',
+						title: 'Payroll',
+						type: 'item',
+						url: '/apps/agency/payroll',
+						exact: true
+					},
+					{
+						id: 'product-line',
+						title: 'Product Line',
+						type: 'item',
+						url: '/apps/agency/product-line',
+						exact: true
+					},
+					{
+						id: 'sources',
+						title: 'Sources',
+						type: 'item',
+						url: '/apps/agency/sources',
+						exact: true
+					},
+					{
+						id: 'multiline',
+						title: 'Multiline',
+						type: 'item',
+						url: '/apps/agency/multiline',
+						exact: true
+					},
+					{
+						id: 'target-reports',
+						title: 'Target Reports',
+						type: 'item',
+						url: '/apps/agency/target-reports',
+						exact: true
+					},
+					{
+						id: 'possible-money',
+						title: 'Possible Money',
+						type: 'item',
+						url: '/apps/agency/possible-money',
+						exact: true
+					}
+				]
+			},
+			{
 				id: 'vision',
 				title: 'Vision',
 				translate: 'Vision',

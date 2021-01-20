@@ -17,6 +17,7 @@ import ScrumboardAppConfig from './scrumboard/ScrumboardAppConfig';
 import TodoAppConfig from './todo/TodoAppConfig';
 import BonusPlanAppConfig from './bonusPlan/bonusPlanConfig'
 import ProducerAppConfig from './producer/producerAppConfig'
+import AgencyAppConfig from './agency/agencyAppConfig'
 
 const appsConfigs = [
 	AnalyticsDashboardAppConfig,
@@ -38,6 +39,7 @@ const appsConfigs = [
 	ActivityAppConfig,
 	BonusPlanAppConfig,
 	ProducerAppConfig,
+	AgencyAppConfig,
 ];
 
 export default appsConfigs;

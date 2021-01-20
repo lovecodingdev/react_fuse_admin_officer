@@ -65,6 +65,16 @@ const data = {
 			{ item: 'Name12', value: 'Name12' },	
 		],
 	},
+	product: {
+		label: "Product",
+		list: [
+			{ item: 'Auto', value: 'Auto' },
+			{ item: 'Fire', value: 'Fire' },
+			{ item: 'Life', value: 'Life' },			
+			{ item: 'Health', value: 'Health' },			
+			{ item: 'Bank', value: 'Bank' },			
+		],
+	},
 	report: {
 		label: "Report Type",
 		list: [

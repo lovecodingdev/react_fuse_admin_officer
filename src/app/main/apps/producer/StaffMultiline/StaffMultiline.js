@@ -1,6 +1,9 @@
+import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import FuseAnimate from '@fuse/core/FuseAnimate';
-import FusePageCarded from '@fuse/core/FusePageCarded';
+import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FusePageSimple from '@fuse/core/FusePageSimple';
+import FusePageCarded from '@fuse/core/FusePageCarded';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
@@ -8,16 +11,16 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import reducer from '../store';
-import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import Table from '../../../components/widgets/Table';
 import Chart from '../../../components/widgets/Chart';
+import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
+import { getWidgets, selectWidgets } from '../store/widgetsSlice';
+import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
+import { getUsers, selectUsers } from '../store/usersSlice';
 import { Producer_StaffMultiline_Ratios_Table, Producer_StaffMultiline_Summary_Table } from '../Headers';
-import { setProduction, setPeriod, setReport } from '../store/productsSlice';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -29,31 +32,29 @@ const useStyles = makeStyles(theme => ({
 
 function StaffMultiline(props) {
 	const dispatch = useDispatch();
-	const production = useSelector(({ producerApp }) => producerApp.products.production);
-	const period = useSelector(({ producerApp }) => producerApp.products.period);
-	const report = useSelector(({ producerApp }) => producerApp.products.report);
+	const classes = useStyles(props);
+	const pageLayout = useRef(null);
+	const users = useSelector(selectUsers);
 	const widgets = useSelector(selectWidgets);
+	const production = useSelector(({ producerApp }) => producerApp.products.production);
+	const period = useSelector(({ producerApp }) => producerApp.products.period);	
+	const report = useSelector(({ producerApp }) => producerApp.products.report);
+	const user = useSelector(({ producerApp }) => producerApp.products.user);
+	const [loading, setLoading] = useState(true);
+	const [data, setData] = useState({ widgets });
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Staff Multiline');
-	const [loading, setLoading] = useState(true);
-	const [data, setData] = useState(widgets);
-	const classes = useStyles(props);
 	
 	useEffect(() => {
-		dispatch(getWidgets());
+		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
-	useEffect(() => {		
-		setLoading(false);
-		setData(widgets);
+	useEffect(() => {	
+		setData({ widgets });
 	}, [widgets]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
-	}
-
-	if (_.isEmpty(widgets)) {
-		return null;
 	}
 	
 	if (loading) {
@@ -156,7 +157,7 @@ function StaffMultiline(props) {
 					}													
 				</div> 
 			}
-			innerScroll
+			ref={pageLayout}
 		/>
 	);
 }
