@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
 	formControl: {
 		margin: theme.spacing(1),
         minWidth: 240,
-        maxWidth: 240
+        maxWidth: 280
 	},
 	selectEmpty: {
 		marginTop: theme.spacing(2)
@@ -81,6 +81,13 @@ const data = {
 			{ item: 'Policies', value: 'Policies' },
 			{ item: 'Premium', value: 'Premium' },
 			{ item: 'Bonuses', value: 'Bonuses' },			
+		],
+	},
+	bonus: {
+		label: "Include Initial Bonus?",
+		list: [
+			{ item: 'Include Initial Bonus in Calculation', value: 'Include Initial Bonus in Calculation' },
+			{ item: 'Do not Include Initial Bonus', value: 'Do not Include Initial Bonus' },
 		],
 	}
 }

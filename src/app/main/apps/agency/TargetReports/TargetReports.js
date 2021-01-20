@@ -20,7 +20,7 @@ import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
-import { autoAndFireHeader, lifeAndHealthHeader, bankHeader } from '../Headers';
+import { Agency_TargetReports_Table } from '../Headers';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -30,20 +30,20 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function PoliciesAndBank(props) {
+function TargetReports(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
 	const users = useSelector(selectUsers);
 	const widgets = useSelector(selectWidgets);
-	const production = useSelector(({ producerApp }) => producerApp.products.production);
-	const period = useSelector(({ producerApp }) => producerApp.products.period);	
-	const report = useSelector(({ producerApp }) => producerApp.products.report);
-	const user = useSelector(({ producerApp }) => producerApp.products.user);
+	const production = useSelector(({ agencyApp }) => agencyApp.products.production);
+	const period = useSelector(({ agencyApp }) => agencyApp.products.period);	
+	const report = useSelector(({ agencyApp }) => agencyApp.products.report);
+	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [tabValue, setTabValue] = useState(0);
-	const [title, setTitle] = useState('Policies & Bank');
+	const [title, setTitle] = useState('Target Reports');
 	
 	useEffect(() => {
 		dispatch(getWidgets()).then(() => setLoading(false));
@@ -85,90 +85,19 @@ function PoliciesAndBank(props) {
 					<div className="flex flex-1 items-center justify-center px-12 w-40">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
-								value={period}
-								onChange={ev => dispatch(setPeriod(ev))}
-								type="period"
+								value={user}
+								onChange={ev => dispatch(setUser(ev))}
+								type="users"
 							/>
 						</FuseAnimate>
-					</div>
-					<div className="flex flex-1 items-center justify-center px-12">
-						<FuseAnimate animation="transition.slideUpIn" delay={300}>
-							<SelectBox
-								value={production}
-								onChange={ev => dispatch(setProduction(ev))}
-								type="production"
-							/>
-						</FuseAnimate>
-					</div>
+					</div>					
 				</Header>
-			}
-			contentToolbar={
-				<Tabs
-					value={tabValue}
-					onChange={handleChangeTab}
-					indicatorColor="primary"
-					textColor="primary"
-					variant="scrollable"
-					scrollButtons="auto"
-					classes={{ root: 'w-full h-64' }}
-				>
-					<Tab className="h-64 normal-case" label="POLICIES" />
-					<Tab className="h-64 normal-case" label="PREMIUM" />
-					<Tab className="h-64 normal-case" label="AVERAGES" />
-					<Tab className="h-64 normal-case" label="BANK" />					
-				</Tabs>
 			}
 			content={
 				<div className="w-full">					
-					{tabValue === 0 && 
-						<div>
-							<div className='pb-24'>
-								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
-							</div>	
-							<div className='pb-24'>
-								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
-							</div>
-							<div className='pb-24'>
-								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
-							</div>							
-						</div>
-					}				
-					{tabValue === 1 && 
-						<div>
-							<div className='pb-24'>
-								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
-							</div>	
-							<div className='pb-24'>
-								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
-							</div>
-							<div className='pb-24'>
-								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
-							</div>	
-						</div>
-					}			
-					{tabValue === 2 && 
-						<div>
-							<div className='pb-24'>
-								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
-							</div>	
-							<div className='pb-24'>
-								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
-							</div>
-							<div className='pb-24'>
-								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
-							</div>	
-						</div>
-					}	
-					{tabValue === 3 && 
-						<div>							
-							<div className='pb-24'>
-								<Table header={bankHeader} widget={widgets.Producer_PoliciesAndBank_Bank_Table} entries fires lifes healthes />
-							</div>
-							<div className='pb-24'>
-								<Chart widget={widgets.Producer_PolicesAndBank_Bank_Chart} />
-							</div>	
-						</div>
-					}						
+					<div className='pb-24'>
+						<Table header={Agency_TargetReports_Table} widget={data.widgets.Agency_TargetReports_Table} entries fires lifes healthes />
+					</div>
 				</div>
 			}
 			ref={pageLayout}
@@ -176,4 +105,4 @@ function PoliciesAndBank(props) {
 	);
 }
 
-export default withReducer('producerApp', reducer)(PoliciesAndBank);
+export default withReducer('agencyApp', reducer)(TargetReports);

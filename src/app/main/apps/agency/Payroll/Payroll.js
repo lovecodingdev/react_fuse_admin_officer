@@ -85,40 +85,18 @@ function Payroll(props) {
 					<div className="flex flex-1 items-center justify-center px-12 w-40">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
-								value={period}
-								onChange={ev => dispatch(setPeriod(ev))}
-								type="period"
+								value={user}
+								onChange={ev => dispatch(setUser(ev))}
+								type="users"
 							/>
 						</FuseAnimate>
-					</div>
-					<div className="flex flex-1 items-center justify-center px-12">
-						<FuseAnimate animation="transition.slideUpIn" delay={300}>
-							<SelectBox
-								value={production}
-								onChange={ev => dispatch(setProduction(ev))}
-								type="production"
-							/>
-						</FuseAnimate>
-					</div>
+					</div>					
 				</Header>
 			}
 			content={
-				<div className="p-12">
+				<div className="w-full">
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-2/3 p-12">
-							<Table header={agencyGoalsHeader} leftHeader={data.users} widget={widgets.Producer_GoalsAndActual_AgencyGoals_Table} entries fires lifes healthes />
-						</div>
-						<div className="widget flex w-1/3 p-12">
-							<Chart widget={data.widgets.Producer_GoalsAndActual_SalesGoals_Chart} />
-						</div>
-					</FuseAnimateGroup>
-					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-2/3 p-12">
-							<Table header={otherActivitiesHeader} leftHeader={data.users} widget={widgets.Producer_GoalsAndActual_OtherActivities_Table} entries fires lifes healthes />
-						</div>
-						<div className="widget flex w-1/3 p-12">
-							<Chart widget={data.widgets.Producer_GoalsAndActual_ActivityGoals_Chart} />
-						</div>
+						<Table header={agencyGoalsHeader} leftHeader={data.users} widget={widgets.Agency_Payroll_Table} entries fires lifes healthes />
 					</FuseAnimateGroup>
 				</div>
 				
