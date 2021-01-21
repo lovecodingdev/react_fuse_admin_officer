@@ -7,6 +7,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import ContactDialog from './BonusPlanDialog';
 import TargetBonusPlanDialog from './TargetBonusPlanDialog';
 import TeamTargetBonusPlanDialog from './TeamTargetBonusPlanDialog';
+import NetBonusDialog from './NetBonusPlanDialog';
 import ContactsHeader from './BonusPlanHeader';
 import ContactsList from './BonusPlanList';
 import reducer from './store';
@@ -20,7 +21,7 @@ function BonusPlanApp(props) {
 	const routeParams = useParams();
 
 	useDeepCompareEffect(() => {
-		dispatch(getAutoBonus(routeParams));
+		dispatch(getAutoBonus(routeParams.id));
 		dispatch(getUserData());
 	}, [dispatch, routeParams]);
 
@@ -40,9 +41,10 @@ function BonusPlanApp(props) {
 				ref={pageLayout}
 				innerScroll
 			/>
-			<ContactDialog />
-			<TargetBonusPlanDialog />
-			<TeamTargetBonusPlanDialog />
+			<ContactDialog routeParam={routeParams.id}/>
+			<TargetBonusPlanDialog routeParam={routeParams.id}/>
+			<TeamTargetBonusPlanDialog routeParam={routeParams.id}/>
+			<NetBonusDialog routeParam={routeParams.id}/>
 		</>
 	);
 }

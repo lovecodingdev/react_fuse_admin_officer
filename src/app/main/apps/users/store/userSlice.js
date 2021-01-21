@@ -2,47 +2,45 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
-export const getFires = createAsyncThunk(
-	'eCommerceApp/fireEntries/getProducts',
+export const getUsers = createAsyncThunk(
+	'users/users/getUsers',
 	() =>
-	
 		new Promise((resolve, reject) => {
-			const uid = localStorage.getItem('@UID')
-			var starCountRef = realDb.ref(`EnterSales/FireEntries/${uid}`);
-			var entries = [];
+			var starCountRef = realDb.ref(`users/`);
+			var users = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
 
 				if (data) {
 					Object.keys(data).map(item => {
-						entries.push(data[item]);
-					});
+						users.push(data[item]);
+					});					
 				}
-				console.log(entries)
-				resolve(entries);
+				resolve(users);
 			});
 		})
 );
 
-export const saveProduct = createAsyncThunk('eCommerceApp/fireEntry/saveProduct', async (product, { dispatch, getState }) => {
+export const saveProduct = createAsyncThunk('users/users/saveUser', async (product, { dispatch, getState }) => {
 
-	const response = await axios.post('/api/fire-entry/product/save', product);
+	const response = await axios.post('/api/users/save', product);
 	const data = await response.data;
-	dispatch(getFires());
+	dispatch(getUsers());
 	return data;
 });
 
 export const removeProducts = createAsyncThunk(
-	'eCommerceApp/fireEntries/removeProducts',
+	'users/users/removeUser',
 	async (productIds, { dispatch, getState }) => {
-		const response = await axios.post('/api/fire-entry/remove-products', { productIds });
+		const response = await axios.post('/api/users/remove-users', { productIds });
 		const data = await response.data;
+		const uid = localStorage.getItem('@UID')
 		productIds.map(item => {
-			var starCountRef = realDb.ref(`EnterSales/FireEntries/${item}`);
+			var starCountRef = realDb.ref(`Users/`);
 			starCountRef.remove();
 		});
 
-		dispatch(getFires());
+		dispatch(getUsers());
 
 		return data;
 	}
@@ -50,12 +48,12 @@ export const removeProducts = createAsyncThunk(
 
 const productsAdapter = createEntityAdapter({});
 
-export const { selectAll: selectFires, selectById: selectProductById } = productsAdapter.getSelectors(
-	state => state.eCommerceApp.fireEntries
+export const { selectAll: selectUsers, selectById: selectUserById } = productsAdapter.getSelectors(
+	state => state.users.users
 );
 
 const productsSlice = createSlice({
-	name: 'eCommerceApp/fireEntries',
+	name: 'users/users',
 	initialState: productsAdapter.getInitialState({
 		searchText: ''
 	}),
@@ -68,7 +66,7 @@ const productsSlice = createSlice({
 		}
 	},
 	extraReducers: {
-		[getFires.fulfilled]: productsAdapter.setAll
+		[getUsers.fulfilled]: productsAdapter.setAll
 	}
 });
 
