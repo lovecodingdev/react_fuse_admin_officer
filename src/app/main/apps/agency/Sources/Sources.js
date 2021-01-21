@@ -75,16 +75,16 @@ function Sources(props) {
 	}
 
 	return (
-		<FusePageSimple
+		<FusePageCarded
 			classes={{
-				header: 'min-h-80 h-80',
-				rightSidebar: 'w-288',
-				content: classes.content,
+				content: 'flex',
+				contentCard: 'overflow-hidden',
+				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
 				<Header title={title}>
 					{tabValue === 0 &&
-						<div className="flex flex-1 items-center justify-center px-12 w-40">
+						<div className="flex flex-1 items-center justify-center px-12">
 							<FuseAnimate animation="transition.slideUpIn" delay={300}>
 								<SelectBox
 									value={period}
@@ -95,7 +95,7 @@ function Sources(props) {
 						</div>	
 					}	
 					{tabValue === 1 &&
-						<div className="flex flex-1 items-center justify-center px-12 w-40">
+						<div className="flex flex-1 items-center justify-center px-12">
 							<FuseAnimate animation="transition.slideUpIn" delay={300}>
 								<SelectBox
 									value={product}
@@ -131,7 +131,7 @@ function Sources(props) {
 				</Tabs>
 			}
 			content={
-				<div className="p-12">
+				<div className="w-full p-12">
 					{tabValue === 0 &&
 						<div>
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
@@ -165,7 +165,7 @@ function Sources(props) {
 				
 			}
 			// innerScroll
-			ref={pageLayout}
+			innerScroll
 		/>
 	);
 }

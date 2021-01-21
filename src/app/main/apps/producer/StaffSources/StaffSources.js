@@ -74,11 +74,11 @@ function StaffSources(props) {
 	}
 
 	return (
-		<FusePageSimple
+		<FusePageCarded
 			classes={{
-				header: 'min-h-80 h-80',
-				rightSidebar: 'w-288',
-				content: classes.content,
+				content: 'flex',
+				contentCard: 'overflow-hidden',
+				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
 				<Header title={title}>
@@ -130,7 +130,7 @@ function StaffSources(props) {
 				</Tabs>
 			}
 			content={
-				<div className="p-12">
+				<div className="w-full p-12">
 					{tabValue === 0 &&
 						<div>
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
@@ -180,8 +180,7 @@ function StaffSources(props) {
 				</div>
 				
 			}
-			// innerScroll
-			ref={pageLayout}
+			innerScroll
 		/>
 	);
 }

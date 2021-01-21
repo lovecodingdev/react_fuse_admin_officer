@@ -74,15 +74,15 @@ function StaffMultiline(props) {
 	}
 
 	return (
-		<FusePageSimple
+		<FusePageCarded
 			classes={{
-				header: 'min-h-80 h-80',
-				rightSidebar: 'w-288',
-				content: classes.content,
+				content: 'flex',
+				contentCard: 'overflow-hidden',
+				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
 				<Header title={title}>
-					<div className="flex flex-1 items-center justify-center px-12 w-40">
+					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
 								value={period}
@@ -128,36 +128,36 @@ function StaffMultiline(props) {
 				</Tabs>
 			}
 			content={
-				<div className="w-full">					
+				<div className="w-full p-12">					
 					{tabValue === 0 && 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={Producer_StaffMultiline_Ratios_Table} widget={widgets.Producer_StaffMultiline_Ratios_Table} entries fires lifes healthes />
 							</div>	
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Chart widget={widgets.StaffMultiline_Ratios_Policies_Chart} />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Chart widget={widgets.StaffMultiline_Ratios_Producer_Chart} />
 							</div>							
 						</div>
 					}				
 					{tabValue === 1 && 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Chart widget={widgets.Producer_StaffMultiline_Summary_Chart_1} />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Chart widget={widgets.Producer_StaffMultiline_Summary_Chart_2} />
 							</div>	
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={Producer_StaffMultiline_Summary_Table} widget={widgets.Producer_StaffMultiline_Summary_Table} entries fires lifes healthes />
 							</div>	
 						</div>
 					}													
 				</div> 
 			}
-			ref={pageLayout}
+			innerScroll
 		/>
 	);
 }

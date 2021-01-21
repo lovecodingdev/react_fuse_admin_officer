@@ -79,11 +79,11 @@ function ProductLine(props) {
 	}
 
 	return (
-		<FusePageSimple
+		<FusePageCarded
 			classes={{
-				header: 'min-h-80 h-80',
-				rightSidebar: 'w-288',
-				content: classes.content,
+				content: 'flex',
+				contentCard: 'overflow-hidden',
+				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
 				<Header title={title}>
@@ -117,97 +117,97 @@ function ProductLine(props) {
 				</Tabs>
 			}
 			content={
-				<div className="w-full">					
+				<div className="w-full p-12">					
 					{tabValue === 0 && 					 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={autoHeader1} widget={data.widgets.Agency_ProductLine_Auto_Table_1} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={autoHeader2} widget={data.widgets.Agency_ProductLine_Auto_Table_2} entries fires lifes healthes />
 							</div>	
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={autoHeader3} widget={data.widgets.Agency_ProductLine_Auto_Table_3} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={autoHeader4} widget={data.widgets.Agency_ProductLine_Auto_Table_4} entries fires lifes healthes />
 							</div>
 						</div>
 					}				
 					{tabValue === 1 && 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={fireHeader1} widget={data.widgets.Agency_ProductLine_Auto_Table_1} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={fireHeader2} widget={data.widgets.Agency_ProductLine_Auto_Table_2} entries fires lifes healthes />
 							</div>	
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={fireHeader3} widget={data.widgets.Agency_ProductLine_Auto_Table_3} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={fireHeader4} widget={data.widgets.Agency_ProductLine_Auto_Table_4} entries fires lifes healthes />
 							</div>	
 						</div>
 					}			
 					{tabValue === 2 && 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={lifeHeader1} widget={data.widgets.ProductLine_Life_Table_1} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={lifeHeader2} widget={data.widgets.ProductLine_Life_Table_2} entries fires lifes healthes />
 							</div>	
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={lifeHeader3} widget={data.widgets.Agency_ProductLine_Auto_Table_3} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={lifeHeader4} widget={data.widgets.Agency_ProductLine_Auto_Table_4} entries fires lifes healthes />
 							</div>
 						</div>
 					}	
 					{tabValue === 3 && 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={healthHeader1} widget={data.widgets.ProductLine_Life_Table_1} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={healthHeader2} widget={data.widgets.ProductLine_Life_Table_2} entries fires lifes healthes />
 							</div>	
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={healthHeader3} widget={data.widgets.Agency_ProductLine_Auto_Table_3} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={healthHeader4} widget={data.widgets.Agency_ProductLine_Auto_Table_4} entries fires lifes healthes />
 							</div>	
 						</div>
 					}	
 					{tabValue === 4 && 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={bankHeader1} widget={data.widgets.ProductLine_Bank_Table_1} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={bankHeader2} widget={data.widgets.ProductLine_Bank_Table_2} entries fires lifes healthes />
 							</div>	
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={bankHeader3} widget={data.widgets.ProductLine_Bank_Table_3} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={bankHeader4} widget={data.widgets.ProductLine_Bank_Table_4} entries fires lifes healthes />
 							</div>	
 						</div>
 					}	
 					{tabValue === 5 && 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={otherHeader} widget={data.widgets.ProductLine_Other_Table} entries fires lifes healthes />
 							</div>
 						</div>
 					}	
 				</div>
 			}
-			ref={pageLayout}
+			innerScroll
 		/>
 	);
 }

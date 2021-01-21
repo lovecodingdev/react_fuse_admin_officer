@@ -74,15 +74,15 @@ function PoliciesAndBank(props) {
 	}
 
 	return (
-		<FusePageSimple
+		<FusePageCarded
 			classes={{
-				header: 'min-h-80 h-80',
-				rightSidebar: 'w-288',
-				content: classes.content,
+				content: 'flex',
+				contentCard: 'overflow-hidden',
+				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
 				<Header title={title}>
-					<div className="flex flex-1 items-center justify-center px-12 w-40">
+					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
 								value={period}
@@ -119,59 +119,59 @@ function PoliciesAndBank(props) {
 				</Tabs>
 			}
 			content={
-				<div className="w-full">					
+				<div className="w-full p-12">					
 					{tabValue === 0 && 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
 							</div>	
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
 							</div>							
 						</div>
 					}				
 					{tabValue === 1 && 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
 							</div>	
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
 							</div>	
 						</div>
 					}			
 					{tabValue === 2 && 
 						<div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={autoAndFireHeader} widget={widgets.Producer_PoliciesAndBank_AutoAndFire_Table} entries fires lifes healthes />
 							</div>	
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={lifeAndHealthHeader} widget={widgets.Producer_PoliciesAndBank_LifeAndHealth_Table} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Chart widget={widgets.Producer_PolicesAndBank_Premium_Chart} />
 							</div>	
 						</div>
 					}	
 					{tabValue === 3 && 
 						<div>							
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Table header={bankHeader} widget={widgets.Producer_PoliciesAndBank_Bank_Table} entries fires lifes healthes />
 							</div>
-							<div className='pb-24'>
+							<div className='p-12'>
 								<Chart widget={widgets.Producer_PolicesAndBank_Bank_Chart} />
 							</div>	
 						</div>
 					}						
 				</div>
 			}
-			ref={pageLayout}
+			innerScroll
 		/>
 	);
 }
