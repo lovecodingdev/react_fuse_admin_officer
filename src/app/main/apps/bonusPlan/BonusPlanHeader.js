@@ -9,12 +9,27 @@ import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setContactsSearchText } from './store/bonusPlanSlice';
+import { getUserData } from './store/userSlice';
 
 function ContactsHeader(props) {
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ bonusPlan }) => bonusPlan.autoBonus.searchText);
 	const mainTheme = useSelector(selectMainTheme);
+	const user = useSelector(({bonusPlan})=> bonusPlan.user)
+	const [name, setName] = React.useState("")
+	React.useEffect(()=>{
+		dispatch(getUserData(props.name))
+	},[])
+
+	React.useEffect(()=>{
+		if(user.length>0){
+			setName(user[0].data.displayName)
+		}
+		if (props.name==='all'){
+			setName("Team")
+		}
+		
+	},[user])
 
 	return (
 		<div className="flex flex-1 items-center justify-between p-4 sm:p-24">
@@ -36,7 +51,7 @@ function ContactsHeader(props) {
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">
-							Bonus Plan
+						{`${name} Bonus Plan`}
 						</Typography>
 					</FuseAnimate>
 				</div>

@@ -6,7 +6,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 
 function TextInput(props) {
-	const { id, label, variant, value, onChange, validation, type, willvalidation, validate } = props;
+	const { id, label, variant, value, onChange, validation, type, willvalidation, validate, size } = props;
 	function handleChange(event) {
 		
 		if(willvalidation){
@@ -33,7 +33,10 @@ function TextInput(props) {
             type={type==='percent'?"number":'text'}
             size="small"
             name={validation}
-			InputProps={{
+			InputProps={size?{
+				style:{width:size},
+				endAdornment: type === 'percent' ? <InputAdornment position="end">%</InputAdornment> : <></>
+			}:{
 				style:{width:120},
 				endAdornment: type === 'percent' ? <InputAdornment position="end">%</InputAdornment> : <></>
 			}}

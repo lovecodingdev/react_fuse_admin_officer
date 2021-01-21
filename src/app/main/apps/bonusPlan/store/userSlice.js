@@ -1,11 +1,30 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import {realDb} from '../../../../../@fake-db/db/firebase'
 
-export const getUserData = createAsyncThunk('bonusPlan/user/getUserData', async () => {
-	const response = await axios.get('/api/bonus-plan/user');
-	const data = await response.data;
-	return data;
-});
+export const getUserData = createAsyncThunk('bonusPlan/user/getUserData', (uid, { getState }) =>
+	
+new Promise((resolve, reject) => {
+
+	var starCountRef = realDb.ref(`users/${uid}/`);
+	var bonusPlans = [];
+	starCountRef.on('value', snapshot => {
+		const data = snapshot.val();
+		console.log(`users/${uid}/`)
+		if (data) {
+			Object.keys(data).map(item => {
+				bonusPlans.push(data[item]);
+			});
+		}
+
+		if(data){
+			resolve([data])
+		} else {
+			resolve([]);
+		}
+		
+	});
+}));
 
 const userSlice = createSlice({
 	name: 'bonusPlan/user',
