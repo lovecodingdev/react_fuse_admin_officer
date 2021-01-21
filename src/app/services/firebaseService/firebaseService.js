@@ -50,7 +50,7 @@ class FirebaseService {
 		if (!firebase.apps.length) {
 			return false;
 		}
-		console.log(user)
+
 		localStorage.setItem("@UID", user.uid)
 		return realDb.ref(`admins/${user.uid}`).set(user);
 	};

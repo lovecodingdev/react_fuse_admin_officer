@@ -11,9 +11,11 @@ export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts',
 	// const data = await response.data;
 
 	// return { data, routeParams };
-	(routeParams, { getState }) =>
+	(routeParam, { getState }) =>
+	
 		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`BonusPlan/`);
+			console.log("-----------------------------------------------", routeParam)
+			var starCountRef = realDb.ref(`BonusPlan/${routeParam}`);
 			var bonusPlans = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
@@ -23,7 +25,7 @@ export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts',
 						bonusPlans.push(data[item]);
 					});
 				}
-				console.log(data)
+	
 				if(data){
 					resolve([data])
 				} else {
@@ -37,10 +39,11 @@ export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts',
 export const addContact = createAsyncThunk(
 	'bonusPlan/autoBonus/addContact',
 	async (contact, { dispatch, getState }) => {
+		console.log(contact, contact.routeParam )
 		const response = await axios.post('/api/bonus-plan/add-contact', { contact });
 		const data = await response.data;
-
-		dispatch(getAutoBonus());
+		
+		dispatch(getAutoBonus(contact.routeParam));
 
 		return data;
 	}
@@ -49,10 +52,11 @@ export const addContact = createAsyncThunk(
 export const updateContact = createAsyncThunk(
 	'bonusPlan/autoBonus/updateContact',
 	async (contact, { dispatch, getState }) => {
-		const response = await axios.post('/api/bonus-plan/update-contact', { contact });
+		
+		const response = await axios.post('/api/bonus-plan/update-contact', { contact});
 		const data = await response.data;
 
-		dispatch(getAutoBonus());
+		dispatch(getAutoBonus(contact.routeParam));
 
 		return data;
 	}
@@ -65,8 +69,8 @@ export const removeContact = createAsyncThunk(
 		const response = await axios.post('/api/bonus-plan/remove-contact', { contact });
 		const data = await response.data;
 		
-		realDb.ref(`BonusPlan/${contact.planType}/${contact.id}`).remove();
-		dispatch(getAutoBonus());
+		realDb.ref(`BonusPlan/${contact.routeParam}/${contact.planType}/${contact.id}`).remove();
+		dispatch(getAutoBonus(contact.routeParam));
 
 		return data;
 	}

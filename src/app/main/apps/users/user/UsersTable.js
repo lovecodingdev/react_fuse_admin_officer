@@ -12,7 +12,7 @@ import { withRouter } from 'react-router-dom';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import { getUsers, selectUsers, saveProduct } from '../store/userSlice';
-import ProductsTableHead from './ProductsTableHead';
+import ProductsTableHead from './UsersTableHead';
 import TextInput from '../../../components/TextField';
 import FormattedInput from '../../../components/PriceInput';
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,34 +31,9 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const productLists = [
-	{ item: 'Personally Produced', value: 'Personally Produced' },
-	{ item: 'Raw New', value: 'Raw New' },
-	{ item: 'Add On', value: 'Add On' },
-	{ item: 'Transfer In', value: 'Transfer In' }
-];
-
-const sourceLists = [
-	{ item: 'Center of Influence', value: 'Center of Influence' },
-	{ item: 'Client Request', value: 'Client Request' },
-	{ item: 'Direct Mail Letter', value: 'Direct Mail Letter' },
-	{ item: 'Internet Lead >>', value: 'Internet Lead >>' },
-	{ item: 'Multiline Review', value: 'Multiline Review' },
-	{ item: 'Networking Meeting', value: 'Networking Meeting' },
-	{ item: 'News Ad', value: 'News Ad' },
-	{ item: 'Park Bench', value: 'Park Bench' },
-	{ item: 'Personal Visit', value: 'Personal Visit' },
-	{ item: 'Postcard', value: 'Postcard' },
-	{ item: 'Referral', value: 'Referral ' },
-	{ item: 'Salesperson Pivot', value: 'Salesperson Pivot' },
-	{ item: 'Sign', value: 'Sign' },
-	{ item: 'Television', value: 'Television' },
-	{ item: 'Transfer', value: 'Transfer' },
-	{ item: 'Walk-In', value: 'Walk-In' },
-	{ item: 'Website', value: 'Website' },
-	{ item: 'Web Search', value: 'Web Search' },
-	{ item: 'Yellow Pages', value: 'Yellow Pages' },
-	{ item: 'Other', value: 'Other' }
+const teamBonusList = [
+	{ item: 'Yes', value: true },
+	{ item: 'No', value: false }
 ];
 
 function makeid(length) {
@@ -75,12 +50,12 @@ function ProductsTable(props) {
 	const dispatch = useDispatch();
 	const products = useSelector(selectUsers);
 	const searchText = useSelector(({ users }) => users.users.searchText);
-	const isAdmin = localStorage.getItem("@ISADMIN")
+	const isAdmin = localStorage.getItem('@ISADMIN');
 	const classes = useStyles();
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(products);
-	console.log(products)
+	console.log(products);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -88,19 +63,7 @@ function ProductsTable(props) {
 		id: null
 	});
 	const [state, setState] = React.useState({
-		policyHolderName: '',
-		policyInformation: '',
-		datePolicyIsWritten: new Date(),
-		datePolicyIsIssued: null,
-		percentOfSaleCredit: '',
-		typeOfProduct: '',
-		policyPremium: '',
-		sourceOfBusiness: '',
-		adjustments: '',
-		dollarBonus: '',
-		percentOfSaleCreditValidation: false,
-		typeOfProductValidation: false,
-		policyPremiumValidation: false
+		includeTeamBonus: ''
 	});
 
 	useEffect(() => {
@@ -108,9 +71,9 @@ function ProductsTable(props) {
 	}, [dispatch]);
 
 	useEffect(() => {
-		if (searchText.length !== 0) {
-			console.log(searchText);
-			setData(_.filter(products, item => item.policyHolderName.toLowerCase().includes(searchText.toLowerCase())));
+		if (searchText.length !== 0 ) {
+			
+			setData(_.filter(products, item => item.data.displayName.toLowerCase().includes(searchText.toLowerCase())));
 			setPage(0);
 		} else {
 			setData(products);
@@ -141,6 +104,7 @@ function ProductsTable(props) {
 
 	function handleDeselect() {
 		setSelected([]);
+
 	}
 
 	function handleCheck(event, id) {
@@ -199,12 +163,8 @@ function ProductsTable(props) {
 				id: state.id ? state.id : makeid(20),
 				policyHolderName: state.policyHolderName,
 				policyInformation: state.policyInformation,
-				datePolicyIsWritten: state.datePolicyIsWritten
-					? state.datePolicyIsWritten
-					: '',
-				datePolicyIsIssued: state.datePolicyIsIssued
-					? state.datePolicyIsIssued
-					: '',
+				datePolicyIsWritten: state.datePolicyIsWritten ? state.datePolicyIsWritten : '',
+				datePolicyIsIssued: state.datePolicyIsIssued ? state.datePolicyIsIssued : '',
 				percentOfSaleCredit: parseFloat(state.percentOfSaleCredit),
 				typeOfProduct: state.typeOfProduct,
 				policyPremium: parseFloat(state.policyPremium),
@@ -285,6 +245,11 @@ function ProductsTable(props) {
 		// props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
 	}
 
+	function goBonusPlan(uid) {
+		setLoading(true)
+		props.history.push(`/apps/setup/bonus-plan/${uid}`);		
+	}
+
 	if (loading) {
 		return <FuseLoading />;
 	}
@@ -302,7 +267,7 @@ function ProductsTable(props) {
 								onRequestSort={handleRequestSort}
 								rowCount={data.length}
 								onMenuItemClick={handleDeselect}
-							/>							
+							/>
 						</Table>
 					</FuseScrollbars>
 				</MuiPickersUtilsProvider>
@@ -324,20 +289,10 @@ function ProductsTable(props) {
 							onMenuItemClick={handleDeselect}
 						/>
 
-						<TableBody>					
-							
-
-							{_.orderBy(
-								data,
-								[
-									
-									order.id
-							
-								],
-								[order.direction]
-							)
+						<TableBody>
+							{_.orderBy(data, [order.id], [order.direction])
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map(n => {
+								.map((n, index) => {
 									const isSelected = selected.indexOf(n.id) !== -1;
 									return (
 										<TableRow
@@ -346,7 +301,7 @@ function ProductsTable(props) {
 											role="checkbox"
 											aria-checked={isSelected}
 											tabIndex={-1}
-											key={n.id}
+											key={index}
 											selected={isSelected}
 											onClick={event => handleClick(n)}
 										>
@@ -359,7 +314,7 @@ function ProductsTable(props) {
 											</TableCell>
 
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.policyHolderName}
+												{n.data.displayName}
 											</TableCell>
 
 											<TableCell
@@ -368,40 +323,34 @@ function ProductsTable(props) {
 												scope="row"
 												align="center"
 											>
-												{n.policyInformation}
+												<SelectBox
+													data={teamBonusList}
+													willvalidation={false}
+													validation="includeTeamBonus"
+													handleChangeValue={handleChangeValue}
+													// value={state.includeTeamBonus}
+												/>
 											</TableCell>
 
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{/* <span>$</span> */}
-												{moment(n.datePolicyIsWritten).format('MM/DD/YYYY')}
-											</TableCell>
-
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-										
-												{moment(n.datePolicyIsIssued).format('MM/DD/YYYY')}
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.percentOfSaleCredit}%
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.typeOfProduct}
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												${n.policyPremium}
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.sourceOfBusiness}
-											</TableCell>
-											{/* <TableCell
+											<TableCell
 												className="p-2 md:p-2"
 												component="th"
 												scope="row"
 												align="center"
+												onClick={()=>goBonusPlan(n.uid)}
 											>
-												{n.adjustments}
-											</TableCell> */}
-											<TableCell className="p-2 md:p-2 bg-indigo-200" component="th" scope="row" align="center">
-												{n.dollarBonus ? `$${n.dollarBonus}` : ''}
+												{/* <span>$</span> */}
+												Bonus Setup
+											</TableCell>
+
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+												<a href="http://localhost:3001/login/admin" target = "_blank" rel = "noopener noreferrer">Producer File</a>
+											</TableCell>
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+												{n.data.email}
+											</TableCell>
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+												{n.password}
 											</TableCell>
 										</TableRow>
 									);

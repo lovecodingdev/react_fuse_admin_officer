@@ -14,10 +14,8 @@ export const getUsers = createAsyncThunk(
 				if (data) {
 					Object.keys(data).map(item => {
 						users.push(data[item]);
-					});
-					
+					});					
 				}
-				console.log(users)
 				resolve(users);
 			});
 		})

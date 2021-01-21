@@ -79,9 +79,9 @@ function ContactDialog(props) {
 		event.preventDefault();
 
 		if (contactDialog.type === 'new') {
-			dispatch(addContact(form));
+			dispatch(addContact({...form, routeParam: props.routeParam}));
 		} else {
-			dispatch(updateContact(form));
+			dispatch(updateContact({...form, routeParam: props.routeParam}));
 		}
 		closeComposeDialog();
 	}

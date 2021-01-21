@@ -9,7 +9,7 @@ const ECommerceAppConfig = {
 		
 		{
 			path: '/apps/setup/users',
-			component: React.lazy(() => import('./user/Products'))
+			component: React.lazy(() => import('./user/Users'))
 		}	
 	
 		

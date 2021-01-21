@@ -18,86 +18,49 @@ import { useDispatch } from 'react-redux';
 import { removeProducts } from '../store/userSlice';
 
 const rows = [
-
 	{
-		id: 'policyHolderName',
+		id: 'name',
 		align: 'center',
 		disablePadding: false,
-		label: ' Policyholder Name',
+		label: 'User Name',
 		sort: true
 	},
 	{
-		id: 'policyInformation',
+		id: 'includeTeamBonus',
 		align: 'center',
 		disablePadding: false,
-		label: 'Policy Information (i.e. Vehicle Type)',
+		label: 'Include Team Bonuses?',
 		sort: true
 	},
 	{
-		id: 'datePolicyIsWritten',
+		id: 'bonusPlanForProducer',
 		align: 'center',
 		disablePadding: false,
-		label: 'Date Policy Is Written',
+		label: 'Bonus Plan For a Producer',
 		sort: true
 	},
 	{
-		id: 'datePolicyIsIssued',
+		id: 'producerFile',
 		align: 'center',
 		disablePadding: false,
-		label: 'Date Policy Is Issued',
+		label: 'Producer File',
 		sort: true
 	},
 	{
-		id: 'percentOfSaleCredit',
+		id: 'email',
 		align: 'center',
 		disablePadding: false,
-		label: 'Percent of Sale Credit',
+		label: 'Email',
 		sort: true
 	},
 	{
-		id: 'typeOfProduct',
+		id: 'password',
 		align: 'center',
 		disablePadding: false,
-		label: 'Type of Product',
-		sort: true
-	},
-	{
-		id: 'policyPremium',
-		align: 'center',
-		disablePadding: false,
-		label: 'Semi-Annual Policy Premium',
-		sort: true
-	},
-	{
-		id: 'sourceOfBusiness',
-		align: 'center',
-		disablePadding: false,
-		label: 'Source of Business',
-		sort: true
-	},
-	// {
-	// 	id: 'adjustments',
-	// 	align: 'right',
-	// 	disablePadding: false,
-	// 	label: 'Adjustments',
-	// 	sort: true
-	// },
-	{
-		id: 'dollarBonus',
-		align: 'center',
-		disablePadding: false,
-		label: 'Dollar Bonus',
+		label: 'Password',
 		sort: true
 	}
 ];
-
-
-
-
-
-
-
-
 
 const useStyles = makeStyles(theme => ({
 	actionsButtonWrapper: {
@@ -135,43 +98,7 @@ function ProductsTableHead(props) {
 						checked={props.rowCount !== 0 && numSelected === props.rowCount}
 						onChange={props.onSelectAllClick}
 					/>
-					{numSelected > 0 && (
-						<div
-							className={clsx(
-								'flex items-center justify-center absolute w-64 top-0 ltr:left-0 rtl:right-0 mx-56 h-64 z-10 border-b-1',
-								classes.actionsButtonWrapper
-							)}
-						>
-							<IconButton
-								aria-owns={selectedProductsMenu ? 'selectedProductsMenu' : null}
-								aria-haspopup="true"
-								onClick={openSelectedProductsMenu}
-							>
-								<Icon>more_horiz</Icon>
-							</IconButton>
-							<Menu
-								id="selectedProductsMenu"
-								anchorEl={selectedProductsMenu}
-								open={Boolean(selectedProductsMenu)}
-								onClose={closeSelectedProductsMenu}
-							>
-								<MenuList>
-									<MenuItem
-										onClick={() => {
-											dispatch(removeProducts(selectedProductIds));
-											props.onMenuItemClick();
-											closeSelectedProductsMenu();
-										}}
-									>
-										<ListItemIcon className="min-w-40">
-											<Icon>delete</Icon>
-										</ListItemIcon>
-										<ListItemText primary="Remove" />
-									</MenuItem>
-								</MenuList>
-							</Menu>
-						</div>
-					)}
+					
 				</TableCell>
 				{rows.map(row => {
 					return (
@@ -182,21 +109,13 @@ function ProductsTableHead(props) {
 							padding={row.disablePadding ? 'none' : 'default'}
 							sortDirection={props.order.id === row.id ? props.order.direction : false}
 						>
-							{row.sort && (
-								<Tooltip
-									title="Sort"
-									placement={row.align === 'right' ? 'bottom-end' : 'bottom-start'}
-									enterDelay={300}
-								>
-									<TableSortLabel
-										active={props.order.id === row.id}
-										direction={props.order.direction}
-										onClick={createSortHandler(row.id)}
-									>
-										{row.label}
-									</TableSortLabel>
-								</Tooltip>
-							)}
+							{/* <TableSortLabel
+								active={props.order.id === row.id}
+								direction={props.order.direction}
+								onClick={createSortHandler(row.id)}
+							> */}
+								{row.label}
+							{/* </TableSortLabel> */}
 						</TableCell>
 					);
 				}, this)}

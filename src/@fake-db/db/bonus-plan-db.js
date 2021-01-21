@@ -111,7 +111,7 @@ mock.onPost('/api/bonus-plan/add-contact').reply(request => {
 		percent: contact.percent?parseFloat(contact.percent):'',
 		id: Date.now()
 	};
-	realDb.ref(`BonusPlan/${contact.planType}/${newContact.id}`).set({
+	realDb.ref(`BonusPlan/${contact.routeParam}/${contact.planType}/${newContact.id}`).set({
 		...newContact
 	});
 	contactsDB.contacts = [...contactsDB.contacts, newContact];
@@ -128,7 +128,7 @@ mock.onPost('/api/bonus-plan/update-contact').reply(request => {
 		return _contact;
 	});
 
-	realDb.ref(`BonusPlan/${contact.planType}/${contact.id}`).set({
+	realDb.ref(`BonusPlan/${contact.routeParam}/${contact.planType}/${contact.id}`).set({
 		...contact
 	});
 

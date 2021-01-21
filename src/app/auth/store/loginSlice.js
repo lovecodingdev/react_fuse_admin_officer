@@ -37,7 +37,7 @@ export const submitLoginWithFireBase = ({ username, password }) => async dispatc
 					email:user.user.email
 				})
 			);
-			console.log(user)
+		
 			return dispatch(loginSuccess());
 		})
 		.catch(error => {

@@ -21,7 +21,7 @@ function BonusPlanApp(props) {
 	const routeParams = useParams();
 
 	useDeepCompareEffect(() => {
-		dispatch(getAutoBonus(routeParams));
+		dispatch(getAutoBonus(routeParams.id));
 		dispatch(getUserData());
 	}, [dispatch, routeParams]);
 
@@ -41,10 +41,10 @@ function BonusPlanApp(props) {
 				ref={pageLayout}
 				innerScroll
 			/>
-			<ContactDialog />
-			<TargetBonusPlanDialog />
-			<TeamTargetBonusPlanDialog />
-			<NetBonusDialog />
+			<ContactDialog routeParam={routeParams.id}/>
+			<TargetBonusPlanDialog routeParam={routeParams.id}/>
+			<TeamTargetBonusPlanDialog routeParam={routeParams.id}/>
+			<NetBonusDialog routeParam={routeParams.id}/>
 		</>
 	);
 }

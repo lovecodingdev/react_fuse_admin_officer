@@ -18,7 +18,7 @@ export const getFires = createAsyncThunk(
 						entries.push(data[item]);
 					});
 				}
-
+				console.log(entries)
 				resolve(entries);
 			});
 		})
