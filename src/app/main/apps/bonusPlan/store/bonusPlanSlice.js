@@ -14,7 +14,7 @@ export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts',
 	(routeParam, { getState }) =>
 	
 		new Promise((resolve, reject) => {
-			console.log("-----------------------------------------------", routeParam)
+	
 			var starCountRef = realDb.ref(`BonusPlan/${routeParam}`);
 			var bonusPlans = [];
 			starCountRef.on('value', snapshot => {

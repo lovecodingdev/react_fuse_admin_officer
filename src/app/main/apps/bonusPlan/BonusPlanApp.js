@@ -22,7 +22,7 @@ function BonusPlanApp(props) {
 
 	useDeepCompareEffect(() => {
 		dispatch(getAutoBonus(routeParams.id));
-		dispatch(getUserData());
+		dispatch(getUserData(routeParams.id));
 	}, [dispatch, routeParams]);
 
 	return (
@@ -35,7 +35,7 @@ function BonusPlanApp(props) {
 					header: 'min-h-72 h-72 sm:h-136 sm:min-h-136',
 					wrapper: 'min-h-0'
 				}}
-				header={<ContactsHeader pageLayout={pageLayout} />}
+				header={<ContactsHeader pageLayout={pageLayout} name = {routeParams.id}/>}
 				content={<ContactsList />}
 				sidebarInner
 				ref={pageLayout}
