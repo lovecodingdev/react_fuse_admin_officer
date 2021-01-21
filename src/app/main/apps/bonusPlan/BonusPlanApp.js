@@ -7,6 +7,7 @@ import { useDeepCompareEffect } from '@fuse/hooks';
 import ContactDialog from './BonusPlanDialog';
 import TargetBonusPlanDialog from './TargetBonusPlanDialog';
 import TeamTargetBonusPlanDialog from './TeamTargetBonusPlanDialog';
+import NetBonusDialog from './NetBonusPlanDialog';
 import ContactsHeader from './BonusPlanHeader';
 import ContactsList from './BonusPlanList';
 import reducer from './store';
@@ -43,6 +44,7 @@ function BonusPlanApp(props) {
 			<ContactDialog />
 			<TargetBonusPlanDialog />
 			<TeamTargetBonusPlanDialog />
+			<NetBonusDialog />
 		</>
 	);
 }

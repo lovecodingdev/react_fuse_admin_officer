@@ -171,6 +171,13 @@ const contactsSlice = createSlice({
 				open: false
 			},
 			data: null
+		},
+		netBonusDialog: {
+			type: 'new',
+			props: {
+				open: false
+			},
+			data: null
 		}
 	}),
 	reducers: {
@@ -207,8 +214,26 @@ const contactsSlice = createSlice({
 				data: action.payload
 			};
 		},
+		openNewNetBonuseDialog: (state, action) => {
+			state.netBonusDialog = {
+				type: 'new',
+				props: {
+					open: true
+				},
+				data: action.payload
+			};
+		},
 		closeNewTargetBonusDialog: (state, action) => {
 			state.targetBonusDialog = {
+				type: 'new',
+				props: {
+					open: false
+				},
+				data: null
+			};
+		},
+		closeNewNetBonusDialog: (state, action) => {
+			state.netBonusDialog = {
 				type: 'new',
 				props: {
 					open: false
@@ -227,6 +252,15 @@ const contactsSlice = createSlice({
 		},
 		openEditTargetBonusDialog: (state, action) => {
 			state.targetBonusDialog = {
+				type: 'edit',
+				props: {
+					open: true
+				},
+				data: action.payload
+			};
+		},
+		openEditNetBonusDialog: (state, action) => {
+			state.netBonusDialog = {
 				type: 'edit',
 				props: {
 					open: true
@@ -263,6 +297,15 @@ const contactsSlice = createSlice({
 		},
 		closeEditContactDialog: (state, action) => {
 			state.contactDialog = {
+				type: 'edit',
+				props: {
+					open: false
+				},
+				data: null
+			};
+		},
+		closeEditNetBonusDialog: (state, action) => {
+			state.netBonusDialog = {
 				type: 'edit',
 				props: {
 					open: false
@@ -315,7 +358,11 @@ export const {
 	openNewTeamTargetBonusDialog,
 	closeNewTeamTargetBonusDialog,
 	openEditTeamTargetBonusDialog,
-	closeEditTeamTargetBonusDialog
+	closeEditTeamTargetBonusDialog,
+	openNewNetBonuseDialog,
+	closeNewNetBonusDialog,
+	openEditNetBonusDialog,
+	closeEditNetBonusDialog
 } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

@@ -132,13 +132,71 @@ const EnhancedTable = ({ columns, data, onRowClick, title, id }) => {
 											>
 												{cell.render('Cell').props.row.original.amount &&
 													index === 2 &&
-													id === 'teamAutoTargetBonus' &&
+													(id === 'teamAutoTargetBonus' ||
+														id === 'teamFireTargetBonus' ||
+														id === 'teamLifeTargetBonus' ||
+														id === 'teamHealthTargetBonus' ||
+														id === 'teamBankTargetBonus') &&
 													'$'}
+
+												{cell.render('Cell').props.row.original.amount &&
+													index === 1 &&
+													id === 'individualLifeTargetBonus' &&
+													'$'}
+												{cell.render('Cell').props.row.original.amount &&
+													index === 1 &&
+													id === 'individualHealthTargetBonus' &&
+													'$'}
+												{cell.render('Cell').props.row.original.amount &&
+													index === 1 &&
+													id === 'individualBankTargetBonus' &&
+													'$'}
+												{cell.render('Cell').props.row.original.amount &&
+													index === 1 &&
+													id === 'teamLifeTargetBonus' &&
+													'$'}
+												{cell.render('Cell').props.row.original.amount &&
+													index === 1 &&
+													id === 'teamHealthTargetBonus' &&
+													'$'}
+												{cell.render('Cell').props.row.original.amount &&
+													index === 1 &&
+													id === 'teamBankTargetBonus' &&
+													'$'}
+
+												{cell.render('Cell').props.row.original.percent &&
+													index === 1 &&
+													id === 'monthlyAgencyLapseAutoBonus' &&
+													'%'}
+												{cell.render('Cell').props.row.original.dollar &&
+													index === 2 &&
+													id === 'monthlyAgencyLapseAutoBonus' &&
+													'$'}
+
+												{cell.render('Cell').props.row.original.percent &&
+													index === 1 &&
+													id === 'monthlyAgencyLapseFireBonus' &&
+													'%'}
+												{cell.render('Cell').props.row.original.dollar &&
+													index === 2 &&
+													id === 'monthlyAgencyLapseFireBonus' &&
+													'$'}
+
+												{cell.render('Cell').props.row.original.dollar &&
+													index === 1 &&
+													(id === 'monthlyAutoNetGrowthBonus' ||
+														id === 'monthlyFireNetGrowthBonus' ||
+														id === 'otherActivityBonus') &&
+													'$'}
+
 												{cell.render('Cell')}
 												{cell.render('Cell').props.row.original.amount &&
 													index === 2 &&
 													(id === 'individualAutoTargetBonus' ||
-														id === 'individualFireTargetBonus') &&
+														id === 'individualFireTargetBonus' ||
+														id === 'individualLifeTargetBonus' ||
+														id === 'individualHealthTargetBonus' ||
+														id === 'individualBankTargetBonus') &&
 													'%'}
 											</TableCell>
 										);
@@ -149,7 +207,6 @@ const EnhancedTable = ({ columns, data, onRowClick, title, id }) => {
 					</TableBody>
 				</Table>
 			</TableContainer>
-
 		</div>
 	);
 };

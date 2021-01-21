@@ -13,7 +13,9 @@ import {
 	openNewTargetBonusDialog,
 	openEditTargetBonusDialog,
 	openNewTeamTargetBonusDialog,
-	openEditTeamTargetBonusDialog
+	openEditTeamTargetBonusDialog,
+	openNewNetBonuseDialog,
+	openEditNetBonusDialog
 } from './store/bonusPlanSlice';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import { openNewContactDialog } from './store/bonusPlanSlice';
@@ -44,7 +46,10 @@ function ContactsList(props) {
 		individualFireTargetBonus: [],
 		teamFireTargetBonus: [],
 		individualLifeTargetBonus: [],
+		teamLifeTargetBonus: [],
+		individualHealthTargetBonus: [],
 		teamHealthTargetBonus: [],
+		individualBankTargetBonus: [],
 		teamBankTargetBonus: [],
 		monthlyAgencyLapseAutoBonus: [],
 		monthlyAgencyLapseFireBonus: [],
@@ -377,8 +382,6 @@ function ContactsList(props) {
 		[dispatch, user.starred]
 	);
 
-
-
 	const individualFireTargetBonusColumns = React.useMemo(
 		() => [
 			{
@@ -411,6 +414,168 @@ function ContactsList(props) {
 							// className={classes.addButton}
 							size="small"
 							onClick={() => dispatch(openNewTargetBonusDialog('individualFireTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+	const individualLifeTargetBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Individual Life Target Bonus',
+				accessor: 'level',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Policies',
+				accessor: 'policies',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: '% of Auto & Fire Premium',
+				accessor: 'amount',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTargetBonusDialog('individualLifeTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+	const individualHealthTargetBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Individual Health Target Bonus',
+				accessor: 'level',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Policies',
+				accessor: 'policies',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: '% of Auto & Fire Premium',
+				accessor: 'amount',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTargetBonusDialog('individualHealthTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+	const individualBankTargetBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Individual Bank Target Bonus',
+				accessor: 'level',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Policies',
+				accessor: 'policies',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: '% of Auto & Fire Premium',
+				accessor: 'amount',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTargetBonusDialog('individualBankTargetBonus'))}
 						>
 							<Icon>add</Icon>
 						</Fab>
@@ -487,6 +652,479 @@ function ContactsList(props) {
 		[dispatch, user.starred]
 	);
 
+	const teamFireTargetBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Team Fire Target Bonus',
+				accessor: 'level',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Policies',
+				accessor: 'policies',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'FLAT $ Amount',
+				accessor: 'amount',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamFireTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+	const teamLifeTargetBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Team Life Target Bonus',
+				accessor: 'level',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Policies',
+				accessor: 'policies',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'FLAT $ Amount',
+				accessor: 'amount',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamLifeTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+	const teamHealthTargetBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Team Health Target Bonus',
+				accessor: 'level',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Policies',
+				accessor: 'policies',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'FLAT $ Amount',
+				accessor: 'amount',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamHealthTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+	const teamBankTargetBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Team Bank Target Bonus',
+				accessor: 'level',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Policies',
+				accessor: 'policies',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'FLAT $ Amount',
+				accessor: 'amount',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamBankTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+	const monthlyAgencyLapseAutoBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Lapse Rate Bonus',
+				accessor: 'name',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Auto',
+				accessor: 'percent',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Bonus',
+				accessor: 'dollar',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewContactDialog('monthlyAgencyLapseAutoBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+	const monthlyAgencyLapseFireBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Lapse Rate Bonus',
+				accessor: 'name',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Fire',
+				accessor: 'percent',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				Header: 'Bonus',
+				accessor: 'dollar',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewContactDialog('monthlyAgencyLapseFireBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+	const monthlyAutoNetGrowthBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Title',
+				accessor: 'name',
+				className: 'font-bold',
+				sortable: true
+			},
+
+			{
+				Header: 'Bonus',
+				accessor: 'dollar',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewNetBonuseDialog('monthlyAutoNetGrowthBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+
+	const monthlyFireNetGrowthBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Title',
+				accessor: 'name',
+				className: 'font-bold',
+				sortable: true
+			},
+
+			{
+				Header: 'Bonus',
+				accessor: 'dollar',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewNetBonuseDialog('monthlyFireNetGrowthBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
+
+	const otherActivityBonusColumns = React.useMemo(
+		() => [
+			{
+				Header: 'Title',
+				accessor: 'name',
+				className: 'font-bold',
+				sortable: true
+			},
+
+			{
+				Header: 'Bonus',
+				accessor: 'dollar',
+				className: 'font-bold',
+				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewNetBonuseDialog('otherActivityBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
+			}
+		],
+		[dispatch, user.starred]
+	);
+
 	useEffect(() => {
 		let tempJSON = {
 			autoBonus: [],
@@ -499,7 +1137,10 @@ function ContactsList(props) {
 			individualFireTargetBonus: [],
 			teamFireTargetBonus: [],
 			individualLifeTargetBonus: [],
+			teamLifeTargetBonus: [],
+			individualHealthTargetBonus: [],
 			teamHealthTargetBonus: [],
+			individualBankTargetBonus: [],
 			teamBankTargetBonus: [],
 			monthlyAgencyLapseAutoBonus: [],
 			monthlyAgencyLapseFireBonus: [],
@@ -557,6 +1198,78 @@ function ContactsList(props) {
 						tempData.push(contacts[0]['individualFireTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, individualFireTargetBonus: tempData };
+				} else if (item.includes('individualLifeTargetBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].individualLifeTargetBonus).map(i => {
+						tempData.push(contacts[0]['individualLifeTargetBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, individualLifeTargetBonus: tempData };
+				} else if (item.includes('individualHealthTargetBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].individualHealthTargetBonus).map(i => {
+						tempData.push(contacts[0]['individualHealthTargetBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, individualHealthTargetBonus: tempData };
+				} else if (item.includes('individualBankTargetBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].individualBankTargetBonus).map(i => {
+						tempData.push(contacts[0]['individualBankTargetBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, individualBankTargetBonus: tempData };
+				} else if (item.includes('teamFireTargetBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].teamFireTargetBonus).map(i => {
+						tempData.push(contacts[0]['teamFireTargetBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, teamFireTargetBonus: tempData };
+				} else if (item.includes('teamLifeTargetBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].teamLifeTargetBonus).map(i => {
+						tempData.push(contacts[0]['teamLifeTargetBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, teamLifeTargetBonus: tempData };
+				} else if (item.includes('teamHealthTargetBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].teamHealthTargetBonus).map(i => {
+						tempData.push(contacts[0]['teamHealthTargetBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, teamHealthTargetBonus: tempData };
+				} else if (item.includes('teamBankTargetBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].teamBankTargetBonus).map(i => {
+						tempData.push(contacts[0]['teamBankTargetBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, teamBankTargetBonus: tempData };
+				} else if (item.includes('monthlyAgencyLapseAutoBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].monthlyAgencyLapseAutoBonus).map(i => {
+						tempData.push(contacts[0]['monthlyAgencyLapseAutoBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, monthlyAgencyLapseAutoBonus: tempData };
+				} else if (item.includes('monthlyAgencyLapseFireBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].monthlyAgencyLapseFireBonus).map(i => {
+						tempData.push(contacts[0]['monthlyAgencyLapseFireBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, monthlyAgencyLapseFireBonus: tempData };
+				} else if (item.includes('monthlyAutoNetGrowthBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].monthlyAutoNetGrowthBonus).map(i => {
+						tempData.push(contacts[0]['monthlyAutoNetGrowthBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, monthlyAutoNetGrowthBonus: tempData };
+				} else if (item.includes('monthlyFireNetGrowthBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].monthlyFireNetGrowthBonus).map(i => {
+						tempData.push(contacts[0]['monthlyFireNetGrowthBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, monthlyFireNetGrowthBonus: tempData };
+				} else if (item.includes('otherActivityBonus')) {
+					const tempData = [];
+					Object.keys(contacts[0].otherActivityBonus).map(i => {
+						tempData.push(contacts[0]['otherActivityBonus'][i]);
+					});
+					tempJSON = { ...tempJSON, otherActivityBonus: tempData };
 				}
 			});
 			setState({ ...state, ...tempJSON });
@@ -564,16 +1277,6 @@ function ContactsList(props) {
 			setState({ ...state, ...tempJSON });
 		}
 	}, [contacts, searchText]);
-
-	// if (contacts.length === 0) {
-	// 	return (
-	// 		<div className="flex flex-1 items-center justify-center h-full">
-	// 			<Typography color="textSecondary" variant="h5">
-	// 				There are no data!
-	// 			</Typography>
-	// 		</div>
-	// 	);
-	// }
 
 	return (
 		<FuseAnimateGroup animation="transition.slideUpIn" delay={300}>
@@ -656,7 +1359,7 @@ function ContactsList(props) {
 						MONTHLY TARGET BONUSES (Paid in Addition to Initial Bonuses)
 					</Typography>
 				</div>
-				<div className="widget flex w-full ">
+				<div className="widget flex w-full flex-wrap">
 					<div className="widget flex w-1/5 p-12">
 						<BonusPlanTable
 							columns={individualAutoTargetBonusColumns}
@@ -685,6 +1388,45 @@ function ContactsList(props) {
 					</div>
 					<div className="widget flex w-1/5 p-12">
 						<BonusPlanTable
+							columns={individualLifeTargetBonusColumns}
+							data={state.individualLifeTargetBonus}
+							onRowClick={(ev, row) => {
+								if (row) {
+									dispatch(openEditTargetBonusDialog(row.original));
+								}
+							}}
+							title=""
+							id="individualLifeTargetBonus"
+						/>
+					</div>
+					<div className="widget flex w-1/5 p-12">
+						<BonusPlanTable
+							columns={individualHealthTargetBonusColumns}
+							data={state.individualHealthTargetBonus}
+							onRowClick={(ev, row) => {
+								if (row) {
+									dispatch(openEditTargetBonusDialog(row.original));
+								}
+							}}
+							title=""
+							id="individualHealthTargetBonus"
+						/>
+					</div>
+					<div className="widget flex w-1/5 p-12">
+						<BonusPlanTable
+							columns={individualBankTargetBonusColumns}
+							data={state.individualBankTargetBonus}
+							onRowClick={(ev, row) => {
+								if (row) {
+									dispatch(openEditTargetBonusDialog(row.original));
+								}
+							}}
+							title=""
+							id="individualBankTargetBonus"
+						/>
+					</div>
+					<div className="widget flex w-1/5 p-12">
+						<BonusPlanTable
 							columns={teamAutoTargetBonusColumns}
 							data={state.teamAutoTargetBonus}
 							onRowClick={(ev, row) => {
@@ -696,8 +1438,149 @@ function ContactsList(props) {
 							id="teamAutoTargetBonus"
 						/>
 					</div>
+					<div className="widget flex w-1/5 p-12">
+						<BonusPlanTable
+							columns={teamFireTargetBonusColumns}
+							data={state.teamFireTargetBonus}
+							onRowClick={(ev, row) => {
+								if (row) {
+									dispatch(openEditTeamTargetBonusDialog(row.original));
+								}
+							}}
+							title=""
+							id="teamFireTargetBonus"
+						/>
+					</div>
+					<div className="widget flex w-1/5 p-12">
+						<BonusPlanTable
+							columns={teamLifeTargetBonusColumns}
+							data={state.teamLifeTargetBonus}
+							onRowClick={(ev, row) => {
+								if (row) {
+									dispatch(openEditTeamTargetBonusDialog(row.original));
+								}
+							}}
+							title=""
+							id="teamLifeTargetBonus"
+						/>
+					</div>
+					<div className="widget flex w-1/5 p-12">
+						<BonusPlanTable
+							columns={teamHealthTargetBonusColumns}
+							data={state.teamHealthTargetBonus}
+							onRowClick={(ev, row) => {
+								if (row) {
+									dispatch(openEditTeamTargetBonusDialog(row.original));
+								}
+							}}
+							title=""
+							id="teamHealthTargetBonus"
+						/>
+					</div>
+					<div className="widget flex w-1/5 p-12">
+						<BonusPlanTable
+							columns={teamBankTargetBonusColumns}
+							data={state.teamBankTargetBonus}
+							onRowClick={(ev, row) => {
+								if (row) {
+									dispatch(openEditTeamTargetBonusDialog(row.original));
+								}
+							}}
+							title=""
+							id="teamBankTargetBonus"
+						/>
+					</div>
 				</div>
 			</Paper>
+			<div className="flex">
+				<Paper className="w-1/2 rounded-8 shadow my-5 mr-3">
+					<div className="flex items-center justify-between px-16 py-16 border-b-1">
+						<Typography className="text-16">MONTHLY AGENCY LAPSE RATE BONUSES</Typography>
+					</div>
+					<div className="widget flex w-full flex-wrap mr-3">
+						<div className="widget flex w-1/2 p-12">
+							<BonusPlanTable
+								columns={monthlyAgencyLapseAutoBonusColumns}
+								data={state.monthlyAgencyLapseAutoBonus}
+								onRowClick={(ev, row) => {
+									if (row) {
+										dispatch(openEditContactDialog(row.original));
+									}
+								}}
+								title=""
+								id="monthlyAgencyLapseAutoBonus"
+							/>
+						</div>
+						<div className="widget flex w-1/2 p-12">
+							<BonusPlanTable
+								columns={monthlyAgencyLapseFireBonusColumns}
+								data={state.monthlyAgencyLapseFireBonus}
+								onRowClick={(ev, row) => {
+									if (row) {
+										dispatch(openEditContactDialog(row.original));
+									}
+								}}
+								title=""
+								id="monthlyAgencyLapseFireBonus"
+							/>
+						</div>
+					</div>
+				</Paper>
+
+				<Paper className="w-1/4 rounded-8 shadow my-5 mx-3">
+					<div className="flex items-center justify-between px-16 py-16 border-b-1">
+						<Typography className="text-16">NET POLICY GROWTH BONUS</Typography>
+					</div>
+					<div className="widget w-full flex-wrap">
+						<div className="widget flex w-full p-12">
+							<BonusPlanTable
+								columns={monthlyAutoNetGrowthBonusColumns}
+								data={state.monthlyAutoNetGrowthBonus}
+								onRowClick={(ev, row) => {
+									if (row) {
+										dispatch(openEditNetBonusDialog(row.original));
+									}
+								}}
+								title="Monthly Auto NET Growth Bonus"
+								id="monthlyAutoNetGrowthBonus"
+							/>
+						</div>
+						<div className="widget flex w-full p-12">
+							<BonusPlanTable
+								columns={monthlyFireNetGrowthBonusColumns}
+								data={state.monthlyFireNetGrowthBonus}
+								onRowClick={(ev, row) => {
+									if (row) {
+										dispatch(openEditNetBonusDialog(row.original));
+									}
+								}}
+								title="Monthly Fire NET Growth Bonus"
+								id="monthlyFireNetGrowthBonus"
+							/>
+						</div>
+					</div>
+				</Paper>
+				<Paper className="w-1/4 rounded-8 shadow my-5 ml-3">
+					<div className="flex items-center justify-between px-16 py-16 border-b-1">
+						<Typography className="text-16">OTHER ACTIVITY BONUSES</Typography>
+					</div>
+					<div className="widget w-full flex-wrap">
+						<div className="widget flex w-full p-12">
+							<BonusPlanTable
+								columns={otherActivityBonusColumns}
+								data={state.otherActivityBonus}
+								onRowClick={(ev, row) => {
+									if (row) {
+										dispatch(openEditTargetBonusDialog(row.original));
+									}
+								}}
+								title="OTHER ACTIVITY BONUSES"
+								id="otherActivityBonus"
+							/>
+						</div>
+					</div>
+				</Paper>
+			</div>
 		</FuseAnimateGroup>
 	);
 }

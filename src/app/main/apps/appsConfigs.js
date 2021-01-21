@@ -18,6 +18,7 @@ import TodoAppConfig from './todo/TodoAppConfig';
 import BonusPlanAppConfig from './bonusPlan/bonusPlanConfig'
 import ProducerAppConfig from './producer/producerAppConfig'
 import AgencyAppConfig from './agency/agencyAppConfig'
+import UserAppConfig from './users/UserAppConfig'
 
 const appsConfigs = [
 	AnalyticsDashboardAppConfig,
@@ -40,6 +41,7 @@ const appsConfigs = [
 	BonusPlanAppConfig,
 	ProducerAppConfig,
 	AgencyAppConfig,
+	UserAppConfig
 ];
 
 export default appsConfigs;
