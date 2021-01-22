@@ -142,7 +142,7 @@ function StaffMultiline(props) {
 							</div>							
 						</div>
 					}				
-					{tabValue === 1 && 
+					{tabValue === 1 &&  
 						<div>
 							<div className='p-12'>
 								<Chart widget={widgets.Producer_StaffMultiline_Summary_Chart_1} />

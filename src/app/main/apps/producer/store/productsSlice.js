@@ -21,6 +21,7 @@ const productsSlice = createSlice({
 		period: '',
 		user: '',
 		report: '',
+		cell: {},
 	}),
 	reducers: {
 		setProduction: {
@@ -46,13 +47,25 @@ const productsSlice = createSlice({
 				state.user = action.payload;
 			},
 			prepare: event => ({ payload: event.target.value || '' })
-		}
+		},
+		setCell: {
+			reducer: (state, action) => {
+				const tableName = action.payload.tableName;
+				const row = action.payload.row;
+				const col = action.payload.col;
+				const rowKey = action.payload.rowKey;
+				const colKey = action.payload.colKey;
+				const value = action.payload.value;
+				state.cell = { tableName: tableName, row: row, col: col, rowKey: rowKey, colKey: colKey, value: value };
+			},
+			prepare: val => ({ payload: val || '' })
+		},
 	},
 	extraReducers: {
 		[getProducts.fulfilled]: productsAdapter.setAll
 	}
 });
 
-export const { setProduction, setPeriod, setUser, setReport } = productsSlice.actions;
+export const { setProduction, setPeriod, setUser, setReport, setCell } = productsSlice.actions;
 
 export default productsSlice.reducer;
