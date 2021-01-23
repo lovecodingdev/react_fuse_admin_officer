@@ -1738,6 +1738,12 @@ export const percentrows = {
 			value: '',
 			classes: '',
 			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
+			value: '',
+			classes: '',
+			icon: ''
 		}
     },
 	January: {
@@ -1773,6 +1779,12 @@ export const percentrows = {
 		},
 		total: {
 			id: 'total',
+			value: '',
+			classes: '',
+			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
 			value: '',
 			classes: '',
 			icon: ''
@@ -1814,6 +1826,12 @@ export const percentrows = {
 			value: '',
 			classes: '',
 			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
+			value: '',
+			classes: '',
+			icon: ''
 		}
     },
     March: {
@@ -1849,6 +1867,12 @@ export const percentrows = {
 		},
 		total: {
 			id: 'total',
+			value: '',
+			classes: '',
+			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
 			value: '',
 			classes: '',
 			icon: ''
@@ -1890,6 +1914,12 @@ export const percentrows = {
 			value: '',
 			classes: '',
 			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
+			value: '',
+			classes: '',
+			icon: ''
 		}
     },
     May: {
@@ -1925,6 +1955,12 @@ export const percentrows = {
 		},
 		total: {
 			id: 'total',
+			value: '',
+			classes: '',
+			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
 			value: '',
 			classes: '',
 			icon: ''
@@ -1966,6 +2002,12 @@ export const percentrows = {
 			value: '',
 			classes: '',
 			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
+			value: '',
+			classes: '',
+			icon: ''
 		}
     },
     July: {
@@ -2001,6 +2043,12 @@ export const percentrows = {
 		},
 		total: {
 			id: 'total',
+			value: '',
+			classes: '',
+			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
 			value: '',
 			classes: '',
 			icon: ''
@@ -2042,6 +2090,12 @@ export const percentrows = {
 			value: '',
 			classes: '',
 			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
+			value: '',
+			classes: '',
+			icon: ''
 		}
     },
     September: {
@@ -2077,6 +2131,12 @@ export const percentrows = {
 		},
 		total: {
 			id: 'total',
+			value: '',
+			classes: '',
+			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
 			value: '',
 			classes: '',
 			icon: ''
@@ -2118,6 +2178,12 @@ export const percentrows = {
 			value: '',
 			classes: '',
 			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
+			value: '',
+			classes: '',
+			icon: ''
 		}
     },
     November: {
@@ -2156,6 +2222,12 @@ export const percentrows = {
 			value: '',
 			classes: '',
 			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
+			value: '',
+			classes: '',
+			icon: ''
 		}
     },
     December: {
@@ -2191,6 +2263,12 @@ export const percentrows = {
 		},
 		total: {
 			id: 'total',
+			value: '',
+			classes: '',
+			icon: ''
+		},
+		hhs: {
+			id: 'hhs',
 			value: '',
 			classes: '',
 			icon: ''
