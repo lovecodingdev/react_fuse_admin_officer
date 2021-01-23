@@ -92,7 +92,7 @@ const navigationConfig = [
 				title: 'Agency',
 				translate: 'Agency',
 				type: 'collapse',
-				icon: 'monetization_on',
+				icon: 'support_agent',
 				url: '/apps/agency',
 				children: [
 					{
@@ -139,151 +139,34 @@ const navigationConfig = [
 					}
 				]
 			},
-			{
-				id: 'vision',
-				title: 'Vision',
-				translate: 'Vision',
-				type: 'collapse',
-				icon: 'remove_red_eye',
-				url: '/apps/vision',
-				children: [
-					{
-						id: 'e-commerce-products',
-						title: 'Income Goals',
-						type: 'item',
-						url: '/apps/vision/products',
-						exact: true
-					}
-				]
-			},
-			{
-				id: 'enter-sales',
-				title: 'Enter Sales',
-				translate: 'ENTERSSALES',
-				type: 'collapse',
-				icon: 'shopping_cart',
-				url: '/apps/enter-sales',
-				children: [
-					{
-						id: 'e-commerce-products',
-						title: 'Auto Entry',
-						type: 'item',
-						url: '/apps/enter-sales/auto-entry',
-						exact: true
-					},
-					{
-						id: 'fire-entry',
-						title: 'Fire Entry',
-						type: 'item',
-						url: '/apps/enter-sales/fire-entry',
-						exact: true
-					},
-					{
-						id: 'life-entry',
-						title: 'Life Entry',
-						type: 'item',
-						url: '/apps/enter-sales/life-entry',
-						exact: true
-					},
-					{
-						id: 'health-entry',
-						title: 'Health Entry',
-						type: 'item',
-						url: '/apps/enter-sales/health-entry',
-						exact: true
-					}
-					// {
-					// 	id: 'e-commerce-product-detail',
-					// 	title: 'Product Detail',
-					// 	type: 'item',
-					// 	url: '/apps/enter-sales/products/1/a-walk-amongst-friends-canvas-print',
-					// 	exact: true
-					// },
-					// {
-					// 	id: 'e-commerce-new-product',
-					// 	title: 'New Product',
-					// 	type: 'item',
-					// 	url: '/apps/enter-sales/products/new',
-					// 	exact: true
-					// },
-					// {
-					// 	id: 'e-commerce-orders',
-					// 	title: 'Orders',
-					// 	type: 'item',
-					// 	url: '/apps/enter-sales/orders',
-					// 	exact: true
-					// },
-					// {
-					// 	id: 'e-commerce-order-detail',
-					// 	title: 'Order Detail',
-					// 	type: 'item',
-					// 	url: '/apps/vision/orders/1',
-					// 	exact: true
-					// }
-				]
-			},
-			{
-				id: 'income',
-				title: 'Income',
-				translate: 'Income',
-				type: 'collapse',
-				icon: 'monetization_on',
-				url: '/apps/income',
-				children: [
-					{
-						id: 'payroll',
-						title: 'Payroll',
-						type: 'item',
-						url: '/apps/income/payroll',
-						exact: true
-					},
-					{
-						id: 'possible-money',
-						title: 'Possible Money',
-						type: 'item',
-						url: '/apps/income/possible-money',
-						exact: true
-					}
-				]
-			},
-			{
-				id: 'production',
-				title: 'Production',
-				translate: 'Production',
-				type: 'collapse',
-				icon: 'monetization_on',
-				url: '/apps/production',
-				children: [
-					{
-						id: 'sales-results',
-						title: 'Sales Results',
-						type: 'item',
-						url: '/apps/production/sales-results',
-						exact: true
-					},
-					{
-						id: 'product-line',
-						title: 'Product Line',
-						type: 'item',
-						url: '/apps/production/product-line',
-						exact: true
-					},
-					{
-						id: 'multiline',
-						title: 'Multiline',
-						type: 'item',
-						url: '/apps/production/multiline',
-						exact: true
-					}
-				]
-			},
+			
+			
+			
+			
 
 			{
 				id: 'e-commerce-products',
 				title: 'App Register',
 				type: 'item',
 				url: '/apps/activity/appRegister',
+				icon: 'loupe',
+				exact: true
+			},
+
+			{
+				id: 'lapse-rate',
+				title: 'Lapse Rate Report',
+				type: 'item',
+				url: '/apps/lapse-rate-report',
 				icon: 'local_activity',
+				exact: true
+			},
+			{
+				id: 'policy-growth',
+				title: 'Policy Growth Report',
+				type: 'item',
+				url: '/apps/team-policy-growth-report',
+				icon: 'align_vertical_bottom',
 				exact: true
 			},
 

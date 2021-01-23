@@ -28,6 +28,8 @@ import './db/bonus-plan-db';
 import './db/producer-db';
 import './db/agency-db';
 import './db/marketing-db';
+import './db/lapse-rate-widget-db';
+import './db/lapse-rate-data-db';
 
 import mock from './mock';
 

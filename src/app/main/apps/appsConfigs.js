@@ -20,6 +20,8 @@ import ProducerAppConfig from './producer/producerAppConfig'
 import AgencyAppConfig from './agency/agencyAppConfig'
 import UserAppConfig from './users/UserAppConfig'
 import MarketingAppConfig from './marketing/MarketingAppConfig'
+import LapseRateReportConfig from './lapseRateReport/LapseRateReportConfig'
+import PolicyGrowthReportConfig from './policyGrowthReport/PolicyGrowthReportConfig'
 
 const appsConfigs = [
 	AnalyticsDashboardAppConfig,
@@ -43,7 +45,9 @@ const appsConfigs = [
 	ProducerAppConfig,
 	AgencyAppConfig,
 	UserAppConfig,
-	MarketingAppConfig
+	MarketingAppConfig,
+	LapseRateReportConfig,
+	PolicyGrowthReportConfig
 ];
 
 export default appsConfigs;
