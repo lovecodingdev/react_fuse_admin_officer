@@ -9,7 +9,7 @@ const projectDashboardAppDB = {
 		
 		{
 			id: 'widget5',
-			title: "WRITTEN SALES ACTIVITY BY MONTH",
+			title: "Policy Count Change by Month",
 			ranges: {
 				TW: 'As A Team',
 				IN: 'Individually',
