@@ -56,7 +56,7 @@ function Widget10(props) {
 													onChange={props.handleChangeValue}
 													willvalidation={false}
 													validate={false}
-													size={50}
+													size={60}
 													month={firstKey}
 													field={cell.id}
 													title={props.title}

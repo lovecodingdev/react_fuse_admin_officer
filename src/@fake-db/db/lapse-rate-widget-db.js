@@ -3,9 +3,6 @@ import mock from '../mock';
 const projectDashboardAppDB = {
 	 
 	widgets: [
-	
-	
-	
 		
 		{
 			id: 'widget5',

@@ -19,22 +19,17 @@ import reducer from './store';
 import { selectProjects, getProjects } from './store/lapseSlice';
 import { getAutoBonus, selectContacts } from './store/bonusPlanSlice';
 import { getWidgets, selectWidgets } from './store/widgetsSlice';
-import { rows, columns, levelColumns, levelRows, firerows, houseHoldColumns, householdRows } from './tableDataTemplate';
-
-import Widget1 from './widgets/Widget1';
+import {
+	rows,
+	columns,
+	percentrows,
+	levelRows,
+	numberrows,
+	houseHoldColumns,
+	householdRows
+} from './tableDataTemplate';
 import Widget10 from './widgets/Widget10';
-import TargetTable from './widgets/TargetTable';
-import Widget11 from './widgets/Widget11';
-import Widget2 from './widgets/Widget2';
-import Widget3 from './widgets/Widget3';
-import Widget4 from './widgets/Widget4';
 import Widget5 from './widgets/Widget5';
-import Widget6 from './widgets/Widget6';
-import Widget7 from './widgets/Widget7';
-import Widget8 from './widgets/Widget8';
-import Widget9 from './widgets/Widget9';
-import WidgetNow from './widgets/WidgetNow';
-import WidgetWeather from './widgets/WidgetWeather';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -69,8 +64,10 @@ function ProjectDashboardApp(props) {
 	});
 	const [state, setState] = useState({
 		autoRows: rows,
-		fireRows: firerows,
-		householdRows:householdRows,
+		numberRows: numberrows,
+		percentRows: percentrows,
+		householdRows: householdRows,
+
 		monthlyAgencyLapseAutoBonus: [],
 		monthlyAgencyLapseFireBonus: []
 	});
@@ -133,22 +130,23 @@ function ProjectDashboardApp(props) {
 	}
 
 	function handleChangeValue(value, month, field, title) {
-		if(title==="Auto"){
+		if (title === 'Policy Count') {
+			let total =
+				parseFloat((field==='auto'?value:state.autoRows[month].auto.value)||0) +
+				parseFloat((field==='fire'?value:state.autoRows[month].fire.value)||0) +
+				parseFloat((field==='life'?value:state.autoRows[month].life.value)||0) +
+				parseFloat((field==='health'?value:state.autoRows[month].health.value)||0);
 			let temp = {
 				...state.autoRows,
-				[month]: { ...state.autoRows[month], [field]: { ...state.autoRows[month][field], value: value } }
+				[month]: {
+					...state.autoRows[month],
+					[field]: { ...state.autoRows[month][field], value: value },
+					total: { ...state.autoRows[month].total, value: total }
+				}
 			};
+			console.log(temp)
 			setState({ ...state, autoRows: temp });
-		} else {
-			let temp = {
-				...state.fireRows,
-				[month]: { ...state.fireRows[month], [field]: { ...state.fireRows[month][field], value: value } }
-			};
-			setState({ ...state, fireRows: temp });
 		}
-		
-
-		
 	}
 	// return null;
 	if (_.isEmpty(widgets) || _.isEmpty(projects)) {
@@ -183,7 +181,6 @@ function ProjectDashboardApp(props) {
 								animation: 'transition.slideUpBigIn'
 							}}
 						>
-						
 							<div className="widget flex w-full p-12">
 								<div className="widget flex w-1/3 p-12">
 									<Widget10
@@ -196,7 +193,7 @@ function ProjectDashboardApp(props) {
 								<div className="widget flex w-1/3 p-12">
 									<Widget10
 										columns={columns}
-										rows={state.fireRows}
+										rows={state.numberRows}
 										title="Number Change"
 										handleChangeValue={handleChangeValue}
 									/>
@@ -204,7 +201,7 @@ function ProjectDashboardApp(props) {
 								<div className="widget flex w-1/3 p-12">
 									<Widget10
 										columns={columns}
-										rows={state.fireRows}
+										rows={state.percentRows}
 										title="Percent Change"
 										handleChangeValue={handleChangeValue}
 									/>
@@ -212,7 +209,7 @@ function ProjectDashboardApp(props) {
 							</div>
 
 							<div className="widget flex w-full p-12">
-							<div className="widget flex w-1/3 p-12">
+								<div className="widget flex w-1/3 p-12">
 									<Widget10
 										columns={houseHoldColumns}
 										rows={state.householdRows}
@@ -221,7 +218,7 @@ function ProjectDashboardApp(props) {
 									/>
 								</div>
 								<div className="widget flex w-2/3 p-12">
-											<Widget5 widget={widgets.widget5} />
+									<Widget5 widget={widgets.widget5} />
 								</div>
 							</div>
 						</FuseAnimateGroup>
