@@ -24,7 +24,7 @@ function Widget(props) {
 
 	return (
 		// <Paper className="w-full rounded-8 shadow">
-		<div className="flex flex-col min-h-full sm:border-1 sm:rounded-16 overflow-hidden w-full">
+		<div className="flex flex-col min-h-full sm:border-1 sm:rounded-8 overflow-hidden w-full">
 			<FuseScrollbars className="flex-growNum overflow-x-auto">
 				<Table stickyHeader className="min-w-full" size="small" aria-labelledby="tableTitle">
 					<TableHead>
