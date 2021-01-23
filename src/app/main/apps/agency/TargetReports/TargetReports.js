@@ -15,6 +15,7 @@ import reducer from '../store';
 import Table from '../../../components/widgets/Table';
 import Chart from '../../../components/widgets/Chart';
 import PieChart from '../../../components/widgets/PieChart';
+import Widget10 from '../../../components/widgets/Widget10';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
@@ -95,11 +96,32 @@ function TargetReports(props) {
 			}
 			content={
 				<div className="w-full p-12">	
-					<div className="p-12">
-						<Table header={Agency_TargetReports_Table} widget={data.widgets.Agency_TargetReports_Table} entries fires lifes healthes />
+					<div className='p-12'>
+						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
+							<Widget10 widget={widgets.Agency_TargetReports_Table} />						
+						</FuseAnimateGroup>	
 					</div>
-					
-				</div>				
+					<div className='p-12'>
+						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
+							<Widget10 widget={widgets.Agency_TargetReports_Table} />						
+						</FuseAnimateGroup>	
+					</div>
+					<div className='p-12'>
+						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
+							<Widget10 widget={widgets.Agency_TargetReports_Table} />						
+						</FuseAnimateGroup>	
+					</div>
+					<div className='p-12'>
+						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
+							<Widget10 widget={widgets.Agency_TargetReports_Table} />						
+						</FuseAnimateGroup>	
+					</div>
+					<div className='p-12'>
+						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
+							<Widget10 widget={widgets.Agency_TargetReports_Table} />						
+						</FuseAnimateGroup>	
+					</div>	
+				</div>			
 			}
 			innerScroll
 		/>

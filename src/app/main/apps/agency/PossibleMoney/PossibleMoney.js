@@ -122,27 +122,27 @@ function PossibleMoney(props) {
 					</div>
 					<div className='p-12'>
 						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Widget10 widget={widgets.widget10} />						
+							<Widget10 widget={widgets.Agency_PossibleMoney_Table} />						
 						</FuseAnimateGroup>	
 					</div>
 					<div className='p-12'>
 						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Widget10 widget={widgets.widget10} />						
+							<Widget10 widget={widgets.Agency_PossibleMoney_Table} />						
 						</FuseAnimateGroup>	
 					</div>
 					<div className='p-12'>
 						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Widget10 widget={widgets.widget10} />						
+							<Widget10 widget={widgets.Agency_PossibleMoney_Table} />						
 						</FuseAnimateGroup>	
 					</div>
 					<div className='p-12'>
 						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Widget10 widget={widgets.widget10} />						
+							<Widget10 widget={widgets.Agency_PossibleMoney_Table} />						
 						</FuseAnimateGroup>	
 					</div>
 					<div className='p-12'>
 						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Widget10 widget={widgets.widget10} />						
+							<Widget10 widget={widgets.Agency_PossibleMoney_Table} />						
 						</FuseAnimateGroup>	
 					</div>	
 				</div>
