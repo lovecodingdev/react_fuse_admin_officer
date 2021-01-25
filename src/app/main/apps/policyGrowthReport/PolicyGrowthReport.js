@@ -143,9 +143,9 @@ function ProjectDashboardApp(props) {
 					[field]: { ...state.autoRows[month][field], value: value },
 					total: { ...state.autoRows[month].total, value: total }
 				}
-			};
-			console.log(temp)
-			setState({ ...state, autoRows: temp });
+			};		
+			
+			setState({ ...state, autoRows: temp, numberRows:temp, percentRows:temp });
 		}
 	}
 	// return null;

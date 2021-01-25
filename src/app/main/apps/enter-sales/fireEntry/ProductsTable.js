@@ -196,7 +196,7 @@ function ProductsTable(props) {
 		console.log(checkValidation());
 		if (checkValidation()) {
 			let form = {
-				id: state.id ? state.id : makeid(20),
+				id: state.id ? state.id : Date.now(),
 				policyHolderName: state.policyHolderName,
 				policyInformation: state.policyInformation,
 				datePolicyIsWritten: state.datePolicyIsWritten

@@ -62,13 +62,13 @@ function Login() {
 									<div className="border-l-1 mr-4 w-1 h-40" />
 									<div>
 										<Typography className="text-24 font-800 logo-text" color="inherit">
-											EASY
+										Agency
 										</Typography>
 										<Typography
 											className="text-16 tracking-widest -mt-8 font-700"
 											color="textSecondary"
 										>
-											BONUS PRODUER
+											Owner Home Page!
 										</Typography>
 									</div>
 								</div>
@@ -130,7 +130,7 @@ function Login() {
 							<FuseAnimate animation="transition.slideUpIn" delay={400}>
 								<Typography variant="h3" color="inherit" className="font-800 leading-tight">
 									Welcome <br />
-									to the <br /> Easy bonus system!
+									to the <br /> Agency Owner Home Page!
 								</Typography>
 							</FuseAnimate>
 

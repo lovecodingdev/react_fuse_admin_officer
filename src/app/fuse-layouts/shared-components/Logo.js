@@ -33,7 +33,7 @@ function Logo() {
 		<div className={clsx(classes.root, 'flex items-center')}>
 			<img className="logo-icon" src="assets/images/logos/fuse.svg" alt="logo" />
 			<Typography className="text-16 mx-12 font-light logo-text" color="inherit">
-				Easy Bonus System
+				Agency Owner Home Page
 			</Typography>
 			
 		</div>

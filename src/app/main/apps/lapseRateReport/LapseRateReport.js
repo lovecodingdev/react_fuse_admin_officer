@@ -7,11 +7,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import withReducer from 'app/store/withReducer';
-import clsx from 'clsx';
 import _ from '@lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,22 +16,10 @@ import reducer from './store';
 import { selectProjects, getProjects } from './store/lapseSlice';
 import { getAutoBonus, selectContacts } from './store/bonusPlanSlice';
 import { getWidgets, selectWidgets } from './store/widgetsSlice';
-import { rows, columns, levelColumns, levelRows, firerows } from './tableDataTemplate';
-
-import Widget1 from './widgets/Widget1';
+import { rows, columns, levelColumns, firerows } from './tableDataTemplate';
 import Widget10 from './widgets/Widget10';
 import TargetTable from './widgets/TargetTable';
-import Widget11 from './widgets/Widget11';
-import Widget2 from './widgets/Widget2';
-import Widget3 from './widgets/Widget3';
-import Widget4 from './widgets/Widget4';
-import Widget5 from './widgets/Widget5';
-import Widget6 from './widgets/Widget6';
-import Widget7 from './widgets/Widget7';
-import Widget8 from './widgets/Widget8';
-import Widget9 from './widgets/Widget9';
-import WidgetNow from './widgets/WidgetNow';
-import WidgetWeather from './widgets/WidgetWeather';
+import {saveLapseRate, saveFireLapseRate} from './store/lapseSlice'
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -55,10 +40,26 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+let months = [
+	'January',
+	'February',
+	'March',
+	'April',
+	'May',
+	'June',
+	'July',
+	'August',
+	'September',
+	'October',
+	'November',
+	'December'
+];
+
 function ProjectDashboardApp(props) {
 	const dispatch = useDispatch();
 	const widgets = useSelector(selectWidgets);
 	const projects = useSelector(selectProjects);
+	console.log(projects)
 	const contacts = useSelector(selectContacts);
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
@@ -80,12 +81,20 @@ function ProjectDashboardApp(props) {
 		dispatch(getAutoBonus());
 	}, [dispatch]);
 
+	useEffect(()=>{
+		if(projects.length>0){
+			console.log(projects[0])
+			// setState({...state,autoRows:{...projects[0]}, fireRows:{...projects[1]}})
+		}
+		
+	},[projects])
+
 	useEffect(() => {
 		let tempJSON = {
 			monthlyAgencyLapseAutoBonus: [],
 			monthlyAgencyLapseFireBonus: []
 		};
-		console.log(contacts);
+
 		if (contacts.length > 0) {
 			Object.keys(contacts[0]).map((item, index) => {
 				if (item.includes('monthlyAgencyLapseAutoBonus')) {
@@ -106,48 +115,156 @@ function ProjectDashboardApp(props) {
 		}
 	}, [contacts]);
 
-	function handleChangeTab(event, value) {
-		setTabValue(value);
-	}
-
-	function handleChangeProject(id) {
-		setSelectedProject({
-			id,
-			menuEl: null
-		});
-	}
-
-	function handleOpenProjectMenu(event) {
-		setSelectedProject({
-			id: selectedProject.id,
-			menuEl: event.currentTarget
-		});
-	}
-
-	function handleCloseProjectMenu() {
-		setSelectedProject({
-			id: selectedProject.id,
-			menuEl: null
-		});
-	}
-
 	function handleChangeValue(value, month, field, title) {
-		if(title==="Auto"){
+		if (title === 'Auto') {
+			let monthIndex = months.indexOf(month);
+			let previousMonthValue = '-';
+			let nextMonthValue = '-';
+			if (monthIndex !== 0) {
+				previousMonthValue =
+					Math.round(
+						(parseFloat(value) - parseFloat(state.autoRows[months[monthIndex - 1]].lapseRate.value || 0)) *
+							100
+					) / 100;
+				if (parseFloat(state.autoRows[months[monthIndex + 1]].lapseRate.value || 0) !== 0) {
+					nextMonthValue =
+						Math.round(
+							(parseFloat(state.autoRows[months[monthIndex + 1]].lapseRate.value || 0) -
+								parseFloat(value)) *
+								100
+						) / 100;
+				} else {
+					nextMonthValue = '-';
+				}
+			}
 			let temp = {
 				...state.autoRows,
-				[month]: { ...state.autoRows[month], [field]: { ...state.autoRows[month][field], value: value } }
+				[month]: {
+					...state.autoRows[month],
+					[field]: { ...state.autoRows[month][field], value: value },
+					level: { ...state.autoRows[month].level, value: 'none' },
+					previousMonth: { ...state.autoRows[month].previousMonth, value: previousMonthValue }
+				},
+				[months[monthIndex + 1]]: {
+					...state.autoRows[months[monthIndex + 1]],
+					previousMonth: {
+						...state.autoRows[months[monthIndex + 1]].previousMonth,
+						value: nextMonthValue
+					}
+				}
 			};
+
+			if (contacts.length > 0) {
+				Object.keys(contacts[0]).map((item, index) => {
+					if (item.includes('monthlyAgencyLapseAutoBonus')) {
+						Object.keys(contacts[0].monthlyAgencyLapseAutoBonus).map(i => {
+							if (
+								parseFloat(contacts[0]['monthlyAgencyLapseAutoBonus'][i].percent) === parseFloat(value)
+							) {
+								temp = {
+									...state.autoRows,
+									[month]: {
+										...state.autoRows[month],
+										level: {
+											...state.autoRows[month].level,
+											value: contacts[0]['monthlyAgencyLapseAutoBonus'][i].name
+										},
+										[field]: { ...state.autoRows[month][field], value: value },
+										previousMonth: {
+											...state.autoRows[month].previousMonth,
+											value: previousMonthValue
+										}
+									},
+									[months[monthIndex + 1]]: {
+										...state.autoRows[months[monthIndex + 1]],
+										previousMonth: {
+											...state.autoRows[months[monthIndex + 1]].previousMonth,
+											value: nextMonthValue
+										}
+									}
+								};
+							}
+						});
+					}
+				});
+			}
+			console.log(temp)
+			dispatch(saveLapseRate(temp))
 			setState({ ...state, autoRows: temp });
 		} else {
+			let monthIndex = months.indexOf(month);
+			let previousMonthValue = '-';
+			let nextMonthValue = '-';
+			if (monthIndex !== 0) {
+				previousMonthValue =
+					Math.round(
+						(parseFloat(value) - parseFloat(state.fireRows[months[monthIndex - 1]].lapseRate.value || 0)) *
+							100
+					) / 100;
+				if (parseFloat(state.fireRows[months[monthIndex + 1]].lapseRate.value || 0) !== 0) {
+					nextMonthValue =
+						Math.round(
+							(parseFloat(state.fireRows[months[monthIndex + 1]].lapseRate.value || 0) -
+								parseFloat(value)) *
+								100
+						) / 100;
+				} else {
+					nextMonthValue = '-';
+				}
+			}
 			let temp = {
 				...state.fireRows,
-				[month]: { ...state.fireRows[month], [field]: { ...state.fireRows[month][field], value: value } }
+				[month]: {
+					...state.fireRows[month],
+					[field]: { ...state.fireRows[month][field], value: value },
+					level: { ...state.fireRows[month].level, value: 'none' },
+					previousMonth: { ...state.fireRows[month].previousMonth, value: previousMonthValue }
+				},
+				[months[monthIndex + 1]]: {
+					...state.fireRows[months[monthIndex + 1]],
+					previousMonth: {
+						...state.fireRows[months[monthIndex + 1]].previousMonth,
+						value: nextMonthValue
+					}
+				}
 			};
+			if (contacts.length > 0) {
+				Object.keys(contacts[0]).map((item, index) => {
+					if (item.includes('monthlyAgencyLapseFireBonus')) {
+						Object.keys(contacts[0].monthlyAgencyLapseFireBonus).map(i => {
+							if (
+								parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent) === parseFloat(value)
+							) {
+								temp = {
+									...state.fireRows,
+									[month]: {
+										...state.fireRows[month],
+										level: {
+											...state.fireRows[month].level,
+											value: contacts[0]['monthlyAgencyLapseFireBonus'][i].name
+										},
+										[field]: { ...state.fireRows[month][field], value: value },
+										previousMonth: {
+											...state.fireRows[month].previousMonth,
+											value: previousMonthValue
+										}
+									},
+									[months[monthIndex + 1]]: {
+										...state.fireRows[months[monthIndex + 1]],
+										previousMonth: {
+											...state.fireRows[months[monthIndex + 1]].previousMonth,
+											value: nextMonthValue
+										}
+									}
+								};
+							}
+						});
+					}
+				});
+			}
+			dispatch(saveFireLapseRate(temp))
 			setState({ ...state, fireRows: temp });
 		}
-		
-
-		
 	}
 	// return null;
 	if (_.isEmpty(widgets) || _.isEmpty(projects)) {
@@ -164,7 +281,7 @@ function ProjectDashboardApp(props) {
 			header={
 				<div className="flex items-center px-24">
 					<FuseAnimate animation="transition.expandIn" delay={300}>
-						<Icon className="text-32">point_of_sale</Icon>
+						<Icon className="text-32">local_activity</Icon>
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
@@ -182,9 +299,7 @@ function ProjectDashboardApp(props) {
 								animation: 'transition.slideUpBigIn'
 							}}
 						>
-							{/* <div className="widget flex w-full p-12">
-								<Widget5 widget={widgets.widget5} />
-							</div> */}
+							{console.log(state.autoRows)}
 							<div className="widget flex w-full p-12">
 								<div className="widget flex w-1/2 p-12">
 									<Widget10
@@ -205,6 +320,7 @@ function ProjectDashboardApp(props) {
 							</div>
 
 							<div className="widget flex w-full p-12">
+								{console.log(state.monthlyAgencyLapseAutoBonus)}
 								<div className="widget flex w-1/2 p-12">
 									<TargetTable
 										columns={levelColumns}

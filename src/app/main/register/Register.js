@@ -130,7 +130,7 @@ function Register() {
 							<FuseAnimate animation="transition.slideUpIn" delay={400}>
 								<Typography variant="h3" color="inherit" className="font-800 leading-tight">
 									Welcome <br />
-									to the <br /> easy bonus system!
+									to the <br /> Agency Owner Home Page!
 								</Typography>
 							</FuseAnimate>
 

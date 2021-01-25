@@ -29,9 +29,10 @@ function Widget10(props) {
 						</TableRow>
 					</TableHead>
 					<TableBody>
+						{console.log(props.rows)}
 						{Object.keys(props.rows).map((firstKey, index) => (
 							<TableRow key={index}>
-								{Object.keys(props.rows[firstKey]).map((monthKey, i) => {
+								{firstKey!=='id'&&Object.keys(props.rows[firstKey]).map((monthKey, i) => {
 									let cell = props.rows[firstKey][monthKey]
 									if ((props.title==="Auto"||props.title==="Fire") && i===1){
 										return <TableCell key={cell.id} component="th" scope="row" align="center" className="p-3">
