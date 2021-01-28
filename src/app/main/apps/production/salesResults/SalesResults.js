@@ -18,7 +18,7 @@ import reducer from '../store';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import SalesResultsHeader from './SalesResultsHeader';
 import Table from '../../../components/widgets/Table';
-import Chat from '../../../components/widgets/Chart';
+import Chat from '../../../components/widgets/BarChart';
 
 const writtenHeader = [
 	{value:'WRITTEN', type:false, color:''},

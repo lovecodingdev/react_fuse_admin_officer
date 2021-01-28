@@ -12,15 +12,15 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import clsx from 'clsx';
 import TextInput from '../TextInput';
-import { setCell } from '../../apps/producer/store/productsSlice';
+// import { setCell } from '../../apps/vision/store/visionSlice';
 
 function Widget(props) {
-	const dispatch = useDispatch(); 
+	const dispatch = useDispatch();
 	const tableData = props.widget.table.tableContent;
 
-	function handleInputChange(tableName, row, col, rowKey, colKey,  val) {
-		dispatch(setCell({tableName: tableName, row: row, col: col, rowKey: rowKey, colKey: colKey, value: val}));
-	}
+	// function handleInputChange(tableName, row, col, rowKey, colKey,  val) {
+	// 	dispatch(setCell({tableName: tableName, row: row, col: col, rowKey: rowKey, colKey: colKey, value: val}));
+	// }
 
 	return (
 		// <Paper className="w-full rounded-8 shadow">
@@ -85,6 +85,7 @@ function Widget(props) {
 									</TableCell>
 								}
 								{Object.keys(tableData[rowKey]).map((colKey, colNum) => (
+									colKey!=="id" && colKey!=="type" && colKey!=="month" &&
 									<TableCell
 										key={`colKey_${rowNum}_${colNum}`}
 										component="th"
@@ -92,11 +93,11 @@ function Widget(props) {
 										align="center" //p-5
 										className={clsx(`p-0 text-xs truncate ${colNum === (Object.keys(tableData[rowKey]).length-1) ? `border-r-0` : `border-r-1`} ${(rowKey==='Quarter_1_Totals'||rowKey==='AnnualTotals'||rowKey==='ProjectedForYear')&&`border-t-4`}`)}
 									>
-										{!props.editable &&
+										{!props.editable && tableData[rowKey][colKey]!==0 &&
 											tableData[rowKey][colKey]
 										}
 										
-										{props.editable &&
+										{/* {props.editable &&
 											<TextInput
 												id='contact phone number'
 												key={`input_${rowNum}_${colNum}`}
@@ -105,12 +106,13 @@ function Widget(props) {
 												onChange={ev => handleInputChange(props.tableName, rowNum, colNum, rowKey, colKey, ev.target.value)}
 												size='small'
 												readOnly={false}
-												startAdornment={<InputAdornment position="start">$</InputAdornment>}
+												startAdornment={<InputAdornment position="start">{props.startAdornment}</InputAdornment>}
+												endAdornment={<InputAdornment position="start">{props.endAdornment}</InputAdornment>}
 												inputProps={{ 
 													'aria-label': 'naked',														
 												}}
 											/>
-										}																							
+										}																							 */}
 									</TableCell>
 								))}
 							</TableRow>

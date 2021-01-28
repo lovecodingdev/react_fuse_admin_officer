@@ -4,7 +4,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import _ from '@lodash';
 import React, { useState } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar, Line, HorizontalBar } from 'react-chartjs-2';
 
 function Chart(props) {
 	const [currentRange, setCurrentRange] = useState('TW');
