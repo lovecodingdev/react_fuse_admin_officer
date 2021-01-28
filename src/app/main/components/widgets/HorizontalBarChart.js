@@ -4,7 +4,7 @@ import { useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import _ from '@lodash';
 import React, { useState } from 'react';
-import { Bar, Line } from 'react-chartjs-2';
+import { Bar, Line, HorizontalBar } from 'react-chartjs-2';
 
 function Chart(props) {
 	const [currentRange, setCurrentRange] = useState('TW');
@@ -26,10 +26,11 @@ function Chart(props) {
 			</div>
 			<div className="flex flex-row flex-wrap justify-center h-420">
 				<div className="w-full p-8 min-h-420 h-420">
-					<Bar
+					<HorizontalBar
 						data={{
 							labels: widget.mainChart[currentRange].labels,
-							datasets: widget.mainChart[currentRange].datasets.map((obj, index) => {
+							datasets: widget.mainChart[currentRange].datasets
+							.map((obj, index) => {
 								const palette = theme.palette[index === 0 ? 'primary' : 'secondary'];
 								return {
 									...obj,
