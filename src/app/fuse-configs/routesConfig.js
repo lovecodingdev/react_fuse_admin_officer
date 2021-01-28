@@ -32,7 +32,7 @@ const routes = [
 	{
 		path: '/',
 		exact: true,
-		component: () => <Redirect to="/apps/setup/bonus-plan/all" />
+		component: () => <Redirect to="/apps/dashboard/dashboard" />
 	},
 	{
 		component: () => <Redirect to="/pages/errors/error-404" />
