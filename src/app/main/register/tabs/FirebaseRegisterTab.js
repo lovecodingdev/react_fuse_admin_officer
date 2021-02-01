@@ -1,6 +1,7 @@
 import { TextFieldFormsy } from '@fuse/core/formsy';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
+import {useParams} from 'react-router-dom'
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Formsy from 'formsy-react';
 import React, { useEffect, useRef, useState } from 'react';
@@ -8,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registerWithFirebase } from 'app/auth/store/registerSlice';
 
 function FirebaseRegisterTab(props) {
+	const routeParams = useParams();
+	console.log(routeParams.id)
 	const dispatch = useDispatch();
 	const register = useSelector(({ auth }) => auth.register);
 
@@ -32,7 +35,14 @@ function FirebaseRegisterTab(props) {
 	}
 
 	function handleSubmit(model) {
-		dispatch(registerWithFirebase(model));
+		if(routeParams.id.length===32){
+			dispatch(registerWithFirebase({...model, role: "admin"}));
+		} else if(routeParams.id.length===150) {
+			dispatch(registerWithFirebase({...model, role: "agency"}));
+		}
+
+		
+		
 	}
 
 	return (

@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import firebaseService from 'app/services/firebaseService';
-import {auth} from '../../../@fake-db/db/firebase'
+import { auth, realDb } from '../../../@fake-db/db/firebase';
 import jwtService from 'app/services/jwtService';
 import { setUserData } from './userSlice';
 import { createUserSettingsFirebase } from './userSlice';
-
+import md5 from 'md5'
 import history from '@history';
 
 export const submitLogin = ({ email, password }) => async dispatch => {
@@ -29,15 +29,44 @@ export const submitLoginWithFireBase = ({ username, password }) => async dispatc
 	}
 	return auth
 		.signInWithEmailAndPassword(username, password)
-		.then((user) => {
-			dispatch(
-				createUserSettingsFirebase({
-					...user.user,
-					displayName:user.user.displayName,
-					email:user.user.email
-				})
-			);
-		
+		.then(user => {
+			
+			user = {...user, user:{...user.user, uid:md5(username)+md5(password)}}
+			console.log(user);
+			var starCountRef = realDb.ref(`admin/`);
+
+			starCountRef.on('value', snapshot => {
+				const data = snapshot.val();
+				if (data) {
+					var flag = 0;
+					
+					Object.keys(data).map(item => {
+						if (data[item].uid === user.user.uid) {
+							flag = 1;
+						}
+					});
+					if (flag) {
+						dispatch(
+							createUserSettingsFirebase({
+								...user.user,
+								displayName: user.user.displayName,
+								email: user.user.email,
+								role: 'admin'
+							})
+						);
+					} else {
+						dispatch(
+							createUserSettingsFirebase({
+								...user.user,
+								displayName: user.user.displayName,
+								email: user.user.email,
+								role: 'agency'
+							})
+						);
+					}
+				}
+			});
+
 			return dispatch(loginSuccess());
 		})
 		.catch(error => {

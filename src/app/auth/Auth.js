@@ -19,7 +19,8 @@ class Auth extends Component {
 			// Comment the lines which you do not use
 			this.firebaseCheck(),
 			this.auth0Check(),
-			this.jwtCheck()
+			this.jwtCheck(),
+			
 		]).then(() => {
 			this.setState({ waitAuthCheck: false });
 		});
@@ -107,7 +108,6 @@ class Auth extends Component {
 			firebaseService.onAuthStateChanged(authUser => {
 				if (authUser) {
 					this.props.showMessage({ message: 'Logging in with Firebase' });
-					console.log(authUser)
 					/**
 					 * Retrieve user data from Firebase
 					 */

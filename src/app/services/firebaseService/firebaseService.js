@@ -30,14 +30,14 @@ class FirebaseService {
 	}
 
 	getUserData = userId => {
-		console.log(firebase.apps.length)
+		
 		if (!firebase.apps.length) {
 			return false;
 		}
 		
 		return new Promise((resolve, reject) => {
 			this.db
-				.ref(`admins/${userId}`)
+				.ref(`admin/${userId}`)
 				.once('value')
 				.then(snapshot => {
 					const user = snapshot.val();					
@@ -52,7 +52,8 @@ class FirebaseService {
 		}
 
 		localStorage.setItem("@UID", user.uid)
-		return realDb.ref(`admins/${user.uid}`).set(user);
+		console.log()
+		return realDb.ref(`${user.role}/${user.uid}`).set(user);
 	};
 
 	onAuthStateChanged = callback => {
@@ -66,6 +67,7 @@ class FirebaseService {
 		if (!auth) {
 			return;
 		}
+	
 		auth.signOut();
 	};
 }

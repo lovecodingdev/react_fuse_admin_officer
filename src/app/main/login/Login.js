@@ -111,12 +111,12 @@ function Login() {
 						</CardContent>
 
 						<div className="flex flex-col items-center justify-center pb-32">
-							<div>
+							{/* <div>
 								<span className="font-medium mr-8">Don't have an account?</span>
 								<Link className="font-medium" to="/register">
 									Register
 								</Link>
-							</div>
+							</div> */}
 							{/* <Link className="font-medium mt-8" to="/">
 								Back to Dashboard
 							</Link> */}

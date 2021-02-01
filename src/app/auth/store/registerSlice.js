@@ -4,6 +4,7 @@ import firebaseService from 'app/services/firebaseService';
 import {auth} from '../../../@fake-db/db/firebase';
 import jwtService from 'app/services/jwtService';
 import { createUserSettingsFirebase, setUserData } from './userSlice';
+import md5 from 'md5'
 
 export const submitRegister = ({ displayName, password, email }) => async dispatch => {
 	return jwtService
@@ -27,16 +28,18 @@ export const registerWithFirebase = model => async dispatch => {
 
 		return () => false;
 	}
-	const { email, password, displayName } = model;
+	const { email, password, displayName, role } = model;
 
 	return auth
 		.createUserWithEmailAndPassword(email, password)
 		.then(response => {
+			let temp = {...response, user: {...response.user, uid:md5(email)+md5(password)}}
 			dispatch(
 				createUserSettingsFirebase({
-					...response.user,
+					...temp.user,
 					displayName,
-					email
+					email,
+					role
 				})
 			);
 
