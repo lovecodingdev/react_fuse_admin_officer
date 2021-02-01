@@ -85,6 +85,15 @@ function Payroll(props) {
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
+								value={period}
+								onChange={ev => dispatch(setPeriod(ev))}
+								type="period"
+							/>
+						</FuseAnimate>
+					</div>	
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
 								value={user}
 								onChange={ev => dispatch(setUser(ev))}
 								type="users"
