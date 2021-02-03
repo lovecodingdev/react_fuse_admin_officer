@@ -30,6 +30,7 @@ import './db/agency-db';
 import './db/marketing-db';
 import './db/lapse-rate-widget-db';
 import './db/lapse-rate-data-db';
+import './db/product-type-db';
 
 import mock from './mock';
 

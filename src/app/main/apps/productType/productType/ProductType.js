@@ -2,13 +2,11 @@ import FusePageCarded from '@fuse/core/FusePageCarded';
 import withReducer from 'app/store/withReducer';
 import React from 'react';
 import reducer from '../store';
-import ProductsHeader from './UsersHeader';
-import ProductsTable from './UsersTable';
-import AddUserDialog from './AddUserDialog'
+import ProductsHeader from './ProductTypeHeader';
+import ProductsTable from './ProductTypeTable';
 
 function Products() {
 	return (
-		<>
 		<FusePageCarded
 			classes={{
 				content: 'flex',
@@ -19,9 +17,7 @@ function Products() {
 			content={<ProductsTable />}
 			innerScroll
 		/>
-		<AddUserDialog />
-		</>
 	);
 }
 
-export default withReducer('users', reducer)(Products);
+export default withReducer('productType', reducer)(Products);

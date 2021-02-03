@@ -15,87 +15,25 @@ import Tooltip from '@material-ui/core/Tooltip';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { removeProducts } from '../store/entrySlice';
+import { removeMarketing } from '../store/productTypeSlice';
 
 const rows = [
 
 	{
-		id: 'policyHolderName',
+		id: 'productTypeName',
 		align: 'center',
 		disablePadding: false,
-		label: ' Policyholder Name',
+		label: 'Product Type Name',
 		sort: true
 	},
 	{
-		id: 'policyInformation',
+		id: 'action',
 		align: 'center',
 		disablePadding: false,
-		label: 'Policy Information (i.e. Vehicle Type)',
-		sort: true
-	},
-	{
-		id: 'datePolicyIsWritten',
-		align: 'center',
-		disablePadding: false,
-		label: 'Date Policy Is Written',
-		sort: true
-	},
-	{
-		id: 'datePolicyIsIssued',
-		align: 'center',
-		disablePadding: false,
-		label: 'Date Policy Is Issued',
-		sort: true
-	},
-	{
-		id: 'percentOfSaleCredit',
-		align: 'center',
-		disablePadding: false,
-		label: 'Percent of Sale Credit',
-		sort: true
-	},
-	{
-		id: 'typeOfProduct',
-		align: 'center',
-		disablePadding: false,
-		label: 'Type of Product',
-		sort: true
-	},
-	{
-		id: 'policyHolderType',
-		align: 'center',
-		disablePadding: false,
-		label: 'Policyholder Type',
-		sort: true
-	},
-	{
-		id: 'policyPremium',
-		align: 'center',
-		disablePadding: false,
-		label: 'Semi-Annual Policy Premium',
-		sort: true
-	},
-	{
-		id: 'sourceOfBusiness',
-		align: 'center',
-		disablePadding: false,
-		label: 'Source of Business',
-		sort: true
-	},
-	// {
-	// 	id: 'adjustments',
-	// 	align: 'right',
-	// 	disablePadding: false,
-	// 	label: 'Adjustments',
-	// 	sort: true
-	// },
-	{
-		id: 'dollarBonus',
-		align: 'center',
-		disablePadding: false,
-		label: 'Dollar Bonus',
+		label: '',
 		sort: true
 	}
+	
 ];
 
 
@@ -165,7 +103,7 @@ function ProductsTableHead(props) {
 								<MenuList>
 									<MenuItem
 										onClick={() => {
-											dispatch(removeProducts(selectedProductIds));
+											dispatch(removeMarketing(selectedProductIds));
 											props.onMenuItemClick();
 											closeSelectedProductsMenu();
 										}}

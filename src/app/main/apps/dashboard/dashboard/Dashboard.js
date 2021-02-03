@@ -14,7 +14,7 @@ import _ from '@lodash';
 import reducer from '../store';
 import Table from '../../../components/widgets/Table';
 import HorizontalBarChart from '../../../components/widgets/HorizontalBarChart';
-import Panel from '../../../components/widgets/Panel';
+import Panel from '../widget/Panel';
 import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
@@ -37,40 +37,38 @@ const panelData = {
 	data: [
 		{
 			id: 1,
-			title: 'Opportunity Sales Tasks',
-			count: 108,
+			title: 'Lapse Rate',
 			label: 'label',
 			color: 'text-blue',
+			data:[
+				{
+					Auto: 52
+				},
+				{
+					Fire: 32
+				},
+				{
+					Health: 16
+				},
+				{
+					Life:23
+				}
+			]
 		},
 		{
-			id: 2,
-			title: 'New Hot Prespects',
-			count: 1,
+			id: 1,
+			title: 'Goals vs Actual',	
 			label: 'label',
 			color: 'text-blue',
-			
-		},
-		{
-			id: 3,
-			title: 'BOO Cancel Non-Pay',
-			count: 20,
-			label: 'label',
-			color: 'text-red',
-		},
-		{
-			id: 4,
-			title: 'Todays Simple Conversations',
-			count: 0,
-			label: 'label',
-			color: 'text-blue',
-		},
-		{
-			id: 5,
-			title: 'Open',
-			count: 40,
-			label: 'label',
-			color: 'text-blue',
-		},
+			data:[
+				{
+					Goals: 52
+				},
+				{
+					Actual: 32
+				}
+			]
+		}
 	]
 }
 
@@ -224,7 +222,7 @@ function Dashboard(props) {
 				<div className="w-full p-12">
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						{panelData.data.map(panel => (
-							<div className="widget flex w-1/5 p-12">
+							<div className="widget flex w-1/2 p-12">
 								<Panel data={panel} />
 							</div>
 						))}

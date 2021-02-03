@@ -52,8 +52,10 @@ class FirebaseService {
 		}
 
 		localStorage.setItem("@UID", user.uid)
-		console.log()
-		return realDb.ref(`${user.role}/${user.uid}`).set(user);
+		localStorage.setItem("@BELONGTO", user.belongTo)
+
+
+		return realDb.ref(`${user.role}/${user.uid}`).set({...user, id:user.uid, active:true});
 	};
 
 	onAuthStateChanged = callback => {

@@ -8,9 +8,9 @@ import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles(theme => ({
 	formControl: {
-		margin: theme.spacing(1),
-        minWidth: 120,
-        maxWidth:120
+		
+        width: "100%",
+
 	},
 	selectEmpty: {
 		marginTop: theme.spacing(2)
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 export default function SimpleSelect(props) {
 	const classes = useStyles();
     const [age, setAge] = React.useState('');
-    const { id, data, variant, value, handleChangeValue, validation, type, willvalidation, validate, size } = props;
+    const { id, data, variant, value, handleChangeValue, validation, type, willvalidation, validate, label } = props;
 
 	const handleChange = event => {
 		if (willvalidation) {
@@ -34,8 +34,8 @@ export default function SimpleSelect(props) {
 		}
 	};
 	return (
-		<FormControl variant="outlined" className={classes.formControl} size="small" error={validate ? true : false}>
-			<InputLabel id="demo-simple-select-outlined-label">Type</InputLabel>
+		<FormControl variant="outlined" className={classes.formControl}  error={validate ? true : false}>
+			<InputLabel id="demo-simple-select-outlined-label">{label}</InputLabel>
 			<Select
 				labelId="demo-simple-select-outlined-label"
 				id="demo-simple-select-outlined"

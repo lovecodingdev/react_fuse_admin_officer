@@ -2,11 +2,14 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
+
+let belongTo = localStorage.getItem('@BELONGTO')
 export const getMarketing = createAsyncThunk(
 	'marketing/marketing/getMarketings',
 	() =>
 		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`Marketing/`);
+			
+			var starCountRef = realDb.ref(`Marketing/${belongTo}/`);
 			var entries = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
@@ -36,7 +39,7 @@ export const removeMarketing = createAsyncThunk(
 		const response = await axios.post('/api/setup/marketing/product/remove-products', { productIds });
 		const data = await response.data;
 		productIds.map(item => {
-			var starCountRef = realDb.ref(`Marketing/${item}`);
+			var starCountRef = realDb.ref(`Marketing/${belongTo}/${item}`);
 			starCountRef.remove();
 		});
 

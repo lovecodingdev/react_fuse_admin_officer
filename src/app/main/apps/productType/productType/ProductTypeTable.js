@@ -11,8 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
-import { getUsers, selectUsers, saveProduct } from '../store/userSlice';
-import ProductsTableHead from './UsersTableHead';
+import { getMarketing, selectMarketing, saveMarketing } from '../store/productTypeSlice';
+import ProductsTableHead from './ProductTypeTableHead';
 import TextInput from '../../../components/TextField';
 import FormattedInput from '../../../components/PriceInput';
 import { makeStyles } from '@material-ui/core/styles';
@@ -31,11 +31,6 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const teamBonusList = [
-	{ item: 'Yes', value: true },
-	{ item: 'No', value: false }
-];
-
 function makeid(length) {
 	var result = '';
 	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -48,14 +43,13 @@ function makeid(length) {
 
 function ProductsTable(props) {
 	const dispatch = useDispatch();
-	const products = useSelector(selectUsers);
-	const searchText = useSelector(({ users }) => users.users.searchText);
-	const isAdmin = localStorage.getItem('@ISADMIN');
+	const products = useSelector(selectMarketing);
+	const searchText = useSelector(({ productType }) => productType.productType.searchText);
+
 	const classes = useStyles();
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(products);
-	console.log(products);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -63,16 +57,18 @@ function ProductsTable(props) {
 		id: null
 	});
 	const [state, setState] = React.useState({
-		includeTeamBonus: ''
+		productTypeName: '',
+		productTypeNameValidation: false
 	});
 
 	useEffect(() => {
-		dispatch(getUsers()).then(() => setLoading(false));
+		dispatch(getMarketing()).then(() => setLoading(false));
 	}, [dispatch]);
 
 	useEffect(() => {
 		if (searchText.length !== 0) {
-			setData(_.filter(products, item => item.data.displayName.toLowerCase().includes(searchText.toLowerCase())));
+			console.log(searchText);
+			setData(_.filter(products, item => item.productTypeName.toLowerCase().includes(searchText.toLowerCase())));
 			setPage(0);
 		} else {
 			setData(products);
@@ -130,37 +126,47 @@ function ProductsTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 
-	function handleDateChange(date, id) {
-		setState({ ...state, [id]: date });
-		console.log({ [id]: date });
-	}
 
 	function handleChangeValue(data) {
-		
+
 		setState({ ...state, ...data });
 	}
 
 	function checkValidation() {
-		if (!state.percentOfSaleCreditValidation && !state.typeOfProductValidation && !state.policyPremiumValidation) {
+		if (!state.productTypeNameValidation ) {
 			return true;
 		} else {
 			setState({
 				...state,
-				percentOfSaleCreditValidation: state.percentOfSaleCredit ? false : true,
-				typeOfProductValidation: state.typeOfProduct ? false : true,
-				policyPremiumValidation: state.policyPremium ? false : true
+				productTypeNameValidation: state.productTypeName ? false : true
+		
 			});
 			return false;
 		}
 	}
 
-	function handleClick() {
-		// props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
+	function onSave() {
+		console.log(checkValidation());
+		if (checkValidation()) {
+			let form = {
+				id: state.id ? state.id : Date.now(),
+				productTypeName: state.productTypeName,				
+			};			
+
+			dispatch(saveMarketing(form));
+			dispatch(getMarketing()).then(() => setLoading(false));
+			setState({
+				productTypeName:''
+			});
+		}
 	}
 
-	function goBonusPlan(uid) {
-		setLoading(true);
-		props.history.push(`/apps/setup/bonus-plan/${uid}`);
+	function handleClick(item) {
+		setState({
+			productTypeName:item.productTypeName,
+			id: item.id
+		});
+
 	}
 
 	if (loading) {
@@ -181,6 +187,42 @@ function ProductsTable(props) {
 								rowCount={data.length}
 								onMenuItemClick={handleDeselect}
 							/>
+
+							<TableBody>
+								<TableRow className="h-64 cursor-pointer">
+									<TableCell className="w-40 md:w-64 text-center" padding="none"></TableCell>
+
+									<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+										<TextInput
+											id="outlined-basic"
+											label=""
+											variant="outlined"
+											value={state.productTypeName}
+											validation="productTypeName"
+											onChange={handleChangeValue}
+											willvalidation={true}
+											validate={state.productTypeNameValidation}
+											size={250}
+										/>
+									</TableCell>
+									<TableCell
+										className="p-2 md:p-2"
+										component="th"
+										scope="row"
+										align="center"
+										colSpan={2}
+									>
+										<Button
+											className="whitespace-nowrap normal-case"
+											variant="contained"
+											color="secondary"
+											onClick={onSave}
+										>
+											<span>SAVE</span>
+										</Button>
+									</TableCell>
+								</TableRow>
+							</TableBody>
 						</Table>
 					</FuseScrollbars>
 				</MuiPickersUtilsProvider>
@@ -203,10 +245,59 @@ function ProductsTable(props) {
 						/>
 
 						<TableBody>
-							{_.orderBy(data, [order.id], [order.direction])
+							<TableRow className="h-10 cursor-pointer">
+								<TableCell className="w-40 md:w-64 text-center" padding="none"></TableCell>
+
+								<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+									<TextInput
+										id="outlined-basic"
+										label=""
+										variant="outlined"
+										value={state.productTypeName}
+										validation="productTypeName"
+										onChange={handleChangeValue}
+										willvalidation={true}
+										validate={state.productTypeNameValidation}
+										size={250}
+									/>
+								</TableCell>
+
+								<TableCell className="p-2 md:p-2" component="th" scope="row" align="center" colSpan={2}>
+									<Button
+										className="whitespace-nowrap normal-case"
+										variant="contained"
+										color="secondary"
+										onClick={onSave}
+									>
+										<span>SAVE</span>
+									</Button>
+								</TableCell>
+							</TableRow>
+
+							{_.orderBy(
+								data,
+								[
+									order.id
+									// o => {
+									// 	console.log(order.id)
+									// 	switch (order.id) {
+
+									// 		case 'policyInformation': {
+									// 			return 'policyInformation';
+									// 		}
+									// 		case 'datePolicyIsWritten': {
+									// 			return 'datePolicyIsWritten';
+									// 		}
+									// 		default: {
+									// 			return order.id;
+									// 		}
+									// 	}
+									// }
+								],
+								[order.direction]
+							)
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map((n, index) => {
-									console.log(n)
+								.map(n => {
 									const isSelected = selected.indexOf(n.id) !== -1;
 									return (
 										<TableRow
@@ -215,8 +306,9 @@ function ProductsTable(props) {
 											role="checkbox"
 											aria-checked={isSelected}
 											tabIndex={-1}
-											key={index}
+											key={n.id}
 											selected={isSelected}
+											onClick={event => handleClick(n)}
 										>
 											<TableCell className="w-40 md:w-64 text-center" padding="none">
 												<Checkbox
@@ -226,61 +318,11 @@ function ProductsTable(props) {
 												/>
 											</TableCell>
 
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.data.displayName}
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center"  >
+												{n.productTypeName}
 											</TableCell>
-
-											<TableCell
-												className="p-2 md:p-2 truncate"
-												component="th"
-												scope="row"
-												align="center"
-											>
-												<SelectBox
-													data={teamBonusList}
-													willvalidation={false}
-													validation="includeTeamBonus"
-													handleChangeValue={handleChangeValue}
-													// value={state.includeTeamBonus}
-												/>
-											</TableCell>
-
-											<TableCell
-												className="p-2 md:p-2"
-												component="th"
-												scope="row"
-												align="center"
-												onClick={() => goBonusPlan(n.uid)}
-											>
-												{/* <span>$</span> */}
-												Bonus Setup
-											</TableCell>
-
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												<a
-													href="http://localhost:3001/login/admin"
-													target="_blank"
-													rel="noopener noreferrer"
-												>
-													Producer File
-												</a>
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.data.email}
-											</TableCell>
-											
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.active ? 'Active' : 'Revoked'}
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												<Button
-													className="whitespace-nowrap normal-case"
-													variant="contained"
-													color="secondary"
-													onClick={handleClick}
-												>
-													<span className="hidden sm:flex">Active</span>
-												</Button>
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center"  >
+												
 											</TableCell>
 										</TableRow>
 									);

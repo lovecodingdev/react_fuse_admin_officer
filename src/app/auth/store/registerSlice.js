@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import firebaseService from 'app/services/firebaseService';
-import {auth} from '../../../@fake-db/db/firebase';
+import { auth, realDb } from '../../../@fake-db/db/firebase';
 import jwtService from 'app/services/jwtService';
 import { createUserSettingsFirebase, setUserData } from './userSlice';
-import md5 from 'md5'
+import md5 from 'md5';
 
 export const submitRegister = ({ displayName, password, email }) => async dispatch => {
 	return jwtService
@@ -28,20 +28,57 @@ export const registerWithFirebase = model => async dispatch => {
 
 		return () => false;
 	}
-	const { email, password, displayName, role } = model;
+	const { email, password, displayName, role, belongTo } = model;
 
 	return auth
 		.createUserWithEmailAndPassword(email, password)
 		.then(response => {
-			let temp = {...response, user: {...response.user, uid:md5(email)+md5(password)}}
-			dispatch(
-				createUserSettingsFirebase({
-					...temp.user,
-					displayName,
-					email,
-					role
-				})
-			);
+			if (role === 'agency') {
+				realDb.ref(`teams/${belongTo}/`).once('value', teamSnapshot => {
+					let data = teamSnapshot.val();
+					if (data) {
+						if (data['teamAgent']) {
+							data = { ...data, teamAgent: [...data.teamAgent, response.user.uid] };
+						} else {
+							data = { ...data, teamAgent: [response.user.uid] };
+						}
+
+						realDb.ref(`teams/${belongTo}/`).set({
+							...data
+						});
+					}
+
+					dispatch(
+						createUserSettingsFirebase({
+							...response.user,
+							displayName,
+							email,
+							role,
+							belongTo
+						})
+					);
+				});
+			} else {
+				let data = {
+					id: response.user.uid,
+					teamOwner: response.user.uid,
+					teamName: '',
+					teamAgent: [],
+					teamProducer: []
+				};
+				realDb.ref(`teams/${response.user.uid}/`).set({
+					...data
+				});
+				dispatch(
+					createUserSettingsFirebase({
+						...response.user,
+						displayName,
+						email,
+						role,
+						belongTo
+					})
+				);
+			}
 
 			return dispatch(registerSuccess());
 		})

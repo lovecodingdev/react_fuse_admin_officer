@@ -14,8 +14,8 @@ export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts',
 	(routeParam, { getState }) =>
 	
 		new Promise((resolve, reject) => {
-	
-			var starCountRef = realDb.ref(`BonusPlan/${routeParam}`);
+			var belongTo = localStorage.getItem('@BELONGTO')
+			var starCountRef = realDb.ref(`BonusPlan/${belongTo}/${routeParam}`);
 			var bonusPlans = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
@@ -68,8 +68,8 @@ export const removeContact = createAsyncThunk(
 		
 		const response = await axios.post('/api/bonus-plan/remove-contact', { contact });
 		const data = await response.data;
-		
-		realDb.ref(`BonusPlan/${contact.routeParam}/${contact.planType}/${contact.id}`).remove();
+		var belongTo = localStorage.getItem('@BELONGTO')
+		realDb.ref(`BonusPlan/${belongTo}/${contact.routeParam}/${contact.planType}/${contact.id}`).remove();
 		dispatch(getAutoBonus(contact.routeParam));
 
 		return data;

@@ -6,17 +6,29 @@ export const getUsers = createAsyncThunk(
 	'users/users/getUsers',
 	() =>
 		new Promise((resolve, reject) => {
+			
 			var starCountRef = realDb.ref(`users/`);
+			var agencyCountRef = realDb.ref(`agency/`);
 			var users = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
-
+				
 				if (data) {
 					Object.keys(data).map(item => {
 						users.push(data[item]);
 					});					
 				}
-				resolve(users);
+				
+				agencyCountRef.on('value', snap=>{
+					const agencyData = snap.val();
+					if (agencyData) {
+						Object.keys(agencyData).map(item => {
+							users.push(agencyData[item]);
+						});					
+					}
+					resolve(users);
+				})
+				
 			});
 		})
 );
@@ -46,6 +58,19 @@ export const removeProducts = createAsyncThunk(
 	}
 );
 
+export const addUser = createAsyncThunk(
+	'users/user/addUser',
+	async (contact, { dispatch, getState }) => {
+		
+		const response = await axios.post('/api/users/add-users', { contact });
+		const data = await response.data;
+		
+		dispatch(getUsers());
+
+		return data;
+	}
+);
+
 const productsAdapter = createEntityAdapter({});
 
 export const { selectAll: selectUsers, selectById: selectUserById } = productsAdapter.getSelectors(
@@ -55,21 +80,48 @@ export const { selectAll: selectUsers, selectById: selectUserById } = productsAd
 const productsSlice = createSlice({
 	name: 'users/users',
 	initialState: productsAdapter.getInitialState({
-		searchText: ''
+		searchText: '',
+		addUserDialog: {
+			type: 'new',
+			props: {
+				open: false
+			},
+			data: null
+		},
 	}),
+	
 	reducers: {
 		setProductsSearchText: {
 			reducer: (state, action) => {
 				state.searchText = action.payload;
 			},
 			prepare: event => ({ payload: event.target.value || '' })
-		}
+		},
+		openUserDialog: (state, action) => {
+			state.addUserDialog = {
+				type: 'new',
+				props: {
+					open: true
+				},
+				data: action.payload
+			};
+		},
+		closeUserDialog: (state, action) => {
+			state.addUserDialog = {
+				type: 'new',
+				props: {
+					open: false
+				},
+				data: null
+			};
+		},
 	},
 	extraReducers: {
-		[getUsers.fulfilled]: productsAdapter.setAll
+		[getUsers.fulfilled]: productsAdapter.setAll,
+		[addUser.fulfilled]: productsAdapter.addOne,
 	}
 });
 
-export const { setProductsSearchText } = productsSlice.actions;
+export const { setProductsSearchText, openUserDialog, closeUserDialog } = productsSlice.actions;
 
 export default productsSlice.reducer;

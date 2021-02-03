@@ -58,6 +58,8 @@ export const createUserSettingsFirebase = authUser => async (dispatch, getState)
 		uid: authUser.uid,
 		from: 'firebase',
 		role: [authUser.role],
+		belongTo:authUser.belongTo,
+		active:true,
 		data: {
 			displayName: authUser.displayName,
 			email: authUser.email,

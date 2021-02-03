@@ -2,13 +2,11 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
-var belongTo = localStorage.getItem('@BELONGTO')
-
-export const getEntries = createAsyncThunk(
-	'eCommerceApp/products/getProducts',
+export const getProductType = createAsyncThunk(
+	'eCommerceApp/productType/getProducts',
 	() =>
 		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`Sales/${belongTo}/Entries/${localStorage.getItem('@UID')}`);
+			var starCountRef = realDb.ref(`ProductType/`);
 			var entries = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
@@ -26,16 +24,16 @@ export const getEntries = createAsyncThunk(
 
 
 
-export const saveProduct = createAsyncThunk('eCommerceApp/product/saveProduct', async (product, { dispatch, getState }) => {
+export const saveProduct = createAsyncThunk('eCommerceApp/productType/saveProduct', async (product, { dispatch, getState }) => {
 
-	const response = await axios.post('/api/e-commerce-app/product/save', product);
+	const response = await axios.post('/api/setup/productType/save', product);
 	const data = await response.data;
-	dispatch(getEntries());
+	dispatch(getProductType());
 	return data;
 });
 
 export const removeProducts = createAsyncThunk(
-	'eCommerceApp/products/removeProducts',
+	'eCommerceApp/productType/removeProducts',
 	async (productIds, { dispatch, getState }) => {
 		const response = await axios.post('/api/e-commerce-app/remove-products', { productIds });
 		const data = await response.data;
@@ -44,7 +42,7 @@ export const removeProducts = createAsyncThunk(
 			starCountRef.remove();
 		});
 
-		dispatch(getEntries());
+		dispatch(getProductType());
 
 		return data;
 	}
@@ -52,12 +50,12 @@ export const removeProducts = createAsyncThunk(
 
 const productsAdapter = createEntityAdapter({});
 
-export const { selectAll: selectEntries, selectById: selectProductById } = productsAdapter.getSelectors(
-	state => state.eCommerceApp.products
+export const { selectAll: selectProductType, selectById: selectProductById } = productsAdapter.getSelectors(
+	state => state.eCommerceApp.productType
 );
 
 const productsSlice = createSlice({
-	name: 'eCommerceApp/products',
+	name: 'eCommerceApp/productType',
 	initialState: productsAdapter.getInitialState({
 		searchText: ''
 	}),
@@ -70,7 +68,7 @@ const productsSlice = createSlice({
 		}
 	},
 	extraReducers: {
-		[getEntries.fulfilled]: productsAdapter.setAll
+		[getProductType.fulfilled]: productsAdapter.setAll
 	}
 });
 

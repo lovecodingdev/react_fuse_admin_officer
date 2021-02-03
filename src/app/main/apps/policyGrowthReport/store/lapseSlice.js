@@ -1,6 +1,8 @@
 import { createEntityAdapter, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+var belongTo = localStorage.getItem('@BELONGTO')
+
 export const getProjects = createAsyncThunk('policyGrowthReport/projects/getProjects', async () => {
 	const response = await axios.get('/api/lapse-rate/projects');
 	return response.data;

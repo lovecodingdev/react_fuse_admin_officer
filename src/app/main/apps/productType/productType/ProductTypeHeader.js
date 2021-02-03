@@ -9,29 +9,22 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setProductsSearchText } from '../store/userSlice';
-import {
-	openUserDialog
-} from '../store/userSlice';
+import { setProductsSearchText } from '../store/productTypeSlice';
 
 function ProductsHeader(props) {
 	const dispatch = useDispatch();
-	const searchText = useSelector(({ users }) => users.users.searchText);
+	const searchText = useSelector(({ productType }) => productType.productType.searchText);
 	const mainTheme = useSelector(selectMainTheme);
-
-	function addNewUser () {
-		dispatch(openUserDialog())
-	}
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">
 			<div className="flex items-center">
 				<FuseAnimate animation="transition.expandIn" delay={300}>
-					<Icon className="text-32">people</Icon>
+					<Icon className="text-32">meeting_room</Icon>
 				</FuseAnimate>
 				<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 					<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
-						Users
+						Type of Proudct
 					</Typography>
 				</FuseAnimate>
 			</div>
@@ -57,18 +50,18 @@ function ProductsHeader(props) {
 					</FuseAnimate>
 				</ThemeProvider>
 			</div>
-			<FuseAnimate animation="transition.slideRightIn" delay={300}>
+			{/* <FuseAnimate animation="transition.slideRightIn" delay={300}>
 				<Button
-					component={Link}					
+					component={Link}
+					to="/apps/e-commerce/products/new"
 					className="whitespace-nowrap normal-case"
 					variant="contained"
 					color="secondary"
-					onClick={addNewUser}
 				>
-					<span className="hidden sm:flex">Add</span>
-					
+					<span className="hidden sm:flex">Add New Product</span>
+					<span className="flex sm:hidden">New</span>
 				</Button>
-			</FuseAnimate>
+			</FuseAnimate> */}
 		</div>
 	);
 }

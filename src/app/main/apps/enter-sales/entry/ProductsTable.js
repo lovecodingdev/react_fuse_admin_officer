@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import { getEntries, selectEntries, saveProduct } from '../store/entrySlice';
+import { getProductType, selectProductType } from '../store/productTypeSlice';
 import ProductsTableHead from './ProductsTableHead';
 import TextInput from '../../../components/TextField';
 import FormattedInput from '../../../components/PriceInput';
@@ -36,6 +37,11 @@ const productLists = [
 	{ item: 'Raw New', value: 'Raw New' },
 	{ item: 'Add On', value: 'Add On' },
 	{ item: 'Transfer In', value: 'Transfer In' }
+];
+
+const policyholderTypeLists = [
+	{ item: 'Household', value: 'household' },
+	{ item: 'Individual', value: 'individual' }
 ];
 
 const sourceLists = [
@@ -74,6 +80,8 @@ function makeid(length) {
 function ProductsTable(props) {
 	const dispatch = useDispatch();
 	const products = useSelector(selectEntries);
+	const productType = useSelector(selectProductType);
+	console.log(productType)
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 
 	const classes = useStyles();
@@ -88,6 +96,7 @@ function ProductsTable(props) {
 	});
 	const [state, setState] = React.useState({
 		policyHolderName: '',
+		policyHolderType:'',
 		policyInformation: '',
 		datePolicyIsWritten: new Date(),
 		datePolicyIsIssued: null,
@@ -97,6 +106,7 @@ function ProductsTable(props) {
 		sourceOfBusiness: '',
 		adjustments: '',
 		dollarBonus: '',
+		policyHolderTypeValidation:false,
 		percentOfSaleCreditValidation: false,
 		typeOfProductValidation: false,
 		policyPremiumValidation: false
@@ -104,6 +114,7 @@ function ProductsTable(props) {
 
 	useEffect(() => {
 		dispatch(getEntries()).then(() => setLoading(false));
+		dispatch(getProductType());
 	}, [dispatch]);
 
 	useEffect(() => {
@@ -198,6 +209,7 @@ function ProductsTable(props) {
 				id: state.id ? state.id : makeid(20),
 				policyHolderName: state.policyHolderName,
 				policyInformation: state.policyInformation,
+				policyHolderType:state.policyHolderType,
 				datePolicyIsWritten: state.datePolicyIsWritten
 					? state.datePolicyIsWritten
 					: '',
@@ -251,6 +263,7 @@ function ProductsTable(props) {
 			setState({
 				id: '',
 				policyHolderName: '',
+				policyHolderType:'',
 				policyInformation: '',
 				datePolicyIsWritten: new Date(),
 				datePolicyIsIssued: null,
@@ -279,7 +292,8 @@ function ProductsTable(props) {
 			policyPremium: item.policyPremium,
 			sourceOfBusiness: item.sourceOfBusiness,
 			adjustments: item.adjustments,
-			dollarBonus: item.dollarBonus
+			dollarBonus: item.dollarBonus,
+			policyHolderType: item.policyHolderType
 		});
 		// props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
 	}
@@ -387,6 +401,19 @@ function ProductsTable(props) {
 											handleChangeValue={handleChangeValue}
 											willvalidation={true}
 											validate={state.typeOfProductValidation}
+										/>
+									</TableCell>
+									<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+										<SelectBox
+											id="outlined-basic"
+											label=""
+											data={policyholderTypeLists}
+											variant="outlined"
+											value={state.policyHolderType}
+											validation="policyHolderType"
+											handleChangeValue={handleChangeValue}
+											willvalidation={true}
+											validate={state.policyHolderTypeValidation}
 										/>
 									</TableCell>
 									<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
@@ -534,6 +561,19 @@ function ProductsTable(props) {
 										validate={state.typeOfProductValidation}
 									/>
 								</TableCell>
+								<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+										<SelectBox
+											id="outlined-basic"
+											label=""
+											data={policyholderTypeLists}
+											variant="outlined"
+											value={state.policyHolderType}
+											validation="policyHolderType"
+											handleChangeValue={handleChangeValue}
+											willvalidation={true}
+											validate={state.policyHolderTypeValidation}
+										/>
+									</TableCell>
 								<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 									<FormattedInput
 										id="outlined-basic"

@@ -11,6 +11,8 @@ import { registerWithFirebase } from 'app/auth/store/registerSlice';
 function FirebaseRegisterTab(props) {
 	const routeParams = useParams();
 	console.log(routeParams.id)
+	console.log(routeParams.belongTo)
+	const belongTo = routeParams.belongTo
 	const dispatch = useDispatch();
 	const register = useSelector(({ auth }) => auth.register);
 
@@ -36,13 +38,10 @@ function FirebaseRegisterTab(props) {
 
 	function handleSubmit(model) {
 		if(routeParams.id.length===32){
-			dispatch(registerWithFirebase({...model, role: "admin"}));
+			dispatch(registerWithFirebase({...model, role: "admin", belongTo}));
 		} else if(routeParams.id.length===150) {
-			dispatch(registerWithFirebase({...model, role: "agency"}));
-		}
-
-		
-		
+			dispatch(registerWithFirebase({...model, role: "agency",belongTo}));
+		}		
 	}
 
 	return (

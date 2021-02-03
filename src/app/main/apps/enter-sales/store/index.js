@@ -6,6 +6,7 @@ import products from './entrySlice';
 import fireEntries from './fireSlice';
 import lifeEntries from './lifeSlice';
 import healthEntries from './healthSlice';
+import productType from './productTypeSlice';
 
 const reducer = combineReducers({
 	products,
@@ -14,7 +15,8 @@ const reducer = combineReducers({
 	order,
 	fireEntries,
 	lifeEntries,
-	healthEntries
+	healthEntries,
+	productType
 });
 
 export default reducer;

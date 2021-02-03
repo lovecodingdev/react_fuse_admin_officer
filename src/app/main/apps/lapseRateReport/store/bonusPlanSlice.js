@@ -3,12 +3,14 @@ import axios from 'axios';
 
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
+var belongTo = localStorage.getItem('@BELONGTO')
+
 export const getAutoBonus = createAsyncThunk(
 	'lapseRate/autoBonus/getContacts',
 
 	() =>
 		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`BonusPlan/all`);
+			var starCountRef = realDb.ref(`BonusPlan/${belongTo}/all`);
 			var autoBonus = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();

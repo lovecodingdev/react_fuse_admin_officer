@@ -26,7 +26,7 @@ const RegisterConfig = {
 	auth: authRoles.onlyGuest,
 	routes: [
 		{
-			path: '/register/:id',
+			path: '/register/:belongTo/:id',
 			component: Register
 		}
 	]

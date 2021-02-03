@@ -54,10 +54,17 @@ const rows = [
 		sort: true
 	},
 	{
-		id: 'password',
+		id: 'active',
 		align: 'center',
 		disablePadding: false,
-		label: 'Password',
+		label: 'Active',
+		sort: true
+	},
+	{
+		id: 'action',
+		align: 'center',
+		disablePadding: false,
+		label: 'Action',
 		sort: true
 	}
 ];

@@ -8,7 +8,7 @@ const eCommerceDB = {
 
 let belongTo = localStorage.getItem('@BELONGTO')
 
-mock.onGet('/api/setup/marketing/products').reply(() => new Promise((resolve, reject) => {
+mock.onGet('/api/setup/productType/products').reply(() => new Promise((resolve, reject) => {
 	var starCountRef = realDb.ref(`EnterSales/Entries/`);
 	starCountRef.on('value', snapshot => {
 		const data = snapshot.val();
@@ -23,19 +23,19 @@ mock.onGet('/api/setup/marketing/products').reply(() => new Promise((resolve, re
 	
 }));
 
-mock.onPost('/api/setup/marketing/product/remove-products').reply(request => {
+mock.onPost('/api/setup/productType/product/remove-products').reply(request => {
 	const { productIds } = JSON.parse(request.data);
 	eCommerceDB.entrys = eCommerceDB.entrys.filter(product => !productIds.includes(product.id));
 	return [200, productIds];
 });
 
-mock.onGet('/api/setup/marketing/product').reply(request => {
+mock.onGet('/api/setup/productType/product').reply(request => {
 	const { productId } = request.params;
 	const response = _.find(eCommerceDB.entrys, { id: productId });
 	return [200, response];
 });
 
-mock.onPost('/api/setup/marketing/product/save').reply(async request => {
+mock.onPost('/api/setup/productType/product/save').reply(async request => {
 	const data = JSON.parse(request.data);
 	let product = null;
 
@@ -52,7 +52,7 @@ mock.onPost('/api/setup/marketing/product/save').reply(async request => {
 		eCommerceDB.entrys = [...eCommerceDB.entrys, product];
 	}
 
-	realDb.ref(`Marketing/${belongTo}/${data.id}`).set({
+	realDb.ref(`ProductType/${belongTo}/${data.id}`).set({
 		...data
 	});
 

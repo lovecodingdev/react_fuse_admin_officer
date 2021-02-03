@@ -55,6 +55,13 @@ const navigationConfig = [
 						url: '/apps/setup/marketing',
 						exact: true
 					},
+					{
+						id: 'productType',
+						title: 'Type of Product',
+						type: 'item',
+						url: '/apps/setup/product-type',
+						exact: true
+					},
 				]
 			},
 			{
@@ -94,6 +101,15 @@ const navigationConfig = [
 						exact: true
 					}
 				]
+			},
+			{
+				id: 'enter-sales',
+				title: 'Enter Sales',
+				translate: 'ENTERSSALES',
+				type: 'item',
+				icon: 'shopping_cart',
+				url: '/apps/enter-sales/auto-entry',
+			
 			},
 			{
 				id: 'agency',
