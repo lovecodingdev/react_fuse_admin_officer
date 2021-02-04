@@ -6,8 +6,10 @@ const eCommerceDB = {
 	entrys: []
 };
 
+var belongTo = localStorage.getItem('@BELONGTO')
+
 mock.onGet('/api/e-commerce-app/products').reply(() => new Promise((resolve, reject) => {
-	var starCountRef = realDb.ref(`EnterSales/Entries/`);
+	var starCountRef = realDb.ref(`Sales/Entries/`);
 	starCountRef.on('value', snapshot => {
 		const data = snapshot.val();
 		
@@ -50,7 +52,7 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 		eCommerceDB.entrys = [...eCommerceDB.entrys, product];
 	}
 
-	realDb.ref(`EnterSales/Entries/${uid}/${data.id}`).set({
+	realDb.ref(`Sales/${belongTo}/Entries/${uid}/${data.id}`).set({
 		...data
 	});
 

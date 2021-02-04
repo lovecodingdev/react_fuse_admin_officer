@@ -69,6 +69,20 @@ const rows = [
 		sort: true
 	},
 	{
+		id: 'type',
+		align: 'center',
+		disablePadding: false,
+		label: 'Type',
+		sort: true
+	},
+	{
+		id: 'userList',
+		align: 'center',
+		disablePadding: false,
+		label: 'User List',
+		sort: true
+	},
+	{
 		id: 'policyPremium',
 		align: 'center',
 		disablePadding: false,

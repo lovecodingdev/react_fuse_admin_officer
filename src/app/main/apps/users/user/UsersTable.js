@@ -163,6 +163,10 @@ function ProductsTable(props) {
 		props.history.push(`/apps/setup/bonus-plan/${uid}`);
 	}
 
+	function goReport(){
+		props.history.push('/apps/production/sales-results')
+	}
+
 	if (loading) {
 		return <FuseLoading />;
 	}
@@ -256,14 +260,10 @@ function ProductsTable(props) {
 												Bonus Setup
 											</TableCell>
 
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												<a
-													href="http://localhost:3001/login/admin"
-													target="_blank"
-													rel="noopener noreferrer"
-												>
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center" onClick={()=>goReport()}>
+												
 													Producer File
-												</a>
+												
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.data.email}

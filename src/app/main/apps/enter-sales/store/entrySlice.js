@@ -40,7 +40,7 @@ export const removeProducts = createAsyncThunk(
 		const response = await axios.post('/api/e-commerce-app/remove-products', { productIds });
 		const data = await response.data;
 		productIds.map(item => {
-			var starCountRef = realDb.ref(`EnterSales/Entries/${item}`);
+			var starCountRef = realDb.ref(`Sales/${belongTo}/Entries/${localStorage.getItem('@UID')}/${item}`);
 			starCountRef.remove();
 		});
 

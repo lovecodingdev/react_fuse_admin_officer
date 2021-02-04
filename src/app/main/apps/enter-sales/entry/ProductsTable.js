@@ -12,6 +12,7 @@ import { withRouter } from 'react-router-dom';
 import FuseLoading from '@fuse/core/FuseLoading';
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import { getEntries, selectEntries, saveProduct } from '../store/entrySlice';
+import { getUsers, selectUsers } from '../store/userSlice';
 import { getProductType, selectProductType } from '../store/productTypeSlice';
 import ProductsTableHead from './ProductsTableHead';
 import TextInput from '../../../components/TextField';
@@ -19,6 +20,7 @@ import FormattedInput from '../../../components/PriceInput';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import SelectBox from '../../../components/SelectBox';
+import MultiSelectBox from '../../../components/MultiSelectBox';
 import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
@@ -42,6 +44,13 @@ const productLists = [
 const policyholderTypeLists = [
 	{ item: 'Household', value: 'household' },
 	{ item: 'Individual', value: 'individual' }
+];
+
+const typeList = [
+	{ item: 'Auto', value: 'Entries' },
+	{ item: 'Fire', value: 'FireEntries' },
+	{ item: 'Life', value: 'LifeEntries' },
+	{ item: 'Health', value: 'HealthEntries' }
 ];
 
 const sourceLists = [
@@ -80,8 +89,9 @@ function makeid(length) {
 function ProductsTable(props) {
 	const dispatch = useDispatch();
 	const products = useSelector(selectEntries);
+	const users = useSelector(selectUsers);
 	const productType = useSelector(selectProductType);
-	console.log(productType)
+
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 
 	const classes = useStyles();
@@ -94,27 +104,33 @@ function ProductsTable(props) {
 		direction: 'asc',
 		id: null
 	});
+	const [usersList, setUserList] = useState([]);
 	const [state, setState] = React.useState({
 		policyHolderName: '',
-		policyHolderType:'',
+		policyHolderType: '',
 		policyInformation: '',
 		datePolicyIsWritten: new Date(),
 		datePolicyIsIssued: null,
 		percentOfSaleCredit: '',
 		typeOfProduct: '',
+		user: '',
+		type: [],
 		policyPremium: '',
 		sourceOfBusiness: '',
 		adjustments: '',
 		dollarBonus: '',
-		policyHolderTypeValidation:false,
+		typeValidation: false,
+		policyHolderTypeValidation: false,
 		percentOfSaleCreditValidation: false,
 		typeOfProductValidation: false,
-		policyPremiumValidation: false
+		policyPremiumValidation: false,
+		userValidation: false
 	});
 
 	useEffect(() => {
 		dispatch(getEntries()).then(() => setLoading(false));
 		dispatch(getProductType());
+		dispatch(getUsers());
 	}, [dispatch]);
 
 	useEffect(() => {
@@ -126,6 +142,17 @@ function ProductsTable(props) {
 			setData(products);
 		}
 	}, [products, searchText]);
+
+	useEffect(() => {
+		var temp = [];
+		if (users.length > 0) {
+			users.map(item => {
+				temp.push({ item: item.data.displayName, value: item.id });
+			});
+			temp.push({ item: 'Office Count', value: 'OfficeCount' });
+			setUserList(temp);
+		}
+	}, [users]);
 
 	function handleRequestSort(event, property) {
 		const id = property;
@@ -185,18 +212,37 @@ function ProductsTable(props) {
 
 	function handleChangeValue(data) {
 		console.log(data);
-		setState({ ...state, ...data });
+		if (Object.keys(data)[0] === 'type') {
+			if (typeof data['type'] === 'object') {
+				setState({ ...state, ...data });
+			} else {
+				setState({ ...state, type: [data['type']], typeValidation: data['typeValidation'] });
+			}
+		} else {
+			setState({ ...state, ...data });
+		}
 	}
 
 	function checkValidation() {
-		if (!state.percentOfSaleCreditValidation && !state.typeOfProductValidation && !state.policyPremiumValidation) {
+		if (
+			!state.percentOfSaleCreditValidation &&
+			!state.typeOfProductValidation &&
+			!state.policyPremiumValidation &&
+			!state.policyHolderTypeValidation&&
+			state.percentOfSaleCredit&&
+			state.typeOfProduct&&
+			state.policyHolderType&&
+			state.type.length>0			
+		) {
 			return true;
 		} else {
 			setState({
 				...state,
 				percentOfSaleCreditValidation: state.percentOfSaleCredit ? false : true,
 				typeOfProductValidation: state.typeOfProduct ? false : true,
-				policyPremiumValidation: state.policyPremium ? false : true
+				policyPremiumValidation: state.policyPremium ? false : true,
+				policyHolderTypeValidation: state.policyHolderType ? false : true,
+				typeValidation: state.type.length>0 ? false : true
 			});
 			return false;
 		}
@@ -206,16 +252,14 @@ function ProductsTable(props) {
 		console.log(checkValidation());
 		if (checkValidation()) {
 			let form = {
-				id: state.id ? state.id : makeid(20),
+				id: state.id ? state.id : Date.now(),
 				policyHolderName: state.policyHolderName,
 				policyInformation: state.policyInformation,
-				policyHolderType:state.policyHolderType,
-				datePolicyIsWritten: state.datePolicyIsWritten
-					? state.datePolicyIsWritten
-					: '',
-				datePolicyIsIssued: state.datePolicyIsIssued
-					? state.datePolicyIsIssued
-					: '',
+				policyHolderType: state.policyHolderType,
+				type: state.type,
+				user: state.user,
+				datePolicyIsWritten: state.datePolicyIsWritten ? state.datePolicyIsWritten : '',
+				datePolicyIsIssued: state.datePolicyIsIssued ? state.datePolicyIsIssued : '',
 				percentOfSaleCredit: parseFloat(state.percentOfSaleCredit),
 				typeOfProduct: state.typeOfProduct,
 				policyPremium: parseFloat(state.policyPremium),
@@ -223,6 +267,7 @@ function ProductsTable(props) {
 				adjustments: state.adjustments,
 				dollarBonus: state.dollarBonus
 			};
+			console.log(form);
 
 			if (state.datePolicyIsIssued) {
 				if (state.typeOfProduct === 'Personally Produced') {
@@ -263,7 +308,7 @@ function ProductsTable(props) {
 			setState({
 				id: '',
 				policyHolderName: '',
-				policyHolderType:'',
+				policyHolderType: '',
 				policyInformation: '',
 				datePolicyIsWritten: new Date(),
 				datePolicyIsIssued: null,
@@ -273,6 +318,8 @@ function ProductsTable(props) {
 				sourceOfBusiness: '',
 				adjustments: '',
 				dollarBonus: '',
+				user: '',
+				type: [],
 				percentOfSaleCreditValidation: false,
 				typeOfProductValidation: false,
 				policyPremiumValidation: false
@@ -293,7 +340,8 @@ function ProductsTable(props) {
 			sourceOfBusiness: item.sourceOfBusiness,
 			adjustments: item.adjustments,
 			dollarBonus: item.dollarBonus,
-			policyHolderType: item.policyHolderType
+			policyHolderType: item.policyHolderType,
+			type: item.type
 		});
 		// props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
 	}
@@ -414,6 +462,49 @@ function ProductsTable(props) {
 											handleChangeValue={handleChangeValue}
 											willvalidation={true}
 											validate={state.policyHolderTypeValidation}
+										/>
+									</TableCell>
+									{(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
+										<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+											<SelectBox
+												id="outlined-basic"
+												label=""
+												data={typeList}
+												variant="outlined"
+												value={state.type[0]}
+												validation="type"
+												handleChangeValue={handleChangeValue}
+												willvalidation={true}
+												validate={state.typeValidation}
+											/>
+										</TableCell>
+									)}
+									{state.policyHolderType === 'household' && (
+										<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+											<MultiSelectBox
+												id="outlined-basic"
+												label=""
+												data={typeList}
+												variant="outlined"
+												value={state.type}
+												validation="type"
+												handleChangeValue={handleChangeValue}
+												willvalidation={true}
+												validate={state.typeValidation}
+											/>
+										</TableCell>
+									)}
+									<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+										<SelectBox
+											id="outlined-basic"
+											label=""
+											data={usersList}
+											variant="outlined"
+											value={state.user}
+											validation="user"
+											handleChangeValue={handleChangeValue}
+											willvalidation={false}
+											validate={state.userValidation}
 										/>
 									</TableCell>
 									<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
@@ -562,18 +653,63 @@ function ProductsTable(props) {
 									/>
 								</TableCell>
 								<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+									<SelectBox
+										id="outlined-basic"
+										label=""
+										data={policyholderTypeLists}
+										variant="outlined"
+										value={state.policyHolderType}
+										validation="policyHolderType"
+										handleChangeValue={handleChangeValue}
+										willvalidation={true}
+										validate={state.policyHolderTypeValidation}
+									/>
+								</TableCell>
+								{(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
+									<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 										<SelectBox
 											id="outlined-basic"
 											label=""
-											data={policyholderTypeLists}
+											data={typeList}
 											variant="outlined"
-											value={state.policyHolderType}
-											validation="policyHolderType"
+											value={state.type[0]}
+											validation="type"
 											handleChangeValue={handleChangeValue}
 											willvalidation={true}
-											validate={state.policyHolderTypeValidation}
+											validate={state.typeValidation}
 										/>
 									</TableCell>
+								)}
+								{state.policyHolderType === 'household' && (
+									<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+										<MultiSelectBox
+											id="outlined-basic"
+											label=""
+											data={typeList}
+											variant="outlined"
+											value={state.type}
+											validation="type"
+											handleChangeValue={handleChangeValue}
+											willvalidation={true}
+											validate={state.typeValidation}
+										/>
+									</TableCell>
+								)}
+
+								<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+									<SelectBox
+										id="outlined-basic"
+										label=""
+										data={usersList}
+										variant="outlined"
+										value={state.user}
+										validation="user"
+										handleChangeValue={handleChangeValue}
+										willvalidation={false}
+										validate={state.userValidation}
+									/>
+								</TableCell>
+
 								<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 									<FormattedInput
 										id="outlined-basic"
@@ -614,12 +750,11 @@ function ProductsTable(props) {
 							{_.orderBy(
 								data,
 								[
-									
 									order.id
 									// o => {
 									// 	console.log(order.id)
 									// 	switch (order.id) {
-											
+
 									// 		case 'policyInformation': {
 									// 			return 'policyInformation';
 									// 		}
@@ -675,7 +810,6 @@ function ProductsTable(props) {
 											</TableCell>
 
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-										
 												{moment(n.datePolicyIsIssued).format('MM/DD/YYYY')}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
@@ -683,6 +817,17 @@ function ProductsTable(props) {
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.typeOfProduct}
+											</TableCell>
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+												{n.policyHolderType}
+											</TableCell>
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+												{/* {n.type.length>0&&n.type.map(item => {
+													return item + ',';
+												})} */}
+											</TableCell>
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+												{/* {n.policyHolderType} */}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												${n.policyPremium}
@@ -698,7 +843,12 @@ function ProductsTable(props) {
 											>
 												{n.adjustments}
 											</TableCell> */}
-											<TableCell className="p-2 md:p-2 bg-indigo-200" component="th" scope="row" align="center">
+											<TableCell
+												className="p-2 md:p-2 bg-indigo-200"
+												component="th"
+												scope="row"
+												align="center"
+											>
 												{n.dollarBonus ? `$${n.dollarBonus}` : ''}
 											</TableCell>
 										</TableRow>
