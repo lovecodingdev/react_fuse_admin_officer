@@ -136,7 +136,6 @@ function ProductsTable(props) {
 	}
 
 	function handleChangeValue(data) {
-		
 		setState({ ...state, ...data });
 	}
 
@@ -154,6 +153,16 @@ function ProductsTable(props) {
 		}
 	}
 
+	function makeid(length) {
+		var result           = '';
+		var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		var charactersLength = characters.length;
+		for ( var i = 0; i < length; i++ ) {
+		   result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		}
+		return result;
+	 }
+
 	function handleClick() {
 		// props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
 	}
@@ -163,8 +172,10 @@ function ProductsTable(props) {
 		props.history.push(`/apps/setup/bonus-plan/${uid}`);
 	}
 
-	function goReport(){
-		props.history.push('/apps/production/sales-results')
+	console.log(makeid(150));
+
+	function goReport() {
+		props.history.push('/apps/production/sales-results');
 	}
 
 	if (loading) {
@@ -210,7 +221,7 @@ function ProductsTable(props) {
 							{_.orderBy(data, [order.id], [order.direction])
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((n, index) => {
-									console.log(n)
+									console.log(n);
 									const isSelected = selected.indexOf(n.id) !== -1;
 									return (
 										<TableRow
@@ -260,27 +271,33 @@ function ProductsTable(props) {
 												Bonus Setup
 											</TableCell>
 
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center" onClick={()=>goReport()}>
-												
-													Producer File
-												
+											<TableCell
+												className="p-2 md:p-2"
+												component="th"
+												scope="row"
+												align="center"
+												onClick={() => goReport()}
+											>
+												Producer File
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.data.email}
 											</TableCell>
-											
+
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.active ? 'Active' : 'Revoked'}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												<Button
-													className="whitespace-nowrap normal-case"
-													variant="contained"
-													color="secondary"
-													onClick={handleClick}
-												>
-													<span className="hidden sm:flex">Active</span>
-												</Button>
+												{n.active && (
+													<Button
+														className="whitespace-nowrap normal-case"
+														variant="contained"
+														color="secondary"
+														onClick={handleClick}
+													>
+														<span className="hidden sm:flex">Revoke</span>
+													</Button>
+												)}
 											</TableCell>
 										</TableRow>
 									);
