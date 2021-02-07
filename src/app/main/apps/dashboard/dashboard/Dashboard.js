@@ -57,6 +57,17 @@ const panelData = {
 		},
 		{
 			id: 1,
+			title: 'Multiline Percentage',	
+			label: 'label',
+			color: 'text-blue',
+			data:[
+				{
+					Percentage: 52
+				}
+			]
+		},
+		{
+			id: 1,
 			title: 'Goals vs Actual',	
 			label: 'label',
 			color: 'text-blue',
@@ -222,7 +233,7 @@ function Dashboard(props) {
 				<div className="w-full p-12">
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						{panelData.data.map(panel => (
-							<div className="widget flex w-1/2 p-12">
+							<div className="widget flex w-1/3 p-12">
 								<Panel data={panel} />
 							</div>
 						))}
