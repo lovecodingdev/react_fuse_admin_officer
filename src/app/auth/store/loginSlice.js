@@ -48,9 +48,11 @@ export const submitLoginWithFireBase = ({ username, password }) => async dispatc
 					});
 
 					Object.keys(data).map(item => {
-						if (data[item].teamAgent.includes(user.user.uid)) {
-							belongTo = item;
-						}
+						if(Object.keys(data[item]).includes("teamAgent")){
+							if (data[item].teamAgent.includes(user.user.uid)) {
+								belongTo = item;
+							}
+						}						
 					});
 
 					if (flag) {

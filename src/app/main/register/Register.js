@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import Auth0RegisterTab from './tabs/Auth0RegisterTab';
 import FirebaseRegisterTab from './tabs/FirebaseRegisterTab';
 import JWTRegisterTab from './tabs/JWTRegisterTab';
-import SubscriptionCard from "./components/subscriptionCard"
+import SubscriptionCard from './components/subscriptionCard';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -30,6 +30,8 @@ const useStyles = makeStyles(theme => ({
 		color: theme.palette.primary.contrastText
 	}
 }));
+
+
 
 function Register() {
 	const classes = useStyles();
@@ -127,18 +129,19 @@ function Register() {
 						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-64')}
 					>
 						<div className="max-w-320">
-							{routeParams.id.length === 150 && <FuseAnimate animation="transition.slideUpIn" delay={400}>
-							<SubscriptionCard />
-							
-							</FuseAnimate>}
-							{routeParams.id.length === 32 && (
+							{/* {routeParams.id.length === 150 && ( */}
+								<FuseAnimate animation="transition.slideUpIn" delay={400}>
+									<SubscriptionCard />
+								</FuseAnimate>
+							{/* )} */}
+							{/* {routeParams.id.length === 32 && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
 									<Typography variant="h3" color="inherit" className="font-800 leading-tight">
 										Welcome <br />
 										to the <br /> Agency Owner Home Page!
 									</Typography>
 								</FuseAnimate>
-							)}
+							)} */}
 
 							{/* <FuseAnimate delay={500}>
 								<Typography variant="subtitle1" color="inherit" className="mt-32">

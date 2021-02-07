@@ -75,7 +75,7 @@ export const registerWithFirebase = model => async dispatch => {
 						displayName,
 						email,
 						role,
-						belongTo
+						belongTo:response.user.uid
 					})
 				);
 			}
