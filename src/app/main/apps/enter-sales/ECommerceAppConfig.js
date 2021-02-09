@@ -11,6 +11,11 @@ const ECommerceAppConfig = {
 			path: '/apps/enter-sales/auto-entry',
 			component: React.lazy(() => import('./entry/Products'))
 		},
+
+		{
+			path: '/apps/enter-sales/entry/:id',
+			component: React.lazy(() => import('./salesForm/Products'))
+		},
 		
 		{
 			path: '/apps/enter-sales/fire-entry',

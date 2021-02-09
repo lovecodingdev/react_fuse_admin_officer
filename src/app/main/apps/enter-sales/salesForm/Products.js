@@ -1,20 +1,26 @@
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import _ from '@lodash';
-import Checkbox from '@material-ui/core/Checkbox';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
+import FusePageCarded from '@fuse/core/FusePageCarded';
+import Typography from '@material-ui/core/Typography';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
+import withReducer from 'app/store/withReducer';
+import reducer from '../store';
+import Icon from '@material-ui/core/Icon';
+import { Link, useParams } from 'react-router-dom';
 import FuseLoading from '@fuse/core/FuseLoading';
-import { getEntries, selectEntries, saveProduct, setEditData } from '../store/entrySlice';
+import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
+import { getEntries, selectEntries, saveProduct } from '../store/entrySlice';
 import { getUsers, selectUsers } from '../store/userSlice';
 import { getProductType, selectProductType } from '../store/productTypeSlice';
 import ProductsTableHead from './ProductsTableHead';
-import { makeStyles } from '@material-ui/core/styles';
+import TextInput from '../../../components/TextField';
+import FormattedInput from '../../../components/PriceInput';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import SelectBox from '../../../components/SelectBox';
+import MultiSelectBox from '../../../components/MultiSelectBox';
 import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
@@ -25,6 +31,9 @@ const useStyles = makeStyles(theme => ({
 			margin: theme.spacing(1),
 			width: '25ch'
 		}
+	},
+	datePicker: {
+		width: 250
 	}
 }));
 
@@ -70,24 +79,16 @@ const sourceLists = [
 	{ item: 'Other', value: 'Other' }
 ];
 
-function makeid(length) {
-	var result = '';
-	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	var charactersLength = characters.length;
-	for (var i = 0; i < length; i++) {
-		result += characters.charAt(Math.floor(Math.random() * charactersLength));
-	}
-	return result;
-}
-
-function ProductsTable(props) {
+function Products() {
+	const theme = useTheme();
 	const dispatch = useDispatch();
 	const products = useSelector(selectEntries);
 	const users = useSelector(selectUsers);
 	const productType = useSelector(selectProductType);
-
+	const routeParams = useParams();
+	const history = useHistory()
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
+	const editData = useSelector(({ eCommerceApp }) => eCommerceApp.products.editData);
 	const classes = useStyles();
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
@@ -108,7 +109,7 @@ function ProductsTable(props) {
 		percentOfSaleCredit: '',
 		typeOfProduct: '',
 		user: '',
-		type: [],
+		type: ["Entries"],
 		policyPremium: '',
 		sourceOfBusiness: '',
 		adjustments: '',
@@ -125,7 +126,14 @@ function ProductsTable(props) {
 		dispatch(getEntries()).then(() => setLoading(false));
 		dispatch(getProductType());
 		dispatch(getUsers());
+		
 	}, [dispatch]);
+
+	useEffect(()=>{
+		if(routeParams.id==='edit' && editData){
+			setState({...state, ...editData})
+		}
+	},[editData])
 
 	useEffect(() => {
 		if (searchText.length !== 0) {
@@ -222,11 +230,11 @@ function ProductsTable(props) {
 			!state.percentOfSaleCreditValidation &&
 			!state.typeOfProductValidation &&
 			!state.policyPremiumValidation &&
-			!state.policyHolderTypeValidation&&
-			state.percentOfSaleCredit&&
-			state.typeOfProduct&&
-			state.policyHolderType&&
-			state.type.length>0			
+			!state.policyHolderTypeValidation &&
+			state.percentOfSaleCredit &&
+			state.typeOfProduct &&
+			state.policyHolderType &&
+			state.type.length > 0
 		) {
 			return true;
 		} else {
@@ -236,14 +244,14 @@ function ProductsTable(props) {
 				typeOfProductValidation: state.typeOfProduct ? false : true,
 				policyPremiumValidation: state.policyPremium ? false : true,
 				policyHolderTypeValidation: state.policyHolderType ? false : true,
-				typeValidation: state.type.length>0 ? false : true
+				typeValidation: state.type.length > 0 ? false : true
 			});
 			return false;
 		}
 	}
 
 	function onSave() {
-		console.log(checkValidation());
+		
 		if (checkValidation()) {
 			let form = {
 				id: state.id ? state.id : Date.now(),
@@ -298,7 +306,7 @@ function ProductsTable(props) {
 			}
 
 			dispatch(saveProduct(form));
-			dispatch(getEntries()).then(() => setLoading(false));
+			history.goBack()
 			setState({
 				id: '',
 				policyHolderName: '',
@@ -313,7 +321,7 @@ function ProductsTable(props) {
 				adjustments: '',
 				dollarBonus: '',
 				user: '',
-				type: [],
+				type: ["Entries"],
 				percentOfSaleCreditValidation: false,
 				typeOfProductValidation: false,
 				policyPremiumValidation: false
@@ -322,8 +330,7 @@ function ProductsTable(props) {
 	}
 
 	function handleClick(item) {
-		props.history.push(`/apps/enter-sales/entry/edit`);
-		dispatch(setEditData({
+		setState({
 			id: item.id,
 			policyHolderName: item.policyHolderName,
 			policyInformation: item.policyInformation,
@@ -337,182 +344,229 @@ function ProductsTable(props) {
 			dollarBonus: item.dollarBonus,
 			policyHolderType: item.policyHolderType,
 			type: item.type
-		}))
-	
-		
+		});
+		// props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
 	}
-
-	if (loading) {
-		return <FuseLoading />;
-	}
-
-	if (data.length === 0) {
-		return (
-			<div className="w-full flex flex-col">
-				<MuiPickersUtilsProvider utils={DateFnsUtils}>
-					<FuseScrollbars className="flex-grow overflow-x-auto">
-						<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle">
-							<ProductsTableHead
-								selectedProductIds={selected}
-								order={order}
-								onSelectAllClick={handleSelectAllClick}
-								onRequestSort={handleRequestSort}
-								rowCount={data.length}
-								onMenuItemClick={handleDeselect}
-							/>
-
-						</Table>
-					</FuseScrollbars>
-				</MuiPickersUtilsProvider>
-			</div>
-		);
-	}
-
 	return (
-		<div className="w-full flex flex-col">
-			<MuiPickersUtilsProvider utils={DateFnsUtils}>
-				<FuseScrollbars className="flex-grow overflow-x-auto">
-					<Table stickyHeader className="min-w-xl" aria-labelledby="tableTitle" size="small">
-						<ProductsTableHead
-							selectedProductIds={selected}
-							order={order}
-							onSelectAllClick={handleSelectAllClick}
-							onRequestSort={handleRequestSort}
-							rowCount={data.length}
-							onMenuItemClick={handleDeselect}
-						/>
+		<FusePageCarded
+			classes={{
+				content: 'flex',
+				contentCard: 'overflow-hidden',
+				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
+			}}
+			header={
+				<div className="flex flex-1 w-full items-center justify-between">
+					<div className="flex flex-col items-start max-w-full">
+						<FuseAnimate animation="transition.slideRightIn" delay={300}>
+							<Typography
+								className="normal-case flex items-center sm:mb-12"
+								component={Link}
+								role="button"
+								to="/apps/enter-sales/auto-entry"
+								color="inherit"
+							>
+								<Icon className="text-20">
+									{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
+								</Icon>
+								<span className="mx-4">Sales</span>
+							</Typography>
+						</FuseAnimate>
 
-						<TableBody>
-							
-							{_.orderBy(
-								data,
-								[
-									order.id
-									// o => {
-									// 	console.log(order.id)
-									// 	switch (order.id) {
+						<div className="flex items-center max-w-full">
+							<FuseAnimate animation="transition.expandIn" delay={300}>
+								<img
+									className="w-32 sm:w-48 rounded"
+									src="assets/images/ecommerce/product-image-placeholder.png"
+								/>
+							</FuseAnimate>
+							<div className="flex flex-col min-w-0 mx-8 sm:mc-16">
+								<FuseAnimate animation="transition.slideLeftIn" delay={300}>
+									<Typography className="text-16 sm:text-20 truncate">{'New Sales'}</Typography>
+								</FuseAnimate>
+								<FuseAnimate animation="transition.slideLeftIn" delay={300}>
+									<Typography variant="caption">Sales Detail</Typography>
+								</FuseAnimate>
+							</div>
+						</div>
+					</div>
+					<FuseAnimate animation="transition.slideRightIn" delay={300}>
+						<Button
+							className="whitespace-nowrap normal-case"
+							variant="contained"
+							color="secondary"
+							// disabled={!canBeSubmitted()}
+							onClick={()=>onSave()}
+						>
+							Save
+						</Button>
+					</FuseAnimate>
+				</div>
+			}
+			content={
+				<div className="w-full flex flex-col">
+					<MuiPickersUtilsProvider utils={DateFnsUtils}>
+						<FuseScrollbars className="flex-grow overflow-x-auto">
+							<div className="min-w-xl p-96 h-1/2 flex flex-col justify-around">
+								<div className="flex w-full justify-between items-center flex-wrap py-12">
+									<TextInput
+										id="outlined-basic"
+										label="Policy Holder Name"
+										variant="outlined"
+										value={state.policyHolderName}
+										validation="policyHolderName"
+										onChange={handleChangeValue}
+										willvalidation={false}
+										validate={false}
+										size={250}
+									/>
+									<TextInput
+										id="outlined-basic"
+										label="Policy Information"
+										variant="outlined"
+										value={state.policyInformation}
+										validation="policyInformation"
+										onChange={handleChangeValue}
+										willvalidation={false}
+										validate={false}
+										size={250}
+									/>
 
-									// 		case 'policyInformation': {
-									// 			return 'policyInformation';
-									// 		}
-									// 		case 'datePolicyIsWritten': {
-									// 			return 'datePolicyIsWritten';
-									// 		}
-									// 		default: {
-									// 			return order.id;
-									// 		}
-									// 	}
-									// }
-								],
-								[order.direction]
-							)
-								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map(n => {
-									const isSelected = selected.indexOf(n.id) !== -1;
-									return (
-										<TableRow
-											className="h-48 cursor-pointer"
-											hover
-											role="checkbox"
-											aria-checked={isSelected}
-											tabIndex={-1}
-											key={n.id}
-											selected={isSelected}
-											onClick={event => handleClick(n)}
-										>
-											<TableCell className="w-40 md:w-64 text-center" padding="none">
-												<Checkbox
-													checked={isSelected}
-													onClick={event => event.stopPropagation()}
-													onChange={event => handleCheck(event, n.id)}
-												/>
-											</TableCell>
+									<KeyboardDatePicker
+										margin="normal"
+										id="date-picker-dialog"
+										format="MM/dd/yyyy"
+										className={classes.datePicker}
+										label="Date Policy Is Written"
+										value={state.datePolicyIsWritten}
+										onChange={date => handleDateChange(date, 'datePolicyIsWritten')}
+										KeyboardButtonProps={{
+											'aria-label': 'change date'
+										}}
+									/>
+									<KeyboardDatePicker
+										margin="normal"
+										id="date-picker-dialog"
+										format="MM/dd/yyyy"
+										className={classes.datePicker}
+										label="Date Policy Is Issued"
+										value={state.datePolicyIsIssued}
+										onChange={date => handleDateChange(date, 'datePolicyIsIssued')}
+										KeyboardButtonProps={{
+											'aria-label': 'change date'
+										}}
+									/>
+								</div>
 
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.policyHolderName}
-											</TableCell>
+								<div className="flex w-full justify-between items-center flex-wrap py-12">
+									<TextInput
+										id="outlined-basic"
+										label="Percent of Sale Credit"
+										variant="outlined"
+										value={state.percentOfSaleCredit}
+										validation="percentOfSaleCredit"
+										type="percent"
+										onChange={handleChangeValue}
+										willvalidation={true}
+										validate={state.percentOfSaleCreditValidation}
+										size={250}
+									/>
+									<SelectBox
+										id="outlined-basic"
+										label="Type of Product"
+										data={productLists}
+										variant="outlined"
+										value={state.typeOfProduct}
+										validation="typeOfProduct"
+										handleChangeValue={handleChangeValue}
+										willvalidation={true}
+										validate={state.typeOfProductValidation}
+										size={250}
+									/>
+									<SelectBox
+										id="outlined-basic"
+										label="Type of Placeholder"
+										data={policyholderTypeLists}
+										variant="outlined"
+										value={state.policyHolderType}
+										validation="policyHolderType"
+										handleChangeValue={handleChangeValue}
+										willvalidation={true}
+										validate={state.policyHolderTypeValidation}
+									/>
+									{(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
+										<SelectBox
+											id="outlined-basic"
+											label="Policy Type"
+											data={typeList}
+											variant="outlined"
+											value={state.type[0]}
+											validation="type"
+											handleChangeValue={handleChangeValue}
+											willvalidation={true}
+											validate={state.typeValidation}
+										/>
+										// </TableCell>
+									)}
+									{state.policyHolderType === 'household' && (
+										<MultiSelectBox
+											id="outlined-basic"
+											label="Policy Type"
+											data={typeList}
+											variant="outlined"
+											value={state.type}
+											validation="type"
+											handleChangeValue={handleChangeValue}
+											willvalidation={true}
+											validate={state.typeValidation}
+										/>
+									)}
+								</div>
+								<div className="flex w-full justify-between items-center flex-wrap py-12">
+									<SelectBox
+										id="outlined-basic"
+										label="User Lists"
+										data={usersList}
+										variant="outlined"
+										value={state.user}
+										validation="user"
+										handleChangeValue={handleChangeValue}
+										willvalidation={false}
+										validate={state.userValidation}
+									/>
+									<FormattedInput
+										id="outlined-basic"
+										label="Policy Premium"
+										variant="outlined"
+										value={state.policyPremium}
+										validation="policyPremium"
+										type="percent"
+										willvalidation={true}
+										validate={state.policyPremiumValidation}
+										handleChangeValue={handleChangeValue}
+										size={250}
+									/>
+									<SelectBox
+										id="outlined-basic"
+										label="Source of Business"
+										data={sourceLists}
+										variant="outlined"
+										value={state.sourceOfBusiness}
+										validation="sourceOfBusiness"
+										handleChangeValue={handleChangeValue}
+										willvalidation={false}
+									/>
+									
+								</div>
+							</div>
+						</FuseScrollbars>
 
-											<TableCell
-												className="p-2 md:p-2 truncate"
-												component="th"
-												scope="row"
-												align="center"
-											>
-												{n.policyInformation}
-											</TableCell>
-
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{/* <span>$</span> */}
-												{moment(n.datePolicyIsWritten).format('MM/DD/YYYY')}
-											</TableCell>
-
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{moment(n.datePolicyIsIssued).format('MM/DD/YYYY')}
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.percentOfSaleCredit}%
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.typeOfProduct}
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.policyHolderType}
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{/* {n.type.length>0&&n.type.map(item => {
-													return item + ',';
-												})} */}
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{/* {n.policyHolderType} */}
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												${n.policyPremium}
-											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.sourceOfBusiness}
-											</TableCell>
-											{/* <TableCell
-												className="p-2 md:p-2"
-												component="th"
-												scope="row"
-												align="center"
-											>
-												{n.adjustments}
-											</TableCell> */}
-											<TableCell
-												className="p-2 md:p-2 bg-indigo-200"
-												component="th"
-												scope="row"
-												align="center"
-											>
-												{n.dollarBonus ? `$${n.dollarBonus}` : ''}
-											</TableCell>
-										</TableRow>
-									);
-								})}
-						</TableBody>
-					</Table>
-				</FuseScrollbars>
-
-				<TablePagination
-					className="flex-shrink-0 border-t-1"
-					component="div"
-					count={data.length}
-					rowsPerPage={rowsPerPage}
-					page={page}
-					backIconButtonProps={{
-						'aria-label': 'Previous Page'
-					}}
-					nextIconButtonProps={{
-						'aria-label': 'Next Page'
-					}}
-					onChangePage={handleChangePage}
-					onChangeRowsPerPage={handleChangeRowsPerPage}
-				/>
-			</MuiPickersUtilsProvider>
-		</div>
+						
+					</MuiPickersUtilsProvider>
+				</div>
+			}
+			innerScroll
+		/>
 	);
 }
 
-export default withRouter(ProductsTable);
+export default withReducer('eCommerceApp', reducer)(Products);

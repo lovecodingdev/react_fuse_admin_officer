@@ -44,7 +44,7 @@ NumberFormatCustom.propTypes = {
 };
 
 export default function FormattedInputs(props) {
-	const { id, label, variant, value, handleChangeValue, validation, type, willvalidation, validate } = props;
+	const { id, label, variant, value, handleChangeValue, validation, size, willvalidation, validate } = props;
 	const classes = useStyles();
 
 	const handleChange = event => {
@@ -64,14 +64,20 @@ export default function FormattedInputs(props) {
 			<TextField
 				error={validate ? true : false}
 				value={value}
+				label={label}
 				onChange={handleChange}
 				name={validation}
 				variant="outlined"
 				id="formatted-numberformat-input"
 				size="small"
-				InputProps={{
+				InputProps={size?{
+					style:{width:size},
+					inputComponent: NumberFormatCustom
+				}:{
+					style:{width:120},
 					inputComponent: NumberFormatCustom
 				}}
+			
 			/>
 		</div>
 	);

@@ -59,7 +59,8 @@ export const { selectAll: selectEntries, selectById: selectProductById } = produ
 const productsSlice = createSlice({
 	name: 'eCommerceApp/products',
 	initialState: productsAdapter.getInitialState({
-		searchText: ''
+		searchText: '',
+		editData:{}
 	}),
 	reducers: {
 		setProductsSearchText: {
@@ -67,13 +68,19 @@ const productsSlice = createSlice({
 				state.searchText = action.payload;
 			},
 			prepare: event => ({ payload: event.target.value || '' })
-		}
+		},
+		setEditData: (state, action) => {
+			state.editData = {
+				...action.payload
+			};
+		},
 	},
 	extraReducers: {
-		[getEntries.fulfilled]: productsAdapter.setAll
+		[getEntries.fulfilled]: productsAdapter.setAll,
+
 	}
 });
 
-export const { setProductsSearchText } = productsSlice.actions;
+export const { setProductsSearchText, setEditData } = productsSlice.actions;
 
 export default productsSlice.reducer;
