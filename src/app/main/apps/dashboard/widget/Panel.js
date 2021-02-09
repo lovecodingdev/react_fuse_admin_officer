@@ -20,12 +20,12 @@ function Widget1(props) {
 					<span className="truncate">{props.data.title}</span>
 				</Typography>
 			</div>
-			<div className="text-center">
-				<div className="flex flex-wrap">
+			<div className="h-full text-center">
+				<div className="h-full flex flex-wrap">
 					{data.map((item, index) => (
 						data.length===1 ?
-						(	<div className="w-full" key={index} >								
-								<Typography className={`text-48 leading-none  ${props.data.color}`}>
+						(	<div className="w-full h-full" key={index} >								
+								<Typography className={`flex flex-col justify-center h-full text-48 leading-none  ${props.data.color}`}>
 									{item[Object.keys(item)[0]]} {'%'}
 								</Typography>
 							</div>
