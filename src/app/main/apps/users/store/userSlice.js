@@ -88,6 +88,13 @@ const productsSlice = createSlice({
 			},
 			data: null
 		},
+		userProfileDialog: {
+			type: 'edit',
+			props: {
+				open: false
+			},
+			data: null
+		},
 	}),
 	
 	reducers: {
@@ -115,6 +122,24 @@ const productsSlice = createSlice({
 				data: null
 			};
 		},
+		openUserProfileDialog: (state, action) => {
+			state.userProfileDialog = {
+				type: 'edit',
+				props: {
+					open: true
+				},
+				data: action.payload
+			};	
+		},
+		closeUserProfileDialog: (state, action) => {
+			state.userProfileDialog = {
+				type: 'edit',
+				props: {
+					open: false
+				},
+				data: null
+			};
+		},
 	},
 	extraReducers: {
 		[getUsers.fulfilled]: productsAdapter.setAll,
@@ -122,6 +147,6 @@ const productsSlice = createSlice({
 	}
 });
 
-export const { setProductsSearchText, openUserDialog, closeUserDialog } = productsSlice.actions;
+export const { setProductsSearchText, openUserDialog, closeUserDialog, openUserProfileDialog, closeUserProfileDialog } = productsSlice.actions;
 
 export default productsSlice.reducer;

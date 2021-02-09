@@ -20,11 +20,17 @@ function Widget1(props) {
 					<span className="truncate">{props.data.title}</span>
 				</Typography>
 			</div>
-			<div className="text-center ">
+			<div className="text-center">
 				<div className="flex flex-wrap">
-					{data.map((item, index) => {
-						return (
-							<div className="w-1/2" key={index}>
+					{data.map((item, index) => (
+						data.length===1 ?
+						(	<div className="w-full" key={index} >								
+								<Typography className={`text-48 leading-none  ${props.data.color}`}>
+									{item[Object.keys(item)[0]]} {'%'}
+								</Typography>
+							</div>
+						) : 
+						(	<div className="w-1/2" key={index}>
 								<Typography
 									className={`leading-none border-b-1 ${length % (index + 1) !== 0 && `border-r-1`} ${
 										index === 0 && `border-r-1`
@@ -41,8 +47,8 @@ function Widget1(props) {
 									{props.data.title === 'Lapse Rate' && '%'}
 								</Typography>
 							</div>
-						);
-					})}
+						)																			
+					))}
 				</div>
 			</div>
 		</Paper>

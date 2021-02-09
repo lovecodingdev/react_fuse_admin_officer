@@ -5,6 +5,7 @@ import reducer from '../store';
 import ProductsHeader from './UsersHeader';
 import ProductsTable from './UsersTable';
 import AddUserDialog from './AddUserDialog'
+import UserProfileDialog from './UserProfileDialog'
 
 function Products() {
 	return (
@@ -20,6 +21,7 @@ function Products() {
 			innerScroll
 		/>
 		<AddUserDialog />
+		<UserProfileDialog />
 		</>
 	);
 }

@@ -20,6 +20,9 @@ import Button from '@material-ui/core/Button';
 import SelectBox from '../../../components/SelectBox';
 import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
+import {
+	openUserProfileDialog
+} from '../store/userSlice'
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
@@ -241,7 +244,13 @@ function ProductsTable(props) {
 												/>
 											</TableCell>
 
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+											<TableCell 
+												className="p-2 md:p-2" 
+												component="th" 
+												scope="row" 
+												align="center" 
+												onClick={() => dispatch(openUserProfileDialog(n.data))}
+											>
 												{n.data.displayName}
 											</TableCell>
 

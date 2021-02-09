@@ -56,7 +56,7 @@ const panelData = {
 			]
 		},
 		{
-			id: 1,
+			id: 2,
 			title: 'Multiline Percentage',	
 			label: 'label',
 			color: 'text-blue',
@@ -67,7 +67,7 @@ const panelData = {
 			]
 		},
 		{
-			id: 1,
+			id: 3,
 			title: 'Goals vs Actual',	
 			label: 'label',
 			color: 'text-blue',
