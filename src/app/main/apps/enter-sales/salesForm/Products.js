@@ -408,6 +408,17 @@ function Products() {
 						<FuseScrollbars className="flex-grow overflow-x-auto">
 							<div className="min-w-xl p-96 h-1/2 flex flex-col justify-around">
 								<div className="flex w-full justify-between items-center flex-wrap py-12">
+								<SelectBox
+										id="outlined-basic"
+										label="User Lists"
+										data={usersList}
+										variant="outlined"
+										value={state.user}
+										validation="user"
+										handleChangeValue={handleChangeValue}
+										willvalidation={false}
+										validate={state.userValidation}
+									/>
 									<TextInput
 										id="outlined-basic"
 										label="Policy Holder Name"
@@ -443,7 +454,11 @@ function Products() {
 											'aria-label': 'change date'
 										}}
 									/>
-									<KeyboardDatePicker
+									
+								</div>
+
+								<div className="flex w-full justify-between items-center flex-wrap py-12">
+								<KeyboardDatePicker
 										margin="normal"
 										id="date-picker-dialog"
 										format="MM/dd/yyyy"
@@ -455,9 +470,6 @@ function Products() {
 											'aria-label': 'change date'
 										}}
 									/>
-								</div>
-
-								<div className="flex w-full justify-between items-center flex-wrap py-12">
 									<TextInput
 										id="outlined-basic"
 										label="Percent of Sale Credit"
@@ -493,7 +505,10 @@ function Products() {
 										willvalidation={true}
 										validate={state.policyHolderTypeValidation}
 									/>
-									{(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
+									
+								</div>
+								<div className="flex w-full justify-between items-center flex-wrap py-12">
+								{(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
 										<SelectBox
 											id="outlined-basic"
 											label="Policy Type"
@@ -520,19 +535,6 @@ function Products() {
 											validate={state.typeValidation}
 										/>
 									)}
-								</div>
-								<div className="flex w-full justify-between items-center flex-wrap py-12">
-									<SelectBox
-										id="outlined-basic"
-										label="User Lists"
-										data={usersList}
-										variant="outlined"
-										value={state.user}
-										validation="user"
-										handleChangeValue={handleChangeValue}
-										willvalidation={false}
-										validate={state.userValidation}
-									/>
 									<FormattedInput
 										id="outlined-basic"
 										label="Policy Premium"
