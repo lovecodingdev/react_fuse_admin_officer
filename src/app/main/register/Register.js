@@ -129,19 +129,19 @@ function Register() {
 						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-64')}
 					>
 						<div className="max-w-320">
-							{/* {routeParams.id.length === 150 && ( */}
+							{routeParams.id.length === 32 && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
 									<SubscriptionCard />
 								</FuseAnimate>
-							{/* )} */}
-							{/* {routeParams.id.length === 32 && (
+							 )} 
+							{routeParams.id.length !== 32 && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
 									<Typography variant="h3" color="inherit" className="font-800 leading-tight">
 										Welcome <br />
 										to the <br /> Agency Owner Home Page!
 									</Typography>
 								</FuseAnimate>
-							)} */}
+							)}
 
 							{/* <FuseAnimate delay={500}>
 								<Typography variant="subtitle1" color="inherit" className="mt-32">
