@@ -21,6 +21,8 @@ import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { autoAndFireHeader, lifeAndHealthHeader, bankHeader } from '../Headers';
+import { Options as options } from '../../../utils/Globals';
+
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -87,7 +89,8 @@ function PoliciesAndBank(props) {
 							<SelectBox
 								value={period}
 								onChange={ev => dispatch(setPeriod(ev))}
-								type="period"
+								label="Report Period"
+								data={options.period.data}
 							/>
 						</FuseAnimate>
 					</div>
@@ -96,7 +99,8 @@ function PoliciesAndBank(props) {
 							<SelectBox
 								value={production}
 								onChange={ev => dispatch(setProduction(ev))}
-								type="production"
+								label="Production"
+								data={options.production.data}
 							/>
 						</FuseAnimate>
 					</div>

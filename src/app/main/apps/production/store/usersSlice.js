@@ -3,7 +3,7 @@ import axios from 'axios';
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
 export const getUsers = createAsyncThunk(
-	'agencyApp/users/getUsers', 
+	'producerApp/users/getUsers', 
 	() =>
 		new Promise((resolve, reject) => {
 			var starCountRef = realDb.ref(`users/`);
@@ -22,14 +22,21 @@ export const getUsers = createAsyncThunk(
 		})
 );
 
+// export const getUsers = createAsyncThunk('producerApp/users/getUsers', async () => {
+// 	const response = await axios.get('/api/producer-app/users');
+// 	const data = await response.data;
+
+// 	return data;
+// });
+
 const usersAdapter = createEntityAdapter({});
 
 export const { selectAll: selectUsers, selectById: selectUserById } = usersAdapter.getSelectors(
-	state => state.agencyApp.users
+	state => state.producerApp.users
 );
 
 const usersSlice = createSlice({
-	name: 'agencyApp/users',
+	name: 'producerApp/users',
 	initialState: usersAdapter.getInitialState({
 		production: '',
 	}),

@@ -208,26 +208,7 @@ function Dashboard(props) {
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
-				<Header title={title}>
-					{/* <div className="flex flex-1 items-center justify-center px-12">
-						<FuseAnimate animation="transition.slideUpIn" delay={300}>
-							<SelectBox
-								value={period}
-								onChange={ev => dispatch(setPeriod(ev))}
-								type="period"
-							/>
-						</FuseAnimate>
-					</div>
-					<div className="flex flex-1 items-center justify-center px-12">
-						<FuseAnimate animation="transition.slideUpIn" delay={300}>
-							<SelectBox
-								value={production}
-								onChange={ev => dispatch(setProduction(ev))}
-								type="production"
-							/>
-						</FuseAnimate>
-					</div> */}
-				</Header>
+				<Header title={title}></Header>
 			}
 			content={
 				<div className="w-full p-12">

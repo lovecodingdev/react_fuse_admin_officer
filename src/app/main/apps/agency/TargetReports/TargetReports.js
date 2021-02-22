@@ -22,6 +22,7 @@ import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { Agency_TargetReports_Table } from '../Headers';
+import { Options as options } from '../../../utils/Globals';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -43,6 +44,7 @@ function TargetReports(props) {
 	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Target Reports');
 	
@@ -53,6 +55,16 @@ function TargetReports(props) {
 	useEffect(() => {	
 		setData({ widgets });
 	}, [widgets]);
+
+	useEffect(() => {
+		var temp = [];
+		if (users.length > 0) {
+			users.map(item => {
+				temp.push({ item: item.data.displayName, value: item.id });
+			});
+			setUserList(temp);
+		}
+	}, [users]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -88,7 +100,8 @@ function TargetReports(props) {
 							<SelectBox
 								value={user}
 								onChange={ev => dispatch(setUser(ev))}
-								type="users"
+								label="Users"
+								data={userList}
 							/>
 						</FuseAnimate>
 					</div>					
