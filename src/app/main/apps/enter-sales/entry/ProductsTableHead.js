@@ -61,25 +61,18 @@ const rows = [
 		label: 'Type of Product',
 		sort: true
 	},
-	{
-		id: 'policyHolderType',
-		align: 'center',
-		disablePadding: false,
-		label: 'Policyholder Type',
-		sort: true
-	},
+	// {
+	// 	id: 'policyHolderType',
+	// 	align: 'center',
+	// 	disablePadding: false,
+	// 	label: 'Policyholder Type',
+	// 	sort: true
+	// },
 	{
 		id: 'type',
 		align: 'center',
 		disablePadding: false,
 		label: 'Type',
-		sort: true
-	},
-	{
-		id: 'userList',
-		align: 'center',
-		disablePadding: false,
-		label: 'User List',
 		sort: true
 	},
 	{

@@ -9,21 +9,20 @@ import withReducer from 'app/store/withReducer';
 import reducer from '../store';
 import Icon from '@material-ui/core/Icon';
 import { Link, useParams } from 'react-router-dom';
-import FuseLoading from '@fuse/core/FuseLoading';
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
-import { getEntries, selectEntries, saveProduct } from '../store/entrySlice';
+import { getEntries, selectEntries, saveProduct, updateProduct } from '../store/entrySlice';
 import { getUsers, selectUsers } from '../store/userSlice';
 import { getProductType, selectProductType } from '../store/productTypeSlice';
-import ProductsTableHead from './ProductsTableHead';
+import { getMarketing, selectMarketing } from '../store/businessSlice';
+import { getBonus, selectBonus } from '../store/bonusSlice';
 import TextInput from '../../../components/TextField';
 import FormattedInput from '../../../components/PriceInput';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import SelectBox from '../../../components/SelectBox';
 import MultiSelectBox from '../../../components/MultiSelectBox';
-import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -56,37 +55,36 @@ const typeList = [
 	{ item: 'Health', value: 'HealthEntries' }
 ];
 
-const sourceLists = [
-	{ item: 'Center of Influence', value: 'Center of Influence' },
-	{ item: 'Client Request', value: 'Client Request' },
-	{ item: 'Direct Mail Letter', value: 'Direct Mail Letter' },
-	{ item: 'Internet Lead >>', value: 'Internet Lead >>' },
-	{ item: 'Multiline Review', value: 'Multiline Review' },
-	{ item: 'Networking Meeting', value: 'Networking Meeting' },
-	{ item: 'News Ad', value: 'News Ad' },
-	{ item: 'Park Bench', value: 'Park Bench' },
-	{ item: 'Personal Visit', value: 'Personal Visit' },
-	{ item: 'Postcard', value: 'Postcard' },
-	{ item: 'Referral', value: 'Referral ' },
-	{ item: 'Salesperson Pivot', value: 'Salesperson Pivot' },
-	{ item: 'Sign', value: 'Sign' },
-	{ item: 'Television', value: 'Television' },
-	{ item: 'Transfer', value: 'Transfer' },
-	{ item: 'Walk-In', value: 'Walk-In' },
-	{ item: 'Website', value: 'Website' },
-	{ item: 'Web Search', value: 'Web Search' },
-	{ item: 'Yellow Pages', value: 'Yellow Pages' },
-	{ item: 'Other', value: 'Other' }
-];
+const alignBonus = bonus => {
+	var tempBonusLists = {};
+	if (bonus.length > 0) {
+		Object.keys(bonus[0]).map(id => {
+			Object.keys(bonus[0][id]).map(policy => {
+				
+				Object.keys(bonus[0][id][policy]).map(itemId => {
+					tempBonusLists = {
+						...tempBonusLists,
+						[id]: {...tempBonusLists[id], [bonus[0][id][policy][itemId].name]: bonus[0][id][policy][itemId].percent }
+					};
+				});
+			});
+		});
+	}
+	return tempBonusLists;
+};
 
 function Products() {
 	const theme = useTheme();
 	const dispatch = useDispatch();
 	const products = useSelector(selectEntries);
 	const users = useSelector(selectUsers);
+	const bonus = useSelector(selectBonus);
+	const bonusLists = alignBonus(bonus);
+	console.log(bonusLists);
 	const productType = useSelector(selectProductType);
+	const marketing = useSelector(selectMarketing);
 	const routeParams = useParams();
-	const history = useHistory()
+	const history = useHistory();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const editData = useSelector(({ eCommerceApp }) => eCommerceApp.products.editData);
 	const classes = useStyles();
@@ -99,7 +97,7 @@ function Products() {
 		direction: 'asc',
 		id: null
 	});
-	const [usersList, setUserList] = useState([]);
+
 	const [state, setState] = React.useState({
 		policyHolderName: '',
 		policyHolderType: '',
@@ -109,35 +107,34 @@ function Products() {
 		percentOfSaleCredit: '',
 		typeOfProduct: '',
 		user: '',
-		type: ["Entries"],
+		policyType: ['Entries'],
 		policyPremium: '',
 		sourceOfBusiness: '',
 		adjustments: '',
 		dollarBonus: '',
-		typeValidation: false,
+		policyTypeValidation: false,
 		policyHolderTypeValidation: false,
 		percentOfSaleCreditValidation: false,
 		typeOfProductValidation: false,
 		policyPremiumValidation: false,
-		userValidation: false
+		userValidation: false,
+		marketings: [],
+		usersList: [],
+		productLists: []
 	});
 
 	useEffect(() => {
 		dispatch(getEntries()).then(() => setLoading(false));
 		dispatch(getProductType());
 		dispatch(getUsers());
-		
+		dispatch(getBonus());
+		dispatch(getMarketing());
 	}, [dispatch]);
 
-	useEffect(()=>{
-		if(routeParams.id==='edit' && editData){
-			setState({...state, ...editData})
-		}
-	},[editData])
+	useEffect(() => {}, [editData]);
 
 	useEffect(() => {
 		if (searchText.length !== 0) {
-			console.log(searchText);
 			setData(_.filter(products, item => item.policyHolderName.toLowerCase().includes(searchText.toLowerCase())));
 			setPage(0);
 		} else {
@@ -147,78 +144,55 @@ function Products() {
 
 	useEffect(() => {
 		var temp = [];
+		var tempMarketing = [];
+		var tempProductList = [];
+		if (productType.length > 0) {
+			Object.keys(productType[0]).map(i => {
+				tempProductList.push({
+					item: productType[0][i].productTypeName,
+					value: productType[0][i].productTypeName
+				});
+			});
+		}
+		if (marketing.length > 0) {
+			Object.keys(marketing[0]).map(i => {
+				tempMarketing.push({ item: marketing[0][i].marketingName, value: marketing[0][i].marketingName });
+			});
+		}
 		if (users.length > 0) {
 			users.map(item => {
-				temp.push({ item: item.data.displayName, value: item.id });
+				temp.push({ item: item.data.displayName, value: item });
 			});
 			temp.push({ item: 'Office Count', value: 'OfficeCount' });
-			setUserList(temp);
 		}
-	}, [users]);
-
-	function handleRequestSort(event, property) {
-		const id = property;
-		let direction = 'desc';
-
-		if (order.id === property && order.direction === 'desc') {
-			direction = 'asc';
+		if (routeParams.id === 'edit' && editData) {
+			setState({
+				...state,
+				...editData,
+				usersList: temp,
+				marketings: tempMarketing,
+				productLists: tempProductList
+			});
+		} else {
+			setState({ ...state, usersList: temp, marketings: tempMarketing, productLists: tempProductList });
 		}
-
-		setOrder({
-			direction,
-			id
-		});
-	}
-
-	function handleSelectAllClick(event) {
-		if (event.target.checked) {
-			setSelected(data.map(n => n.id));
-			return;
-		}
-		setSelected([]);
-	}
-
-	function handleDeselect() {
-		setSelected([]);
-	}
-
-	function handleCheck(event, id) {
-		const selectedIndex = selected.indexOf(id);
-		let newSelected = [];
-
-		if (selectedIndex === -1) {
-			newSelected = newSelected.concat(selected, id);
-		} else if (selectedIndex === 0) {
-			newSelected = newSelected.concat(selected.slice(1));
-		} else if (selectedIndex === selected.length - 1) {
-			newSelected = newSelected.concat(selected.slice(0, -1));
-		} else if (selectedIndex > 0) {
-			newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-		}
-
-		setSelected(newSelected);
-	}
-
-	function handleChangePage(event, value) {
-		setPage(value);
-	}
-
-	function handleChangeRowsPerPage(event) {
-		setRowsPerPage(event.target.value);
-	}
+	}, [users, marketing, productType, editData]);
 
 	function handleDateChange(date, id) {
 		setState({ ...state, [id]: date });
-		console.log({ [id]: date });
 	}
 
 	function handleChangeValue(data) {
 		console.log(data);
-		if (Object.keys(data)[0] === 'type') {
-			if (typeof data['type'] === 'object') {
+		if (Object.keys(data)[0] === 'policyType') {
+			if (typeof data['policyType'] === 'object') {
 				setState({ ...state, ...data });
 			} else {
-				setState({ ...state, type: [data['type']], typeValidation: data['typeValidation'] });
+				setState({
+					...state,
+					policyType: [data['policyType']],
+					policyTypeValidation: data['policyTypeValidation']
+				});
 			}
 		} else {
 			setState({ ...state, ...data });
@@ -234,7 +208,7 @@ function Products() {
 			state.percentOfSaleCredit &&
 			state.typeOfProduct &&
 			state.policyHolderType &&
-			state.type.length > 0
+			state.policyType.length > 0
 		) {
 			return true;
 		} else {
@@ -244,21 +218,20 @@ function Products() {
 				typeOfProductValidation: state.typeOfProduct ? false : true,
 				policyPremiumValidation: state.policyPremium ? false : true,
 				policyHolderTypeValidation: state.policyHolderType ? false : true,
-				typeValidation: state.type.length > 0 ? false : true
+				typeValidation: state.policyType.length > 0 ? false : true
 			});
 			return false;
 		}
 	}
 
 	function onSave() {
-		
 		if (checkValidation()) {
 			let form = {
 				id: state.id ? state.id : Date.now(),
 				policyHolderName: state.policyHolderName,
 				policyInformation: state.policyInformation,
 				policyHolderType: state.policyHolderType,
-				type: state.type,
+				policyType: state.policyType,
 				user: state.user,
 				datePolicyIsWritten: state.datePolicyIsWritten ? state.datePolicyIsWritten : '',
 				datePolicyIsIssued: state.datePolicyIsIssued ? state.datePolicyIsIssued : '',
@@ -272,23 +245,13 @@ function Products() {
 			console.log(form);
 
 			if (state.datePolicyIsIssued) {
-				if (state.typeOfProduct === 'Personally Produced') {
+				if (state.user) {
 					form = {
 						...form,
 						dollarBonus:
 							Math.ceil(
 								((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-									0.03 *
-									100
-							) / 100
-					};
-				} else if (state.typeOfProduct === 'Raw New') {
-					form = {
-						...form,
-						dollarBonus:
-							Math.ceil(
-								((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-									0.02 *
+									(parseInt(bonusLists[state.user.id][state.typeOfProduct])/100) *
 									100
 							) / 100
 					};
@@ -298,55 +261,23 @@ function Products() {
 						dollarBonus:
 							Math.ceil(
 								((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-									0.01 *
+									(parseInt(bonusLists['all'][state.typeOfProduct])/100) *
 									100
 							) / 100
 					};
 				}
 			}
+			if (routeParams.id === 'edit' && editData){
+				dispatch(updateProduct(form));
+			} else {
+				dispatch(saveProduct(form));
+			}
+			
+			history.goBack();
 
-			dispatch(saveProduct(form));
-			history.goBack()
-			setState({
-				id: '',
-				policyHolderName: '',
-				policyHolderType: '',
-				policyInformation: '',
-				datePolicyIsWritten: new Date(),
-				datePolicyIsIssued: null,
-				percentOfSaleCredit: '',
-				typeOfProduct: '',
-				policyPremium: '',
-				sourceOfBusiness: '',
-				adjustments: '',
-				dollarBonus: '',
-				user: '',
-				type: ["Entries"],
-				percentOfSaleCreditValidation: false,
-				typeOfProductValidation: false,
-				policyPremiumValidation: false
-			});
 		}
 	}
 
-	function handleClick(item) {
-		setState({
-			id: item.id,
-			policyHolderName: item.policyHolderName,
-			policyInformation: item.policyInformation,
-			datePolicyIsWritten: item.datePolicyIsWritten,
-			datePolicyIsIssued: item.datePolicyIsIssued,
-			percentOfSaleCredit: item.percentOfSaleCredit,
-			typeOfProduct: item.typeOfProduct,
-			policyPremium: item.policyPremium,
-			sourceOfBusiness: item.sourceOfBusiness,
-			adjustments: item.adjustments,
-			dollarBonus: item.dollarBonus,
-			policyHolderType: item.policyHolderType,
-			type: item.type
-		});
-		// props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
-	}
 	return (
 		<FusePageCarded
 			classes={{
@@ -395,7 +326,7 @@ function Products() {
 							variant="contained"
 							color="secondary"
 							// disabled={!canBeSubmitted()}
-							onClick={()=>onSave()}
+							onClick={() => onSave()}
 						>
 							Save
 						</Button>
@@ -408,10 +339,10 @@ function Products() {
 						<FuseScrollbars className="flex-grow overflow-x-auto">
 							<div className="min-w-xl p-96 h-1/2 flex flex-col justify-around">
 								<div className="flex w-full justify-between items-center flex-wrap py-12">
-								<SelectBox
+									<SelectBox
 										id="outlined-basic"
 										label="User Lists"
-										data={usersList}
+										data={state.usersList}
 										variant="outlined"
 										value={state.user}
 										validation="user"
@@ -454,11 +385,10 @@ function Products() {
 											'aria-label': 'change date'
 										}}
 									/>
-									
 								</div>
 
 								<div className="flex w-full justify-between items-center flex-wrap py-12">
-								<KeyboardDatePicker
+									<KeyboardDatePicker
 										margin="normal"
 										id="date-picker-dialog"
 										format="MM/dd/yyyy"
@@ -485,7 +415,7 @@ function Products() {
 									<SelectBox
 										id="outlined-basic"
 										label="Type of Product"
-										data={productLists}
+										data={state.productLists}
 										variant="outlined"
 										value={state.typeOfProduct}
 										validation="typeOfProduct"
@@ -505,17 +435,16 @@ function Products() {
 										willvalidation={true}
 										validate={state.policyHolderTypeValidation}
 									/>
-									
 								</div>
 								<div className="flex w-full justify-between items-center flex-wrap py-12">
-								{(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
+									{(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
 										<SelectBox
 											id="outlined-basic"
 											label="Policy Type"
 											data={typeList}
 											variant="outlined"
-											value={state.type[0]}
-											validation="type"
+											value={state.policyType[0]}
+											validation="policyType"
 											handleChangeValue={handleChangeValue}
 											willvalidation={true}
 											validate={state.typeValidation}
@@ -528,8 +457,8 @@ function Products() {
 											label="Policy Type"
 											data={typeList}
 											variant="outlined"
-											value={state.type}
-											validation="type"
+											value={state.policyType}
+											validation="policyType"
 											handleChangeValue={handleChangeValue}
 											willvalidation={true}
 											validate={state.typeValidation}
@@ -550,19 +479,16 @@ function Products() {
 									<SelectBox
 										id="outlined-basic"
 										label="Source of Business"
-										data={sourceLists}
+										data={state.marketings}
 										variant="outlined"
 										value={state.sourceOfBusiness}
 										validation="sourceOfBusiness"
 										handleChangeValue={handleChangeValue}
 										willvalidation={false}
 									/>
-									
 								</div>
 							</div>
 						</FuseScrollbars>
-
-						
 					</MuiPickersUtilsProvider>
 				</div>
 			}

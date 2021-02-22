@@ -8,6 +8,8 @@ import lifeEntries from './lifeSlice';
 import healthEntries from './healthSlice';
 import productType from './productTypeSlice';
 import users from './userSlice';
+import marketing from './businessSlice';
+import bonus from './bonusSlice'
 
 const reducer = combineReducers({
 	products,
@@ -18,7 +20,9 @@ const reducer = combineReducers({
 	lifeEntries,
 	healthEntries,
 	productType,
-	users
+	users,
+	marketing,
+	bonus
 });
 
 export default reducer;

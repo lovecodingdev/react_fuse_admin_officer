@@ -13,6 +13,8 @@ import FirebaseRegisterTab from './tabs/FirebaseRegisterTab';
 import JWTRegisterTab from './tabs/JWTRegisterTab';
 import SubscriptionCard from './components/subscriptionCard';
 
+
+
 const useStyles = makeStyles(theme => ({
 	root: {
 		background: `linear-gradient(to left, ${theme.palette.primary.dark} 0%, ${darken(

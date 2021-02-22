@@ -1,7 +1,6 @@
 import { useForm } from '@fuse/hooks';
 import FuseUtils from '@fuse/utils/FuseUtils';
 import AppBar from '@material-ui/core/AppBar';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -9,10 +8,14 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
 import {
 	removeContact,
 	updateContact,
@@ -20,20 +23,48 @@ import {
 	closeNewContactDialog,
 	closeEditContactDialog
 } from './store/bonusPlanSlice';
+import MenuItem from '@material-ui/core/MenuItem';
+import { selectTypeProduct } from './store/productTypeSlice';
 
 const defaultFormState = {
 	id: '',
 	name: '',
 	percent: '',
 	dollar: '',
-	planType:''
+	planType: ''
 };
 
+const useStyles = makeStyles(theme => ({
+	formControl: {
+		width: '100%'
+	},
+	selectEmpty: {
+		marginTop: theme.spacing(2)
+	}
+}));
+
 function ContactDialog(props) {
+	const classes = useStyles();
 	const dispatch = useDispatch();
 	const contactDialog = useSelector(({ bonusPlan }) => bonusPlan.autoBonus.contactDialog);
-	console.log(contactDialog)
+	const productType = useSelector(selectTypeProduct);
 	const { form, handleChange, setForm } = useForm(defaultFormState);
+	const [productTypeList, setProductType] = React.useState([]);
+	useEffect(() => {
+		var tempProductType = [];
+
+		if (productType.length > 0) {
+			productType.map(item => {
+				tempProductType.push({
+					item: item.productTypeName,
+					value: item.productTypeName
+				});
+			});
+		}
+		console.log(tempProductType);
+
+		setProductType(tempProductType);
+	}, [productType]);
 
 	const initDialog = useCallback(() => {
 		/**
@@ -50,7 +81,7 @@ function ContactDialog(props) {
 			setForm({
 				...defaultFormState,
 				// ...contactDialog.data,
-				planType:contactDialog.data,
+				planType: contactDialog.data,
 				id: FuseUtils.generateGUID()
 			});
 		}
@@ -75,11 +106,11 @@ function ContactDialog(props) {
 
 	function handleSubmit(event) {
 		event.preventDefault();
-		
+
 		if (contactDialog.type === 'new') {
-			dispatch(addContact({...form, routeParam: props.routeParam}));
+			dispatch(addContact({ ...form, routeParam: props.routeParam }));
 		} else {
-			dispatch(updateContact({...form, routeParam: props.routeParam}));
+			dispatch(updateContact({ ...form, routeParam: props.routeParam }));
 		}
 		closeComposeDialog();
 	}
@@ -121,7 +152,7 @@ function ContactDialog(props) {
 							<Icon color="action">account_circle</Icon>
 						</div> */}
 
-						<TextField
+						{/* <TextField
 							className="mb-24"
 							label="Policy Type"
 							autoFocus
@@ -132,11 +163,32 @@ function ContactDialog(props) {
 							variant="outlined"
 							required
 							fullWidth
-						/>
+						/> */}
+						<FormControl variant="outlined" className={classes.formControl}>
+							<InputLabel id="demo-simple-select-outlined-label">{'Policy Type'}</InputLabel>
+							<Select
+								className="mb-24"
+								label="Policy Type"
+								autoFocus
+								id="name"
+								name="name"
+								value={form.name}
+								onChange={handleChange}
+								variant="outlined"
+								required
+								fullWidth
+							>
+								{productTypeList.length > 0 &&
+									productTypeList.map((item, index) => (
+										<MenuItem value={item.value} key={index}>
+											{item.item}
+										</MenuItem>
+									))}
+							</Select>
+						</FormControl>
 					</div>
 
 					<div className="flex">
-					
 						<TextField
 							className="mb-24"
 							label="%"
@@ -145,7 +197,7 @@ function ContactDialog(props) {
 							value={form.percent}
 							onChange={handleChange}
 							variant="outlined"
-							type='number'
+							type="number"
 							fullWidth
 						/>
 					</div>
@@ -159,14 +211,13 @@ function ContactDialog(props) {
 							label="$"
 							id="dollar"
 							name="dollar"
-							type='number'
+							type="number"
 							value={form.dollar}
 							onChange={handleChange}
 							variant="outlined"
 							fullWidth
 						/>
-					</div>					
-					
+					</div>
 				</DialogContent>
 
 				{contactDialog.type === 'new' ? (

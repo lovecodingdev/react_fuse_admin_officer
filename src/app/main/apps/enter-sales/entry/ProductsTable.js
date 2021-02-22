@@ -108,7 +108,7 @@ function ProductsTable(props) {
 		percentOfSaleCredit: '',
 		typeOfProduct: '',
 		user: '',
-		type: [],
+		policyType: [],
 		policyPremium: '',
 		sourceOfBusiness: '',
 		adjustments: '',
@@ -199,147 +199,25 @@ function ProductsTable(props) {
 		setRowsPerPage(event.target.value);
 	}
 
-	function handleDateChange(date, id) {
-		setState({ ...state, [id]: date });
-		console.log({ [id]: date });
-	}
-
-	function handleChangeValue(data) {
-		console.log(data);
-		if (Object.keys(data)[0] === 'type') {
-			if (typeof data['type'] === 'object') {
-				setState({ ...state, ...data });
-			} else {
-				setState({ ...state, type: [data['type']], typeValidation: data['typeValidation'] });
-			}
-		} else {
-			setState({ ...state, ...data });
-		}
-	}
-
-	function checkValidation() {
-		if (
-			!state.percentOfSaleCreditValidation &&
-			!state.typeOfProductValidation &&
-			!state.policyPremiumValidation &&
-			!state.policyHolderTypeValidation&&
-			state.percentOfSaleCredit&&
-			state.typeOfProduct&&
-			state.policyHolderType&&
-			state.type.length>0			
-		) {
-			return true;
-		} else {
-			setState({
-				...state,
-				percentOfSaleCreditValidation: state.percentOfSaleCredit ? false : true,
-				typeOfProductValidation: state.typeOfProduct ? false : true,
-				policyPremiumValidation: state.policyPremium ? false : true,
-				policyHolderTypeValidation: state.policyHolderType ? false : true,
-				typeValidation: state.type.length>0 ? false : true
-			});
-			return false;
-		}
-	}
-
-	function onSave() {
-		console.log(checkValidation());
-		if (checkValidation()) {
-			let form = {
-				id: state.id ? state.id : Date.now(),
-				policyHolderName: state.policyHolderName,
-				policyInformation: state.policyInformation,
-				policyHolderType: state.policyHolderType,
-				type: state.type,
-				user: state.user,
-				datePolicyIsWritten: state.datePolicyIsWritten ? state.datePolicyIsWritten : '',
-				datePolicyIsIssued: state.datePolicyIsIssued ? state.datePolicyIsIssued : '',
-				percentOfSaleCredit: parseFloat(state.percentOfSaleCredit),
-				typeOfProduct: state.typeOfProduct,
-				policyPremium: parseFloat(state.policyPremium),
-				sourceOfBusiness: state.sourceOfBusiness,
-				adjustments: state.adjustments,
-				dollarBonus: state.dollarBonus
-			};
-			console.log(form);
-
-			if (state.datePolicyIsIssued) {
-				if (state.typeOfProduct === 'Personally Produced') {
-					form = {
-						...form,
-						dollarBonus:
-							Math.ceil(
-								((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-									0.03 *
-									100
-							) / 100
-					};
-				} else if (state.typeOfProduct === 'Raw New') {
-					form = {
-						...form,
-						dollarBonus:
-							Math.ceil(
-								((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-									0.02 *
-									100
-							) / 100
-					};
-				} else {
-					form = {
-						...form,
-						dollarBonus:
-							Math.ceil(
-								((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-									0.01 *
-									100
-							) / 100
-					};
-				}
-			}
-
-			dispatch(saveProduct(form));
-			dispatch(getEntries()).then(() => setLoading(false));
-			setState({
-				id: '',
-				policyHolderName: '',
-				policyHolderType: '',
-				policyInformation: '',
-				datePolicyIsWritten: new Date(),
-				datePolicyIsIssued: null,
-				percentOfSaleCredit: '',
-				typeOfProduct: '',
-				policyPremium: '',
-				sourceOfBusiness: '',
-				adjustments: '',
-				dollarBonus: '',
-				user: '',
-				type: [],
-				percentOfSaleCreditValidation: false,
-				typeOfProductValidation: false,
-				policyPremiumValidation: false
-			});
-		}
-	}
-
 	function handleClick(item) {
 		props.history.push(`/apps/enter-sales/entry/edit`);
-		dispatch(setEditData({
-			id: item.id,
-			policyHolderName: item.policyHolderName,
-			policyInformation: item.policyInformation,
-			datePolicyIsWritten: item.datePolicyIsWritten,
-			datePolicyIsIssued: item.datePolicyIsIssued,
-			percentOfSaleCredit: item.percentOfSaleCredit,
-			typeOfProduct: item.typeOfProduct,
-			policyPremium: item.policyPremium,
-			sourceOfBusiness: item.sourceOfBusiness,
-			adjustments: item.adjustments,
-			dollarBonus: item.dollarBonus,
-			policyHolderType: item.policyHolderType,
-			type: item.type
-		}))
-	
-		
+		dispatch(
+			setEditData({
+				id: item.id,
+				policyHolderName: item.policyHolderName,
+				policyInformation: item.policyInformation,
+				datePolicyIsWritten: item.datePolicyIsWritten,
+				datePolicyIsIssued: item.datePolicyIsIssued,
+				percentOfSaleCredit: item.percentOfSaleCredit,
+				typeOfProduct: item.typeOfProduct,
+				policyPremium: item.policyPremium,
+				sourceOfBusiness: item.sourceOfBusiness,
+				adjustments: item.adjustments,
+				dollarBonus: item.dollarBonus,
+				policyHolderType: item.policyHolderType,
+				policyType: item.policyType
+			})
+		);
 	}
 
 	if (loading) {
@@ -360,7 +238,6 @@ function ProductsTable(props) {
 								rowCount={data.length}
 								onMenuItemClick={handleDeselect}
 							/>
-
 						</Table>
 					</FuseScrollbars>
 				</MuiPickersUtilsProvider>
@@ -383,7 +260,6 @@ function ProductsTable(props) {
 						/>
 
 						<TableBody>
-							
 							{_.orderBy(
 								data,
 								[
@@ -455,31 +331,20 @@ function ProductsTable(props) {
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.typeOfProduct}
 											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+											{/* <TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.policyHolderType}
-											</TableCell>
+											</TableCell> */}
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{/* {n.type.length>0&&n.type.map(item => {
-													return item + ',';
-												})} */}
+												{n.policyType[0]==='Entries'?"AutoEntries":n.policyType[0]}
 											</TableCell>
-											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{/* {n.policyHolderType} */}
-											</TableCell>
+											
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												${n.policyPremium}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.sourceOfBusiness}
 											</TableCell>
-											{/* <TableCell
-												className="p-2 md:p-2"
-												component="th"
-												scope="row"
-												align="center"
-											>
-												{n.adjustments}
-											</TableCell> */}
+										
 											<TableCell
 												className="p-2 md:p-2 bg-indigo-200"
 												component="th"

@@ -36,9 +36,9 @@ mock.onGet('/api/e-commerce-app/product').reply(request => {
 });
 
 mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
-	const data = JSON.parse(request.data);
+	let data = JSON.parse(request.data);
 	let product = null;
-	const uid = localStorage.getItem('@UID')
+	let uid = localStorage.getItem('@UID')
 	eCommerceDB.entrys = eCommerceDB.entrys.map(_product => {
 		if (_product.id === data.id) {
 			product = data;
@@ -52,9 +52,50 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 		eCommerceDB.entrys = [...eCommerceDB.entrys, product];
 	}
 
-	realDb.ref(`Sales/${belongTo}/Entries/${uid}/${data.id}`).set({
-		...data
+	data.policyType.map(item=>{
+		data = {...data, sellerId:uid}		
+		var id = Date.now()
+		if(data.user){
+			uid = data.user.uid
+		}
+		realDb.ref(`Sales/${belongTo}/${item}/${uid}/${id}`).set({
+			...data, id: id
+		});
+	})	
+
+
+	return [200, product];
+});
+
+mock.onPost('/api/e-commerce-app/product/update').reply(async request => {
+	let data = JSON.parse(request.data);
+	let product = null;
+	let uid = localStorage.getItem('@UID')
+	eCommerceDB.entrys = eCommerceDB.entrys.map(_product => {
+		if (_product.id === data.id) {
+			product = data;
+			return product;
+		}
+		return _product;
 	});
+
+	if (!product) {
+		product = data;
+		eCommerceDB.entrys = [...eCommerceDB.entrys, product];
+	}
+
+	console.log(data)
+	
+		data = {...data, sellerId:uid}		
+		
+		if(data.user){
+			uid = data.user.uid
+		}
+		realDb.ref(`Sales/${belongTo}/${data.policyType}/${uid}/${data.id}`).set({
+			...data
+		});
+	
+
 
 	return [200, product];
 });

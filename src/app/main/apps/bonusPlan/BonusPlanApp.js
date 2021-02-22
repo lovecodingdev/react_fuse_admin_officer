@@ -1,7 +1,7 @@
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import withReducer from 'app/store/withReducer';
-import React, { useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useRef, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useDeepCompareEffect } from '@fuse/hooks';
 import ContactDialog from './BonusPlanDialog';
@@ -13,6 +13,9 @@ import ContactsList from './BonusPlanList';
 import reducer from './store';
 import { getAutoBonus } from './store/bonusPlanSlice';
 import { getUserData } from './store/userSlice';
+import {
+	getProductType
+} from './store/productTypeSlice';
 
 function BonusPlanApp(props) {
 	const dispatch = useDispatch();
@@ -23,6 +26,7 @@ function BonusPlanApp(props) {
 	useDeepCompareEffect(() => {
 		dispatch(getAutoBonus(routeParams.id));
 		dispatch(getUserData(routeParams.id));
+		dispatch(getProductType())
 	}, [dispatch, routeParams]);
 
 	return (

@@ -46,7 +46,7 @@ export default function SimpleSelect(props) {
 					
 				}}
 			>
-                {data.map((item, index)=>(
+                {data.length>0&&data.map((item, index)=>(
                     <MenuItem value={item.value} key={index}>{item.item}</MenuItem>
                 ))}
 				
