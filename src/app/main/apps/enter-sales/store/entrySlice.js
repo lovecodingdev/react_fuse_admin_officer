@@ -9,20 +9,23 @@ export const getEntries = createAsyncThunk(
 	() =>
 		new Promise((resolve, reject) => {
 			var starCountRef = realDb.ref(`Sales/${belongTo}/`);
-			var uid = localStorage.getItem('@UID');
+			// var uid = localStorage.getItem('@UID');
 			var entries = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
 
 				if (data) {
 					Object.keys(data).map(item => {
-						if (uid) {
-							if (data[item][uid]) {
-								Object.keys(data[item][uid]).map(i => {
-									entries.push({...data[item][uid][i], policyType:[item]});
-								});
-							}
-						}
+						// if (uid) {
+							Object.keys(data[item]).map(uid=>{
+								if (data[item][uid]) {
+									Object.keys(data[item][uid]).map(i => {
+										entries.push({...data[item][uid][i], policyType:[item]});
+									});
+								}
+							})
+							
+						// }
 					});
 				}
 

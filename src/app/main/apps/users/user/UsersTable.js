@@ -13,16 +13,17 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import FuseAnimate from '@fuse/core/FuseAnimate/FuseAnimate';
 import { getUsers, selectUsers, saveProduct } from '../store/userSlice';
 import ProductsTableHead from './UsersTableHead';
-import TextInput from '../../../components/TextField';
-import FormattedInput from '../../../components/PriceInput';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import SelectBox from '../../../components/SelectBox';
 import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
-import {
-	openUserProfileDialog
-} from '../store/userSlice'
+import { openUserProfileDialog } from '../store/userSlice';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
@@ -68,6 +69,19 @@ function ProductsTable(props) {
 	const [state, setState] = React.useState({
 		includeTeamBonus: ''
 	});
+	const [open, setOpen] = React.useState(false);
+
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = () => {
+		setOpen(false);
+	};
+
+	const handleDelete = () => {
+		setOpen(false);
+	};
 
 	useEffect(() => {
 		dispatch(getUsers()).then(() => setLoading(false));
@@ -157,14 +171,14 @@ function ProductsTable(props) {
 	}
 
 	function makeid(length) {
-		var result           = '';
-		var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+		var result = '';
+		var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 		var charactersLength = characters.length;
-		for ( var i = 0; i < length; i++ ) {
-		   result += characters.charAt(Math.floor(Math.random() * charactersLength));
+		for (var i = 0; i < length; i++) {
+			result += characters.charAt(Math.floor(Math.random() * charactersLength));
 		}
 		return result;
-	 }
+	}
 
 	function handleClick() {
 		// props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
@@ -244,11 +258,11 @@ function ProductsTable(props) {
 												/>
 											</TableCell>
 
-											<TableCell 
-												className="p-2 md:p-2" 
-												component="th" 
-												scope="row" 
-												align="center" 
+											<TableCell
+												className="p-2 md:p-2"
+												component="th"
+												scope="row"
+												align="center"
 												onClick={() => dispatch(openUserProfileDialog(n.data))}
 											>
 												{n.data.displayName}
@@ -302,7 +316,7 @@ function ProductsTable(props) {
 														className="whitespace-nowrap normal-case"
 														variant="contained"
 														color="secondary"
-														onClick={handleClick}
+														onClick={handleClickOpen}
 													>
 														<span className="hidden sm:flex">Revoke</span>
 													</Button>
@@ -330,6 +344,27 @@ function ProductsTable(props) {
 					onChangePage={handleChangePage}
 					onChangeRowsPerPage={handleChangeRowsPerPage}
 				/>
+				<Dialog
+					open={open}
+					onClose={handleClose}
+					aria-labelledby="alert-dialog-title"
+					aria-describedby="alert-dialog-description"
+				>
+					<DialogTitle id="alert-dialog-title">{"Are you really revoke this user?"}</DialogTitle>
+					<DialogContent>
+						<DialogContentText id="alert-dialog-description">
+							You will lost this users data.
+						</DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={handleClose} color="primary">
+							No
+						</Button>
+						<Button onClick={handleDelete} color="primary" autoFocus>
+							Yes
+						</Button>
+					</DialogActions>
+				</Dialog>
 			</MuiPickersUtilsProvider>
 		</div>
 	);

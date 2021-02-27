@@ -75,7 +75,7 @@ function Widget10(props) {
 												i === 6 && `border-l-4 border-gray-500`
 											}`}
 										>
-											<Typography className={cell.classes}>{cell.value}{cell.value&&props.title==="Percent Change"&&'%'}</Typography>
+											<Typography className={cell.classes}>{cell.value}</Typography>
 										</TableCell>
 									);
 								})}

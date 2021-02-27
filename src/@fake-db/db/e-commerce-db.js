@@ -53,12 +53,14 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 	}
 
 	data.policyType.map(item=>{
-		data = {...data, sellerId:uid}		
-		var id = Date.now()
 		if(data.user){
 			uid = data.user.uid
 		}
-		realDb.ref(`Sales/${belongTo}/${item}/${uid}/${id}`).set({
+		data = {...data, sellerId:data.user?data.user.uid:data.uid}		
+		var id = Date.now()
+		
+		console.log(`Sales/${data.belongTo}/${item}/${data.sellerId}/${id}`)
+		realDb.ref(`Sales/${data.belongTo}/${item}/${data.sellerId}/${id}`).set({
 			...data, id: id
 		});
 	})	
