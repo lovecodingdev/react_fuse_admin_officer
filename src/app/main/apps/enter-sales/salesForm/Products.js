@@ -60,11 +60,13 @@ const alignBonus = bonus => {
 	if (bonus.length > 0) {
 		Object.keys(bonus[0]).map(id => {
 			Object.keys(bonus[0][id]).map(policy => {
-				
 				Object.keys(bonus[0][id][policy]).map(itemId => {
 					tempBonusLists = {
 						...tempBonusLists,
-						[id]: {...tempBonusLists[id], [bonus[0][id][policy][itemId].name]: bonus[0][id][policy][itemId].percent }
+						[id]: {
+							...tempBonusLists[id],
+							[bonus[0][id][policy][itemId].name]: bonus[0][id][policy][itemId].percent
+						}
 					};
 				});
 			});
@@ -226,6 +228,8 @@ function Products() {
 
 	function onSave() {
 		if (checkValidation()) {
+			let belongTo = localStorage.getItem('@BELONGTO');
+			let uid = localStorage.getItem('@UID');
 			let form = {
 				id: state.id ? state.id : Date.now(),
 				policyHolderName: state.policyHolderName,
@@ -240,7 +244,9 @@ function Products() {
 				policyPremium: parseFloat(state.policyPremium),
 				sourceOfBusiness: state.sourceOfBusiness,
 				adjustments: state.adjustments,
-				dollarBonus: state.dollarBonus
+				dollarBonus: state.dollarBonus,
+				belongTo,
+				uid
 			};
 			console.log(form);
 
@@ -251,7 +257,7 @@ function Products() {
 						dollarBonus:
 							Math.ceil(
 								((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-									(parseInt(bonusLists[state.user.id][state.typeOfProduct])/100) *
+									(parseInt(bonusLists[state.user.id][state.typeOfProduct]) / 100) *
 									100
 							) / 100
 					};
@@ -261,19 +267,23 @@ function Products() {
 						dollarBonus:
 							Math.ceil(
 								((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-									(parseInt(bonusLists['all'][state.typeOfProduct])/100) *
+									(parseInt(bonusLists['all'][state.typeOfProduct]) / 100) *
 									100
 							) / 100
 					};
 				}
 			}
-			if (routeParams.id === 'edit' && editData){
-				dispatch(updateProduct(form)).then(()=>{history.goBack()});
-			} else {
-				dispatch(saveProduct(form)).then(()=>{history.goBack()});
-			}	
-			
-
+			if (uid && belongTo) {
+				if (routeParams.id === 'edit' && editData) {
+					dispatch(updateProduct(form)).then(() => {
+						history.goBack();
+					});
+				} else {
+					dispatch(saveProduct(form)).then(() => {
+						history.goBack();
+					});
+				}
+			}
 		}
 	}
 

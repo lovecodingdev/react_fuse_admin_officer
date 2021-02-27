@@ -58,8 +58,8 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 		if(data.user){
 			uid = data.user.uid
 		}
-		console.log(`Sales/${belongTo}/${item}/${uid}/${id}`)
-		realDb.ref(`Sales/${belongTo}/${item}/${uid}/${id}`).set({
+		console.log(`Sales/${data.belongTo}/${item}/${data.uid}/${id}`)
+		realDb.ref(`Sales/${data.belongTo}/${item}/${data.uid}/${id}`).set({
 			...data, id: id
 		});
 	})	
