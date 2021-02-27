@@ -271,8 +271,7 @@ function Products() {
 				dispatch(updateProduct(form)).then(()=>{history.goBack()});
 			} else {
 				dispatch(saveProduct(form)).then(()=>{history.goBack()});
-			}
-			
+			}	
 			
 
 		}
@@ -337,7 +336,7 @@ function Products() {
 				<div className="w-full flex flex-col">
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<FuseScrollbars className="flex-grow overflow-x-auto">
-							<div className="min-w-xl p-96 h-1/2 flex flex-col justify-around">
+							<div className="min-w-xl p-96 h-full flex flex-col justify-around">
 								<div className="flex w-full justify-between items-center flex-wrap py-12">
 									<SelectBox
 										id="outlined-basic"
