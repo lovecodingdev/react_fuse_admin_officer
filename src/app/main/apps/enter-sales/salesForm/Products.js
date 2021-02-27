@@ -268,12 +268,12 @@ function Products() {
 				}
 			}
 			if (routeParams.id === 'edit' && editData){
-				dispatch(updateProduct(form));
+				dispatch(updateProduct(form)).then(()=>{history.goBack()});
 			} else {
-				dispatch(saveProduct(form));
+				dispatch(saveProduct(form)).then(()=>{history.goBack()});
 			}
 			
-			history.goBack();
+			
 
 		}
 	}
