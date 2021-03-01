@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
-var belongTo = localStorage.getItem('@BELONGTO')
+var belongTo = localStorage.getItem('@BELONGTO');
 
 export const getEntries = createAsyncThunk(
 	'eCommerceApp/products/getProducts',
@@ -17,15 +17,13 @@ export const getEntries = createAsyncThunk(
 				if (data) {
 					Object.keys(data).map(item => {
 						// if (uid) {
-							Object.keys(data[item]).map(uid=>{
-								if (data[item][uid]) {
-									Object.keys(data[item][uid]).map(i => {
-										entries.push({...data[item][uid][i], policyType:[item]});
-									});
-								}
-							})
-							
-						// }
+						Object.keys(data[item]).map(uid => {
+							if (data[item][uid]) {
+								Object.keys(data[item][uid]).map(i => {
+									entries.push({ ...data[item][uid][i], policyType: [item] });
+								});
+							}
+						});
 					});
 				}
 
@@ -34,23 +32,25 @@ export const getEntries = createAsyncThunk(
 		})
 );
 
+export const saveProduct = createAsyncThunk(
+	'eCommerceApp/product/saveProduct',
+	async (product, { dispatch, getState }) => {
+		const response = await axios.post('/api/e-commerce-app/product/save', product);
+		const data = await response.data;
+		dispatch(getEntries());
+		return data;
+	}
+);
 
-
-export const saveProduct = createAsyncThunk('eCommerceApp/product/saveProduct', async (product, { dispatch, getState }) => {
-
-	const response = await axios.post('/api/e-commerce-app/product/save', product);
-	const data = await response.data;
-	dispatch(getEntries());
-	return data;
-});
-
-export const updateProduct = createAsyncThunk('eCommerceApp/product/saveProduct', async (product, { dispatch, getState }) => {
-
-	const response = await axios.post('/api/e-commerce-app/product/update', product);
-	const data = await response.data;
-	dispatch(getEntries());
-	return data;
-});
+export const updateProduct = createAsyncThunk(
+	'eCommerceApp/product/saveProduct',
+	async (product, { dispatch, getState }) => {
+		const response = await axios.post('/api/e-commerce-app/product/update', product);
+		const data = await response.data;
+		dispatch(getEntries());
+		return data;
+	}
+);
 
 export const removeProducts = createAsyncThunk(
 	'eCommerceApp/products/removeProducts',
@@ -85,7 +85,7 @@ const productsSlice = createSlice({
 	name: 'eCommerceApp/products',
 	initialState: productsAdapter.getInitialState({
 		searchText: '',
-		editData:{}
+		editData: {}
 	}),
 	reducers: {
 		setProductsSearchText: {
@@ -98,11 +98,10 @@ const productsSlice = createSlice({
 			state.editData = {
 				...action.payload
 			};
-		},
+		}
 	},
 	extraReducers: {
-		[getEntries.fulfilled]: productsAdapter.setAll,
-
+		[getEntries.fulfilled]: productsAdapter.setAll
 	}
 });
 

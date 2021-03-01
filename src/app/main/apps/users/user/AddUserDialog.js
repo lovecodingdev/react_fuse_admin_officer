@@ -22,7 +22,8 @@ const defaultFormState = {
 	email: '',
 	emailValidation: false,
 	role: '',
-	roleValidation: false
+	roleValidation: false,
+	belongTo:localStorage.getItem("@BELONGTO")
 };
 
 const sourceLists = [
@@ -82,6 +83,7 @@ function AddUserDialog(props) {
 		event.preventDefault();
 
 		if (addUserDialog.type === 'new') {
+			console.log("---------------------------")
 			dispatch(addUser({ ...form }));
 		} else {
 			dispatch(addUser({ ...form }));
