@@ -93,7 +93,7 @@ const EnhancedTable = ({ columns, data, onRowClick, title, id }) => {
 									return (
 										<TableCell
 											className={clsx(
-												`w-md p-0 text-xs p-4 ${index === 3 ? `border-r-0` : `border-r-1`}`
+												`w-md p-0 text-xs p-4 ${index === 2 ? `border-r-0` : `border-r-1`}`
 											)}
 											size="small"
 											align="center"
@@ -124,8 +124,8 @@ const EnhancedTable = ({ columns, data, onRowClick, title, id }) => {
 												{...cell.getCellProps()}
 												align="center"
 												className={clsx(
-													`p-0 text-xs truncate ${
-														index === 3 ? `border-r-0` : `border-r-1 `
+													`p-4 text-xs truncate ${
+														index === 2 ? `border-r-0` : `border-r-1 `
 													}`,
 													cell.column.className
 												)}

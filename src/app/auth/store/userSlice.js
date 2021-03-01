@@ -158,6 +158,7 @@ export const updateUserData = user => async (dispatch, getState) => {
 			firebaseService
 				.updateUserData(user)
 				.then(() => {
+					
 					dispatch(showMessage({ message: 'User data saved to firebase' }));
 				})
 				.catch(error => {

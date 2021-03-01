@@ -182,9 +182,9 @@ function ContactDialog(props) {
 								Save
 							</Button>
 						</div>
-						<IconButton onClick={handleRemove}>
+						{/* <IconButton onClick={handleRemove}>
 							<Icon>delete</Icon>
-						</IconButton>
+						</IconButton> */}
 					</DialogActions>
 				)}
 			</form>

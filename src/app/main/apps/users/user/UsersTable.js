@@ -21,10 +21,9 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import SelectBox from '../../../components/SelectBox';
-import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import { openUserProfileDialog } from '../store/userSlice';
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -40,26 +39,16 @@ const teamBonusList = [
 	{ item: 'No', value: false }
 ];
 
-function makeid(length) {
-	var result = '';
-	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	var charactersLength = characters.length;
-	for (var i = 0; i < length; i++) {
-		result += characters.charAt(Math.floor(Math.random() * charactersLength));
-	}
-	return result;
-}
 
 function ProductsTable(props) {
 	const dispatch = useDispatch();
 	const products = useSelector(selectUsers);
 	const searchText = useSelector(({ users }) => users.users.searchText);
-	const isAdmin = localStorage.getItem('@ISADMIN');
-	const classes = useStyles();
+	const isAdmin = useSelector(({auth})=>auth.user.role[0])
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(products);
-	console.log(products);
+	console.log(products, isAdmin);
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -180,16 +169,11 @@ function ProductsTable(props) {
 		return result;
 	}
 
-	function handleClick() {
-		// props.history.push(`/apps/e-commerce/products/${item.id}/${item.handle}`);
-	}
-
 	function goBonusPlan(uid) {
 		setLoading(true);
 		props.history.push(`/apps/setup/bonus-plan/${uid}`);
 	}
 
-	console.log(makeid(150));
 
 	function goReport() {
 		props.history.push('/apps/production/sales-results');
@@ -238,7 +222,9 @@ function ProductsTable(props) {
 							{_.orderBy(data, [order.id], [order.direction])
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((n, index) => {
-									console.log(n);
+									if(isAdmin==='agency'&& n.role[0]==='agency'){
+										return
+									}
 									const isSelected = selected.indexOf(n.id) !== -1;
 									return (
 										<TableRow

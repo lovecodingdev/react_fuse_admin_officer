@@ -164,7 +164,7 @@ function ContactDialog(props) {
 							required
 							fullWidth
 						/> */}
-						<FormControl variant="outlined" className={classes.formControl}>
+						{/* <FormControl variant="outlined" className={classes.formControl}>
 							<InputLabel id="demo-simple-select-outlined-label">{'Policy Type'}</InputLabel>
 							<Select
 								className="mb-24"
@@ -185,7 +185,7 @@ function ContactDialog(props) {
 										</MenuItem>
 									))}
 							</Select>
-						</FormControl>
+						</FormControl> */}
 					</div>
 
 					<div className="flex">
@@ -247,9 +247,9 @@ function ContactDialog(props) {
 								Save
 							</Button>
 						</div>
-						<IconButton onClick={handleRemove}>
+						{/* <IconButton onClick={handleRemove}>
 							<Icon>delete</Icon>
-						</IconButton>
+						</IconButton> */}
 					</DialogActions>
 				)}
 			</form>

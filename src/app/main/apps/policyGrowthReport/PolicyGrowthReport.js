@@ -1,22 +1,15 @@
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FusePageSimple from '@fuse/core/FusePageSimple';
-import Hidden from '@material-ui/core/Hidden';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import withReducer from 'app/store/withReducer';
-import clsx from 'clsx';
 import _ from '@lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import reducer from './store';
-import { selectProjects, getProjects } from './store/lapseSlice';
+import { selectProjects, getProjects, saveProduct } from './store/lapseSlice';
 import { getAutoBonus, selectContacts } from './store/bonusPlanSlice';
 import { getWidgets, selectWidgets } from './store/widgetsSlice';
 import {
@@ -1470,9 +1463,7 @@ function ProjectDashboardApp(props) {
 
 			console.log(perHouseHoldRows);
 
-			var  graphData = {
-				...widgets.widget5
-			}
+			dispatch(saveProduct(temp))
 
 			setState({
 				...state,

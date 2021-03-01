@@ -26,8 +26,8 @@ function BonusPlanApp(props) {
 	useDeepCompareEffect(() => {
 		dispatch(getAutoBonus(routeParams.id));
 		dispatch(getUserData(routeParams.id));
-		dispatch(getProductType())
-	}, [dispatch, routeParams]);
+		// dispatch(getProductType())
+	}, [dispatch, routeParams.id]);
 
 	return (
 		<>
