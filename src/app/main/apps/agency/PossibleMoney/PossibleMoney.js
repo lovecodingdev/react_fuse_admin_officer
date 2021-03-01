@@ -15,7 +15,7 @@ import reducer from '../store';
 import Table from '../../../components/widgets/Table';
 import Chart from '../../../components/widgets/BarChart';
 import PieChart from '../../../components/widgets/PieChart';
-import Widget10 from '../../../components/widgets/Widget10';
+import Widget10 from '../../../components/widgets/SpecialTable';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
