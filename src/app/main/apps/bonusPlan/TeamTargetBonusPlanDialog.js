@@ -118,10 +118,10 @@ function ContactDialog(props) {
 			</AppBar>
 			<form noValidate onSubmit={handleSubmit} className="flex flex-col md:overflow-hidden">
 				<DialogContent classes={{ root: 'p-24' }}>
-					<div className="flex">
-						{/* <div className="min-w-48 pt-20">
+					{/* <div className="flex">
+						<div className="min-w-48 pt-20">
 							<Icon color="action">account_circle</Icon>
-						</div> */}
+						</div>
 
 						<TextField
 							className="mb-24"
@@ -135,7 +135,7 @@ function ContactDialog(props) {
 							required
 							fullWidth
 						/>
-					</div>
+					</div> */}
 
 					<div className="flex">
 						<TextField
@@ -196,9 +196,9 @@ function ContactDialog(props) {
 								Save
 							</Button>
 						</div>
-						<IconButton onClick={handleRemove}>
+						{/* <IconButton onClick={handleRemove}>
 							<Icon>delete</Icon>
-						</IconButton>
+						</IconButton> */}
 					</DialogActions>
 				)}
 			</form>

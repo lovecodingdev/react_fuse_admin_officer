@@ -6,7 +6,7 @@ export const getUsers = createAsyncThunk(
 	'users/users/getUsers',
 	() =>
 		new Promise((resolve, reject) => {
-			
+			var belongTo = localStorage.getItem('@BELONGTO')
 			var starCountRef = realDb.ref(`users/`);
 			var agencyCountRef = realDb.ref(`agency/`);
 			var users = [];
@@ -15,6 +15,7 @@ export const getUsers = createAsyncThunk(
 				
 				if (data) {
 					Object.keys(data).map(item => {
+						if(belongTo===data[item].belongTo)
 						users.push(data[item]);
 					});					
 				}
@@ -23,6 +24,7 @@ export const getUsers = createAsyncThunk(
 					const agencyData = snap.val();
 					if (agencyData) {
 						Object.keys(agencyData).map(item => {
+							if(belongTo===agencyData[item].belongTo)
 							users.push(agencyData[item]);
 						});					
 					}
