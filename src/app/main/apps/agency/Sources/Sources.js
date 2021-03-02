@@ -21,6 +21,7 @@ import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport, setProduct } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { Agency_Sources_ViewYearTotalsByProduct_Table, Agency_Sources_ViewMonthlyTotals_Table } from '../Headers';
+import { Options as options } from '../../../utils/Globals';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -43,6 +44,7 @@ function Sources(props) {
 	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Sources');
 	
@@ -53,6 +55,16 @@ function Sources(props) {
 	useEffect(() => {	
 		setData({ widgets });
 	}, [widgets]);
+
+	useEffect(() => {
+		var temp = [];
+		if (users.length > 0) {
+			users.map(item => {
+				temp.push({ item: item.data.displayName, value: item.id });
+			});
+			setUserList(temp);
+		}
+	}, [users]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -89,7 +101,8 @@ function Sources(props) {
 								<SelectBox
 									value={period}
 									onChange={ev => dispatch(setPeriod(ev))}
-									type="period"
+									label="Report Period"
+									data={options.period.data}
 								/>
 							</FuseAnimate>
 						</div>	
@@ -100,7 +113,8 @@ function Sources(props) {
 								<SelectBox
 									value={product}
 									onChange={ev => dispatch(setProduct(ev))}
-									type="product"
+									label="Product"
+									data={options.product.data}
 								/>
 							</FuseAnimate>
 						</div>	
@@ -110,7 +124,8 @@ function Sources(props) {
 							<SelectBox
 								value={production}
 								onChange={ev => dispatch(setProduction(ev))}
-								type="production"
+								label="Production"
+								data={options.production.data}
 							/>
 						</FuseAnimate>
 					</div>								

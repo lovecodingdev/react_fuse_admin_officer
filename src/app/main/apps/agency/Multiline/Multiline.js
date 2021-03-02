@@ -21,7 +21,7 @@ import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { Agency_Multiline_AgencyGoalsAndProduction_Table, Agency_Multiline_Production_Table } from '../Headers';
-
+import { Options as options } from '../../../utils/Globals';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -43,6 +43,7 @@ function Multiline(props) {
 	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Multiline');
 	
@@ -53,6 +54,16 @@ function Multiline(props) {
 	useEffect(() => {	
 		setData({ widgets });
 	}, [widgets]);
+
+	useEffect(() => {
+		var temp = [];
+		if (users.length > 0) {
+			users.map(item => {
+				temp.push({ item: item.data.displayName, value: item.id });
+			});
+			setUserList(temp);
+		}
+	}, [users]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -88,7 +99,8 @@ function Multiline(props) {
 							<SelectBox
 								value={period}
 								onChange={ev => dispatch(setPeriod(ev))}
-								type="period"
+								label="Report Period"
+								data={options.period.data}
 							/>
 						</FuseAnimate>
 					</div>

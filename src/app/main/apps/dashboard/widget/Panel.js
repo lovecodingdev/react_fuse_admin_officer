@@ -14,17 +14,17 @@ function Widget1(props) {
 	const { data } = props.data;
 	const length = data.length;
 	return (
-		<Paper className={`w-full  shadow h-full`}>
+		<Paper className={`w-full shadow h-full`}>
 			<div className="flex items-center justify-between px-4 pt-4">
 				<Typography className="text-15 flex w-full border-b-1" color="textSecondary">
 					<span className="truncate">{props.data.title}</span>
 				</Typography>
 			</div>
-			<div className="h-full text-center">
+			<div className="h-full text-center"> 
 				<div className="h-full flex flex-wrap">
 					{data.map((item, index) => (
 						data.length===1 ?
-						(	<div className="w-full h-full" key={index} >								
+						(	<div className="w-full" key={index} >								
 								<Typography className={`flex flex-col justify-center h-full text-48 leading-none  ${props.data.color}`}>
 									{item[Object.keys(item)[0]]} {'%'}
 								</Typography>
