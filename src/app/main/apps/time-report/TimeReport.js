@@ -11,16 +11,30 @@ import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
-import reducer from '../store';
-import Table from '../../../components/widgets/Table';
-import Chart from '../../../components/widgets/BarChart';
-import PieChart from '../../../components/widgets/PieChart';
-import SelectBox from '../../../components/CustomSelectBox';
-import Header from '../../../components/widgets/Header';
-import { getWidgets, selectWidgets } from '../store/widgetsSlice';
-import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
-import { getUsers, selectUsers } from '../store/usersSlice';
-import { agencyGoalsHeader, otherActivitiesHeader } from '../Headers';
+import reducer from './store';
+import Table from './Table';
+import Chart from '../../components/widgets/BarChart';
+import PieChart from '../../components/widgets/PieChart';
+import SelectBox from '../../components/CustomSelectBox';
+import { getWidgets, selectWidgets } from './store/widgetsSlice';
+import { setProduction, setPeriod, setUser, setReport } from './store/productsSlice';
+import { getUsers, selectUsers } from './store/usersSlice';
+import Header from './Headers';
+
+const agencyGoalsHeader = [
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+	{value:'Goals', type:true},
+	{value:'Actual', type:false},
+];
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -30,20 +44,20 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function Payroll(props) {
+function TimeReport(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
 	const users = useSelector(selectUsers);
 	const widgets = useSelector(selectWidgets);
-	const production = useSelector(({ agencyApp }) => agencyApp.products.production);
-	const period = useSelector(({ agencyApp }) => agencyApp.products.period);	
-	const report = useSelector(({ agencyApp }) => agencyApp.products.report);
-	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
+	const production = useSelector(({ timeReport }) => timeReport.products.production);
+	const period = useSelector(({ timeReport }) => timeReport.products.period);	
+	const report = useSelector(({ timeReport }) => timeReport.products.report);
+	const user = useSelector(({ timeReport }) => timeReport.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [tabValue, setTabValue] = useState(0);
-	const [title, setTitle] = useState('Payroll');
+	const [title, setTitle] = useState('Time Report');
 	
 	useEffect(() => {
 		dispatch(getWidgets()).then(() => setLoading(false));
@@ -112,4 +126,4 @@ function Payroll(props) {
 	);
 }
 
-export default withReducer('agencyApp', reducer)(Payroll);
+export default withReducer('timeReport', reducer)(TimeReport);

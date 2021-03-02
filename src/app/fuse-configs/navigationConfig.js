@@ -194,6 +194,15 @@ const navigationConfig = [
 				exact: true
 			},
 
+			{
+				id: 'time-report',
+				title: 'Time Report',
+				type: 'item',
+				url: '/apps/time-report',
+				icon: 'alarm_on',
+				exact: true
+			},
+
 
 			// {
 			// 	id: 'dashboards',

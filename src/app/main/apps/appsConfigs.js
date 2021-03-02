@@ -24,6 +24,7 @@ import LapseRateReportConfig from './lapseRateReport/LapseRateReportConfig'
 import PolicyGrowthReportConfig from './policyGrowthReport/PolicyGrowthReportConfig'
 import DashboardAppConfig from './dashboard/dashboardAppConfig'
 import ProductTypeAppConfig from './productType/ProductTypeAppConfig'
+import TimeReportAppConfig from './time-report/timeReportAppConfig'
 
 const appsConfigs = [
 	AnalyticsDashboardAppConfig,
@@ -51,7 +52,8 @@ const appsConfigs = [
 	LapseRateReportConfig,
 	PolicyGrowthReportConfig,
 	DashboardAppConfig,
-	ProductTypeAppConfig
+	ProductTypeAppConfig,
+	TimeReportAppConfig
 ];
 
 export default appsConfigs;
