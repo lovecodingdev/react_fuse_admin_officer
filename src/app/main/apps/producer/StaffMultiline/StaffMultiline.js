@@ -21,6 +21,7 @@ import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { Producer_StaffMultiline_Ratios_Table, Producer_StaffMultiline_Summary_Table } from '../Headers';
+import { Options as options } from '../../../utils/Globals';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -87,7 +88,8 @@ function StaffMultiline(props) {
 							<SelectBox
 								value={period}
 								onChange={ev => dispatch(setPeriod(ev))}
-								type="period"
+								label="Report Period"
+								data={options.period.data}
 							/>
 						</FuseAnimate>
 					</div>
@@ -96,7 +98,8 @@ function StaffMultiline(props) {
 							<SelectBox
 								value={production}
 								onChange={ev => dispatch(setProduction(ev))}
-								type="production"
+								label="Production"
+								data={options.production.data}
 							/>
 						</FuseAnimate>
 					</div>
@@ -104,10 +107,11 @@ function StaffMultiline(props) {
 						<div className="flex flex-1 items-center justify-center px-12">
 							<FuseAnimate animation="transition.slideUpIn" delay={300}>
 								<SelectBox
-									value={report}
-									onChange={ev => dispatch(setReport(ev))}
-									type="report"
-								/>
+								value={report}
+								onChange={ev => dispatch(setReport(ev))}
+								label="Report"
+								data={options.report.data}
+							/>
 							</FuseAnimate>
 						</div>
 					}

@@ -1,26 +1,27 @@
+import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import Hidden from '@material-ui/core/Hidden';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import { makeStyles } from '@material-ui/core/styles';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
+import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
-import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
-import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import reducer from '../store';
-import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import Table from '../../../components/widgets/Table';
-import Chat from '../../../components/widgets/BarChart';
-import PieChat from '../../../components/widgets/PieChart';
-import MultilineHeader from './MultilineHeader';
+import Chart from '../../../components/widgets/BarChart';
+import PieChart from '../../../components/widgets/PieChart';
+import SelectBox from '../../../components/CustomSelectBox';
+import Header from '../../../components/widgets/Header';
+import { getWidgets, selectWidgets } from '../store/widgetsSlice';
+import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
+import { getUsers, selectUsers } from '../store/usersSlice';
+import { production_multiline_header1, production_multiline_header2, production_multiline_header3, production_multiline_header4 } from '../Headers';
+import { Options as options } from '../../../utils/Globals';
 
 
 const useStyles = makeStyles(theme => ({
@@ -29,146 +30,120 @@ const useStyles = makeStyles(theme => ({
 			maxHeight: '100%'
 		}
 	},
-	selectedProject: {
-		background: theme.palette.primary.main,
-		color: theme.palette.primary.contrastText,
-		borderRadius: '8px 0 0 0'
-	},
-	projectMenuButton: {
-		background: theme.palette.primary.main,
-		color: theme.palette.primary.contrastText,
-		borderRadius: '0 8px 0 0',
-		marginLeft: 1
-	}
 }));
 
-const header1 = [
-	// {value:'GOALS', type:false, color:''},
-	{value:'Sales Goal', type:false, color:''},
-	{value:'Actual Sales', type:false, color:''},
-	{value:'Total Premium / Dollars', type:true, color:''},
-	{value:'Average Premium / Dollars', type:false, color:''},
-];
-
-const header2 = [
-	// {value:'GOALS', type:false, color:''},
-	// {value:'Sales Goal', type:false, color:''},
-	{value:'Actual Sales', type:false, color:''},
-	{value:'Total Premium / Dollars', type:true, color:''},
-	{value:'Average Premium / Dollars', type:false, color:''},
-];
-
-const header3 = [
-	// { id: 1, value: 'GOALS', type: true },
-	{ id: 2, value: 'Center of Influence', type: true },
-	{ id: 3, value: 'Client Request', type: true },
-	{ id: 4, value: 'Direct Mail Letter', type: true },
-	{ id: 5, value: 'Internet Read >>', type: true },
-	{ id: 6, value: 'Multiline Review', type: true },
-	{ id: 7, value: 'label', type: true },
-	{ id: 8, value: 'label', type: true },
-	{ id: 9, value: 'Park Bench', type: true },
-	{ id: 10, value: 'Personal Visit', type: true },
-	{ id: 11, value: 'Postcard', type: true },
-	{ id: 12, value: 'Referral', type: true },
-	{ id: 13, value: 'Salesperson Pilvot', type: true },
-	{ id: 14, value: 'Sign', type: true },
-	{ id: 15, value: 'Television', type: true },
-	{ id: 16, value: 'Transfer', type: true },
-	{ id: 17, value: 'Walk-In', type: true },
-	{ id: 18, value: 'Website', type: true },
-	{ id: 19, value: 'WebSearch', type: true },
-	{ id: 20, value: 'Yellow Pages', type: true },
-	{ id: 21, value: 'Other', type: true },
-];
-
-const header4 = [
-	// {value:'GOALS', type:false, color:''},
-	{value:'Intitial Item Bonuses', type:false, color:''},
-	{value:'Individual Target Bonuses', type:false, color:''},
-	{value:'Team Target Bonuses', type:true, color:''},
-	{value:'Policy Growth Bonuses', type:false, color:''},
-	{value:'Lapse Rate Bonuses', type:false, color:''},
-	{value:'Special Promotion', type:false, color:''},
-	{value:'TOTAL BONUSES', type:false, color:''},
-]
-
-function ProjectDashboardApp(props) {
+function MultilineApp(props) {
 	const dispatch = useDispatch();
-	const production = useSelector(({ productionApp }) => productionApp.products.production);
-	const period = useSelector(({ productionApp }) => productionApp.products.period);
-	const widgets = useSelector(selectWidgets);
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
+	const users = useSelector(selectUsers);
+	const widgets = useSelector(selectWidgets);
+	const production = useSelector(({ producerApp }) => producerApp.products.production);
+	const period = useSelector(({ producerApp }) => producerApp.products.period);	
+	const report = useSelector(({ producerApp }) => producerApp.products.report);
+	const user = useSelector(({ producerApp }) => producerApp.products.user);
+	const [loading, setLoading] = useState(true);
+	const [data, setData] = useState({ widgets });
+	const [tabValue, setTabValue] = useState(0);
+	const [title, setTitle] = useState('Multiline');
 
 	useEffect(() => {
-		dispatch(getWidgets());
+		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
-	if (_.isEmpty(widgets)) {
-		return null;
+	useEffect(() => {	
+		setData({ widgets });
+	}, [widgets]);
+
+	function handleChangeTab(event, value) {
+		setTabValue(value);
+	}
+	
+	if (loading) {
+		return <FuseLoading />;
+	}
+
+	if (data.length === 0) {
+		return (
+			<FuseAnimate delay={100}>
+				<div className="flex flex-1 items-center justify-center h-full">
+					<Typography color="textSecondary" variant="h5">
+						There are no data!
+					</Typography>
+				</div>
+			</FuseAnimate>
+		);
 	}
 
 	return (
 		<FusePageCarded
 			classes={{
 				content: 'flex',
+				contentCard: 'overflow-hidden',
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
-			}}		
-			header={<MultilineHeader />}
+			}}
+			header={
+				<Header title={title}>
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
+								value={period}
+								onChange={ev => dispatch(setPeriod(ev))}
+								label="Report Period"
+								data={options.period.data}
+							/>
+						</FuseAnimate>
+					</div>
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
+								value={production}
+								onChange={ev => dispatch(setProduction(ev))}
+								label="Production"
+								data={options.production.data}
+							/>
+						</FuseAnimate>
+					</div>
+				</Header>
+			}
 			content={
-				<div className="p-12">
-					<FuseAnimateGroup
-						className="flex flex-wrap"
-						enter={{
-							animation: 'transition.slideUpBigIn'
-						}}
-					>
+				<div className="w-full p-12">
+					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-1/4 p-12">
-							<Table header={header1} widget={widgets.IndividualTable} entries fires lifes healthes />
+							<Table header={production_multiline_header1} widget={widgets.IndividualTable} entries fires lifes healthes />
 						</div>
 						<div className="widget flex w-1/4 p-12">
-							<Chat widget={widgets.IndividualSalesGoalsChat} />
+							<Chart widget={widgets.IndividualSalesGoalsChat} />
 						</div>
 						<div className="widget flex w-1/4 p-12">
-							<Table header={header2} widget={widgets.AgencyTable} entries fires lifes healthes />
+							<Table header={production_multiline_header2} widget={widgets.AgencyTable} entries fires lifes healthes />
 						</div>
 						<div className="widget flex w-1/4 p-12">
-							<Chat widget={widgets.TeamSalesGoalsChat} />
+							<Chart widget={widgets.TeamSalesGoalsChat} />
 						</div>
 					</FuseAnimateGroup>
-					<FuseAnimateGroup
-						className="flex flex-wrap"
-						enter={{
-							animation: 'transition.slideUpBigIn'
-						}}
-					>
+					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-full p-12">
-							<Table header={header3} widget={widgets.SourcesOfBonusesTable} entries fires lifes healthes />
+							<Table header={production_multiline_header3} widget={widgets.SourcesOfBonusesTable} entries fires lifes healthes />
 						</div>					
 					</FuseAnimateGroup>	
-					<FuseAnimateGroup
-						className="flex flex-wrap"
-						enter={{
-							animation: 'transition.slideUpBigIn'
-						}}
-					>
+					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-1/4 p-12">
-							<PieChat widget={widgets.ProductPieChat} />
+							<PieChart widget={widgets.ProductPieChat} />
 						</div>	
 						<div className="widget flex w-2/4 p-12">
-							<Table header={header4} widget={widgets.BonusesEarnedThisPeriodTable} entries fires lifes healthes />
+							<Table header={production_multiline_header4} widget={widgets.BonusesEarnedThisPeriodTable} entries fires lifes healthes />
 						</div>	
 						<div className="widget flex w-1/4 p-12">
-							<PieChat widget={widgets.BonusPieChat} />
+							<PieChart widget={widgets.BonusPieChat} />
 						</div>					
 					</FuseAnimateGroup>					
 				</div>
 				
 			}
-			ref={pageLayout}
+			innerScroll
 		/>
 	);
 }
 
-export default withReducer('productionApp', reducer)(ProjectDashboardApp);
+export default withReducer('productionApp', reducer)(MultilineApp);

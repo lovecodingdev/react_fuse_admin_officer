@@ -26,6 +26,7 @@ import { lifeHeader1, lifeHeader2, lifeHeader3, lifeHeader4 } from './LifeHeader
 import { healthHeader1, healthHeader2, healthHeader3, healthHeader4,  } from './HealthHeader';
 import { bankHeader1, bankHeader2, bankHeader3, bankHeader4 } from './BankHeader';
 import { otherHeader } from './OtherHeader';
+import { Options as options } from '../../../utils/Globals';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -47,6 +48,7 @@ function ProductLine(props) {
 	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Product Line');
 	
@@ -57,6 +59,16 @@ function ProductLine(props) {
 	useEffect(() => {	
 		setData({ widgets });
 	}, [ widgets]);
+
+	useEffect(() => {
+		var temp = [];
+		if (users.length > 0) {
+			users.map(item => {
+				temp.push({ item: item.data.displayName, value: item.id });
+			});
+			setUserList(temp);
+		}
+	}, [users]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -92,7 +104,8 @@ function ProductLine(props) {
 							<SelectBox
 								value={production}
 								onChange={ev => dispatch(setProduction(ev))}
-								type="production"
+								label="Production"
+								data={options.production.data}
 							/>
 						</FuseAnimate>
 					</div>

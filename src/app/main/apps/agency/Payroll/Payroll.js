@@ -21,6 +21,7 @@ import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { agencyGoalsHeader, otherActivitiesHeader } from '../Headers';
+import { Options as options } from '../../../utils/Globals';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -42,16 +43,28 @@ function Payroll(props) {
 	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Payroll');
 	
 	useEffect(() => {
-		dispatch(getWidgets()).then(() => setLoading(false));
+		dispatch(getUsers())
+		dispatch(getWidgets()).then(() => setLoading(false));		
 	}, [dispatch]);
 
 	useEffect(() => {	
-		setData({  widgets });
+		setData({ widgets }); 
 	}, [ widgets]);
+
+	useEffect(() => {
+		var temp = [];
+		if (users.length > 0) {
+			users.map(item => {
+				temp.push({ item: item.data.displayName, value: item.id });
+			});
+			setUserList(temp);
+		}
+	}, [users]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -87,7 +100,8 @@ function Payroll(props) {
 							<SelectBox
 								value={period}
 								onChange={ev => dispatch(setPeriod(ev))}
-								type="period"
+								label="Report Period"
+								data={options.period.data}
 							/>
 						</FuseAnimate>
 					</div>	
@@ -96,7 +110,8 @@ function Payroll(props) {
 							<SelectBox
 								value={user}
 								onChange={ev => dispatch(setUser(ev))}
-								type="users"
+								label="Users"
+								data={userList}
 							/>
 						</FuseAnimate>
 					</div>					

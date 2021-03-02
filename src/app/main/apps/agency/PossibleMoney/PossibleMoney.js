@@ -15,13 +15,15 @@ import reducer from '../store';
 import Table from '../../../components/widgets/Table';
 import Chart from '../../../components/widgets/BarChart';
 import PieChart from '../../../components/widgets/PieChart';
-import Widget10 from '../../../components/widgets/Widget10';
+import Widget10 from '../../../components/widgets/SpecialTable';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport, setBonus } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { autoAndFireHeader, lifeAndHealthHeader, bankHeader } from '../Headers';
+import { Options as options } from '../../../utils/Globals';
+
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -44,6 +46,7 @@ function PossibleMoney(props) {
 	const bonus = useSelector(({ agencyApp }) => agencyApp.products.bonus);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Possible Money');
 	
@@ -54,6 +57,16 @@ function PossibleMoney(props) {
 	useEffect(() => {	
 		setData({ widgets });
 	}, [widgets]);
+
+	useEffect(() => {
+		var temp = [];
+		if (users.length > 0) {
+			users.map(item => {
+				temp.push({ item: item.data.displayName, value: item.id });
+			});
+			setUserList(temp);
+		}
+	}, [users]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -89,7 +102,8 @@ function PossibleMoney(props) {
 							<SelectBox
 								value={period}
 								onChange={ev => dispatch(setPeriod(ev))}
-								type="period"
+								label="Report Period"
+								data={options.period.data}
 							/>
 						</FuseAnimate>
 					</div>
@@ -98,7 +112,8 @@ function PossibleMoney(props) {
 							<SelectBox
 								value={bonus}
 								onChange={ev => dispatch(setBonus(ev))}
-								type="bonus"
+								label="Bonus"
+								data={options.bonus.data}
 							/>
 						</FuseAnimate>
 					</div>
@@ -107,7 +122,8 @@ function PossibleMoney(props) {
 							<SelectBox
 								value={user}
 								onChange={ev => dispatch(setUser(ev))}
-								type="users"
+								label="Users"
+								data={userList}
 							/>
 						</FuseAnimate>
 					</div>
