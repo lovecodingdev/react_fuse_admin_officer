@@ -20,6 +20,7 @@ import { getWidgets, selectWidgets } from './store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport } from './store/productsSlice';
 import { getUsers, selectUsers } from './store/usersSlice';
 import Header from './Headers';
+import { Options as options } from '../../utils/Globals';
 
 const agencyGoalsHeader = [
 	{value:'Goals', type:true},
@@ -99,6 +100,7 @@ function TimeReport(props) {
 								value={period}
 								onChange={ev => dispatch(setPeriod(ev))}
 								type="period"
+								data={options.period.data}
 							/>
 						</FuseAnimate>
 					</div>	
@@ -108,6 +110,7 @@ function TimeReport(props) {
 								value={user}
 								onChange={ev => dispatch(setUser(ev))}
 								type="users"
+								data={options.period.data}
 							/>
 						</FuseAnimate>
 					</div>					
