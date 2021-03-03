@@ -12,7 +12,7 @@ mock.onGet('/api/e-commerce-app/products').reply(() => new Promise((resolve, rej
 	var starCountRef = realDb.ref(`Sales/Entries/`);
 	starCountRef.on('value', snapshot => {
 		const data = snapshot.val();
-		
+
 
 		Object.keys(data).map(item => {
 			eCommerceDB.entrys.push(data[item])
@@ -20,7 +20,7 @@ mock.onGet('/api/e-commerce-app/products').reply(() => new Promise((resolve, rej
 		console.log(eCommerceDB.entrys)
 		resolve(eCommerceDB.entrys);
 	})
-	
+
 }));
 
 mock.onPost('/api/e-commerce-app/remove-products').reply(request => {
@@ -51,19 +51,20 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 		product = data;
 		eCommerceDB.entrys = [...eCommerceDB.entrys, product];
 	}
+	console.log('-----------------------------------', data)
+	data.policyType.map(item => {
+		if (data.user) {
 
-	data.policyType.map(item=>{
-		if(data.user){
 			uid = data.user.uid
 		}
-		data = {...data, sellerId:data.user?data.user.uid:data.uid}		
+		data = { ...data, sellerId: data.user ? data.user.uid : data.uid }
 		var id = Date.now()
-		
+
 		console.log(`Sales/${data.belongTo}/${item}/${data.sellerId}/${id}`)
-		realDb.ref(`Sales/${data.belongTo}/${item}/${data.sellerId}/${id}`).set({
+		realDb.ref(`Sales/${data.belongTo}/${item}/${data.user === 'OfficeCount' ? `OfficeCount` : data.sellerId}/${id}`).set({
 			...data, id: id
 		});
-	})	
+	})
 
 
 	return [200, product];
@@ -86,17 +87,15 @@ mock.onPost('/api/e-commerce-app/product/update').reply(async request => {
 		eCommerceDB.entrys = [...eCommerceDB.entrys, product];
 	}
 
-	console.log(data)
-	
-		data = {...data, sellerId:uid}		
-		
-		if(data.user){
-			uid = data.user.uid
-		}
-		realDb.ref(`Sales/${belongTo}/${data.policyType}/${uid}/${data.id}`).set({
-			...data
-		});
-	
+	data = { ...data, sellerId: uid }
+
+	if (data.user) {
+		uid = data.user.uid
+	}
+	realDb.ref(`Sales/${belongTo}/${data.policyType}/${data.user === 'OfficeCount' ? `OfficeCount` : uid}/${data.id}`).set({
+		...data
+	});
+
 
 
 	return [200, product];

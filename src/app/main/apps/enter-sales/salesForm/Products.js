@@ -252,15 +252,28 @@ function Products() {
 
 			if (state.datePolicyIsIssued) {
 				if (state.user) {
-					form = {
-						...form,
-						dollarBonus:
-							Math.ceil(
-								((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-									(parseInt(bonusLists[state.user.id][state.typeOfProduct]) / 100) *
-									100
-							) / 100
-					};
+					if(state.user==='OfficeCount'){
+						form = {
+							...form,
+							dollarBonus:
+								Math.ceil(
+									((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
+										(parseInt(bonusLists['all'][state.typeOfProduct]) / 100) *
+										100
+								) / 100
+						};
+					} else {
+						form = {
+							...form,
+							dollarBonus:
+								Math.ceil(
+									((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
+										(parseInt(bonusLists[state.user.id][state.typeOfProduct]) / 100) *
+										100
+								) / 100
+						};
+					}
+					
 				} else {
 					form = {
 						...form,
