@@ -16,6 +16,10 @@ const TimeReportAppConfig = {
 			path: '/apps/time-track',
 			component: React.lazy(() => import('./TimeTrack'))
 		},
+		{
+			path: '/apps/time',
+			component: () => <Redirect to="/apps/time-report" />
+		}
 	]
 };
 
