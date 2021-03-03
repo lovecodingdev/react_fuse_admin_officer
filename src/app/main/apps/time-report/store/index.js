@@ -1,10 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import widgets from './widgetsSlice';
-import products from './productsSlice';
+import tracks from './trackSlice';
 import users from './usersSlice';
 
 const reducer = combineReducers({
-	products,
+	tracks,
 	widgets,
 	users,
 });

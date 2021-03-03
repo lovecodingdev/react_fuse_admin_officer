@@ -410,6 +410,7 @@ const productioAppDB = {
 			table: {
 				columns: [],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						autoPolicies:'-',
@@ -672,6 +673,7 @@ const productioAppDB = {
 			table: {
 				columns: [],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						autoPolicies:'-',
@@ -961,6 +963,7 @@ const productioAppDB = {
 					// },					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						averagePremium:'-',
@@ -1334,6 +1337,7 @@ const productioAppDB = {
 					},					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						averagePremium:'-',
@@ -1803,6 +1807,7 @@ const productioAppDB = {
 					// },					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						// averagePremium:'-',
@@ -2164,6 +2169,7 @@ const productioAppDB = {
 					},					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						// averagePremium:'-',
@@ -2620,6 +2626,7 @@ const productioAppDB = {
 					},
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Auto:{
 						salesGoal:'-',
@@ -2680,6 +2687,7 @@ const productioAppDB = {
 					},
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Auto:{
 						actualSales:'-',
@@ -2734,6 +2742,7 @@ const productioAppDB = {
 					},
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Auto:{
 						centerOfInfluences:'-',
@@ -2890,6 +2899,7 @@ const productioAppDB = {
 					},
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Auto:{
 						initialItemBonuses:'-',

@@ -53,7 +53,7 @@ const appsConfigs = [
 	PolicyGrowthReportConfig,
 	DashboardAppConfig,
 	ProductTypeAppConfig,
-	TimeReportAppConfig
+	TimeReportAppConfig,
 ];
 
 export default appsConfigs;

@@ -12,52 +12,21 @@ import withReducer from 'app/store/withReducer';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
 import reducer from './store';
-import Table from './Table';
+import Table from '../../components/widgets/TempTable';
 import Chart from '../../components/widgets/BarChart';
 import PieChart from '../../components/widgets/PieChart';
 import SelectBox from '../../components/CustomSelectBox';
 import { getWidgets, selectWidgets } from './store/widgetsSlice';
-import { setProduction, setPeriod, setUser, setReport } from './store/productsSlice';
-import { getUsers, selectUsers } from './store/usersSlice';
-import Header from './Headers';
+import Header from '../../components/widgets/Header';
 import { Options as options } from '../../utils/Globals';
-
-const agencyGoalsHeader = [
-	{value:'Goals', type:true},
-	{value:'Actual', type:false},
-	{value:'Goals', type:true},
-	{value:'Actual', type:false},
-	{value:'Goals', type:true},
-	{value:'Actual', type:false},
-	{value:'Goals', type:true},
-	{value:'Actual', type:false},
-	{value:'Goals', type:true},
-	{value:'Actual', type:false},
-	{value:'Goals', type:true},
-	{value:'Actual', type:false},
-];
-
-const useStyles = makeStyles(theme => ({
-	content: {
-		'& canvas': {
-			maxHeight: '100%'
-		}
-	},
-}));
 
 function TimeReport(props) {
 	const dispatch = useDispatch();
-	const classes = useStyles(props);
-	const pageLayout = useRef(null);
-	const users = useSelector(selectUsers);
 	const widgets = useSelector(selectWidgets);
-	const production = useSelector(({ timeReport }) => timeReport.products.production);
-	const period = useSelector(({ timeReport }) => timeReport.products.period);	
-	const report = useSelector(({ timeReport }) => timeReport.products.report);
-	const user = useSelector(({ timeReport }) => timeReport.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
-	const [tabValue, setTabValue] = useState(0);
+	const [period, setPeriod] = useState("January");
+	const [production, setProduction] = useState("Show Written Production");
 	const [title, setTitle] = useState('Time Report');
 	
 	useEffect(() => {
@@ -68,6 +37,13 @@ function TimeReport(props) {
 		setData({  widgets });
 	}, [ widgets]);
 
+	function handleChangePeriod(event) { 
+		setPeriod(event.target.value);
+	}
+
+	function handleChangeProduction(event) {
+		setProduction(event.target.value);
+	}
 	
 	if (loading) {
 		return <FuseLoading />;
@@ -97,29 +73,29 @@ function TimeReport(props) {
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
-								value={period}
-								onChange={ev => dispatch(setPeriod(ev))}
-								type="period"
-								data={options.period.data}
+								value={production}
+								onChange={ev => handleChangeProduction(ev)}
+								label="Production"
+								data={options.production.data}
 							/>
 						</FuseAnimate>
-					</div>	
+					</div>
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
-								value={user}
-								onChange={ev => dispatch(setUser(ev))}
-								type="users"
+								value={period}
+								onChange={ev => handleChangePeriod(ev)}
+								label="Report Period"
 								data={options.period.data}
 							/>
 						</FuseAnimate>
-					</div>					
+					</div>				
 				</Header>
 			}
 			content={
 				<div className="w-full p-12">
 					<div className="p-12">
-						<Table header={agencyGoalsHeader} leftHeader={data.users} widget={widgets.Agency_Payroll_Table} entries fires lifes healthes />
+						<Table widget={data.widgets.Time_Report_Table} />
 					</div>
 				</div>
 				
@@ -129,4 +105,4 @@ function TimeReport(props) {
 	);
 }
 
-export default withReducer('timeReport', reducer)(TimeReport);
+export default withReducer('timeReportApp', reducer)(TimeReport);

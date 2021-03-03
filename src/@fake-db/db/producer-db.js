@@ -1141,6 +1141,7 @@ const producerAppDB = {
 					},					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					name1:{
 						autoGoals:'-',
@@ -1376,6 +1377,7 @@ const producerAppDB = {
 					},					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					name1:{
 						autoGoals:'-',
@@ -1635,6 +1637,7 @@ const producerAppDB = {
 					},									
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						auto_personallyProduced:'-',
@@ -2020,6 +2023,7 @@ const producerAppDB = {
 					},								
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						auto_personallyProduced:'-',
@@ -2378,6 +2382,7 @@ const producerAppDB = {
 			table: {
 				columns: [],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						label1:'-',
@@ -2596,6 +2601,7 @@ const producerAppDB = {
 					},				
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						centerOfInfluences:'-',
@@ -2897,6 +2903,7 @@ const producerAppDB = {
 					},				
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						centerOfInfluences:'-',
@@ -3198,6 +3205,7 @@ const producerAppDB = {
 					},				
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						centerOfInfluences:'-',
@@ -3499,6 +3507,7 @@ const producerAppDB = {
 					},				
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						centerOfInfluences:'-',
@@ -3800,6 +3809,7 @@ const producerAppDB = {
 					},				
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						centerOfInfluences:'-',
@@ -4101,6 +4111,7 @@ const producerAppDB = {
 					},				
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						centerOfInfluences:'-',
@@ -4387,6 +4398,7 @@ const producerAppDB = {
 			table: {
 				columns: [],
 				rows: [],
+				headers: [],
 				tableContent : {
 					centerOfInfluences:{					
 						auto:'-',
@@ -4616,6 +4628,7 @@ const producerAppDB = {
 					},				
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						centerOfInfluences:'-',
@@ -5001,6 +5014,7 @@ const producerAppDB = {
 					},				
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Name1:{					
 						a1:'-',

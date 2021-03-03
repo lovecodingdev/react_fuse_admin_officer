@@ -18,37 +18,108 @@ import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
-import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
-import { getUsers, selectUsers } from '../store/usersSlice';
+import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
+import { getMarketings, selectMarketings } from '../store/marketingsSlice';
+import { getEntries, selectEntries } from '../store/entriesSlice';
+import usersSlice, { getUsers, selectUsers } from '../store/usersSlice';
 import { Producer_StaffMultiline_Ratios_Table, Producer_StaffMultiline_Summary_Table } from '../Headers';
-import { Options as options } from '../../../utils/Globals';
-
-const useStyles = makeStyles(theme => ({
-	content: {
-		'& canvas': {
-			maxHeight: '100%'
-		}
-	},
-}));
+import { monthsAndQuarters, policiesAndPremium1, policies, months, bonusPlanDbNames, Options as options } from '../../../utils/Globals';
+import { ceil } from '../../../utils/Function';
 
 function StaffMultiline(props) {
-	const dispatch = useDispatch();
-	const classes = useStyles(props);
-	const pageLayout = useRef(null);
-	const users = useSelector(selectUsers);
+	const dispatch = useDispatch();	
 	const widgets = useSelector(selectWidgets);
-	const production = useSelector(({ producerApp }) => producerApp.products.production);
-	const period = useSelector(({ producerApp }) => producerApp.products.period);	
-	const report = useSelector(({ producerApp }) => producerApp.products.report);
-	const user = useSelector(({ producerApp }) => producerApp.products.user);
+	const users = useSelector(selectUsers);
+	const marketings = useSelector(selectMarketings);
+	const bonusPlans = useSelector(selectBonusPlans);
+	const entries = useSelector(selectEntries);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
+	const [main, setMain] = useState({});
+	const [period, setPeriod] = useState("January");
+	const [production, setProduction] = useState("Show Written Production");
+	const [report, setReport] = useState("Policies");
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Staff Multiline');
 	
 	useEffect(() => {
+		dispatch(getUsers());
+		dispatch(getBonusPlans());
+		dispatch(getMarketings());
+		dispatch(getEntries());		
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
+
+	useEffect(() => {		
+		// creating temp
+		let temp = {};
+		options.production.data.map((pro) => {
+			temp[pro.value] = {};
+			monthsAndQuarters.map((month) => {				
+				temp[pro.value][month.value] = {};
+					users.map((user) => {
+						temp[pro.value][month.value][user.data.displayName] = {};
+						policies.map((policy) => {
+							temp[pro.value][month.value][user.data.displayName][policy.value] = {
+								"Bonus": 0,
+								"Premium": 0,
+								"Policies": 0,
+								"Average Premium": 0,
+							};
+	
+							// adding marketing items
+							Object.keys(marketings).map((key) => {
+								const marketing = marketings[key];
+								temp[pro.value][month.value][user.data.displayName][policy.value][marketing.marketingName] = 0;			
+							}); 					
+						});
+	
+						// //adding bonusPlan items
+						// const bonusPlan = bonusPlans.length > 0 && 
+						// bonusPlans[0].hasOwnProperty(bonusPlanDbNames[tabValue].db) ? 
+						// bonusPlans[0][bonusPlanDbNames[tabValue].db] : {};				
+						// Object.keys(bonusPlan).map((key) => {		
+						// 	const item = bonusPlan[key];
+						// 	temp[pro.value][month.value][bonusPlanDbNames[tabValue].name][item.name] = 0;
+						// });	
+					});						
+			});
+
+			if(entries.length > 0) {
+				const entryNames = {
+					"Entries": "Auto", 
+					"FireEntries": "Fire", 
+					"LifeEntries": "Life", 
+					"HealthEntries": "Health", 
+					"BankEntries": "Bank", 
+					"OtherEntries": "Other"
+				};
+				users.map((user) => {
+					const userName = user.data.displayName;
+					Object.keys(entries[0]).map((entryName) => {
+						if(entries[0][entryName].hasOwnProperty(user.id)) {
+							Object.keys(entries[0][entryName][user.id]).map((key) => {
+								const item = entries[0][entryName][user.id][key];
+								const issuedMonth = (new Date(item.datePolicyIsIssued)).getMonth();
+								const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
+								const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
+								temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
+								temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100)
+								temp[pro.value][month][userName][entryNames[entryName]]["Bonus"] += ceil(parseFloat(item.dollarBonus));
+								temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
+								temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
+								temp[pro.value][month][userName][entryNames[entryName]]["Average Premium"] = temp[pro.value][month][userName][entryNames[entryName]]["Policies"] > 0 ?
+									ceil((temp[pro.value][month][userName][entryNames[entryName]]["Premium"] / temp[pro.value][month][userName][entryNames[entryName]]["Policies"])) : "";							
+							});
+						}
+					});	
+				});	
+			}
+		});		
+		
+		console.log('--------------------temp=', temp)
+		setMain(temp)
+	}, [bonusPlans, marketings, entries]);
 
 	useEffect(() => {	
 		setData({ widgets });
@@ -58,6 +129,18 @@ function StaffMultiline(props) {
 		setTabValue(value);
 	}
 	
+	function handleChangePeriod(event) { 
+		setPeriod(event.target.value);
+	}
+
+	function handleChangeProduction(event) {
+		setProduction(event.target.value);
+	}
+
+	function handleChangeReport(event) {
+		setReport(event.target.value);
+	}
+
 	if (loading) {
 		return <FuseLoading />;
 	}
@@ -86,20 +169,20 @@ function StaffMultiline(props) {
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
-								value={period}
-								onChange={ev => dispatch(setPeriod(ev))}
-								label="Report Period"
-								data={options.period.data}
+								value={production}
+								onChange={ev => handleChangeProduction(ev)}
+								label="Production"
+								data={options.production.data}
 							/>
 						</FuseAnimate>
 					</div>
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
-								value={production}
-								onChange={ev => dispatch(setProduction(ev))}
-								label="Production"
-								data={options.production.data}
+								value={period}
+								onChange={ev => handleChangePeriod(ev)}
+								label="Report Period"
+								data={options.period.data}
 							/>
 						</FuseAnimate>
 					</div>
@@ -108,7 +191,7 @@ function StaffMultiline(props) {
 							<FuseAnimate animation="transition.slideUpIn" delay={300}>
 								<SelectBox
 								value={report}
-								onChange={ev => dispatch(setReport(ev))}
+								onChange={ev => handleChangeReport(ev)}
 								label="Report"
 								data={options.report.data}
 							/>

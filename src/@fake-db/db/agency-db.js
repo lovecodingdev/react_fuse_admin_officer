@@ -386,6 +386,7 @@ const agencyAppDB = {
 					},
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Auto:{
 						salesGoal:'-',
@@ -452,6 +453,7 @@ const agencyAppDB = {
 					},
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Auto:{
 						centerOfInfluences:'-',
@@ -621,6 +623,7 @@ const agencyAppDB = {
 					// },					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						averagePremium:'-',
@@ -994,6 +997,7 @@ const agencyAppDB = {
 					},					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						averagePremium:'-',
@@ -1481,6 +1485,7 @@ const agencyAppDB = {
 					// },					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						// averagePremium:'-',
@@ -1842,6 +1847,7 @@ const agencyAppDB = {
 					},					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						// averagePremium:'-',
@@ -3047,6 +3053,7 @@ const agencyAppDB = {
 					// },					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						averagePremium:'-',
@@ -3438,6 +3445,7 @@ const agencyAppDB = {
 					},					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						averagePremium:'-',
@@ -3930,6 +3938,7 @@ const agencyAppDB = {
 					},
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Auto:{
 						salesGoal:'-',
@@ -3990,6 +3999,7 @@ const agencyAppDB = {
 					},
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Auto:{
 						actualSales:'-',
@@ -4044,6 +4054,7 @@ const agencyAppDB = {
 					},
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					Auto:{
 						centerOfInfluences:'-',
@@ -4213,6 +4224,7 @@ const agencyAppDB = {
 					// },					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						averagePremium:'-',
@@ -4586,6 +4598,7 @@ const agencyAppDB = {
 					},					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						averagePremium:'-',
@@ -5073,6 +5086,7 @@ const agencyAppDB = {
 					// },					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						// averagePremium:'-',
@@ -5434,6 +5448,7 @@ const agencyAppDB = {
 					},					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						// averagePremium:'-',
@@ -5876,6 +5891,7 @@ const agencyAppDB = {
 			table: {
 				columns: [],
 				rows: [],
+				headers: [],
 				tableContent : {
 					January:{
 						completedActivities:'-',
@@ -6147,6 +6163,7 @@ const agencyAppDB = {
 					},					
 				],
 				rows: [],
+				headers: [],
 				tableContent : {
 					name1:{
 						autoGoals:'-',
@@ -6325,6 +6342,7 @@ const agencyAppDB = {
 			table: {
 				columns: [],
 				rows: [],
+				headers: [],
 				tableContent : {
 					centerOfInfluences:{					
 						auto:'-',
@@ -6503,6 +6521,7 @@ const agencyAppDB = {
 			table: {
 				columns: [],
 				rows: [],
+				headers: [],
 				tableContent : {
 					centerOfInfluences:{					
 						products:'-',
