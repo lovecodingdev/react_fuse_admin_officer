@@ -12,9 +12,9 @@ export const getProductType = createAsyncThunk(
 				const data = snapshot.val();
 
 				if (data) {
-					Object.keys(data).map(item => {
-						entries.push(data[item]);
-					});
+					// Object.keys(data).map(item => {
+						entries.push(data);
+					// });
 				}
 
 				resolve(entries);
