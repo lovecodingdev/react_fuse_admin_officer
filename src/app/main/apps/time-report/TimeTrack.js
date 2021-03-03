@@ -83,7 +83,7 @@ function TimeTrack(props) {
 
 	useEffect(() => {
 		dispatch(getTracks());
-		dispatch(getWidgets()).then(() => setLoading(false));;
+		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
 	useEffect(() => { 		
