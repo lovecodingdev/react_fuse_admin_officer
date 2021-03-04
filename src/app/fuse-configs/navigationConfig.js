@@ -193,34 +193,33 @@ const navigationConfig = [
 				icon: 'align_vertical_bottom',
 				exact: true
 			},
-
 			
-			// {
-			// 	id: 'time-report',
-			// 	title: 'Time Report',
-			// 	translate: 'Time Report',
-			// 	type: 'collapse',
-			// 	icon: 'schedule',
-			// 	url: '/apps/time',
-			// 	children: [
-			// 		{
-			// 			id: 'time-report',
-			// 			title: 'Time Report',
-			// 			type: 'item',
-			// 			url: '/apps/time-report',
-			// 			icon: 'alarm_on',
-			// 			exact: true
-			// 		},
-			// 		{
-			// 			id: 'time-track',
-			// 			title: 'Time Track',
-			// 			type: 'item',
-			// 			url: '/apps/time-track',
-			// 			icon: 'today',
-			// 			exact: true
-			// 		},
-			// 	]
-			// },
+			{
+				id: 'time-report',
+				title: 'Time Report',
+				translate: 'Time Report',
+				type: 'collapse',
+				icon: 'schedule',
+				url: '/apps/time',
+				children: [
+					{
+						id: 'time-report',
+						title: 'Time Report',
+						type: 'item',
+						url: '/apps/time-report',
+						icon: 'alarm_on',
+						exact: true
+					},
+					{
+						id: 'time-track',
+						title: 'Time Track',
+						type: 'item',
+						url: '/apps/time-track',
+						icon: 'today',
+						exact: true
+					},
+				]
+			},
 
 			// {
 			// 	id: 'dashboards',

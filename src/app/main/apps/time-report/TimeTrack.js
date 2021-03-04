@@ -25,15 +25,15 @@ import { getWidgets, selectWidgets } from './store/widgetsSlice';
 import { toUntrimed, Options as options } from '../../utils/Globals';
 import { swap } from '../../utils/Function';
 
-export const tableHeaders = [
+const tableHeaders = [
     {id: "in", value: 'In', type:false, color:''},
     {id: "out", value: 'Out', type:false, color:''},	
     {id: "lunch", value: 'Lunch', type:false, color:''},
     {id: "totalHrsWorked", value: 'Total Hrs Worked', type:false, color:''},
-    {id: "regHrs", value: 'Reg. Hrs', type:false, color:''},
-    {id: "proj1Hrs", value: 'Proj 1 Hrs', type:false, color:''},
-    {id: "proj2Hrs", value: 'Proj 2 Hrs', type:false, color:''},
-    {id: "proj3Hrs", value: 'Proj 3 Hrs', type:false, color:''},
+    // {id: "regHrs", value: 'Reg. Hrs', type:false, color:''},
+    // {id: "proj1Hrs", value: 'Proj 1 Hrs', type:false, color:''},
+    // {id: "proj2Hrs", value: 'Proj 2 Hrs', type:false, color:''},
+    // {id: "proj3Hrs", value: 'Proj 3 Hrs', type:false, color:''},
     {id: "vacation", value: 'Vacation', type:false, color:''},
     {id: "v", value: 'V', type:false, color:''},
     {id: "sick", value: 'Sick', type:false, color:''},
@@ -45,14 +45,8 @@ export const tableHeaders = [
     {id: "notes", value: 'Notes', type: false, color: '' },
 ];
 
+let tableRows = [];
 let tableContent = {};
-for(let i = 0; i < 31; i ++) {
-	const day = i + 1;
-	tableContent[day] = {};
-	tableHeaders.map((header) => {
-		tableContent[day][header.value] = 0;
-	});
-}
 
 function TimeTrack(props) {
 	const dispatch = useDispatch();
@@ -62,7 +56,7 @@ function TimeTrack(props) {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [month, setMonth] = useState("January");
-	const [main, setMain] = useState({  });
+	const [main, setMain] = useState({});
 	const [title, setTitle] = useState('Time Track');
 
 	function onSave() {	
@@ -79,73 +73,94 @@ function TimeTrack(props) {
 				} 
 			});
 		});
-		dispatch(saveTrack({ Tracks: temp }));
+		dispatch(saveTrack({ tracks: temp, month: month }));
 	}
 
 	useEffect(() => {
-		dispatch(getTracks());
+		dispatch(getTracks(month));
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
-	useEffect(() => { 		
-		if(widgets.Time_Track_Table ) {
-			if(Object.keys(main).length > 0) {			
-				widgets = { 
-					...widgets, Time_Track_Table: { 
-						...widgets.Time_Track_Table, table: {
-							...widgets.Time_Track_Table.table, tableContent: 
-								main.tableContent
-						}						
-					}
-				};
-			} 
-			else {
-				widgets = { 
-					...widgets, Time_Track_Table: { 
-						...widgets.Time_Track_Table, table: {
-							...widgets.Time_Track_Table.table, headers: 
-								tableHeaders
-						}						
-					}
-				};
-				widgets = { 
-					...widgets, Time_Track_Table: { 
-						...widgets.Time_Track_Table, table: {
-							...widgets.Time_Track_Table.table, tableContent: 
-								tableContent
-						}						
-					}
-				};
-			}
-						
+	useEffect(() => {
+		dispatch(getTracks(month));		
+	}, [month]);
+
+	useEffect(() => { 
+		if(widgets.Time_Track_Table && Object.keys(main).length > 0) {						
+			widgets = { 
+				...widgets, Time_Track_Table: { 
+					...widgets.Time_Track_Table, table: {
+						...widgets.Time_Track_Table.table, rows: 
+							main.tableRows
+					}						
+				}
+			}; 
+			widgets = { 
+				...widgets, Time_Track_Table: { 
+					...widgets.Time_Track_Table, table: {
+						...widgets.Time_Track_Table.table, tableContent: 
+							main.tableContent
+					}						
+				}
+			};
+
+			console.log('----widgets=', widgets);		
+			setData({ widgets });			
 		}
-		console.log('----widgets=', widgets);
-
-		const m = moment({ year: 2021 });
-		m.isoWeekday("Sunday");
-		m.subtract(6, 'days');	
-		const n = moment({ year:2021, month: 11, date: 31 });	
-		console.log('-----------------Monent', 
-		m, 
-		n.get("week"), 
-		n.startOf('isoWeek')
-		);
-
-
-		setData({ widgets });
+		
 	}, [widgets, main]);
 
-	useEffect(() => { 	
-		if(tracks.length > 0) {	
-			Object.keys(tracks[0]).map((rowKey, row) => {
-				if(rowKey!=="id") 
-					Object.keys(tracks[0][rowKey]).map((colKey) => {										
-						tableContent[rowKey][toUntrimed[colKey]] = tracks[0][rowKey][colKey];						
-					});
-			}); 	
+	useEffect(() => {  
+		let startOfMonth = moment().set('month', month).startOf('month');
+		let lastOfMonth = moment().set('month', month).endOf('month'); 
+		startOfMonth = startOfMonth.startOf('isoWeek');
+		lastOfMonth = lastOfMonth.endOf('isoWeek');	
+		let date = startOfMonth;
+		const numberOfDays = lastOfMonth.diff(startOfMonth, 'days') + 1;
+
+		let tempTableRows = [];
+		let tempTableContent = {};
+		for(let i = 0; i < numberOfDays; i ++) {
+			const day = date.format('YYYY-MM-DD');
+			date.add(1, 'days');	
+
+			tempTableRows.push({
+				id: day, 
+				value: day,
+				color: (i+1)%7===0 ? "text-red-500" : "", 
+				// border: i%7===0 && i!==0 ? "border-t-4" : "", 
+			});
+			// if((i+1)%7===0) {
+			// 	tempTableRows.push({
+			// 		id: "Total", 
+			// 		value: "Total",
+			// 		color: "", 
+			// 		border: "border-t-4 border-b-4"
+			// 	});
+			// }
 		} 
-		console.log('-----track', tableContent)
-		setMain({ tableContent });
+	
+		if(tracks.length > 0) { 
+			const toTrimed = swap(toUntrimed);
+			tempTableRows.map((row) => {
+				tempTableContent[row.value] = {};
+				tableHeaders.map((header) => {									
+					tempTableContent[row.value][header.value] = tracks[0][row.value][toTrimed[header.value]];						
+				});
+			}); 
+		} else {
+			tempTableRows.map((row) => {
+				tempTableContent[row.value] = {};					
+				tableHeaders.map((header) => {
+					tempTableContent[row.value][header.value] = 0;
+				});
+			});
+		}
+		tableRows = [ ...tempTableRows ];
+		tableContent = { ...tempTableContent };
+	
+		console.log('-----track',tempTableRows, tempTableContent);
+		setMain({ tableRows, tableContent });			
 	}, [tracks]);
 
 	useEffect(() => { 
@@ -155,15 +170,17 @@ function TimeTrack(props) {
 		const rowKey = cell.rowKey;
 		const colKey = cell.colKey;
 		const value = parseFloat(cell.value === '' ? 0 : cell.value);
-								
-		tableContent = {
-			...tableContent, [rowKey]: {
-				...tableContent[rowKey], [colKey]:
-					value
+		
+		if(tableName === "TRACK") {
+			tableContent = {				
+				...tableContent, [rowKey]: {
+					...tableContent[rowKey], [colKey]:
+						value
+				}
 			}
-		}
-		 		
-		setMain({ tableContent });
+			console.log('-----cell', tableContent)	
+			setMain({ tableRows, tableContent });
+		}			
 	}, [cell]);
 
 	function handleChangeMonth(event) { 
