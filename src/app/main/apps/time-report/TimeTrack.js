@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FusePageSimple from '@fuse/core/FusePageSimple';
@@ -118,8 +119,19 @@ function TimeTrack(props) {
 			}
 						
 		}
-		console.log('----widgets=', widgets)
-		
+		console.log('----widgets=', widgets);
+
+		const m = moment({ year: 2021 });
+		m.isoWeekday("Sunday");
+		m.subtract(6, 'days');	
+		const n = moment({ year:2021, month: 11, date: 31 });	
+		console.log('-----------------Monent', 
+		m, 
+		n.get("week"), 
+		n.startOf('isoWeek')
+		);
+
+
 		setData({ widgets });
 	}, [widgets, main]);
 
@@ -182,7 +194,7 @@ function TimeTrack(props) {
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
-				<Header title={title}>
+				<Header title={title}>				
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
