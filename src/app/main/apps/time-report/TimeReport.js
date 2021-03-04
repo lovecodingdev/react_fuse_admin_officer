@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FusePageSimple from '@fuse/core/FusePageSimple';
@@ -20,13 +21,39 @@ import { getWidgets, selectWidgets } from './store/widgetsSlice';
 import Header from '../../components/widgets/Header';
 import { Options as options } from '../../utils/Globals';
 
+
+let startOfYear = moment().startOf('year');
+let lastOfYear = moment().endOf('year'); 
+startOfYear = startOfYear.startOf('isoWeek');
+lastOfYear = lastOfYear.endOf('isoWeek');	
+let date = startOfYear;
+let numberOfDays = lastOfYear.diff(startOfYear, 'days') + 1;
+
+let weekEndingList = {
+	id: "Week Ending",
+	data: [],
+};
+let sundays = [];
+for(let i = 0; i < numberOfDays; i ++) {
+	const day = date.format('YYYY-MM-DD');
+	date.add(1, 'days');	
+	if((i+1)%14 === 0) {
+		sundays.push(day);
+		weekEndingList.data.push({ 
+			item: day, 
+			value: day 
+		})
+	}
+
+} 
+
 function TimeReport(props) {
 	const dispatch = useDispatch();
-	const widgets = useSelector(selectWidgets);
+	let widgets = useSelector(selectWidgets);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
-	const [period, setPeriod] = useState("January");
-	const [production, setProduction] = useState("Show Written Production");
+	// const [period, setPeriod] = useState("January");
+	const [weekEnding, setWeekEnding] = useState("");
 	const [title, setTitle] = useState('Time Report');
 	
 	useEffect(() => {
@@ -34,15 +61,39 @@ function TimeReport(props) {
 	}, [dispatch]);
 
 	useEffect(() => {	
+		if(widgets.Time_Report_Table) {
+			const rows = widgets.Time_Report_Table.table.rows;
+			const headers = widgets.Time_Report_Table.table.headers;
+
+			let tableContent = {};
+			rows.map((row) => {
+				tableContent[row.value] = {};
+				headers.map((header, colNum) => {
+					if(colNum > 0) {
+						tableContent[row.value][header.value] = 0;						
+					}
+				})
+			});
+			widgets = {
+				...widgets, Time_Report_Table: {
+					...widgets.Time_Report_Table, table: {
+						...widgets.Time_Report_Table.table, tableContent: 
+							tableContent					
+					}
+				}
+			}
+		}
+
+		console.log('--------widgets', widgets)
 		setData({  widgets });
 	}, [ widgets]);
 
-	function handleChangePeriod(event) { 
-		setPeriod(event.target.value);
-	}
+	// function handleChangePeriod(event) { 
+	// 	setPeriod(event.target.value);
+	// }
 
-	function handleChangeProduction(event) {
-		setProduction(event.target.value);
+	function handleChangeWeekEnding(event) {
+		setWeekEnding(event.target.value);
 	}
 	
 	if (loading) {
@@ -73,14 +124,14 @@ function TimeReport(props) {
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
-								value={production}
-								onChange={ev => handleChangeProduction(ev)}
-								label="Production"
-								data={options.production.data}
+								value={weekEnding}
+								onChange={ev => handleChangeWeekEnding(ev)}
+								label="Week Ending"
+								data={weekEndingList.data}
 							/>
 						</FuseAnimate>
 					</div>
-					<div className="flex flex-1 items-center justify-center px-12">
+					{/* <div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
 								value={period}
@@ -89,11 +140,14 @@ function TimeReport(props) {
 								data={options.period.data}
 							/>
 						</FuseAnimate>
-					</div>				
+					</div>				 */}
 				</Header>
 			}
 			content={
 				<div className="w-full p-12">
+					<div className="p-12">
+						<Table widget={data.widgets.Time_Report_Table} />
+					</div>
 					<div className="p-12">
 						<Table widget={data.widgets.Time_Report_Table} />
 					</div>

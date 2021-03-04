@@ -55,6 +55,7 @@ function TimeTrack(props) {
 	const cell = useSelector(({ timeReportApp }) => timeReportApp.tracks.cell);	
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
+	const [ot, setOT] = useState("No");
 	const [month, setMonth] = useState("January");
 	const [main, setMain] = useState({});
 	const [title, setTitle] = useState('Time Track');
@@ -116,7 +117,7 @@ function TimeTrack(props) {
 		startOfMonth = startOfMonth.startOf('isoWeek');
 		lastOfMonth = lastOfMonth.endOf('isoWeek');	
 		let date = startOfMonth;
-		const numberOfDays = lastOfMonth.diff(startOfMonth, 'days') + 1;
+		let numberOfDays = lastOfMonth.diff(startOfMonth, 'days') + 1;
 
 		let tempTableRows = [];
 		let tempTableContent = {};
@@ -129,15 +130,17 @@ function TimeTrack(props) {
 				value: day,
 				color: (i+1)%7===0 ? "text-red-500" : "", 
 				// border: i%7===0 && i!==0 ? "border-t-4" : "", 
+				editable: true
 			});
-			// if((i+1)%7===0) {
-			// 	tempTableRows.push({
-			// 		id: "Total", 
-			// 		value: "Total",
-			// 		color: "", 
-			// 		border: "border-t-4 border-b-4"
-			// 	});
-			// }
+			if((i+1)%7===0) {
+				tempTableRows.push({
+					id: "Total", 
+					value: `Total${(i+1)/7}`,
+					color: "", 
+					border: "border-t-4 border-b-4",
+					editable: false
+				});
+			}
 		} 
 	
 		if(tracks.length > 0) { 
@@ -165,23 +168,80 @@ function TimeTrack(props) {
 
 	useEffect(() => { 
 		const tableName = cell.tableName;
-		const row = cell.row;
-		const col = cell.col;
+		const rowNum = cell.row;
+		const colNum = cell.col;
 		const rowKey = cell.rowKey;
 		const colKey = cell.colKey;
 		const value = parseFloat(cell.value === '' ? 0 : cell.value);
 		
 		if(tableName === "TRACK") {
+			
 			tableContent = {				
 				...tableContent, [rowKey]: {
 					...tableContent[rowKey], [colKey]:
 						value
 				}
 			}
+
+			if(colNum < 3) {
+				tableContent = {				
+					...tableContent, [rowKey]: {
+						...tableContent[rowKey], ['Total Hrs Worked']:
+							tableContent[rowKey]['In'] + 
+							tableContent[rowKey]['Out'] + 
+							tableContent[rowKey]['Lunch']
+					}
+				}
+			}
+			if(colNum>3 && colNum<11) {			
+				tableContent = {				
+					...tableContent, [rowKey]: {
+						...tableContent[rowKey], ['Total Hrs']:
+							tableContent[rowKey]['Vacation'] +
+							tableContent[rowKey]['Sick'] + 
+							tableContent[rowKey]['Bereavement'] + 
+							tableContent[rowKey]['Holiday']
+					}
+				}
+			}
+
+			const weekNum = (rowNum - rowNum %8 ) / 8;
+			let weekTotal = 0;
+			let totalHrsWorked = 0;
+			let totalHrs = 0;
+			for(let i = 0; i < 7; i ++) {
+				weekTotal += tableContent[tableRows[weekNum*8+i].value][colKey];
+				totalHrsWorked += tableContent[tableRows[weekNum*8+i].value]['Total Hrs Worked'];
+				totalHrs += tableContent[tableRows[weekNum*8+i].value]['Total Hrs'];
+			}						
+			tableContent = {				
+				...tableContent, [`Total${weekNum+1}`]: {
+					...tableContent[`Total${weekNum+1}`], [colKey]:
+					weekTotal
+				}
+			}
+			tableContent = {				
+				...tableContent, [`Total${weekNum+1}`]: {
+					...tableContent[`Total${weekNum+1}`], ['Total Hrs Worked']:
+					totalHrsWorked
+				}
+			}
+			tableContent = {				
+				...tableContent, [`Total${weekNum+1}`]: {
+					...tableContent[`Total${weekNum+1}`], ['Total Hrs']:
+						totalHrsWorked - totalHrs
+				}
+			}
+
+			
 			console.log('-----cell', tableContent)	
 			setMain({ tableRows, tableContent });
 		}			
 	}, [cell]);
+
+	function handleChangeOT(event) { 
+		setOT(event.target.value);
+	}
 
 	function handleChangeMonth(event) { 
 		setMonth(event.target.value);
@@ -211,7 +271,17 @@ function TimeTrack(props) {
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
-				<Header title={title}>				
+				<Header title={title}>	
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
+								value={ot}
+								onChange={ev => handleChangeOT(ev)}
+								label="Calculate OT"
+								data={options.ot.data}
+							/>
+						</FuseAnimate>
+					</div>				
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
