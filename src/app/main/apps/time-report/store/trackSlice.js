@@ -7,28 +7,34 @@ var UID = localStorage.getItem('@UID')
 
 export const getTracks = createAsyncThunk(
 	'timeReportApp/track/getTracks', 
-	() =>
+	(param) =>
 		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`TimeReport/${belongTo}/${UID}/`);
-			var vision = [];
+			var starCountRef = realDb.ref(`TimeReport/${belongTo}/${UID}/${param}`);
+			var tracks = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
 
 				if (data) {
 					Object.keys(data).map(item => {
-						vision.push(data[item]);
+						tracks.push(data[item]);
 					});
 				} 
-				resolve(vision);
+
+				if (data) {
+					resolve([data]);
+				} else {
+					resolve([]);
+				}
+				
 			});
 		})
 );
 
-export const saveTrack = createAsyncThunk('timeReportApp/track/saveTrack', async (vision, { dispatch, getState }) => {
-	const response = await axios.post('/api/time-report-app/track/save', vision); 
+export const saveTrack = createAsyncThunk('timeReportApp/track/saveTrack', async (tracks, { dispatch, getState }) => {
+	const response = await axios.post('/api/time-report-app/track/save', tracks); 
 	const data = await response.data;
 
-	dispatch(getTracks());
+	dispatch(getTracks(tracks.month));
 	return data;
 });
 

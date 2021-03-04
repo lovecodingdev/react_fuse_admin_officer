@@ -250,23 +250,23 @@ const timeReportAppDB = {
 			table: {
 				columns: [],
 				headers: [
-					{value: 'Date', type:false, color:''},
+					{id: "date", value: 'Date', type:false, color:''},
 					{id: "in", value: 'In', type:false, color:''},
 					{id: "out", value: 'Out', type:false, color:''},	
 					{id: "lunch", value: 'Lunch', type:false, color:''},
-					{id: "totalHrsWorked", value: 'Total Hrs Worked', type:false, color:''},
-					{id: "regHrs", value: 'Reg. Hrs', type:false, color:''},
-					{id: "proj1Hrs", value: 'Proj 1 Hrs', type:false, color:''},
-					{id: "proj2Hrs", value: 'Proj 2 Hrs', type:false, color:''},
-					{id: "proj3Hrs", value: 'Proj 3 Hrs', type:false, color:''},
+					{id: "totalHrsWorked", value: 'Total Hrs Worked', type:false, color:'', border: 'border-r-4'},
+					// {id: "regHrs", value: 'Reg. Hrs', type:false, color:''},
+					// {id: "proj1Hrs", value: 'Proj 1 Hrs', type:false, color:''},
+					// {id: "proj2Hrs", value: 'Proj 2 Hrs', type:false, color:''},
+					// {id: "proj3Hrs", value: 'Proj 3 Hrs', type:false, color:''},
 					{id: "vacation", value: 'Vacation', type:false, color:''},
 					{id: "v", value: 'V', type:false, color:''},
 					{id: "sick", value: 'Sick', type:false, color:''},
 					{id: "s", value: 'S', type:false, color:''},
 					{id: "bereavement", value: 'Bereavement', type: false, color: '' },
 					{id: "b", value: 'B', type: false, color: '' },
-					{id: "holiday", value: 'Holiday', type: false, color: '' },
-					{id: "totalHrs", value: 'Total Hrs', type: false, color: '' },
+					{id: "holiday", value: 'Holiday', type: false, color: '', border: 'border-r-4' },
+					{id: "totalHrs", value: 'Total Hrs', type: false, color: '', border: 'border-r-4' },
 					{id: "notes", value: 'Notes', type: false, color: '' },
 				],
 				rows: [],
@@ -277,15 +277,15 @@ const timeReportAppDB = {
 };
 
 mock.onGet('/api/time-report-app/track').reply(() => {
-	return [200, timeReportAppDB.vision];
+	return [200, timeReportAppDB.tracks];
 });
 
 mock.onPost('/api/time-report-app/track/save').reply(request => {
-	const data = JSON.parse(request.data);
+	const data = JSON.parse(request.data); console.log('-----', data)
 	let product = data;
 
-	realDb.ref(`TimeReport/${belongTo}/${UID}`).set({
-		...data
+	realDb.ref(`TimeReport/${belongTo}/${UID}/${data.month}`).set({
+		...data.tracks
 	});
 
 	return [200, product];
