@@ -75,6 +75,13 @@ export const Options = {
             { item: 'As A Team', value: 'As A Team' },
             { item: 'Individually', value: 'Individually' },
         ],
+    },
+    ot: {
+        id: "OT",
+        data: [
+            { item: 'Yes', value: 'Yes' },
+            { item: 'No', value: 'No' },
+        ],
     }
 }
 
