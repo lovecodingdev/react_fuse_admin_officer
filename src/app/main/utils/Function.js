@@ -12,6 +12,10 @@ export const ceil = (number) => {
   return Math.ceil(number * 100) / 100;
 }
 
+export const dividing = (n1, n2) => {
+  return n2===0 ? 0 : n1/n2;
+}
+
 export const formattedDate = (date) => {
   var dd = date.getDate();
   var mm = date.getMonth()+1;//January is 0!`

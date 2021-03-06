@@ -12,8 +12,9 @@ import withReducer from 'app/store/withReducer';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
 import reducer from '../store';
-import Table from '../../../components/widgets/Table';
+import Table from '../../../components/widgets/TempTable';
 import Chart from '../../../components/widgets/BarChart';
+import HorizontalBarChart from '../../../components/widgets/HorizontalBarChart';
 import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
@@ -22,13 +23,14 @@ import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
 import { getMarketings, selectMarketings } from '../store/marketingsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import usersSlice, { getUsers, selectUsers } from '../store/usersSlice';
-import { Producer_StaffMultiline_Ratios_Table, Producer_StaffMultiline_Summary_Table } from '../Headers';
-import { monthsAndQuarters, policiesAndPremium1, policies, months, bonusPlanDbNames, Options as options } from '../../../utils/Globals';
-import { ceil } from '../../../utils/Function';
+import { monthsAndQuarters, colors, policies, months, Options as options } from '../../../utils/Globals';
+import { ceil, dividing } from '../../../utils/Function';
+const belongTo = localStorage.getItem('@BELONGTO')
+const UID = localStorage.getItem('@UID')
 
 function StaffMultiline(props) {
 	const dispatch = useDispatch();	
-	const widgets = useSelector(selectWidgets);
+	let widgets = useSelector(selectWidgets);
 	const users = useSelector(selectUsers);
 	const marketings = useSelector(selectMarketings);
 	const bonusPlans = useSelector(selectBonusPlans);
@@ -61,7 +63,7 @@ function StaffMultiline(props) {
 						temp[pro.value][month.value][user.data.displayName] = {};
 						policies.map((policy) => {
 							temp[pro.value][month.value][user.data.displayName][policy.value] = {
-								"Bonus": 0,
+								"Bonuses": 0,
 								"Premium": 0,
 								"Policies": 0,
 								"Average Premium": 0,
@@ -105,11 +107,14 @@ function StaffMultiline(props) {
 								const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
 								temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
 								temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100)
-								temp[pro.value][month][userName][entryNames[entryName]]["Bonus"] += ceil(parseFloat(item.dollarBonus));
+								temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));
 								temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
 								temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
-								temp[pro.value][month][userName][entryNames[entryName]]["Average Premium"] = temp[pro.value][month][userName][entryNames[entryName]]["Policies"] > 0 ?
-									ceil((temp[pro.value][month][userName][entryNames[entryName]]["Premium"] / temp[pro.value][month][userName][entryNames[entryName]]["Policies"])) : "";							
+								temp[pro.value][month][userName][entryNames[entryName]]["Average Premium"] = dividing(
+									temp[pro.value][month][userName][entryNames[entryName]]["Premium"],
+									temp[pro.value][month][userName][entryNames[entryName]]["Policies"]		
+								)
+													
 							});
 						}
 					});	
@@ -121,9 +126,505 @@ function StaffMultiline(props) {
 		setMain(temp)
 	}, [bonusPlans, marketings, entries]);
 
-	useEffect(() => {	
+	useEffect(() => {
+		//	Producer_StaffMultiline_Summary_Table
+		if(widgets.Producer_StaffMultiline_Summary_Table && Object.keys(main).length>0 && users.length>0) {
+			let tableRows = [];
+			let tableContent = {};			
+			
+			users.map((user) => {
+				if(user.belongTo === UID) {
+					tableRows.push({ 
+						id: user.id, 
+						value: user.data.displayName, 
+						type: true, 
+						color: '' 
+					});
+					
+					let totalPolicies = 0;
+					let totalAnnualPremium = 0;
+					let totalAveragePremium = 0;
+					let totalAutoBonus = 0;
+					tableContent[user.data.displayName] = {};
+					policies.map((policy) => {
+						tableContent[user.data.displayName][`${policy.value}@Policies`] = ceil(main[production][period][user.data.displayName][policy.value]["Policies"]);						
+						tableContent[user.data.displayName][`${policy.value}@Annual Premium`] = ceil(main[production][period][user.data.displayName][policy.value]["Premium"]);
+						tableContent[user.data.displayName][`${policy.value}@Average Premium`] = ceil(main[production][period][user.data.displayName][policy.value]["Average Premium"]);
+						tableContent[user.data.displayName][`${policy.value}@Auto Bonus`] = ceil(main[production][period][user.data.displayName][policy.value]["Bonuses"]);
+						totalPolicies += tableContent[user.data.displayName][`${policy.value}@Policies`];
+						totalAnnualPremium += tableContent[user.data.displayName][`${policy.value}@Annual Premium`];
+						totalAveragePremium += tableContent[user.data.displayName][`${policy.value}@Average Premium`];
+						totalAutoBonus += tableContent[user.data.displayName][`${policy.value}@Auto Bonus`];
+					});
+					tableContent[user.data.displayName]['Totals@Policies'] = totalPolicies;
+					tableContent[user.data.displayName]['Totals@Annual Premium'] = totalAnnualPremium;
+					tableContent[user.data.displayName]['Totals@Average Premium'] = totalAveragePremium;
+					tableContent[user.data.displayName]['Totals@Auto Bonus'] = totalAutoBonus;
+					tableContent[user.data.displayName]["Multiline Ratio"] = `${ceil(
+						dividing(
+							(
+								tableContent[user.data.displayName]['Life@Policies'] +
+								tableContent[user.data.displayName]['Health@Policies'] +
+								tableContent[user.data.displayName]['Bank@Policies']
+							) * 100,
+							tableContent[user.data.displayName]['Auto@Policies'] +
+							tableContent[user.data.displayName]['Fire@Policies']
+						)
+					)} %`;
+				}				
+			});
+			widgets = {
+				...widgets, Producer_StaffMultiline_Summary_Table: {
+					...widgets.Producer_StaffMultiline_Summary_Table, table: {
+						...widgets.Producer_StaffMultiline_Summary_Table.table, rows:
+							tableRows
+					}
+				}
+			};
+			widgets = {
+				...widgets, Producer_StaffMultiline_Summary_Table: {
+					...widgets.Producer_StaffMultiline_Summary_Table, table: {
+						...widgets.Producer_StaffMultiline_Summary_Table.table, tableContent:
+							tableContent
+					}
+				}
+			};			
+		}
+
+		// StaffMultiline_Summary_Policies_Chart
+		if(widgets.StaffMultiline_Summary_Policies_Chart && Object.keys(main).length>0 && users.length>0) {		
+			let tempDatasets = [];
+			widgets.StaffMultiline_Summary_Policies_Chart.mainChart.TW.datasets.map((dataset) => {
+				let tempDataset = dataset;
+				let tempData = [];
+				users.map((user) => {
+					if(user.belongTo === UID) {
+						tempData.push(ceil(main[production][period][user.data.displayName][dataset.label][report]));
+					}							
+				});
+
+				tempDataset = {...tempDataset, data: tempData}
+				tempDatasets.push(tempDataset);
+			});
+			widgets = {
+				...widgets, StaffMultiline_Summary_Policies_Chart: 
+					{...widgets.StaffMultiline_Summary_Policies_Chart, mainChart: {
+						...widgets.StaffMultiline_Summary_Policies_Chart.mainChart, TW: {
+							...widgets.StaffMultiline_Summary_Policies_Chart.mainChart.TW, datasets: [
+								...tempDatasets
+							] 
+						}
+					}
+				}
+			};
+
+			let tempXAxes = [];
+			let tempLabels = [];
+			let temp = widgets.StaffMultiline_Summary_Policies_Chart.mainChart.options.scales.xAxes[0];
+			users.map((user) => {
+				if(user.belongTo === UID) 
+					tempLabels.push(user.data.displayName);
+			}); 
+			temp = { ...temp, labels: tempLabels };
+			tempXAxes.push(temp);			
+
+			widgets = {
+				...widgets, StaffMultiline_Summary_Policies_Chart: {
+					...widgets.StaffMultiline_Summary_Policies_Chart, mainChart: {
+						...widgets.StaffMultiline_Summary_Policies_Chart.mainChart, options: {
+							...widgets.StaffMultiline_Summary_Policies_Chart.mainChart.options, scales: {
+								...widgets.StaffMultiline_Summary_Policies_Chart.mainChart.options.scales, xAxes: [
+									...tempXAxes
+								]
+							} 
+						}	
+					}
+				}
+			};
+		} 	
+
+		// StaffMultiline_Summary_Producer_Chart
+		if(widgets.StaffMultiline_Summary_Producer_Chart && Object.keys(main).length>0 && users.length>0) {	
+			let tempDatasets = [];	
+			let sumPolicies = { Auto: 0, Fire: 0, Life: 0, Health: 0, Bank: 0 };
+			users.map((user) => {
+				if(user.belongTo === UID) {
+					widgets.StaffMultiline_Summary_Producer_Chart.mainChart.options.scales.yAxes[0].labels.map((policy) => {						
+							sumPolicies[policy] += main[production][period][user.data.displayName][policy][report]											
+					});					
+				}
+			});
+			users.map((user, n) => {
+				if(user.belongTo === UID) {
+					let tempData = [];
+					widgets.StaffMultiline_Summary_Producer_Chart.mainChart.options.scales.yAxes[0].labels.map((policy) => {						
+							tempData.push(ceil(main[production][period][user.data.displayName][policy][report] * 100 / sumPolicies[policy]));												
+					});
+					tempDatasets.push({
+						barPercentage: 0.5,
+						label: user.data.displayName,
+						data: [ ...tempData ],
+						backgroundColor: colors[n].backgroundColor,
+						hoverBackgroundColor: colors[n].hoverBackgroundColor,
+						categoryPercentage: 1,
+					});
+				}
+			});
+			widgets = {
+				...widgets, StaffMultiline_Summary_Producer_Chart: 
+					{...widgets.StaffMultiline_Summary_Producer_Chart, mainChart: {
+						...widgets.StaffMultiline_Summary_Producer_Chart.mainChart, TW: {
+							...widgets.StaffMultiline_Summary_Producer_Chart.mainChart.TW, datasets: [
+								...tempDatasets
+							] 
+						}
+					}
+				}
+			};
+		} 		
+
+		// Producer_StaffMultiline_Ratios_Chart_1
+		if(widgets.Producer_StaffMultiline_Ratios_Chart_1 && Object.keys(main).length>0 && users.length>0) {		
+			let tempDatasets = [];			
+			widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.TW.datasets.map((dataset) => {
+				if(dataset.label==="Life" || dataset.label==="Health" || dataset.label==="Bank") {
+					let tempDataset = dataset;
+					let tempData = [];
+					users.map((user) => {
+						if(user.belongTo === UID) {							
+							tempData.push(ceil(
+								dividing(
+									main[production][period][user.data.displayName][dataset.label]['Policies'],
+									(
+										main[production][period][user.data.displayName]['Auto']['Policies'] +
+										main[production][period][user.data.displayName]['Fire']['Policies']
+									)
+								)
+							));
+						}						
+					});
+
+					tempDataset = {...tempDataset, data: tempData}
+					tempDatasets.push(tempDataset);
+				}
+			});
+			widgets = {
+				...widgets, Producer_StaffMultiline_Ratios_Chart_1: 
+					{...widgets.Producer_StaffMultiline_Ratios_Chart_1, mainChart: {
+						...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart, TW: {
+							...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.TW, datasets: [
+								...tempDatasets
+							] 
+						}
+					}
+				}
+			};
+
+			let tempXAxes = [];
+			let tempLabels = [];
+			let temp = widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.options.scales.xAxes[0];
+			users.map((user) => {
+				if(user.belongTo === UID) 
+					tempLabels.push(user.data.displayName);
+			}); 
+			temp = { ...temp, labels: tempLabels };
+			tempXAxes.push(temp);			
+			widgets = {
+				...widgets, Producer_StaffMultiline_Ratios_Chart_1: {
+					...widgets.Producer_StaffMultiline_Ratios_Chart_1, mainChart: {
+						...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart, options: {
+							...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.options, scales: {
+								...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.options.scales, xAxes: [
+									...tempXAxes
+								]
+							} 
+						}	
+					}
+				}
+			};
+		} 
+
+		// Producer_StaffMultiline_Ratios_Chart_2
+		if(widgets.Producer_StaffMultiline_Ratios_Chart_2 && Object.keys(main).length>0 && users.length>0) {		
+			let tempDatasets = [];			
+			widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.TW.datasets.map((dataset) => {
+				let tempDataset = dataset;
+				let tempData = [];
+				users.map((user) => {
+					if(user.belongTo === UID) {													
+						tempData.push(ceil(
+							dividing(
+								main[production][period][user.data.displayName][dataset.label]['Policies'] * 100,
+								(
+									main[production][period][user.data.displayName]['Auto']['Policies'] +
+									main[production][period][user.data.displayName]['Fire']['Policies'] +
+									main[production][period][user.data.displayName]['Life']['Policies'] +
+									main[production][period][user.data.displayName]['Health']['Policies'] +
+									main[production][period][user.data.displayName]['Bank']['Policies']
+								)
+							)
+						));
+					}							
+				});
+
+				tempDataset = {...tempDataset, data: tempData}
+				tempDatasets.push(tempDataset);
+			});
+			widgets = {
+				...widgets, Producer_StaffMultiline_Ratios_Chart_2: 
+					{...widgets.Producer_StaffMultiline_Ratios_Chart_2, mainChart: {
+						...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart, TW: {
+							...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.TW, datasets: [
+								...tempDatasets
+							] 
+						}
+					}
+				}
+			};
+
+			let tempXAxes = [];
+			let tempLabels = [];
+			let temp = widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.options.scales.xAxes[0];
+			users.map((user) => {
+				if(user.belongTo === UID) 
+					tempLabels.push(user.data.displayName);
+			}); 
+			temp = { ...temp, labels: tempLabels };
+			tempXAxes.push(temp);			
+			widgets = {
+				...widgets, Producer_StaffMultiline_Ratios_Chart_2: {
+					...widgets.Producer_StaffMultiline_Ratios_Chart_2, mainChart: {
+						...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart, options: {
+							...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.options, scales: {
+								...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.options.scales, xAxes: [
+									...tempXAxes
+								]
+							} 
+						}	
+					}
+				}
+			};
+		} 
+
+		//	Producer_StaffMultiline_Ratio_Table
+		if(widgets.Producer_StaffMultiline_Ratio_Table && Object.keys(main).length>0 && users.length>0) {
+			let tableRows = [];
+			let tableContent = {};			
+			
+			users.map((user) => {
+				if(user.belongTo === UID) {
+					tableRows.push({ 
+						id: user.id, 
+						value: user.data.displayName, 
+						type: true, 
+						color: '' 
+					});
+					
+					tableContent[user.data.displayName] = {};
+					// by Auto									
+					tableContent[user.data.displayName][`Auto@Fire`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Fire']["Policies"],
+							main[production][period][user.data.displayName]['Auto']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Auto@Life`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Life']["Policies"],
+							main[production][period][user.data.displayName]['Auto']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Auto@Health`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Health']["Policies"],
+							main[production][period][user.data.displayName]['Auto']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Auto@Bank`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Bank']["Policies"],
+							main[production][period][user.data.displayName]['Auto']["Policies"]
+						)
+					);
+					
+					// by Fire
+					tableContent[user.data.displayName][`Fire@Auto`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Auto']["Policies"],
+							main[production][period][user.data.displayName]['Fire']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Fire@Life`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Life']["Policies"],
+							main[production][period][user.data.displayName]['Fire']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Fire@Health`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Health']["Policies"],
+							main[production][period][user.data.displayName]['Fire']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Fire@Bank`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Bank']["Policies"],
+							main[production][period][user.data.displayName]['Fire']["Policies"]
+						)
+					);
+
+					// by Life
+					tableContent[user.data.displayName][`Life@Auto`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Auto']["Policies"],
+							main[production][period][user.data.displayName]['Life']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Life@Fire`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Fire']["Policies"],
+							main[production][period][user.data.displayName]['Life']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Life@Health`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Health']["Policies"],
+							main[production][period][user.data.displayName]['Life']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Life@Bank`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Bank']["Policies"],
+							main[production][period][user.data.displayName]['Life']["Policies"]
+						)
+					);
+
+					// by Health
+					tableContent[user.data.displayName][`Health@Auto`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Auto']["Policies"],
+							main[production][period][user.data.displayName]['Health']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Health@Fire`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Fire']["Policies"],
+							main[production][period][user.data.displayName]['Health']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Health@Life`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Life']["Policies"],
+							main[production][period][user.data.displayName]['Health']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Health@Bank`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Bank']["Policies"],
+							main[production][period][user.data.displayName]['Health']["Policies"]
+						)
+					);
+
+					// by Bank
+					tableContent[user.data.displayName][`Bank@Auto`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Auto']["Policies"],
+							main[production][period][user.data.displayName]['Bank']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Bank@Fire`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Fire']["Policies"],
+							main[production][period][user.data.displayName]['Bank']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Bank@Life`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Life']["Policies"],
+							main[production][period][user.data.displayName]['Bank']["Policies"]
+						)
+					);	
+					tableContent[user.data.displayName][`Bank@Health`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Health']["Policies"],
+							main[production][period][user.data.displayName]['Bank']["Policies"]
+						)
+					);
+
+					// by Auto&Fire					
+					tableContent[user.data.displayName][`Auto&Fire@Life`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Life']["Policies"],
+							(
+								main[production][period][user.data.displayName]['Auto']["Policies"] +
+								main[production][period][user.data.displayName]['Fire']["Policies"]
+							)
+						)
+					);	
+					tableContent[user.data.displayName][`Auto&Fire@Health`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Health']["Policies"],
+							(
+								main[production][period][user.data.displayName]['Auto']["Policies"] +
+								main[production][period][user.data.displayName]['Fire']["Policies"]
+							)
+						)
+					);	
+					tableContent[user.data.displayName][`Auto&Fire@Bank`] = ceil(
+						dividing(
+							main[production][period][user.data.displayName]['Bank']["Policies"],
+							(
+								main[production][period][user.data.displayName]['Auto']["Policies"] +
+								main[production][period][user.data.displayName]['Fire']["Policies"]
+							)
+						)
+					);
+					tableContent[user.data.displayName][`Total L/H/B`] = ceil(
+						main[production][period][user.data.displayName]['Life']["Policies"] +						
+						main[production][period][user.data.displayName]['Health']["Policies"] +
+						main[production][period][user.data.displayName]['Bank']["Policies"]
+						
+					);
+
+					options.product.data.map((policy) => {
+						tableContent[user.data.displayName][policy.value] = ceil(
+							dividing(
+								main[production][period][user.data.displayName][policy.value]['Policies'] * 100,
+								(
+									main[production][period][user.data.displayName]['Auto']['Policies'] +
+									main[production][period][user.data.displayName]['Fire']['Policies'] +
+									main[production][period][user.data.displayName]['Life']['Policies'] +
+									main[production][period][user.data.displayName]['Health']['Policies'] +
+									main[production][period][user.data.displayName]['Bank']['Policies']
+								)
+							)
+						)							
+					})
+					
+				}
+				
+			});
+			widgets = {
+				...widgets, Producer_StaffMultiline_Ratio_Table: {
+					...widgets.Producer_StaffMultiline_Ratio_Table, table: {
+						...widgets.Producer_StaffMultiline_Ratio_Table.table, rows:
+							tableRows
+					}
+				}
+			};
+			widgets = {
+				...widgets, Producer_StaffMultiline_Ratio_Table: {
+					...widgets.Producer_StaffMultiline_Ratio_Table, table: {
+						...widgets.Producer_StaffMultiline_Ratio_Table.table, tableContent:
+							tableContent
+					}
+				}
+			};			
+		}
+
+		console.log('-------------widgets', widgets)
 		setData({ widgets });
-	}, [widgets]);
+	}, [widgets, main, period, production, report]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -210,8 +711,8 @@ function StaffMultiline(props) {
 					scrollButtons="auto"
 					classes={{ root: 'w-full h-64' }}
 				>
-					<Tab className="h-64 normal-case" label="RATIOS" />
-					<Tab className="h-64 normal-case" label="SUMMARY" />									
+					<Tab className="h-64 normal-case" label="SUMMARY" />
+					<Tab className="h-64 normal-case" label="RATIOS" />									
 				</Tabs>
 			}
 			content={
@@ -219,26 +720,26 @@ function StaffMultiline(props) {
 					{tabValue === 0 && 
 						<div>
 							<div className='p-12'>
-								<Table header={Producer_StaffMultiline_Ratios_Table} widget={widgets.Producer_StaffMultiline_Ratios_Table} entries fires lifes healthes />
+								<Table widget={data.widgets.Producer_StaffMultiline_Summary_Table} />
 							</div>	
 							<div className='p-12'>
-								<Chart widget={widgets.StaffMultiline_Ratios_Policies_Chart} />
+								<Chart widget={data.widgets.StaffMultiline_Summary_Policies_Chart} />
 							</div>
 							<div className='p-12'>
-								<Chart widget={widgets.StaffMultiline_Ratios_Producer_Chart} />
+								<HorizontalBarChart widget={data.widgets.StaffMultiline_Summary_Producer_Chart} />								
 							</div>							
 						</div>
 					}				
 					{tabValue === 1 &&  
 						<div>
 							<div className='p-12'>
-								<Chart widget={widgets.Producer_StaffMultiline_Summary_Chart_1} />
+								<Chart widget={data.widgets.Producer_StaffMultiline_Ratios_Chart_1} />
 							</div>
 							<div className='p-12'>
-								<Chart widget={widgets.Producer_StaffMultiline_Summary_Chart_2} />
+								<Chart widget={data.widgets.Producer_StaffMultiline_Ratios_Chart_2} />
 							</div>	
 							<div className='p-12'>
-								<Table header={Producer_StaffMultiline_Summary_Table} widget={widgets.Producer_StaffMultiline_Summary_Table} entries fires lifes healthes />
+								<Table widget={data.widgets.Producer_StaffMultiline_Ratio_Table} />
 							</div>	
 						</div>
 					}													

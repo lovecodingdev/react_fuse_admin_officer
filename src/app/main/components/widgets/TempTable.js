@@ -20,6 +20,7 @@ function Widget(props) {
 	const headers = props.widget.table.headers;
 	const rows = props.widget.table.rows;
 	const columns = props.widget.table.columns;
+	const format = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
 
 	function handleInputChange(tableName, row, col, rowKey, colKey,  val) {
 		dispatch(setCell({tableName: tableName, row: row, col: col, rowKey: rowKey, colKey: colKey, value: val}));
@@ -86,7 +87,7 @@ function Widget(props) {
 											${headers.length>0 && columns.length===0 && headers[col].border}
 										`)}
 									>
-										{cell.value}
+										{cell.value.substring(cell.value.indexOf("@")+1)}
 									</TableCell>
 								);
 							})}
@@ -125,17 +126,21 @@ function Widget(props) {
 											${headers.length>0 && columns.length===0 && headers[colNum+1].border}
 										`)}
 									>												
-										{!props.editable && columns.length===0 && headers.length>0 && tableData[rowKey][headers[colNum+1].value]!==0 && 
-											tableData[rowKey][headers[colNum+1].value]
+										{
+											!props.editable && 
+											columns.length===0 && 
+											headers.length>0 && 
+											tableData[rowKey][headers[colNum+1].value]!==0 &&											
+												tableData[rowKey][headers[colNum+1].value]
 										}
 
-										{!props.editable && columns.length!==0 && headers.length>0 && tableData[rowKey][headers[colNum].value]!==0 && 
-											tableData[rowKey][headers[colNum].value]
+										{
+											!props.editable && 
+											columns.length!==0 && 
+											headers.length>0 && 
+											tableData[rowKey][headers[colNum].value]!==0 && 											
+												tableData[rowKey][headers[colNum].value]
 										}
-
-										{/* {!props.editable && tableData[rowKey][colKey]!==0 && 
-											tableData[rowKey][colKey]
-										} */}
 									
 										{props.editable &&
 											<TextInput
