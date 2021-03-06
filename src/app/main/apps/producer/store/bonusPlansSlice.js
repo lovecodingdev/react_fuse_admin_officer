@@ -9,7 +9,7 @@ export const getBonusPlans = createAsyncThunk(
 	'producerApp/bonusPlans/getBonusPlans', 
 	(routeParams) =>
 		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`BonusPlan/${belongTo}/${UID}/`);
+			var starCountRef = realDb.ref(`BonusPlan/${belongTo}/all/`);
 			var bonusPlans = [];		
 			starCountRef.on('value', snapshot => { 
 				const data = snapshot.val();

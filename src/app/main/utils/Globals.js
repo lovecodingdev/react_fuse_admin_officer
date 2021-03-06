@@ -91,7 +91,7 @@ export const policies = [
     { id: "Life", value: "Life", indDbName: "individualLifeTargetBonus", color: "" },
     { id: "Health", value: "Health", indDbName: "individualHealthTargetBonus", color: "" },
     { id: "Bank", value: "Bank", indDbName: "individualBankTargetBonus", color: "" },
-    { id: "Totals", value: "Totals", indDbName: "", color: "" },
+    { id: "Total", value: "Total", indDbName: "", color: "" },
 ];
 
 export const months = [
@@ -150,14 +150,15 @@ export const months1 = [
 	'Total',
 ];
 
-export const bonusPlanDbNames = [
-	{ name: "Auto", db: "autoBonus", indDb: "individualAutoTargetBonus" },
-	{ name: "Fire", db: "fireBonus", indDb: "individualFireTargetBonus" },
-	{ name: "Life", db: "lifeBonus", indDb: "individualLifeTargetBonus" },
-	{ name: "Health", db: "healthBonus", indDb: "individualHealthTargetBonus" },
-	{ name: "Bank", db: "bankBonus", indDb: "individualBankTargetBonus" },
-	{ name: "Other", db: "otherBonus", indDb: "individualOtherTargetBonus" },
-];
+export const bonusPlanDbNames = {
+	Auto: { name: "Auto", db: "autoBonus", indDb: "individualAutoTargetBonus" },
+	Fire: { name: "Fire", db: "fireBonus", indDb: "individualFireTargetBonus" },
+	Life: { name: "Life", db: "lifeBonus", indDb: "individualLifeTargetBonus" },
+	Health: { name: "Health", db: "healthBonus", indDb: "individualHealthTargetBonus" },
+	Bank: { name: "Bank", db: "bankBonus", indDb: "individualBankTargetBonus" },
+    Total: { name: "Total", db: "totalBonus", indDb: "individualTotalTargetBonus" },
+	Other: { name: "Other", db: "otherBonus", indDb: "individualOtherTargetBonus" },
+};
 
 export const policiesAndPremium1 = [
     { id: "Average Premium", value: "Average Premium"},

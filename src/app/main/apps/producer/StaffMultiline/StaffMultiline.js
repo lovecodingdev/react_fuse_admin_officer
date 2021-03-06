@@ -74,16 +74,7 @@ function StaffMultiline(props) {
 								const marketing = marketings[key];
 								temp[pro.value][month.value][user.data.displayName][policy.value][marketing.marketingName] = 0;			
 							}); 					
-						});
-	
-						// //adding bonusPlan items
-						// const bonusPlan = bonusPlans.length > 0 && 
-						// bonusPlans[0].hasOwnProperty(bonusPlanDbNames[tabValue].db) ? 
-						// bonusPlans[0][bonusPlanDbNames[tabValue].db] : {};				
-						// Object.keys(bonusPlan).map((key) => {		
-						// 	const item = bonusPlan[key];
-						// 	temp[pro.value][month.value][bonusPlanDbNames[tabValue].name][item.name] = 0;
-						// });	
+						});	
 					});						
 			});
 
@@ -156,10 +147,10 @@ function StaffMultiline(props) {
 						totalAveragePremium += tableContent[user.data.displayName][`${policy.value}@Average Premium`];
 						totalAutoBonus += tableContent[user.data.displayName][`${policy.value}@Auto Bonus`];
 					});
-					tableContent[user.data.displayName]['Totals@Policies'] = totalPolicies;
-					tableContent[user.data.displayName]['Totals@Annual Premium'] = totalAnnualPremium;
-					tableContent[user.data.displayName]['Totals@Average Premium'] = totalAveragePremium;
-					tableContent[user.data.displayName]['Totals@Auto Bonus'] = totalAutoBonus;
+					tableContent[user.data.displayName]['Total@Policies'] = totalPolicies;
+					tableContent[user.data.displayName]['Total@Annual Premium'] = totalAnnualPremium;
+					tableContent[user.data.displayName]['Total@Average Premium'] = totalAveragePremium;
+					tableContent[user.data.displayName]['Total@Auto Bonus'] = totalAutoBonus;
 					tableContent[user.data.displayName]["Multiline Ratio"] = `${ceil(
 						dividing(
 							(
