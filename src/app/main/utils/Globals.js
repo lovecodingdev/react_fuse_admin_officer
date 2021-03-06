@@ -328,4 +328,12 @@ export const toUntrimed = {
     "holiday": 'Holiday',
     "totalHrs": 'Total Hrs',
     "notes": 'Notes',
-}
+};
+
+export const colors = [
+    { backgroundColor: '#42BFF7', hoverBackgroundColor: '#87CDF7' },
+    { backgroundColor: '#C6ECFD', hoverBackgroundColor: '#D7EFFD' },
+    { backgroundColor: '#f9cfcf', hoverBackgroundColor: '#ffcece' },
+    { backgroundColor: '#77ff99', hoverBackgroundColor: '#c9ffd6' },
+    { backgroundColor: '#f9cfcf', hoverBackgroundColor: '#ffcece' },
+];
