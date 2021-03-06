@@ -12,50 +12,383 @@ import withReducer from 'app/store/withReducer';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
 import reducer from '../store';
-import Table from '../../../components/widgets/Table';
+import Table from '../../../components/widgets/TempTable';
 import Chart from '../../../components/widgets/BarChart';
 import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
-import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
+import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
+import { getMarketings, selectMarketings } from '../store/marketingsSlice';
+import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
-import { agencyGoalsHeader, otherActivitiesHeader } from '../Headers';
-import { Options as options } from '../../../utils/Globals';
-
-const useStyles = makeStyles(theme => ({
-	content: {
-		'& canvas': {
-			maxHeight: '100%'
-		}
-	},
-}));
+import { getVision, selectVision } from '../store/visionSlice';
+import { monthsAndQuarters, bonusPlanDbNames, policies, months, Options as options } from '../../../utils/Globals';
+import { ceil, dividing } from '../../../utils/Function';
+const belongTo = localStorage.getItem('@BELONGTO')
+const UID = localStorage.getItem('@UID')
 
 function GoalsAndActual(props) {
 	const dispatch = useDispatch();
-	const classes = useStyles(props);
-	const pageLayout = useRef(null);
+	let widgets = useSelector(selectWidgets);
 	const users = useSelector(selectUsers);
-	const widgets = useSelector(selectWidgets);
-	const production = useSelector(({ producerApp }) => producerApp.products.production);
-	const period = useSelector(({ producerApp }) => producerApp.products.period);	
-	const report = useSelector(({ producerApp }) => producerApp.products.report);
-	const user = useSelector(({ producerApp }) => producerApp.products.user);
+	const marketings = useSelector(selectMarketings);
+	const bonusPlans = useSelector(selectBonusPlans);
+	const entries = useSelector(selectEntries);
+	const vision = useSelector(selectVision);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
-	const [tabValue, setTabValue] = useState(0);
+	const [main, setMain] = useState({});
+	const [period, setPeriod] = useState("January");
+	const [production, setProduction] = useState("Show Written Production");
 	const [title, setTitle] = useState('Goals & Actual');
 	
 	useEffect(() => {
+		dispatch(getUsers());
+		dispatch(getBonusPlans());
+		dispatch(getMarketings());
+		dispatch(getEntries());	
+		dispatch(getVision());	
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
-	useEffect(() => {	
-		setData({ widgets });
-	}, [widgets]);
+	useEffect(() => {		
+		// creating temp
+		let temp = {};
+		const visionNames = {
+			"Auto": "autoPolicies",
+			"Fire": "firePolicies",
+			"Life": "lifePolicies",
+			"Health": "healthPolicies",
+			"Bank": "bankProducts",
+			"Totals": "totalProducts",
+		};
+		options.production.data.map((pro) => {
+			temp[pro.value] = {};
+			monthsAndQuarters.map((month) => {				
+				temp[pro.value][month.value] = {};
+					users.map((user) => {
+						temp[pro.value][month.value][user.data.displayName] = {};
+						policies.map((policy) => {
+							temp[pro.value][month.value][user.data.displayName][policy.value] = {
+								"Bonuses": 0,
+								"Premium": 0,
+								"Policies": 0,
+								"Average Premium": 0,
+							};
+	
+							// adding marketing items
+							Object.keys(marketings).map((key) => {
+								const marketing = marketings[key];
+								temp[pro.value][month.value][user.data.displayName][policy.value][marketing.marketingName] = 0;			
+							}); 
+							
+							//adding bonusPlan items
+							const bonusPlan = bonusPlans.length > 0 && 
+								bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy.value].db) ? 
+								bonusPlans[0][bonusPlanDbNames[policy.value].db] : 
+								{};				
+							Object.keys(bonusPlan).map((key) => {		
+								const item = bonusPlan[key];
+								temp[pro.value][month.value][user.data.displayName][policy.value][item.name] = 0;
+							});	
 
-	function handleChangeTab(event, value) {
-		setTabValue(value);
+							if(vision.length > 0) {	
+								let trimedMonth = month.value;
+								switch(month.value) {
+									case "Quarter 1 Totals":
+										trimedMonth = "Quarter1";
+									case "Quarter 2 Totals":
+										trimedMonth = "Quarter2";
+									case "Quarter 3 Totals":
+										trimedMonth = "Quarter3";
+									case "Quarter 4 Totals":
+										trimedMonth = "Quarter4";	
+									case "Annual Totals":
+										trimedMonth = "Total";
+									case "Projected for Year":
+										trimedMonth = "Total";									
+			
+								}		
+								if(vision[0].hasOwnProperty(user.id)) {
+									temp[pro.value][month.value][user.data.displayName][policy.value]["Goals"] = 
+										vision[0][user.id]['Goals'][trimedMonth][visionNames[policy.value]];
+								}
+								
+							}
+						});
+							
+					});						
+			});
+
+			if(entries.length > 0) {
+				const entryNames = {
+					"Entries": "Auto", 
+					"FireEntries": "Fire", 
+					"LifeEntries": "Life", 
+					"HealthEntries": "Health", 
+					"BankEntries": "Bank", 
+					"OtherEntries": "Other"
+				};
+				users.map((user) => {
+					const userName = user.data.displayName;
+					Object.keys(entries[0]).map((entryName) => {
+						if(entries[0][entryName].hasOwnProperty(user.id)) {
+							Object.keys(entries[0][entryName][user.id]).map((key) => {
+								const item = entries[0][entryName][user.id][key];
+								const issuedMonth = (new Date(item.datePolicyIsIssued)).getMonth();
+								const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
+								const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
+								temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
+								temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100)
+								temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));
+								temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
+								temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
+								temp[pro.value][month][userName][entryNames[entryName]]["Average Premium"] = dividing(
+									temp[pro.value][month][userName][entryNames[entryName]]["Premium"],
+									temp[pro.value][month][userName][entryNames[entryName]]["Policies"]		
+								)
+													
+							});
+						}
+					});	
+				});	
+			}
+		});		
+		
+		console.log('--------------------temp=', temp)
+		setMain(temp)
+	}, [bonusPlans, marketings, entries, bonusPlans, vision]);
+
+	useEffect(() => {	
+		// Producer_GoalsAndActual_AgencyGoals_Table
+		if(widgets.Producer_GoalsAndActual_AgencyGoals_Table && Object.keys(main).length>0 && users.length>0) {
+			let tableRows = [
+				{
+					id: 'total', 
+					value: 'Total', 
+					type: true, 
+					color: '', 
+					border: 'border-b-4' 
+				}
+			];
+			let tableContent = {};			
+			tableContent["Total"] = {};
+			users.map((user) => {
+				if(user.belongTo === UID) {
+					tableRows.push({ 
+						id: user.id, 
+						value: user.data.displayName, 
+						type: true, 
+						color: '' 
+					});
+					
+					let totalGoals = 0;
+					let totalActual = 0;					
+					tableContent[user.data.displayName] = {};
+					options.product.data.map((policy) => { // except for Total
+						tableContent[user.data.displayName][`${policy.value}@Goals`] = 
+							ceil(
+								main[production][period][user.data.displayName][policy.value]["Goals"]
+							);						
+						tableContent[user.data.displayName][`${policy.value}@Actual`] = 
+							ceil(
+								main[production][period][user.data.displayName][policy.value]["Policies"]
+							);						
+						totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
+						totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];						
+						
+						if(!tableContent['Total'].hasOwnProperty(`${policy.value}@Goals`)) {
+							tableContent['Total'][`${policy.value}@Goals`] = 0;
+						}
+						if(!tableContent['Total'].hasOwnProperty(`${policy.value}@Actual`)) {
+							tableContent['Total'][`${policy.value}@Actual`] = 0;
+						}
+						tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
+						tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
+					});
+					tableContent[user.data.displayName]['Total@Goals'] = totalGoals;
+					tableContent[user.data.displayName]['Total@Actual'] = totalActual;										
+
+					if(!tableContent['Total'].hasOwnProperty(`Total@Goals`)) {
+						tableContent['Total'][`Total@Goals`] = 0;
+					}
+					if(!tableContent['Total'].hasOwnProperty(`Total@Actual`)) {
+						tableContent['Total'][`Total@Actual`] = 0;
+					}
+					tableContent['Total'][`Total@Goals`] += totalGoals;
+					tableContent['Total'][`Total@Actual`] += totalActual;
+				}				
+			});
+			widgets = {
+				...widgets, Producer_GoalsAndActual_AgencyGoals_Table: {
+					...widgets.Producer_GoalsAndActual_AgencyGoals_Table, table: {
+						...widgets.Producer_GoalsAndActual_AgencyGoals_Table.table, rows:
+							tableRows
+					}
+				}
+			};
+			widgets = {
+				...widgets, Producer_GoalsAndActual_AgencyGoals_Table: {
+					...widgets.Producer_GoalsAndActual_AgencyGoals_Table, table: {
+						...widgets.Producer_GoalsAndActual_AgencyGoals_Table.table, tableContent:
+							tableContent
+					}
+				}
+			};			
+		}
+
+		// Producer_GoalsAndActual_SalesGoals_Chart
+		if(widgets.Producer_GoalsAndActual_SalesGoals_Chart && Object.keys(main).length>0 && users.length>0) {	
+			let tempDatasets = [];
+			Object.keys(widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.TW.datasets).map((key, n) => {
+				let temp = widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.TW.datasets[key];
+				let tempData = [];
+				const tableContent = widgets.Producer_GoalsAndActual_AgencyGoals_Table.table.tableContent;
+				if(n === 0)
+					widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
+						tempData.push(tableContent['Total'][`${policy}@Goals`]);
+					})
+				else if(n === 1)
+					widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
+						tempData.push(tableContent['Total'][`${policy}@Actual`]);
+					})
+
+				temp = {...temp, data: tempData}
+				tempDatasets.push(temp);
+			}); 
+			widgets = {
+				...widgets, Producer_GoalsAndActual_SalesGoals_Chart: 
+					{...widgets.Producer_GoalsAndActual_SalesGoals_Chart, mainChart: {
+						...widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart, TW: {
+							...widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.TW, datasets: [
+								...tempDatasets
+							] 
+						}
+					}
+				}
+			};
+		} 
+
+		// Producer_GoalsAndActual_OtherActivities_Table
+		if(widgets.Producer_GoalsAndActual_OtherActivities_Table && Object.keys(main).length>0 && users.length>0) {
+			let tableRows = [
+				{
+					id: 'total', 
+					value: 'Total', 
+					type: true, 
+					color: '', 
+					border: 'border-b-4' 
+				}
+			];
+			let tableContent = {};			
+			tableContent["Total"] = {};
+			users.map((user) => {
+				if(user.belongTo === UID) {
+					tableRows.push({ 
+						id: user.id, 
+						value: user.data.displayName, 
+						type: true, 
+						color: '' 
+					});
+					
+					let totalGoals = 0;
+					let totalActual = 0;					
+					tableContent[user.data.displayName] = {};
+					options.product.data.map((policy) => { // except for Total
+						tableContent[user.data.displayName][`${policy.value}@Goals`] = 
+							ceil(
+								main[production][period][user.data.displayName][policy.value]["Goals"]
+							);						
+						tableContent[user.data.displayName][`${policy.value}@Actual`] = 
+							ceil(
+								main[production][period][user.data.displayName][policy.value]["Policies"]
+							);						
+						totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
+						totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];						
+						
+						if(!tableContent['Total'].hasOwnProperty(`${policy.value}@Goals`)) {
+							tableContent['Total'][`${policy.value}@Goals`] = 0;
+						}
+						if(!tableContent['Total'].hasOwnProperty(`${policy.value}@Actual`)) {
+							tableContent['Total'][`${policy.value}@Actual`] = 0;
+						}
+						tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
+						tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
+					});
+					tableContent[user.data.displayName]['Total@Goals'] = totalGoals;
+					tableContent[user.data.displayName]['Total@Actual'] = totalActual;										
+
+					if(!tableContent['Total'].hasOwnProperty(`Total@Goals`)) {
+						tableContent['Total'][`Total@Goals`] = 0;
+					}
+					if(!tableContent['Total'].hasOwnProperty(`Total@Actual`)) {
+						tableContent['Total'][`Total@Actual`] = 0;
+					}
+					tableContent['Total'][`Total@Goals`] += totalGoals;
+					tableContent['Total'][`Total@Actual`] += totalActual;
+				}				
+			});
+			widgets = {
+				...widgets, Producer_GoalsAndActual_OtherActivities_Table: {
+					...widgets.Producer_GoalsAndActual_OtherActivities_Table, table: {
+						...widgets.Producer_GoalsAndActual_OtherActivities_Table.table, rows:
+							tableRows
+					}
+				}
+			};
+			widgets = {
+				...widgets, Producer_GoalsAndActual_OtherActivities_Table: {
+					...widgets.Producer_GoalsAndActual_OtherActivities_Table, table: {
+						...widgets.Producer_GoalsAndActual_OtherActivities_Table.table, tableContent:
+							tableContent
+					}
+				}
+			};			
+		}
+
+		// Producer_GoalsAndActual_ActivityGoals_Chart
+		if(widgets.Producer_GoalsAndActual_ActivityGoals_Chart && Object.keys(main).length>0 && users.length>0) {	
+			let tempDatasets = [];
+			Object.keys(widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.TW.datasets).map((key, n) => {
+				let temp = widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.TW.datasets[key];
+				let tempData = [];
+				const tableContent = widgets.Producer_GoalsAndActual_OtherActivities_Table.table.tableContent;
+				if(n === 0)
+					widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
+						tempData.push(tableContent['Total'][`${policy}@Goals`]);
+					})
+				else if(n === 1)
+					widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
+						tempData.push(tableContent['Total'][`${policy}@Actual`]);
+					})
+
+				temp = {...temp, data: tempData}
+				tempDatasets.push(temp);
+			}); 
+			widgets = {
+				...widgets, Producer_GoalsAndActual_ActivityGoals_Chart: 
+					{...widgets.Producer_GoalsAndActual_ActivityGoals_Chart, mainChart: {
+						...widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart, TW: {
+							...widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.TW, datasets: [
+								...tempDatasets
+							] 
+						}
+					}
+				}
+			};
+		} 
+
+		console.log('-----widgets', widgets)
+		setData({ widgets });
+	}, [widgets, main, period, production]);
+
+	function handleChangePeriod(event) { 
+		setPeriod(event.target.value);
+	}
+
+	function handleChangeProduction(event) {
+		setProduction(event.target.value);
 	}
 	
 	if (loading) {
@@ -86,20 +419,20 @@ function GoalsAndActual(props) {
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
-								value={period}
-								onChange={ev => dispatch(setPeriod(ev))}
-								label="Report Period"
-								data={options.period.data}
+								value={production}
+								onChange={ev => handleChangeProduction(ev)}
+								label="Production"
+								data={options.production.data}
 							/>
 						</FuseAnimate>
 					</div>
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
-								value={production}
-								onChange={ev => dispatch(setProduction(ev))}
-								label="Production"
-								data={options.production.data}
+								value={period}
+								onChange={ev => handleChangePeriod(ev)}
+								label="Report Period"
+								data={options.period.data}
 							/>
 						</FuseAnimate>
 					</div>
@@ -109,7 +442,7 @@ function GoalsAndActual(props) {
 				<div className="w-full p-12">
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-2/3 p-12">
-							<Table header={agencyGoalsHeader} leftHeader={data.users} widget={widgets.Producer_GoalsAndActual_AgencyGoals_Table} entries fires lifes healthes />
+							<Table widget={data.widgets.Producer_GoalsAndActual_AgencyGoals_Table} />
 						</div>
 						<div className="widget flex w-1/3 p-12">
 							<Chart widget={data.widgets.Producer_GoalsAndActual_SalesGoals_Chart} />
@@ -117,7 +450,7 @@ function GoalsAndActual(props) {
 					</FuseAnimateGroup>
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-2/3 p-12">
-							<Table header={otherActivitiesHeader} leftHeader={data.users} widget={widgets.Producer_GoalsAndActual_OtherActivities_Table} entries fires lifes healthes />
+							<Table widget={data.widgets.Producer_GoalsAndActual_OtherActivities_Table} />
 						</div>
 						<div className="widget flex w-1/3 p-12">
 							<Chart widget={data.widgets.Producer_GoalsAndActual_ActivityGoals_Chart} />
