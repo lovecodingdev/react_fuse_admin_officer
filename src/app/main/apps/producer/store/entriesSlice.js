@@ -8,7 +8,6 @@ export const getEntries = createAsyncThunk(
 	'producerApp/entries/getEntries',
 	() =>
 		new Promise((resolve, reject) => {
-			// var starCountRef = realDb.ref(`Sales/${belongTo}/Entries/${localStorage.getItem('@UID')}`);
 			var starCountRef = realDb.ref(`Sales/${belongTo}/`);
 			var entries = [];
 			starCountRef.on('value', snapshot => {
