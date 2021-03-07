@@ -1,4 +1,7 @@
-import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import _ from '@lodash';
+import clsx from 'clsx';import FuseScrollbars from '@fuse/core/FuseScrollbars';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -8,11 +11,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import clsx from 'clsx';
 import TextInput from '../TextInput';
 import { setCell } from '../../apps/time-report/store/trackSlice';
+import { ceil, dividing } from '../../utils/Function';
+
 
 function Widget(props) {
 	const dispatch = useDispatch(); 	
@@ -20,7 +22,6 @@ function Widget(props) {
 	const headers = props.widget.table.headers;
 	const rows = props.widget.table.rows;
 	const columns = props.widget.table.columns;
-	const format = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
 
 	function handleInputChange(tableName, row, col, rowKey, colKey,  val) {
 		dispatch(setCell({tableName: tableName, row: row, col: col, rowKey: rowKey, colKey: colKey, value: val}));
@@ -62,8 +63,9 @@ function Widget(props) {
 												className={clsx(`
 													whitespace-wrap p-0 text-xs p-12 
 													${col === (columns.length-1) ? `border-r-0` : `border-r-1`} 
-													${column.color}`
-												)}
+													${column.color}
+													${column.border}
+												`)}
 											>
 												{column.title}
 											</TableCell>
@@ -84,7 +86,7 @@ function Widget(props) {
 											w-md p-0 text-xs p-4 
 											${col === (headers.length-1) ? `border-r-0` : `border-r-1`} 
 											${cell.color}
-											${headers.length>0 && columns.length===0 && headers[col].border}
+											${headers.length>0 && headers[col].border}
 										`)}
 									>
 										{cell.value.substring(cell.value.indexOf("@")+1)}
@@ -94,7 +96,7 @@ function Widget(props) {
 						</TableRow>
 					</TableHead>				
 					<TableBody>						
-						{Object.keys(tableData).map((rowKey, rowNum) => (
+						{!_.isEmpty(tableData) && Object.keys(tableData).map((rowKey, rowNum) => (
 							<TableRow className="h-32" key={rowNum}>
 								{!props.hideLeftHeader &&
 									<TableCell 
@@ -124,6 +126,7 @@ function Widget(props) {
 											${colNum === (Object.keys(tableData[rowKey]).length-1) ? `border-r-0` : `border-r-1`} 
 											${rows.length>0 && rows[rowNum].border}
 											${headers.length>0 && columns.length===0 && headers[colNum+1].border}
+											${headers.length>0 && columns.length!==0 && headers[colNum].border}
 										`)}
 									>												
 										{
@@ -131,7 +134,7 @@ function Widget(props) {
 											columns.length===0 && 
 											headers.length>0 && 
 											tableData[rowKey][headers[colNum+1].value]!==0 &&											
-												tableData[rowKey][headers[colNum+1].value]
+												ceil(tableData[rowKey][headers[colNum+1].value])
 										}
 
 										{
@@ -139,7 +142,7 @@ function Widget(props) {
 											columns.length!==0 && 
 											headers.length>0 && 
 											tableData[rowKey][headers[colNum].value]!==0 && 											
-												tableData[rowKey][headers[colNum].value]
+												ceil(tableData[rowKey][headers[colNum].value])
 										}
 									
 										{props.editable &&
