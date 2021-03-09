@@ -161,7 +161,7 @@ function StaffMultiline(props) {
 							tableContent[user.data.displayName]['Auto@Policies'] +
 							tableContent[user.data.displayName]['Fire@Policies']
 						)
-					)} %`;
+					)}`;
 				}				
 			});
 			widgets = {

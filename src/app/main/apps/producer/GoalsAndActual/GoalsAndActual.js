@@ -18,12 +18,10 @@ import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
-import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
-import { getMarketings, selectMarketings } from '../store/marketingsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
-import { monthsAndQuarters, bonusPlanDbNames, policies, months, Options as options } from '../../../utils/Globals';
+import { monthsAndQuarters, policies, months, Options as options } from '../../../utils/Globals';
 import { ceil, dividing } from '../../../utils/Function';
 const belongTo = localStorage.getItem('@BELONGTO')
 const UID = localStorage.getItem('@UID')
@@ -32,8 +30,6 @@ function GoalsAndActual(props) {
 	const dispatch = useDispatch();
 	let widgets = useSelector(selectWidgets);
 	const users = useSelector(selectUsers);
-	const marketings = useSelector(selectMarketings);
-	const bonusPlans = useSelector(selectBonusPlans);
 	const entries = useSelector(selectEntries);
 	const vision = useSelector(selectVision);
 	const [loading, setLoading] = useState(true);
@@ -45,8 +41,6 @@ function GoalsAndActual(props) {
 	
 	useEffect(() => {
 		dispatch(getUsers());
-		dispatch(getBonusPlans());
-		dispatch(getMarketings());
 		dispatch(getEntries());	
 		dispatch(getVision());	
 		dispatch(getWidgets()).then(() => setLoading(false));
@@ -74,24 +68,8 @@ function GoalsAndActual(props) {
 								"Bonuses": 0,
 								"Premium": 0,
 								"Policies": 0,
-								"Average Premium": 0,
-							};
-	
-							// adding marketing items
-							Object.keys(marketings).map((key) => {
-								const marketing = marketings[key];
-								temp[pro.value][month.value][user.data.displayName][policy.value][marketing.marketingName] = 0;			
-							}); 
-							
-							//adding bonusPlan items
-							const bonusPlan = bonusPlans.length > 0 && 
-								bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy.value].db) ? 
-								bonusPlans[0][bonusPlanDbNames[policy.value].db] : 
-								{};				
-							Object.keys(bonusPlan).map((key) => {		
-								const item = bonusPlan[key];
-								temp[pro.value][month.value][user.data.displayName][policy.value][item.name] = 0;
-							});	
+								"Averages": 0,
+							};							
 
 							if(vision.length > 0) {	
 								let trimedMonth = month.value;
@@ -144,7 +122,7 @@ function GoalsAndActual(props) {
 								temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));
 								temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
 								temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
-								temp[pro.value][month][userName][entryNames[entryName]]["Average Premium"] = dividing(
+								temp[pro.value][month][userName][entryNames[entryName]]["Average"] = dividing(
 									temp[pro.value][month][userName][entryNames[entryName]]["Premium"],
 									temp[pro.value][month][userName][entryNames[entryName]]["Policies"]		
 								)
@@ -158,7 +136,7 @@ function GoalsAndActual(props) {
 		
 		console.log('--------------------temp=', temp)
 		setMain(temp)
-	}, [bonusPlans, marketings, entries, bonusPlans, vision]);
+	}, [entries, vision]);
 
 	useEffect(() => {	
 		// Producer_GoalsAndActual_AgencyGoals_Table

@@ -48,7 +48,7 @@ function StaffSources(props) {
 		dispatch(getUsers());
 		dispatch(getMarketings());
 		dispatch(getEntries());	
-		dispatch(getWidgets()).then(setLoading(false));
+		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
 	useEffect(() => {		
@@ -495,19 +495,7 @@ function StaffSources(props) {
 		return <FuseLoading />;
 	}
 
-	if (_.isEmpty(data)) {
-		return (
-			<FuseAnimate delay={100}>
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-						There are no data!
-					</Typography>
-				</div>
-			</FuseAnimate>
-		);
-	}
-
-	if (_.isEmpty(data.widgets)) {
+	if (data.length === 0) {
 		return (
 			<FuseAnimate delay={100}>
 				<div className="flex flex-1 items-center justify-center h-full">

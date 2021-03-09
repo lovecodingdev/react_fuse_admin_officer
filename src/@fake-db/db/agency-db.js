@@ -606,19 +606,19 @@ const agencyAppDB = {
 					{
 						id: 'policiesAndPremium',
 						title: 'Policies & Premium',
-						color: 'bg-green-300',
+						color: '',
 						colSpan: 3
 					},
 					{
 						id: 'policySalesByPolicyType',
 						title: 'POLICY SALES by Policy Type',
-						color: 'bg-yellow-500',
+						color: '',
 						colSpan: 13
 					},
 					// {
 					// 	id: 'policySalesBySourcesBusiness',
 					// 	title: 'POLICY SALES by Sources of Business',
-					// 	color: 'bg-indigo-200',
+					// 	color: '',
 					// 	colSpan: 20
 					// },					
 				],
@@ -980,19 +980,19 @@ const agencyAppDB = {
 					{
 						id: 'policiesAndPremium',
 						title: 'Policies & Premium',
-						color: 'bg-green-300',
+						color: '',
 						colSpan: 3
 					},
 					// {
 					// 	id: 'policySalesByPolicyType',
 					// 	title: 'POLICY SALES by Policy Type',
-					// 	color: 'bg-yellow-500',
+					// 	color: '',
 					// 	colSpan: 13
 					// },
 					{
 						id: 'policySalesBySourcesBusiness',
 						title: 'POLICY SALES by Sources of Business',
-						color: 'bg-indigo-200',
+						color: '',
 						colSpan: 20
 					},					
 				],
@@ -1468,19 +1468,19 @@ const agencyAppDB = {
 					// {
 					// 	id: 'policiesAndPremium',
 					// 	title: 'Policies & Premium',
-					// 	color: 'bg-green-300',
+					// 	color: '',
 					// 	colSpan: 3
 					// },
 					{
 						id: 'PremiumSalesByPolicyType',
 						title: 'PREMIUM SALES by Policy Type(In Thousands)',
-						color: 'bg-yellow-500',
+						color: '',
 						colSpan: 13
 					},
 					// {
 					// 	id: 'policySalesBySourcesBusiness',
 					// 	title: 'POLICY SALES by Sources of Business',
-					// 	color: 'bg-indigo-200',
+					// 	color: '',
 					// 	colSpan: 20
 					// },					
 				],
@@ -1830,19 +1830,19 @@ const agencyAppDB = {
 					// {
 					// 	id: 'policiesAndPremium',
 					// 	title: 'Policies & Premium',
-					// 	color: 'bg-green-300',
+					// 	color: '',
 					// 	colSpan: 3
 					// },
 					// {
 					// 	id: 'policySalesByPolicyType',
 					// 	title: 'POLICY SALES by Policy Type',
-					// 	color: 'bg-yellow-500',
+					// 	color: '',
 					// 	colSpan: 13
 					// },
 					{
 						id: 'policySalesBySourcesBusiness',
 						title: 'PREMIUM SALES by Sources of Business(In Thousands)',
-						color: 'bg-indigo-200',
+						color: '',
 						colSpan: 20
 					},					
 				],
@@ -3021,6 +3021,270 @@ const agencyAppDB = {
 			}
 		},
 		{
+			id: 'Agency_ProductLine_Table_1',
+			title: '',
+			table: {
+				columns: [
+					{
+						id: 'avatar',
+						title: 'Month',
+						color: '',
+						align: 'center',
+						colSpan: 1,
+						rowSpan: 2
+					},
+					{
+						id: 'policiesAndPremium',
+						title: 'Policies & Premium',
+						color: '',
+						colSpan: 3
+					},
+					{
+						id: 'policySalesByPolicyType',
+						title: 'Policy Sales by Policy Type',
+						color: '',
+						colSpan: 100
+					},									
+				],
+				headers: [],
+				rows: [
+					{ id: "January", value: "January", color: "" },
+					{ id: "February", value: "February", color: "" },
+					{ id: "March", value: "March", color: "" },
+					{ id: "April", value: "April", color: "" },
+					{ id: "May", value: "May", color: "" },
+					{ id: "June", value: "June", color: "" },
+					{ id: "July", value: "July", color: "" },
+					{ id: "August", value: "August", color: "" },
+					{ id: "September", value: "September", color: "" },
+					{ id: "October", value: "October", color: "" },
+					{ id: "November", value: "November", color: "" },
+					{ id: "December", value: "December", color: "" },
+					{ id: "Quarter 1 Totals", value: "Quarter 1 Totals", border: "border-t-4" },
+					{ id: "Quarter 2 Totals", value: "Quarter 2 Totals" },
+					{ id: "Quarter 3 Totals", value: "Quarter 3 Totals" },
+					{ id: "Quarter 4 Totals", value: "Quarter 4 Totals" },
+					{ id: "Annual Totals", value: "Annual Totals", border: "border-t-4" },
+					{ id: "Projected for Year", value: "Projected for Year", border: "border-t-4" },
+				],
+				tableContent : {
+					"January":{},
+					"February":{},
+					"March":{},
+					"April":{},
+					"May":{},
+					"June":{},
+					"July":{},
+					"August":{},
+					"September":{},
+					"October":{},
+					"November":{},
+					"December":{},
+					"Quarter 1 Totals":{},
+					"Quarter 2 Totals":{},
+					"Quarter 3 Totals":{},
+					"Quarter 4 Totals":{},
+					"Annual Totals":{},
+					"Projected for Year":{}					
+				},
+			}
+		},
+		{
+			id: 'Agency_ProductLine_Table_2',
+			title: '',
+			table: {
+				columns: [
+					{
+						id: 'avatar',
+						title: 'Month',
+						color: '',
+						align: 'center',
+						colSpan: 1,
+						rowSpan: 2
+					},
+					{
+						id: 'policiesAndPremium',
+						title: 'Policies & Premium',
+						color: '',
+						colSpan: 3
+					},				
+					{
+						id: 'policySalesBySourcesBusiness',
+						title: 'Policy Sales by Sources of Business',
+						color: '',
+						colSpan: 100
+					},					
+				],
+				headers: [],
+				rows: [
+					{ id: "January", value: "January", color: "" },
+					{ id: "February", value: "February", color: "" },
+					{ id: "March", value: "March", color: "" },
+					{ id: "April", value: "April", color: "" },
+					{ id: "May", value: "May", color: "" },
+					{ id: "June", value: "June", color: "" },
+					{ id: "July", value: "July", color: "" },
+					{ id: "August", value: "August", color: "" },
+					{ id: "September", value: "September", color: "" },
+					{ id: "October", value: "October", color: "" },
+					{ id: "November", value: "November", color: "" },
+					{ id: "December", value: "December", color: "" },
+					{ id: "Quarter 1 Totals", value: "Quarter 1 Totals", border: "border-t-4" },
+					{ id: "Quarter 2 Totals", value: "Quarter 2 Totals" },
+					{ id: "Quarter 3 Totals", value: "Quarter 3 Totals" },
+					{ id: "Quarter 4 Totals", value: "Quarter 4 Totals" },
+					{ id: "Annual Totals", value: "Annual Totals", border: "border-t-4" },
+					{ id: "Projected for Year", value: "Projected for Year", border: "border-t-4" },
+				],
+				tableContent : {
+					"January":{},
+					"February":{},
+					"March":{},
+					"April":{},
+					"May":{},
+					"June":{},
+					"July":{},
+					"August":{},
+					"September":{},
+					"October":{},
+					"November":{},
+					"December":{},
+					"Quarter 1 Totals":{},
+					"Quarter 2 Totals":{},
+					"Quarter 3 Totals":{},
+					"Quarter 4 Totals":{},
+					"Annual Totals":{},
+					"Projected for Year":{}					
+				},
+			}
+		},
+		{
+			id: 'Agency_ProductLine_Table_3',
+			title: '',
+			table: {
+				columns: [
+					{
+						id: 'avatar',
+						title: 'Month',
+						color: '',
+						align: 'center',
+						colSpan: 1,
+						rowSpan: 2
+					},					
+					{
+						id: 'PremiumSalesByPolicyType',
+						title: 'Premium Sales by Policy Type(In Thousands)',
+						color: '',
+						colSpan: 100
+					},									
+				],
+				headers: [],
+				rows: [
+					{ id: "January", value: "January", color: "" },
+					{ id: "February", value: "February", color: "" },
+					{ id: "March", value: "March", color: "" },
+					{ id: "April", value: "April", color: "" },
+					{ id: "May", value: "May", color: "" },
+					{ id: "June", value: "June", color: "" },
+					{ id: "July", value: "July", color: "" },
+					{ id: "August", value: "August", color: "" },
+					{ id: "September", value: "September", color: "" },
+					{ id: "October", value: "October", color: "" },
+					{ id: "November", value: "November", color: "" },
+					{ id: "December", value: "December", color: "" },
+					{ id: "Quarter 1 Totals", value: "Quarter 1 Totals", border: "border-t-4" },
+					{ id: "Quarter 2 Totals", value: "Quarter 2 Totals" },
+					{ id: "Quarter 3 Totals", value: "Quarter 3 Totals" },
+					{ id: "Quarter 4 Totals", value: "Quarter 4 Totals" },
+					{ id: "Annual Totals", value: "Annual Totals", border: "border-t-4" },
+					{ id: "Projected for Year", value: "Projected for Year", border: "border-t-4" },
+				],
+				tableContent : {
+					"January":{},
+					"February":{},
+					"March":{},
+					"April":{},
+					"May":{},
+					"June":{},
+					"July":{},
+					"August":{},
+					"September":{},
+					"October":{},
+					"November":{},
+					"December":{},
+					"Quarter 1 Totals":{},
+					"Quarter 2 Totals":{},
+					"Quarter 3 Totals":{},
+					"Quarter 4 Totals":{},
+					"Annual Totals":{},
+					"Projected for Year":{}					
+				},
+			}
+		},
+		{
+			id: 'Agency_ProductLine_Table_4',
+			title: '',
+			table: {
+				columns: [
+					{
+						id: 'avatar',
+						title: 'Month',
+						color: '',
+						align: 'center',
+						colSpan: 1,
+						rowSpan: 2
+					},					
+					{
+						id: 'policySalesBySourcesBusiness',
+						title: 'Premium Sales by Sources of Business(In Thousands)',
+						color: '',
+						colSpan: 100
+					},					
+				],
+				headers: [],
+				rows: [
+					{ id: "January", value: "January", color: "" },
+					{ id: "February", value: "February", color: "" },
+					{ id: "March", value: "March", color: "" },
+					{ id: "April", value: "April", color: "" },
+					{ id: "May", value: "May", color: "" },
+					{ id: "June", value: "June", color: "" },
+					{ id: "July", value: "July", color: "" },
+					{ id: "August", value: "August", color: "" },
+					{ id: "September", value: "September", color: "" },
+					{ id: "October", value: "October", color: "" },
+					{ id: "November", value: "November", color: "" },
+					{ id: "December", value: "December", color: "" },
+					{ id: "Quarter 1 Totals", value: "Quarter 1 Totals", border: "border-t-4" },
+					{ id: "Quarter 2 Totals", value: "Quarter 2 Totals" },
+					{ id: "Quarter 3 Totals", value: "Quarter 3 Totals" },
+					{ id: "Quarter 4 Totals", value: "Quarter 4 Totals" },
+					{ id: "Annual Totals", value: "Annual Totals", border: "border-t-4" },
+					{ id: "Projected for Year", value: "Projected for Year", border: "border-t-4" },
+				],
+				tableContent : {
+					"January":{},
+					"February":{},
+					"March":{},
+					"April":{},
+					"May":{},
+					"June":{},
+					"July":{},
+					"August":{},
+					"September":{},
+					"October":{},
+					"November":{},
+					"December":{},
+					"Quarter 1 Totals":{},
+					"Quarter 2 Totals":{},
+					"Quarter 3 Totals":{},
+					"Quarter 4 Totals":{},
+					"Annual Totals":{},
+					"Projected for Year":{}					
+				},
+			}
+		},
+		{
 			id: 'ProductLine_Life_Table_1',
 			title: 'Team Members',
 			table: {
@@ -3036,19 +3300,19 @@ const agencyAppDB = {
 					{
 						id: 'policiesAndPremium',
 						title: 'Policies & Premium',
-						color: 'bg-green-300',
+						color: '',
 						colSpan: 4
 					},
 					{
 						id: 'policySalesByPolicyType',
 						title: 'POLICY SALES by Policy Type',
-						color: 'bg-yellow-500',
+						color: '',
 						colSpan: 13
 					},
 					// {
 					// 	id: 'policySalesBySourcesBusiness',
 					// 	title: 'POLICY SALES by Sources of Business',
-					// 	color: 'bg-indigo-200',
+					// 	color: '',
 					// 	colSpan: 20
 					// },					
 				],
@@ -3428,19 +3692,19 @@ const agencyAppDB = {
 					{
 						id: 'policiesAndPremium',
 						title: 'Policies & Premium',
-						color: 'bg-green-300',
+						color: '',
 						colSpan: 4
 					},
 					// {
 					// 	id: 'policySalesByPolicyType',
 					// 	title: 'POLICY SALES by Policy Type',
-					// 	color: 'bg-yellow-500',
+					// 	color: '',
 					// 	colSpan: 13
 					// },
 					{
 						id: 'policySalesBySourcesBusiness',
 						title: 'POLICY SALES by Sources of Business',
-						color: 'bg-indigo-200',
+						color: '',
 						colSpan: 20
 					},					
 				],
@@ -4207,19 +4471,19 @@ const agencyAppDB = {
 					{
 						id: 'productsAndComm',
 						title: 'Products & Comm',
-						color: 'bg-green-300',
+						color: '',
 						colSpan: 3
 					},
 					{
 						id: 'ProductSalesByProductType',
 						title: 'PRODUCT SALES by Product Type',
-						color: 'bg-yellow-500',
+						color: '',
 						colSpan: 13
 					},
 					// {
 					// 	id: 'policySalesBySourcesBusiness',
 					// 	title: 'POLICY SALES by Sources of Business',
-					// 	color: 'bg-indigo-200',
+					// 	color: '',
 					// 	colSpan: 20
 					// },					
 				],
@@ -4581,19 +4845,19 @@ const agencyAppDB = {
 					{
 						id: 'productsAndComm',
 						title: 'Product & Comm',
-						color: 'bg-green-300',
+						color: '',
 						colSpan: 3
 					},
 					// {
 					// 	id: 'policySalesByPolicyType',
 					// 	title: 'POLICY SALES by Policy Type',
-					// 	color: 'bg-yellow-500',
+					// 	color: '',
 					// 	colSpan: 13
 					// },
 					{
 						id: 'productSalesBySourcesOfBusiness',
 						title: 'PRODUCT SALES by Sources of Business',
-						color: 'bg-indigo-200',
+						color: '',
 						colSpan: 20
 					},					
 				],
@@ -5069,19 +5333,19 @@ const agencyAppDB = {
 					// {
 					// 	id: 'policiesAndPremium',
 					// 	title: 'Policies & Premium',
-					// 	color: 'bg-green-300',
+					// 	color: '',
 					// 	colSpan: 3
 					// },
 					{
 						id: 'commissionSalesByProduct',
 						title: 'COMMISSION SALES by Product(In Hundreds)',
-						color: 'bg-yellow-500',
+						color: '',
 						colSpan: 13
 					},
 					// {
 					// 	id: 'policySalesBySourcesBusiness',
 					// 	title: 'POLICY SALES by Sources of Business',
-					// 	color: 'bg-indigo-200',
+					// 	color: '',
 					// 	colSpan: 20
 					// },					
 				],
@@ -5431,19 +5695,19 @@ const agencyAppDB = {
 					// {
 					// 	id: 'policiesAndPremium',
 					// 	title: 'Policies & Premium',
-					// 	color: 'bg-green-300',
+					// 	color: '',
 					// 	colSpan: 3
 					// },
 					// {
 					// 	id: 'policySalesByPolicyType',
 					// 	title: 'POLICY SALES by Policy Type',
-					// 	color: 'bg-yellow-500',
+					// 	color: '',
 					// 	colSpan: 13
 					// },
 					{
 						id: 'commissionSalesBySourcesByBusiness',
 						title: 'COMMISSION SALES by Sources of Business(In Humdreds)',
-						color: 'bg-indigo-200',
+						color: '',
 						colSpan: 20
 					},					
 				],
@@ -6112,230 +6376,105 @@ const agencyAppDB = {
 				},
 			}
 		},
-		{
+		{					
 			id: 'Agency_Payroll_Table',
-			title: 'Team Members',
+			title: '',
 			table: {
-				columns: [
-					{
-						id: 'avatar',
-						title: '',
-						color: '',
-						align: 'center',
-						colSpan: 1,
-						rowSpan: 2
-					},
-					{
-						id: 'auto',
-						title: 'Auto',
-						color: '',
-						colSpan: 2
-					},
-					{
-						id: 'fire',
-						title: 'Fire',
-						color: '',
-						colSpan: 2
-					},
-					{
-						id: 'life',
-						title: 'Life',
-						color: '',
-						colSpan: 2
-					},
-					{
-						id: 'health',
-						title: 'Health',
-						color: '',
-						colSpan: 2
-					},
-					{
-						id: 'bank',
-						title: 'Bank',
-						color: '',
-						colSpan: 2
-					},
-					{
-						id: 'total',
-						title: 'Total',
-						color: '',
-						colSpan: 2
-					},					
-				],
+				columns: [],
+				headers: [
+					{ id: 1, value: 'Producer', type: true },
+					{ id: 2, value: 'Auto Policies', type: true },
+					{ id: 3, value: 'Auto Bonuses', type: false },
+					{ id: 4, value: 'Fire Policies', type: true },
+					{ id: 5, value: 'Fire Bonuses', type: false },
+					{ id: 6, value: 'Life Policies', type: true },
+					{ id: 7, value: 'Life Bonuses', type: false },
+					{ id: 8, value: 'Health Policies', type: true },
+					{ id: 9, value: 'Health Bonuses', type: false },
+					{ id: 10, value: 'Bank Products', type: true },
+					{ id: 11, value: 'Bank Bonuses', type: false },
+					{ id: 12, value: 'Other Activities', type: true },
+					{ id: 13, value: 'Other Bonuses', type: false },
+					{ id: 14, value: 'Individual Target Bonuses', type: false },
+					{ id: 15, value: 'Team Target Bonuses', type: false },
+					{ id: 16, value: 'Policy Growth Bonuses', type: false },
+					{ id: 17, value: 'Lapse Rate % Bonus', type: false },
+					{ id: 18, value: 'Special Promotion', type: false },
+					{ id: 19, value: 'Total Policies', type: true },
+					{ id: 20, value: 'Total Bonuses', type: false },
+					{ id: 21, value: 'Bonus Verified?', type: true },
+					{ id: 22, value: 'Amount Paid to Producer', type: true }
+				],				
 				rows: [],
-				headers: [],
-				tableContent : {
-					name1:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',					
-					},
-					name2:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-					name3:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-					name4:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-					name5:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-					name6:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-					name7:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-					name8:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-					name9:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-					name11:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-					name12:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-					name13:{
-						autoGoals:'-',
-						autoActual:'-',
-						fireGoals:'-',
-						fireActual:'-',
-						lifeGoals:'-',
-						lifeActual:'-',
-						healthGoals:'-',
-						healthActual:'-',
-						bankGoals:'-',
-						bankActual:'-',	
-						totalGoals:'-',
-						totalActual:'-',
-					},
-				}
-			}
-		},
+				tableContent : {},
+			}		
+		},	
+		{					
+			id: 'Agency_Payroll_Yearly_Table',
+			title: '',
+			table: {
+				columns: [],
+				headers: [
+					{ id: 1, value: 'Producer', type: true },
+					{ id: 2, value: 'Auto Policies', type: true },
+					{ id: 3, value: 'Auto Bonuses', type: false },
+					{ id: 4, value: 'Fire Policies', type: true },
+					{ id: 5, value: 'Fire Bonuses', type: false },
+					{ id: 6, value: 'Life Policies', type: true },
+					{ id: 7, value: 'Life Bonuses', type: false },
+					{ id: 8, value: 'Health Policies', type: true },
+					{ id: 9, value: 'Health Bonuses', type: false },
+					{ id: 10, value: 'Bank Products', type: true },
+					{ id: 11, value: 'Bank Bonuses', type: false },
+					{ id: 12, value: 'Other Activities', type: true },
+					{ id: 13, value: 'Other Bonuses', type: false },
+					{ id: 14, value: 'Individual Target Bonuses', type: false },
+					{ id: 15, value: 'Team Target Bonuses', type: false },
+					{ id: 16, value: 'Policy Growth Bonuses', type: false },
+					{ id: 17, value: 'Lapse Rate % Bonus', type: false },
+					{ id: 18, value: 'Special Promotion', type: false },
+					{ id: 19, value: 'Total Policies', type: true },
+					{ id: 20, value: 'Total Bonuses', type: false },
+					{ id: 21, value: 'Bonus Verified?', type: true },
+					{ id: 22, value: 'Amount Paid to Producer', type: true }
+				],				
+				rows: [],
+				tableContent : {},
+			}		
+		},	
+		{					
+			id: 'Agency_Payroll_Summary_Table',
+			title: '',
+			table: {
+				columns: [],
+				headers: [
+					{ id: 1, value: 'Producer', type: true },
+					{ id: 2, value: 'Auto Policies', type: true },
+					{ id: 3, value: 'Auto Bonuses', type: false },
+					{ id: 4, value: 'Fire Policies', type: true },
+					{ id: 5, value: 'Fire Bonuses', type: false },
+					{ id: 6, value: 'Life Policies', type: true },
+					{ id: 7, value: 'Life Bonuses', type: false },
+					{ id: 8, value: 'Health Policies', type: true },
+					{ id: 9, value: 'Health Bonuses', type: false },
+					{ id: 10, value: 'Bank Products', type: true },
+					{ id: 11, value: 'Bank Bonuses', type: false },
+					{ id: 12, value: 'Other Activities', type: true },
+					{ id: 13, value: 'Other Bonuses', type: false },
+					{ id: 14, value: 'Individual Target Bonuses', type: false },
+					{ id: 15, value: 'Team Target Bonuses', type: false },
+					{ id: 16, value: 'Policy Growth Bonuses', type: false },
+					{ id: 17, value: 'Lapse Rate % Bonus', type: false },
+					{ id: 18, value: 'Special Promotion', type: false },
+					{ id: 19, value: 'Total Policies', type: true },
+					{ id: 20, value: 'Total Bonuses', type: false },
+					{ id: 21, value: 'Bonus Verified?', type: true },
+					{ id: 22, value: 'Amount Paid to Producer', type: true }
+				],				
+				rows: [],
+				tableContent : {},
+			}		
+		},	
 		{
 			id: 'Agency_Sources_ViewYearTotalsByProduct_Table',
 			title: 'Team Members',
