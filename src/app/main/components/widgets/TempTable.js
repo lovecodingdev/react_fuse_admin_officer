@@ -13,8 +13,6 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
 import TextInput from '../TextInput';
 import { setCell } from '../../apps/time-report/store/trackSlice';
-import { ceil, dividing } from '../../utils/Function';
-
 
 function Widget(props) {
 	const dispatch = useDispatch(); 	
@@ -134,7 +132,7 @@ function Widget(props) {
 											columns.length===0 && 
 											headers.length>0 && 
 											tableData[rowKey][headers[colNum+1].value]!==0 &&											
-												ceil(tableData[rowKey][headers[colNum+1].value])
+												tableData[rowKey][headers[colNum+1].value]
 										}
 
 										{
@@ -142,7 +140,7 @@ function Widget(props) {
 											columns.length!==0 && 
 											headers.length>0 && 
 											tableData[rowKey][headers[colNum].value]!==0 && 											
-												ceil(tableData[rowKey][headers[colNum].value])
+												tableData[rowKey][headers[colNum].value]
 										}
 									
 										{props.editable &&

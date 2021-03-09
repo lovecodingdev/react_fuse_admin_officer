@@ -12,66 +12,516 @@ import withReducer from 'app/store/withReducer';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
 import reducer from '../store';
-import Table from '../../../components/widgets/Table';
+import Table from '../../../components/widgets/TempTable';
 import Chart from '../../../components/widgets/BarChart';
 import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
-import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
+import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
+import { getMarketings, selectMarketings } from '../store/marketingsSlice';
+import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
-import { autoHeader1, autoHeader2, autoHeader3, autoHeader4 } from './AutoHeader';
-import { fireHeader1, fireHeader2, fireHeader3, fireHeader4 } from './FireHeader'; 
-import { lifeHeader1, lifeHeader2, lifeHeader3, lifeHeader4 } from './LifeHeader';
-import { healthHeader1, healthHeader2, healthHeader3, healthHeader4,  } from './HealthHeader';
-import { bankHeader1, bankHeader2, bankHeader3, bankHeader4 } from './BankHeader';
-import { otherHeader } from './OtherHeader';
-import { Options as options } from '../../../utils/Globals';
+import { getVision, selectVision } from '../store/visionSlice';
+import { policiesAndPremium1, monthsAndQuarters, colors, bonusPlanDbNames, policies, months, Options as options } from '../../../utils/Globals';
+import { ceil, dividing } from '../../../utils/Function';
+import OtherLine from './OtherLine.js';
 
-const useStyles = makeStyles(theme => ({
-	content: {
-		'& canvas': {
-			maxHeight: '100%'
-		}
-	},
-}));
+const belongTo = localStorage.getItem('@BELONGTO');
+const UID = localStorage.getItem('@UID');
 
 function ProductLine(props) {
 	const dispatch = useDispatch();
-	const classes = useStyles(props);
-	const pageLayout = useRef(null);
+	let widgets = useSelector(selectWidgets);
 	const users = useSelector(selectUsers);
-	const widgets = useSelector(selectWidgets);
-	const production = useSelector(({ agencyApp }) => agencyApp.products.production);
-	const period = useSelector(({ agencyApp }) => agencyApp.products.period);	
-	const report = useSelector(({ agencyApp }) => agencyApp.products.report);
-	const user = useSelector(({ agencyApp }) => agencyApp.products.user);
+	const marketings = useSelector(selectMarketings);
+	const bonusPlans = useSelector(selectBonusPlans);
+	const entries = useSelector(selectEntries);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
-	const [userList, setUserList] = useState([]);
+	const [main, setMain] = useState({});
+	const [period, setPeriod] = useState("January");
+	const [production, setProduction] = useState("Show Written Production");
+	const [report, setReport] = useState("Policies");
+	const [userList, setUserList] = useState("");
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Product Line');
 	
 	useEffect(() => {
+		dispatch(getUsers());
+		dispatch(getBonusPlans());
+		dispatch(getMarketings());
+		dispatch(getEntries());	
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
-	useEffect(() => {	
-		setData({ widgets });
-	}, [ widgets]);
+	useEffect(() => {		
+		// creating temp
+		if(Object.keys(marketings).length>0 && users.length>0 && entries.length>0 && bonusPlans.length>0) {
+			// user options
+			var tempUserList = [];
+			if (users.length > 0) {
+				users.map(user => {
+					if(user.belongTo === UID) {
+						tempUserList.push({ 
+							item: user.data.displayName, 
+							value: user.data.displayName 
+						});
+					}
+				});
+				setUserList(tempUserList);
+			}
 
-	useEffect(() => {
-		var temp = [];
-		if (users.length > 0) {
-			users.map(item => {
-				temp.push({ item: item.data.displayName, value: item.id });
-			});
-			setUserList(temp);
+			let temp = {};		
+			options.production.data.map((pro) => {
+				temp[pro.value] = {};
+				monthsAndQuarters.map((month) => {				
+					temp[pro.value][month.value] = {};
+					users.map((user) => {
+						let userOptions = { id: 'Users', data: [] };
+						userOptions.data.push({ 
+							item: user.data.displayName, 
+							value: user.data.displayName 
+						});
+
+						temp[pro.value][month.value][user.data.displayName] = {};
+						policies.map((policy) => {
+							temp[pro.value][month.value][user.data.displayName][policy.value] = {
+								"Bonuses": 0,
+								"Policy Premium": 0,
+								"Number of Policies": 0,
+								"Averages Premium": 0,
+							};
+
+							// adding marketing items
+							Object.keys(marketings).map((key) => {
+								const marketing = marketings[key];
+								temp[pro.value][month.value][user.data.displayName][policy.value][marketing.marketingName] = 0;			
+							}); 
+							
+							//adding bonusPlan items
+							const bonusPlan = bonusPlans.length > 0 && 
+								bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy.value].db) ? 
+								bonusPlans[0][bonusPlanDbNames[policy.value].db] : 
+								{};				
+							Object.keys(bonusPlan).map((key) => {		
+								const item = bonusPlan[key];
+								temp[pro.value][month.value][user.data.displayName][policy.value][item.name] = 0;
+								temp[pro.value][month.value][user.data.displayName][policy.value][`Bonuses`] = 0;
+								temp[pro.value][month.value][user.data.displayName][policy.value][`Policy Premium`] = 0;
+								temp[pro.value][month.value][user.data.displayName][policy.value][`Number of Policies`] = 0;
+								temp[pro.value][month.value][user.data.displayName][policy.value][`Average Premium`] = 0;
+							});	
+						});
+							
+					});						
+				});
+
+				if(entries.length > 0) {
+					const entryNames = {
+						"Entries": "Auto", 
+						"FireEntries": "Fire", 
+						"LifeEntries": "Life", 
+						"HealthEntries": "Health", 
+						"BankEntries": "Bank", 
+						"OtherEntries": "Other"
+					};
+					let dbName = '';
+
+					users.map((user) => {
+						const userName = user.data.displayName;
+						Object.keys(entries[0]).map((entryName) => {
+							if(entries[0][entryName].hasOwnProperty(user.id)) {
+								Object.keys(entries[0][entryName][user.id]).map((key) => {
+									const item = entries[0][entryName][user.id][key];
+									const issuedMonth = (new Date(item.datePolicyIsIssued)).getMonth();
+									const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
+									const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
+									temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
+									temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
+									temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));									
+									temp[pro.value][month][userName][entryNames[entryName]]["Policy Premium"] += ceil(parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100);									
+									temp[pro.value][month][userName][entryNames[entryName]]["Number of Policies"] += ceil(parseFloat(item.percentOfSaleCredit / 100));	
+									temp[pro.value][month][userName][entryNames[entryName]]["Average Premium"] = ceil(
+										dividing(
+											temp[pro.value][month][userName][entryNames[entryName]]["Policy Premium"],
+											temp[pro.value][month][userName][entryNames[entryName]]["Number of Policies"]		
+										)	
+									)
+								});
+							}
+						});	
+					});	
+				}
+			});		
+			
+			console.log('--------------------temp=', temp)
+			setMain(temp)
 		}
-	}, [users]);
+	}, [marketings, entries, bonusPlans, users]);
 
-	function handleChangeTab(event, value) {
+	useEffect(() => { 
+		let policy = '';
+		if(tabValue === 0)
+			policy = 'Auto';
+		if(tabValue === 1)
+			policy = 'Fire';
+		if(tabValue === 2)
+			policy = 'Life';
+		if(tabValue === 3)
+			policy = 'Health';
+		if(tabValue === 4)
+			policy = 'Bank';	
+
+		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {
+			const bonusPlan = bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy].db) ? bonusPlans[0][bonusPlanDbNames[policy].db] : {};
+			if(widgets.Agency_ProductLine_Table_1) {
+				let headers = [ ...policiesAndPremium1 ];
+				let tableContent = {};
+
+				Object.keys(bonusPlan).map((key) => {		
+					const item = bonusPlan[key];
+					headers.push({
+						id: item.name,
+						value: item.name,
+						color: '' 
+					});
+				});	
+				monthsAndQuarters.map((month, row) => {
+					tableContent[month.value] = {};			
+					policiesAndPremium1.map((item) => {	
+						users.map(user => {
+							if(user.belongTo === UID) {
+								if(row < 12) {
+									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.value];									
+								}	
+								if (row>11 && row<16) {
+									tableContent[month.value][item.value] =
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]);
+								} 
+								if(row === 16) {
+									tableContent[month.value][item.value] =
+										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.value])
+								} 
+								if(row === 17) {
+									tableContent[month.value][item.value] = '';
+								} 
+							}	
+						});					 								
+					});	
+					Object.keys(bonusPlan).map((key) => {		
+						const item = bonusPlan[key];
+						users.map(user => {
+							if(user.belongTo === UID) {
+								if(row < 12) {
+									tableContent[month.value][item.name] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.name];									
+								}			
+								if(row>11 && row<16) {
+									tableContent[month.value][item.name] =
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]);
+								} 
+								if(row === 16) {
+									tableContent[month.value][item.name] =
+										parseFloat(tableContent[monthsAndQuarters[12].value][item.name]) +
+										parseFloat(tableContent[monthsAndQuarters[13].value][item.name]) +
+										parseFloat(tableContent[monthsAndQuarters[14].value][item.name]) +
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.name]);
+								} 
+								if(row === 17) {
+									tableContent[month.value][item.name] = '';
+								} 	
+							}
+						})
+					});	
+				}); 
+				widgets = {
+					...widgets, Agency_ProductLine_Table_1: {
+						...widgets.Agency_ProductLine_Table_1, table: {
+							...widgets.Agency_ProductLine_Table_1.table, headers: 
+								headers							
+						}
+					}
+				}
+				widgets = {
+					...widgets, Agency_ProductLine_Table_1: {
+						...widgets.Agency_ProductLine_Table_1, table: {
+							...widgets.Agency_ProductLine_Table_1.table, tableContent: 
+								tableContent							
+						}
+					}
+				}
+			}
+
+			if(widgets.Agency_ProductLine_Table_2) {
+				let headers = [ ...policiesAndPremium1 ];
+				let tableContent = {};
+
+				Object.keys(marketings).map((key) => {		
+					const item = marketings[key];
+					headers.push({
+						id: item.marketingName,
+						value: item.marketingName,
+						color: '' 
+					});
+				});	
+				monthsAndQuarters.map((month, row) => {
+					tableContent[month.value] = {};			
+					policiesAndPremium1.map((item) => {				
+						users.map(user => {
+							if(user.belongTo === UID) {
+								if(row < 12) {
+									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.value];									
+								}	
+								if (row>11 && row<16) {
+									tableContent[month.value][item.value] =
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]);
+								} 
+								if(row === 16) {
+									tableContent[month.value][item.value] =
+										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.value])
+								} 
+								if(row === 17) {
+									tableContent[month.value][item.value] = '';
+								} 
+							}	
+						});									
+					});	
+					Object.keys(marketings).map((key) => {		
+						const item = marketings[key];			
+						users.map(user => {
+							if(user.belongTo === UID) {
+								if(row < 12) {
+									tableContent[month.value][item.marketingName] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName];									
+								}			
+								if(row>11 && row<16) {
+									tableContent[month.value][item.marketingName] =
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]);
+								} 
+								if(row === 16) {
+									tableContent[month.value][item.marketingName] =
+										parseFloat(tableContent[monthsAndQuarters[12].value][item.marketingName]) +
+										parseFloat(tableContent[monthsAndQuarters[13].value][item.marketingName]) +
+										parseFloat(tableContent[monthsAndQuarters[14].value][item.marketingName]) +
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.marketingName]);
+								} 
+								if(row === 17) {
+									tableContent[month.value][item.marketingName] = '';
+								} 	
+							}
+						})	
+					});	
+				}); 
+				widgets = {
+					...widgets, Agency_ProductLine_Table_2: {
+						...widgets.Agency_ProductLine_Table_2, table: {
+							...widgets.Agency_ProductLine_Table_2.table, headers: 
+								headers							
+						}
+					}
+				}
+				widgets = {
+					...widgets, Agency_ProductLine_Table_2: {
+						...widgets.Agency_ProductLine_Table_2, table: {
+							...widgets.Agency_ProductLine_Table_2.table, tableContent: 
+								tableContent							
+						}
+					}
+				}
+			}
+
+			if(widgets.Agency_ProductLine_Table_3) {
+				let headers = [ ...policiesAndPremium1 ];
+				let tableContent = {};
+
+				Object.keys(bonusPlan).map((key) => {		
+					const item = bonusPlan[key];
+					headers.push({
+						id: item.name,
+						value: item.name,
+						color: '' 
+					});
+				});	
+				monthsAndQuarters.map((month, row) => {
+					tableContent[month.value] = {};			
+					policiesAndPremium1.map((item) => {	
+						users.map(user => {
+							if(user.belongTo === UID) {
+								if(row < 12) {
+									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.value];									
+								}	
+								if (row>11 && row<16) {
+									tableContent[month.value][item.value] =
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]);
+								} 
+								if(row === 16) {
+									tableContent[month.value][item.value] =
+										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.value])
+								} 
+								if(row === 17) {
+									tableContent[month.value][item.value] = '';
+								} 
+							}	
+						});					 								
+					});	
+					Object.keys(bonusPlan).map((key) => {		
+						const item = bonusPlan[key];
+						users.map(user => {
+							if(user.belongTo === UID) {
+								if(row < 12) {
+									tableContent[month.value][item.name] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.name];									
+								}			
+								if(row>11 && row<16) {
+									tableContent[month.value][item.name] =
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]);
+								} 
+								if(row === 16) {
+									tableContent[month.value][item.name] =
+										parseFloat(tableContent[monthsAndQuarters[12].value][item.name]) +
+										parseFloat(tableContent[monthsAndQuarters[13].value][item.name]) +
+										parseFloat(tableContent[monthsAndQuarters[14].value][item.name]) +
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.name]);
+								} 
+								if(row === 17) {
+									tableContent[month.value][item.name] = '';
+								} 	
+							}
+						})
+					});	
+				}); 
+				widgets = {
+					...widgets, Agency_ProductLine_Table_3: {
+						...widgets.Agency_ProductLine_Table_3, table: {
+							...widgets.Agency_ProductLine_Table_3.table, headers: 
+								headers							
+						}
+					}
+				}
+				widgets = {
+					...widgets, Agency_ProductLine_Table_3: {
+						...widgets.Agency_ProductLine_Table_3, table: {
+							...widgets.Agency_ProductLine_Table_3.table, tableContent: 
+								tableContent							
+						}
+					}
+				}
+			}
+
+			if(widgets.Agency_ProductLine_Table_4) {
+				let headers = [ ...policiesAndPremium1 ];
+				let tableContent = {};
+
+				Object.keys(marketings).map((key) => {		
+					const item = marketings[key];
+					headers.push({
+						id: item.marketingName,
+						value: item.marketingName,
+						color: '' 
+					});
+				});	
+				monthsAndQuarters.map((month, row) => {
+					tableContent[month.value] = {};			
+					policiesAndPremium1.map((item) => {				
+						users.map(user => {
+							if(user.belongTo === UID) {
+								if(row < 12) {
+									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.value];									
+								}	
+								if (row>11 && row<16) {
+									tableContent[month.value][item.value] =
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]);
+								} 
+								if(row === 16) {
+									tableContent[month.value][item.value] =
+										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.value])
+								} 
+								if(row === 17) {
+									tableContent[month.value][item.value] = '';
+								} 
+							}	
+						});									
+					});	
+					Object.keys(marketings).map((key) => {		
+						const item = marketings[key];			
+						users.map(user => {
+							if(user.belongTo === UID) {
+								if(row < 12) {
+									tableContent[month.value][item.marketingName] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName];									
+								}			
+								if(row>11 && row<16) {
+									tableContent[month.value][item.marketingName] =
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]);
+								} 
+								if(row === 16) {
+									tableContent[month.value][item.marketingName] =
+										parseFloat(tableContent[monthsAndQuarters[12].value][item.marketingName]) +
+										parseFloat(tableContent[monthsAndQuarters[13].value][item.marketingName]) +
+										parseFloat(tableContent[monthsAndQuarters[14].value][item.marketingName]) +
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.marketingName]);
+								} 
+								if(row === 17) {
+									tableContent[month.value][item.marketingName] = '';
+								} 	
+							}
+						})	
+					});	
+				}); 
+				widgets = {
+					...widgets, Agency_ProductLine_Table_4: {
+						...widgets.Agency_ProductLine_Table_4, table: {
+							...widgets.Agency_ProductLine_Table_4.table, headers: 
+								headers							
+						}
+					}
+				}
+				widgets = {
+					...widgets, Agency_ProductLine_Table_4: {
+						...widgets.Agency_ProductLine_Table_4, table: {
+							...widgets.Agency_ProductLine_Table_4.table, tableContent: 
+								tableContent							
+						}
+					}
+				}
+			}
+		}	
+		
+		console.log('--------------------------widgets:', widgets)
+		setData({ widgets });
+	}, [widgets, main, production, tabValue]);
+
+	function handleChangeTab(event, value) { 		
 		setTabValue(value);
+	}
+
+	function handleChangeProduction(event) {
+		setProduction(event.target.value);
 	}
 	
 	if (loading) {
@@ -103,7 +553,7 @@ function ProductLine(props) {
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
 								value={production}
-								onChange={ev => dispatch(setProduction(ev))}
+								onChange={ev => handleChangeProduction(ev)}
 								label="Production"
 								data={options.production.data}
 							/>
@@ -121,103 +571,30 @@ function ProductLine(props) {
 					scrollButtons="auto"
 					classes={{ root: 'w-full h-64' }}
 				>
-					<Tab className="h-64 normal-case" label="AUTO" />
-					<Tab className="h-64 normal-case" label="FIRE" />
-					<Tab className="h-64 normal-case" label="LIFE" />
-					<Tab className="h-64 normal-case" label="HEALTH" />
-					<Tab className="h-64 normal-case" label="BANK" />
-					<Tab className="h-64 normal-case" label="OTHER" />
+					<Tab className="h-64 normal-case" label="Auto" />
+					<Tab className="h-64 normal-case" label="Fire" />
+					<Tab className="h-64 normal-case" label="Life" />
+					<Tab className="h-64 normal-case" label="Health" />
+					<Tab className="h-64 normal-case" label="Bank" />
+					{/* <Tab className="h-64 normal-case" label="Other" /> */}
 				</Tabs>
 			}
 			content={
 				<div className="w-full p-12">					
-					{tabValue === 0 && 					 
-						<div>
-							<div className='p-12'>
-								<Table header={autoHeader1} widget={data.widgets.Agency_ProductLine_Auto_Table_1} entries fires lifes healthes />
-							</div>
-							<div className='p-12'>
-								<Table header={autoHeader2} widget={data.widgets.Agency_ProductLine_Auto_Table_2} entries fires lifes healthes />
-							</div>	
-							<div className='p-12'>
-								<Table header={autoHeader3} widget={data.widgets.Agency_ProductLine_Auto_Table_3} entries fires lifes healthes />
-							</div>
-							<div className='p-12'>
-								<Table header={autoHeader4} widget={data.widgets.Agency_ProductLine_Auto_Table_4} entries fires lifes healthes />
-							</div>
+					<div>
+						<div className='p-12'>
+							<Table widget={data.widgets.Agency_ProductLine_Table_1} />							
 						</div>
-					}				
-					{tabValue === 1 && 
-						<div>
-							<div className='p-12'>
-								<Table header={fireHeader1} widget={data.widgets.Agency_ProductLine_Auto_Table_1} entries fires lifes healthes />
-							</div>
-							<div className='p-12'>
-								<Table header={fireHeader2} widget={data.widgets.Agency_ProductLine_Auto_Table_2} entries fires lifes healthes />
-							</div>	
-							<div className='p-12'>
-								<Table header={fireHeader3} widget={data.widgets.Agency_ProductLine_Auto_Table_3} entries fires lifes healthes />
-							</div>
-							<div className='p-12'>
-								<Table header={fireHeader4} widget={data.widgets.Agency_ProductLine_Auto_Table_4} entries fires lifes healthes />
-							</div>	
+						<div className='p-12'>
+							<Table widget={data.widgets.Agency_ProductLine_Table_2} />
+						</div>	
+						<div className='p-12'>
+							<Table widget={data.widgets.Agency_ProductLine_Table_3} />							
 						</div>
-					}			
-					{tabValue === 2 && 
-						<div>
-							<div className='p-12'>
-								<Table header={lifeHeader1} widget={data.widgets.ProductLine_Life_Table_1} entries fires lifes healthes />
-							</div>
-							<div className='p-12'>
-								<Table header={lifeHeader2} widget={data.widgets.ProductLine_Life_Table_2} entries fires lifes healthes />
-							</div>	
-							<div className='p-12'>
-								<Table header={lifeHeader3} widget={data.widgets.Agency_ProductLine_Auto_Table_3} entries fires lifes healthes />
-							</div>
-							<div className='p-12'>
-								<Table header={lifeHeader4} widget={data.widgets.Agency_ProductLine_Auto_Table_4} entries fires lifes healthes />
-							</div>
+						<div className='p-12'>
+							<Table widget={data.widgets.Agency_ProductLine_Table_4} />
 						</div>
-					}	
-					{tabValue === 3 && 
-						<div>
-							<div className='p-12'>
-								<Table header={healthHeader1} widget={data.widgets.ProductLine_Life_Table_1} entries fires lifes healthes />
-							</div>
-							<div className='p-12'>
-								<Table header={healthHeader2} widget={data.widgets.ProductLine_Life_Table_2} entries fires lifes healthes />
-							</div>	
-							<div className='p-12'>
-								<Table header={healthHeader3} widget={data.widgets.Agency_ProductLine_Auto_Table_3} entries fires lifes healthes />
-							</div>
-							<div className='p-12'>
-								<Table header={healthHeader4} widget={data.widgets.Agency_ProductLine_Auto_Table_4} entries fires lifes healthes />
-							</div>	
-						</div>
-					}	
-					{tabValue === 4 && 
-						<div>
-							<div className='p-12'>
-								<Table header={bankHeader1} widget={data.widgets.ProductLine_Bank_Table_1} entries fires lifes healthes />
-							</div>
-							<div className='p-12'>
-								<Table header={bankHeader2} widget={data.widgets.ProductLine_Bank_Table_2} entries fires lifes healthes />
-							</div>	
-							<div className='p-12'>
-								<Table header={bankHeader3} widget={data.widgets.ProductLine_Bank_Table_3} entries fires lifes healthes />
-							</div>
-							<div className='p-12'>
-								<Table header={bankHeader4} widget={data.widgets.ProductLine_Bank_Table_4} entries fires lifes healthes />
-							</div>	
-						</div>
-					}	
-					{tabValue === 5 && 
-						<div>
-							<div className='p-12'>
-								<Table header={otherHeader} widget={data.widgets.ProductLine_Other_Table} entries fires lifes healthes />
-							</div>
-						</div>
-					}	
+					</div>					
 				</div>
 			}
 			innerScroll

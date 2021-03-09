@@ -51,7 +51,7 @@ function PoliciesAndBank(props) {
 		dispatch(getBonusPlans());
 		dispatch(getMarketings());
 		dispatch(getEntries());	
-		dispatch(getWidgets()).then(setLoading(false));
+		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
 	useEffect(() => {		
@@ -140,20 +140,24 @@ function PoliciesAndBank(props) {
 									temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
 									temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));
 									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Bonuses`] += ceil(parseFloat(item.dollarBonus));
-									temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
-									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Premium`] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
-									temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
-									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Policies`] += parseFloat(item.percentOfSaleCredit / 100);	
-									temp[pro.value][month][userName][entryNames[entryName]]["Averages"] = 
+									temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += ceil(parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100);
+									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Premium`] += ceil(parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100);
+									temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += ceil(parseFloat(item.percentOfSaleCredit / 100));	
+									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Policies`] +=ceil( parseFloat(item.percentOfSaleCredit / 100));	
+									temp[pro.value][month][userName][entryNames[entryName]]["Averages"] = ceil(
 										dividing(
 											temp[pro.value][month][userName][entryNames[entryName]]["Premium"],
 											temp[pro.value][month][userName][entryNames[entryName]]["Policies"]		
 										)	
-									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Averages`] = 
+									)
+										
+									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Averages`] = ceil(
 										dividing(
 											temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Premium`],
 											temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Policies`]		
-										)																							
+										)
+									)
+																																	
 								});
 							}
 						});	
@@ -360,19 +364,7 @@ function PoliciesAndBank(props) {
 		return <FuseLoading />;
 	}
 
-	if (_.isEmpty(data)) {
-		return (
-			<FuseAnimate delay={100}>
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-						There are no data!
-					</Typography>
-				</div>
-			</FuseAnimate>
-		);
-	}
-
-	if (_.isEmpty(data.widgets)) {
+	if (data.length === 0) {
 		return (
 			<FuseAnimate delay={100}>
 				<div className="flex flex-1 items-center justify-center h-full">

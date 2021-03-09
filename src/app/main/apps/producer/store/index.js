@@ -4,7 +4,6 @@ import users from './usersSlice';
 import bonusPlans from './bonusPlansSlice';
 import marketings from './marketingsSlice';
 import entries from './entriesSlice';
-import products from './productsSlice';
 import vision from './visionSlice';
 
 const reducer = combineReducers({
@@ -13,7 +12,6 @@ const reducer = combineReducers({
 	bonusPlans,
 	marketings,
 	entries,
-	products,
 	vision,
 });
 

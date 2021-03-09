@@ -55,13 +55,13 @@ const navigationConfig = [
 						url: '/apps/setup/marketing',
 						exact: true
 					},
-					{
-						id: 'productType',
-						title: 'Type of Product',
-						type: 'item',
-						url: '/apps/setup/product-type',
-						exact: true
-					},
+					// {
+					// 	id: 'productType',
+					// 	title: 'Type of Product',
+					// 	type: 'item',
+					// 	url: '/apps/setup/product-type',
+					// 	exact: true
+					// },
 				]
 			},
 			{
