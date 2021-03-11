@@ -22,13 +22,6 @@ export const getUsers = createAsyncThunk(
 		})
 );
 
-// export const getUsers = createAsyncThunk('producerApp/users/getUsers', async () => {
-// 	const response = await axios.get('/api/producer-app/users');
-// 	const data = await response.data;
-
-// 	return data;
-// });
-
 const usersAdapter = createEntityAdapter({});
 
 export const { selectAll: selectUsers, selectById: selectUserById } = usersAdapter.getSelectors(

@@ -18,12 +18,9 @@ import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
-import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
-import { getMarketings, selectMarketings } from '../store/marketingsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
-import { getVision, selectVision } from '../store/visionSlice';
-import { monthsAndQuarters, colors, bonusPlanDbNames, policies, months, Options as options } from '../../../utils/Globals';
+import { monthsAndQuarters, policies, months, Options as options } from '../../../utils/Globals';
 import { ceil, dividing } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
@@ -33,37 +30,20 @@ function Payroll(props) {
 	const dispatch = useDispatch();
 	let widgets = useSelector(selectWidgets);
 	const users = useSelector(selectUsers);
-	const marketings = useSelector(selectMarketings);
-	const bonusPlans = useSelector(selectBonusPlans);
 	const entries = useSelector(selectEntries);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [main, setMain] = useState({});
 	const [period, setPeriod] = useState("January");
 	const [production, setProduction] = useState("Show Written Production");
-	const [user, setUser] = useState("");
-	const [report, setReport] = useState("Policies");
-	const [userList, setUserList] = useState("");
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Payroll');
 	
 	useEffect(() => {
-		dispatch(getUsers());
-		dispatch(getBonusPlans());
-		dispatch(getMarketings());
+		dispatch(getUsers());		
 		dispatch(getEntries());	
 		dispatch(getWidgets()).then(() => setLoading(false));
-	}, [dispatch]);
-
-	useEffect(() => {
-		var temp = [];
-		if (users.length > 0) {
-			users.map(item => {
-				temp.push({ item: item.data.displayName, value: item.id });
-			});
-			setUserList(temp);
-		}
-	}, [users]);
+	}, [dispatch]);	
 
 	useEffect(() => {		
 		// creating temp
@@ -472,21 +452,21 @@ function Payroll(props) {
 			content={
 				<div className="w-full p-12">
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-					{tabValue===0 &&						
-						<div className="p-12">
-							<Table widget={data.widgets.Agency_Payroll_Table} />
-						</div>						
-					}
-					{tabValue===1 &&						
-						<div className="p-12">
-							<Table widget={data.widgets.Agency_Payroll_Yearly_Table} />
-						</div>						
-					}
-					{tabValue===2 &&						
-						<div className="p-12">
-							<Table widget={data.widgets.Agency_Payroll_Summary_Table} />
-						</div>						
-					}
+						{tabValue===0 &&						
+							<div className="p-12">
+								<Table widget={data.widgets.Agency_Payroll_Table} />
+							</div>						
+						}
+						{tabValue===1 &&						
+							<div className="p-12">
+								<Table widget={data.widgets.Agency_Payroll_Yearly_Table} />
+							</div>						
+						}
+						{tabValue===2 &&						
+							<div className="p-12">
+								<Table widget={data.widgets.Agency_Payroll_Summary_Table} />
+							</div>						
+						}
 					</FuseAnimateGroup>
 				</div>
 				

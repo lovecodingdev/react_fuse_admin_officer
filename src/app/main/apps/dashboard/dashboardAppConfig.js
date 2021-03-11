@@ -14,7 +14,7 @@ const DashboardAppConfig = {
 		},
 		{
 			path: '/apps/dashboard',
-			component: () => <Redirect to="/apps/producer/dashboard" />
+			component: () => <Redirect to="/apps/dashboard/dashboard" />
 		}
 	]
 };
