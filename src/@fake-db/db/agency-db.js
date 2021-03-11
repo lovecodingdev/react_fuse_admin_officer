@@ -21,38 +21,11 @@ const agencyAppDB = {
 							type: 'bar',
 							barPercentage: 0.5,
 							label: '',
-							data: [ 20, 25, 22, 12, 12, 50, 45, 7, 8, 10, 56, 22, 25, 34, 20, 25, 56, 22, 56, 22],
+							data: [],
 							backgroundColor: '#42BFF7',
 							hoverBackgroundColor: '#87CDF7',
 							categoryPercentage: 1,
-						},
-						// {
-						// 	type: 'bar',
-						// 	barPercentage: 0.5,
-						// 	label: 'Name2',
-						// 	data: [11, 8, 10, 50, 45, 7, 8, 10, 17, 45, 56, 22, 25, 34, 20, 25, 56, 22, 56, 22],
-						// 	backgroundColor: '#C6ECFD',
-						// 	hoverBackgroundColor: '#D7EFFD',
-						// 	categoryPercentage: 1
-						// },
-						// {
-						// 	type: 'bar',
-						// 	label: 'Name3',
-						// 	barPercentage: 0.5,
-						// 	data: [45, 7, 8, 10, 17, 45, 76, 23, 77, 31, 56, 22, 25, 34, 20, 25, 56, 22, 56, 22],
-						// 	backgroundColor: '#f9cfcf',
-						// 	hoverBackgroundColor: '#ffcece',
-						// 	categoryPercentage: 1
-						// },
-						// {
-						// 	type: 'bar',
-						// 	label: 'Name4',
-						// 	barPercentage: 0.5,
-						// 	data: [67, 34, 34, 20, 25, 34, 20, 25, 56, 22, 56, 22, 25, 34, 20, 25, 56, 22, 56, 22],
-						// 	backgroundColor: '#77ff99',
-						// 	hoverBackgroundColor: '#c9ffd6',
-						// 	categoryPercentage: 1
-						// },																		
+						}																							
 					]
 				},
 				options: {
@@ -73,28 +46,7 @@ const agencyAppDB = {
 								gridLines: {
 									display: true
 								},
-								labels: [
-									'Center of Influence', 
-									'Client Request', 
-									'Direct Mail Letter', 
-									'Internet Read >>', 
-									'Multiline Review', 
-									'Networking Meeting', 
-									'Call In', 
-									'Outbound Calling', 
-									'Personal Visit', 
-									'Postcard', 
-									'Referral',									  
-									'Salesperson Pilvot',
-									'Sign',									 
-									'Television', 
-									'Transfer', 
-									'Walk-In', 
-									'Website',									  
-									'WebSearch',
-									'Yellow Pages', 
-									'Other'
-								]
+								labels: []
 							}
 						],
 						yAxes: [
@@ -117,7 +69,66 @@ const agencyAppDB = {
 			
 		},
 		{
-			id: 'Agency_Sources_ViewYearTotalsByProduct_PieChart',
+			id: 'Agency_Sources_ViewMonthlyTotals_Chart',
+			title: "Product Sales by Source of Business",			
+			mainChart: {
+				TW: {
+					
+					labels: [],
+					datasets: [
+						{
+							type: 'bar',
+							barPercentage: 0.5,
+							label: '',
+							data: [],
+							backgroundColor: '#42BFF7',
+							hoverBackgroundColor: '#87CDF7',
+							categoryPercentage: 1,
+						}																							
+					]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					legend: {
+						display: false,
+						position: 'top'
+					},
+					tooltips: {
+						mode: 'label'
+					},
+					scales: {
+						xAxes: [
+							{
+								stacked: true,
+								display: true,
+								gridLines: {
+									display: true
+								},
+								labels: []
+							}
+						],
+						yAxes: [
+							{
+								stacked: true,
+								type: 'linear',
+								display: true,
+								position: 'left',
+								gridLines: {
+									display: true
+								},
+								labels: {
+									show: true
+								}
+							}
+						]
+					}
+				}
+			},
+			
+		},
+		{
+			id: 'Agency_Sources_ViewMonthlyTotals_PieChart',
 			title: 'Production by Product',
 			mainChart: {
 				labels: [
@@ -368,7 +379,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Agency_Multiline_AgencyGoalsAndProduction_Table',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -435,7 +446,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Agency_Multiline_Production_Table',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -592,7 +603,7 @@ const agencyAppDB = {
 		},	
 		{
 			id: 'Agency_ProductLine_Auto_Table_1',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -966,7 +977,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Agency_ProductLine_Auto_Table_2',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -1454,7 +1465,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Agency_ProductLine_Auto_Table_3',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -1816,7 +1827,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Agency_ProductLine_Auto_Table_4',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -3286,7 +3297,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'ProductLine_Life_Table_1',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -3678,7 +3689,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'ProductLine_Life_Table_2',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -4184,7 +4195,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Multiline_Individual_Table',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -4245,7 +4256,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Multiline_Agency_Table',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -4300,7 +4311,7 @@ const agencyAppDB = {
 		},		
 		{
 			id: 'Multiline_Soueces_Table',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -4457,7 +4468,7 @@ const agencyAppDB = {
 		},		
 		{
 			id: 'ProductLine_Bank_Table_1',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -4831,7 +4842,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'ProductLine_Bank_Table_2',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -5319,7 +5330,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'ProductLine_Bank_Table_3',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -5681,7 +5692,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'ProductLine_Bank_Table_4',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [
 					{
@@ -6151,7 +6162,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'ProductLine_Other_Table',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [],
 				rows: [],
@@ -6477,276 +6488,34 @@ const agencyAppDB = {
 		},	
 		{
 			id: 'Agency_Sources_ViewYearTotalsByProduct_Table',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [],
 				rows: [],
-				headers: [],
-				tableContent : {
-					centerOfInfluences:{					
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',					
-					},
-					clientRequest:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					directMailLetter:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					internetLead:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					multilineReview:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					networkingMeeting:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					callIn:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					outboundCalling:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					personalVisit:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					postcard:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					referral:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					salespersonPivot:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},		
-					sign:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},	
-					television:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},	
-					transfer:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},	
-					walkIn:{
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},	
-					website:{												
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},	
-					webSearch:{												
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					yellowPages:{												
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					other:{												
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},
-					Total:{												
-						auto:'-',
-						fire:'-',
-						life:'-',
-						health:'-',	
-						bank:'-',
-						total:'-',
-					},								
-				},
+				headers: [
+					{ id: 1, value: 'Source of Business', type: true, color: '' },
+					{ id: 2, value: 'Products', type: true, color: '' },
+					{ id: 3, value: 'Percent of Total', type: true, color: '' },					
+				],
+				tableContent : {},
 			}
 		},
 		{
 			id: 'Agency_Sources_ViewMonthlyTotals_Table',
-			title: 'Team Members',
+			title: '',
 			table: {
 				columns: [],
 				rows: [],
-				headers: [],
-				tableContent : {
-					centerOfInfluences:{					
-						products:'-',
-						productOfTotal:'-',				
-					},
-					clientRequest:{
-						products:'-',
-						productOfTotal:'-',
-					},
-					directMailLetter:{
-						products:'-',
-						productOfTotal:'-',
-					},
-					internetLead:{
-						products:'-',
-						productOfTotal:'-',
-					},
-					multilineReview:{
-						products:'-',
-						productOfTotal:'-',
-					},
-					networkingMeeting:{
-						products:'-',
-						productOfTotal:'-',
-					},
-					callIn:{
-						products:'-',
-						productOfTotal:'-',
-					},
-					outboundCalling:{
-						products:'-',
-						productOfTotal:'-',
-					},
-					personalVisit:{
-						products:'-',
-						productOfTotal:'-',
-					},
-					postcard:{
-						products:'-',
-						productOfTotal:'-',
-					},
-					referral:{
-						products:'-',
-						productOfTotal:'-',
-					},
-					salespersonPivot:{
-						products:'-',
-						productOfTotal:'-',
-					},		
-					sign:{
-						products:'-',
-						productOfTotal:'-',
-					},	
-					television:{
-						products:'-',
-						productOfTotal:'-',
-					},	
-					transfer:{
-						products:'-',
-						productOfTotal:'-',
-					},	
-					walkIn:{
-						products:'-',
-						productOfTotal:'-',
-					},	
-					website:{												
-						products:'-',
-						productOfTotal:'-',
-					},	
-					webSearch:{												
-						products:'-',
-						productOfTotal:'-',
-					},
-					yellowPages:{												
-						products:'-',
-						productOfTotal:'-',
-					},
-					other:{												
-						products:'-',
-						productOfTotal:'-',
-					},
-					Total:{												
-						products:'-',
-						productOfTotal:'-',
-					},								
-				},
+				headers: [
+					{ id: 1, value: 'Sources', type: true, color: '' },
+					{ id: 2, value: 'Auto', type: true, color: '' },
+					{ id: 3, value: 'Fire', type: true, color: '' },
+					{ id: 4, value: 'Life', type: true, color: '' },
+					{ id: 5, value: 'Health', type: true, color: '' },
+					{ id: 6, value: 'Bank', type: true, color: '' },
+					{ id: 7, value: 'Total', type: true, color: '' },
+				],
+				tableContent : {},								
 			}
 		},
 	],
