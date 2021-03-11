@@ -20,14 +20,6 @@ import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 
-const useStyles = makeStyles(theme => ({
-	content: {
-		'& canvas': {
-			maxHeight: '100%'
-		}
-	},
-}));
-
 const panelData = {
 	id: 'panel',
 	title: 'Panel',
