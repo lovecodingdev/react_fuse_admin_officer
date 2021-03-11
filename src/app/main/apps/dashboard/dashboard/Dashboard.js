@@ -19,9 +19,6 @@ import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
-import { setProduction, setPeriod, setUser, setReport } from '../store/productsSlice';
-import { getUsers, selectUsers } from '../store/usersSlice';
-import { agencyGoalsHeader, otherActivitiesHeader } from '../Headers';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -159,14 +156,7 @@ const chartData = {
 
 function Dashboard(props) {
 	const dispatch = useDispatch();
-	const classes = useStyles(props);
-	const pageLayout = useRef(null);
-	const users = useSelector(selectUsers);
 	const widgets = useSelector(selectWidgets);
-	const production = useSelector(({ producerApp }) => producerApp.products.production);
-	const period = useSelector(({ producerApp }) => producerApp.products.period);	
-	const report = useSelector(({ producerApp }) => producerApp.products.report);
-	const user = useSelector(({ producerApp }) => producerApp.products.user);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [tabValue, setTabValue] = useState(0);
@@ -243,4 +233,4 @@ function Dashboard(props) {
 	);
 }
 
-export default withReducer('producerApp', reducer)(Dashboard);
+export default withReducer('dashboardApp', reducer)(Dashboard);
