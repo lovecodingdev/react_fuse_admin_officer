@@ -294,7 +294,7 @@ function ProductsTable(props) {
 											</TableCell>
 
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.active ? 'Active' : n.data ? 'Revoked' : 'Pending'}
+												{n.active ? 'Active' : n.data ? 'Revoked' : 'Invite sent'}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.active && (
