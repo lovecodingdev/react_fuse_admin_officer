@@ -24,8 +24,7 @@ export const getVision = createAsyncThunk(
 					resolve([data]);
 				} else {
 					resolve({});
-				}
-				
+				}				
 			});
 		})
 );

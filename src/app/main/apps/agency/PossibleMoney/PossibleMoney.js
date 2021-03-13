@@ -21,7 +21,6 @@ import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { setProduction, setPeriod, setUser, setReport, setBonus } from '../store/productsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
-import { autoAndFireHeader, lifeAndHealthHeader, bankHeader } from '../Headers';
 import { Options as options } from '../../../utils/Globals';
 
 
