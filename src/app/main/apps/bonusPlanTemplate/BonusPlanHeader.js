@@ -51,7 +51,7 @@ function ContactsHeader(props) {
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">
-						{`${name} Bonus Plan`}
+						{`Bonus Plan Template`}
 						</Typography>
 					</FuseAnimate>
 				</div>

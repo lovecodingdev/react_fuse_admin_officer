@@ -77,6 +77,36 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({}) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewContactDialog('autoBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -101,6 +131,36 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewContactDialog('fireBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -125,6 +185,36 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewContactDialog('lifeBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -149,6 +239,36 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewContactDialog('healthBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -173,6 +293,36 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewContactDialog('bankBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -197,6 +347,36 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTargetBonusDialog('individualAutoTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -221,6 +401,36 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTargetBonusDialog('individualFireTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -245,6 +455,36 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTargetBonusDialog('individualLifeTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -269,6 +509,36 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTargetBonusDialog('individualHealthTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -293,6 +563,36 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTargetBonusDialog('individualBankTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -317,6 +617,36 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamAutoTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -341,6 +671,36 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamFireTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -365,6 +725,36 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamLifeTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -389,6 +779,36 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamHealthTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -413,6 +833,36 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamBankTargetBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -437,6 +887,36 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewContactDialog('monthlyAgencyLapseAutoBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -461,6 +941,36 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewContactDialog('monthlyAgencyLapseFireBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -480,6 +990,36 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewNetBonuseDialog('monthlyAutoNetGrowthBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -500,6 +1040,36 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
+			},
+			{
+				id: 'action',
+				// width: 128,
+				sortable: false,
+				Header: ({ selectedFlatRows }) => {
+					return (
+						<Fab
+							color="secondary"
+							aria-label="add"
+							// className={classes.addButton}
+							size="small"
+							onClick={() => dispatch(openNewNetBonuseDialog('monthlyFireNetGrowthBonus'))}
+						>
+							<Icon>add</Icon>
+						</Fab>
+					);
+				},
+				Cell: ({ row }) => (
+					<div className="flex items-center">
+						<IconButton
+							onClick={ev => {
+								ev.stopPropagation();
+								dispatch(removeContact(row.original));
+							}}
+						>
+							<Icon>delete</Icon>
+						</IconButton>
+					</div>
+				)
 			}
 		],
 		[dispatch, user.starred]
@@ -1001,7 +1571,7 @@ function ContactsList(props) {
 								data={state.otherActivityBonus}
 								onRowClick={(ev, row) => {
 									if (row) {
-										dispatch(openEditNetBonusDialog(row.original));
+										dispatch(openEditTargetBonusDialog(row.original));
 									}
 								}}
 								title="OTHER ACTIVITY BONUSES"

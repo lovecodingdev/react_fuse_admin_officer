@@ -42,6 +42,13 @@ const navigationConfig = [
 						exact: true
 					},
 					{
+						id: 'goals-actual',
+						title: 'Bonus Plan Template',
+						type: 'item',
+						url: '/apps/setup/bonus-plan-template/all',
+						exact: true
+					},
+					{
 						id: 'users',
 						title: 'Users',
 						type: 'item',
