@@ -208,152 +208,42 @@ function Sources(props) {
 					}
 				}
 			}
-		}
+		
 
-		if(widgets.Agency_Sources_ViewYearTotalsByProduct_Chart) {	
-			let tempLabels = [];
-			let tempData = [];
-			const tableContent = widgets.Agency_Sources_ViewYearTotalsByProduct_Table.table.tableContent;
-			Object.keys(marketings).map(key => {
-				const marketing = marketings[key];
-				tempLabels.push(marketing.marketingName);
-				tempData.push(tableContent[marketing.marketingName]['Products']);
-			});
-
-			
-			widgets = {
-				...widgets, Agency_Sources_ViewYearTotalsByProduct_Chart: {
-					...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart, mainChart: {
-						...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart.mainChart, options: {
-							...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart.mainChart.options, scales: {
-								...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart.mainChart.options.scales, xAxes: [{
-										stacked: true,
-										display: true,
-										gridLines: {
-											display: true
-										},
-										labels: [ ...tempLabels ]
-								}]
-							}
-						}
-					}
-				}
-			};
-			widgets = {
-				...widgets, Agency_Sources_ViewYearTotalsByProduct_Chart: {
-					...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart, mainChart: {
-						...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart.mainChart, TW: {
-							...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart.mainChart.TW, datasets: [{
-								type: 'bar',
-								barPercentage: 0.5,
-								label: '',
-								data: [ ...tempData ],
-								backgroundColor: '#42BFF7',
-								hoverBackgroundColor: '#87CDF7',
-								categoryPercentage: 1,
-							}] 
-						}
-					}
-				}
-			};
-		} 
-
-		if(widgets.Agency_Sources_ViewMonthlyTotals_Table) {
-			let tableRows = [{
-				id: 'Total',
-				value: 'Total',
-				color: '',
-				border: 'border-b-4',
-			}];
-			let tableContent = {
-				Total: { 
-					'Auto': 0, 
-					'Fire': 0, 
-					'Life': 0, 
-					'Health': 0, 
-					'Bank': 0, 
-					'Total': 0, 
-				},
-			};
-			
-			Object.keys(marketings).map(key => {
-				const marketing = marketings[key];
-				tableRows.push({
-					id: marketing.marketingName,
-					value: marketing.marketingName,
+			if(widgets.Agency_Sources_ViewYearTotalsByProduct_Chart) {	
+				let tempLabels = [];
+				let tempData = [];
+				const tableContent = widgets.Agency_Sources_ViewYearTotalsByProduct_Table.table.tableContent;
+				Object.keys(marketings).map(key => {
+					const marketing = marketings[key];
+					tempLabels.push(marketing.marketingName);
+					tempData.push(tableContent[marketing.marketingName]['Products']);
 				});
 
-				tableContent[marketing.marketingName] = {
-					'Auto': 0, 
-					'Fire': 0, 
-					'Life': 0, 
-					'Health': 0, 
-					'Bank': 0, 
-					'Total': 0, 
-				};
-				policies.map(policy => {					
-					users.map(user => {
-						if(user.belongTo === UID) {
-							tableContent[marketing.marketingName][policy.value] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];								
-							tableContent['Total'][policy.value] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];
-							tableContent[marketing.marketingName]['Total'] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];									
-						}
-					});
-				});	
-				tableContent['Total']['Total'] += tableContent[marketing.marketingName]['Total'];							
-			});
-			widgets = {
-				...widgets, Agency_Sources_ViewMonthlyTotals_Table: {
-					...widgets.Agency_Sources_ViewMonthlyTotals_Table, table: {
-						...widgets.Agency_Sources_ViewMonthlyTotals_Table.table, rows: 
-							tableRows							
-					}
-				}
-			}
-			widgets = {
-				...widgets, Agency_Sources_ViewMonthlyTotals_Table: {
-					...widgets.Agency_Sources_ViewMonthlyTotals_Table, table: {
-						...widgets.Agency_Sources_ViewMonthlyTotals_Table.table, tableContent: 
-							tableContent							
-					}
-				}
-			}
-		}
-
-		if(widgets.Agency_Sources_ViewMonthlyTotals_Chart) {	
-			let tempLabels = [];
-			let tempData = [];
-			const tableContent = widgets.Agency_Sources_ViewMonthlyTotals_Table.table.tableContent;
-			Object.keys(marketings).map(key => {
-				const marketing = marketings[key];
-				tempLabels.push(marketing.marketingName);
-				tempData.push(tableContent[marketing.marketingName]['Total']);
-			});
-
-			
-			widgets = {
-				...widgets, Agency_Sources_ViewMonthlyTotals_Chart: {
-					...widgets.Agency_Sources_ViewMonthlyTotals_Chart, mainChart: {
-						...widgets.Agency_Sources_ViewMonthlyTotals_Chart.mainChart, options: {
-							...widgets.Agency_Sources_ViewMonthlyTotals_Chart.mainChart.options, scales: {
-								...widgets.Agency_Sources_ViewMonthlyTotals_Chart.mainChart.options.scales, xAxes: [{
-										stacked: true,
-										display: true,
-										gridLines: {
-											display: true
-										},
-										labels: [ ...tempLabels ]
-								}]
+				
+				widgets = {
+					...widgets, Agency_Sources_ViewYearTotalsByProduct_Chart: {
+						...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart, mainChart: {
+							...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart.mainChart, options: {
+								...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart.mainChart.options, scales: {
+									...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart.mainChart.options.scales, xAxes: [{
+											stacked: true,
+											display: true,
+											gridLines: {
+												display: true
+											},
+											labels: [ ...tempLabels ]
+									}]
+								}
 							}
 						}
 					}
-				}
-			};
-			widgets = {
-				...widgets, Agency_Sources_ViewMonthlyTotals_Chart: {
-						...widgets.Agency_Sources_ViewMonthlyTotals_Chart, mainChart: {
-							...widgets.Agency_Sources_ViewMonthlyTotals_Chart.mainChart, TW: {
-								...widgets.Agency_Sources_ViewMonthlyTotals_Chart.mainChart.TW, datasets: [{
+				};
+				widgets = {
+					...widgets, Agency_Sources_ViewYearTotalsByProduct_Chart: {
+						...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart, mainChart: {
+							...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart.mainChart, TW: {
+								...widgets.Agency_Sources_ViewYearTotalsByProduct_Chart.mainChart.TW, datasets: [{
 									type: 'bar',
 									barPercentage: 0.5,
 									label: '',
@@ -361,36 +251,147 @@ function Sources(props) {
 									backgroundColor: '#42BFF7',
 									hoverBackgroundColor: '#87CDF7',
 									categoryPercentage: 1,
-							}] 
+								}] 
+							}
+						}
+					}
+				};
+			} 
+
+			if(widgets.Agency_Sources_ViewMonthlyTotals_Table) {
+				let tableRows = [{
+					id: 'Total',
+					value: 'Total',
+					color: '',
+					border: 'border-b-4',
+				}];
+				let tableContent = {
+					Total: { 
+						'Auto': 0, 
+						'Fire': 0, 
+						'Life': 0, 
+						'Health': 0, 
+						'Bank': 0, 
+						'Total': 0, 
+					},
+				};
+				
+				Object.keys(marketings).map(key => {
+					const marketing = marketings[key];
+					tableRows.push({
+						id: marketing.marketingName,
+						value: marketing.marketingName,
+					});
+
+					tableContent[marketing.marketingName] = {
+						'Auto': 0, 
+						'Fire': 0, 
+						'Life': 0, 
+						'Health': 0, 
+						'Bank': 0, 
+						'Total': 0, 
+					};
+					policies.map(policy => {					
+						users.map(user => {
+							if(user.belongTo === UID) {
+								tableContent[marketing.marketingName][policy.value] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];								
+								tableContent['Total'][policy.value] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];
+								tableContent[marketing.marketingName]['Total'] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];									
+							}
+						});
+					});	
+					tableContent['Total']['Total'] += tableContent[marketing.marketingName]['Total'];							
+				});
+				widgets = {
+					...widgets, Agency_Sources_ViewMonthlyTotals_Table: {
+						...widgets.Agency_Sources_ViewMonthlyTotals_Table, table: {
+							...widgets.Agency_Sources_ViewMonthlyTotals_Table.table, rows: 
+								tableRows							
 						}
 					}
 				}
-			};
-		} 
-
-		if(widgets.Agency_Sources_ViewMonthlyTotals_PieChart) {	
-			let tempDatasets = [];
-			let tempData = [];
-			const tableContent = widgets.Agency_Sources_ViewMonthlyTotals_Table.table.tableContent;
-			policies.map(policy => {
-				if(policy.value !== 'Total') {
-					tempData.push(tableContent['Total'][policy.value]);
-				}				
-			});
-
-			let temp = widgets.Agency_Sources_ViewMonthlyTotals_PieChart.mainChart.datasets[0];
-			temp = {...temp, data: tempData};
-			tempDatasets.push(temp);
-			widgets = {
-				...widgets, Agency_Sources_ViewMonthlyTotals_PieChart: {
-					...widgets.Agency_Sources_ViewMonthlyTotals_PieChart, mainChart: {
-						...widgets.Agency_Sources_ViewMonthlyTotals_PieChart.mainChart, datasets: [
-							...tempDatasets
-						] 
+				widgets = {
+					...widgets, Agency_Sources_ViewMonthlyTotals_Table: {
+						...widgets.Agency_Sources_ViewMonthlyTotals_Table, table: {
+							...widgets.Agency_Sources_ViewMonthlyTotals_Table.table, tableContent: 
+								tableContent							
+						}
 					}
 				}
-			};
-		} 
+			}
+
+			if(widgets.Agency_Sources_ViewMonthlyTotals_Chart) {	
+				let tempLabels = [];
+				let tempData = [];
+				const tableContent = widgets.Agency_Sources_ViewMonthlyTotals_Table.table.tableContent;
+				Object.keys(marketings).map(key => {
+					const marketing = marketings[key];
+					tempLabels.push(marketing.marketingName);
+					tempData.push(tableContent[marketing.marketingName]['Total']);
+				});
+
+				
+				widgets = {
+					...widgets, Agency_Sources_ViewMonthlyTotals_Chart: {
+						...widgets.Agency_Sources_ViewMonthlyTotals_Chart, mainChart: {
+							...widgets.Agency_Sources_ViewMonthlyTotals_Chart.mainChart, options: {
+								...widgets.Agency_Sources_ViewMonthlyTotals_Chart.mainChart.options, scales: {
+									...widgets.Agency_Sources_ViewMonthlyTotals_Chart.mainChart.options.scales, xAxes: [{
+											stacked: true,
+											display: true,
+											gridLines: {
+												display: true
+											},
+											labels: [ ...tempLabels ]
+									}]
+								}
+							}
+						}
+					}
+				};
+				widgets = {
+					...widgets, Agency_Sources_ViewMonthlyTotals_Chart: {
+							...widgets.Agency_Sources_ViewMonthlyTotals_Chart, mainChart: {
+								...widgets.Agency_Sources_ViewMonthlyTotals_Chart.mainChart, TW: {
+									...widgets.Agency_Sources_ViewMonthlyTotals_Chart.mainChart.TW, datasets: [{
+										type: 'bar',
+										barPercentage: 0.5,
+										label: '',
+										data: [ ...tempData ],
+										backgroundColor: '#42BFF7',
+										hoverBackgroundColor: '#87CDF7',
+										categoryPercentage: 1,
+								}] 
+							}
+						}
+					}
+				};
+			} 
+
+			if(widgets.Agency_Sources_ViewMonthlyTotals_PieChart) {	
+				let tempDatasets = [];
+				let tempData = [];
+				const tableContent = widgets.Agency_Sources_ViewMonthlyTotals_Table.table.tableContent;
+				policies.map(policy => {
+					if(policy.value !== 'Total') {
+						tempData.push(tableContent['Total'][policy.value]);
+					}				
+				});
+
+				let temp = widgets.Agency_Sources_ViewMonthlyTotals_PieChart.mainChart.datasets[0];
+				temp = {...temp, data: tempData};
+				tempDatasets.push(temp);
+				widgets = {
+					...widgets, Agency_Sources_ViewMonthlyTotals_PieChart: {
+						...widgets.Agency_Sources_ViewMonthlyTotals_PieChart, mainChart: {
+							...widgets.Agency_Sources_ViewMonthlyTotals_PieChart.mainChart, datasets: [
+								...tempDatasets
+							] 
+						}
+					}
+				};
+			} 
+		}	
 		
 		console.log('------------------widgets', widgets);
 		setData({ widgets });

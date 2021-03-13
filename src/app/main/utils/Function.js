@@ -13,7 +13,7 @@ export const ceil = (number) => {
 }
 
 export const dividing = (n1, n2) => {
-  return n2===0 ? 0 : n1/n2;
+  return n1===0 || n2===0 ? 0 : n1/n2;
 }
 
 export const formattedDate = (date) => {

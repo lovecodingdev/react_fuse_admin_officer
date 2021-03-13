@@ -5,13 +5,7 @@ const agencyAppDB = {
 	widgets: [
 		{
 			id: 'Agency_Sources_ViewYearTotalsByProduct_Chart',
-			title: "Product Sales by Source of Business",
-			ranges: {
-				TW: 'As A Team',
-				IN: 'Individually',
-				IC: 'Include Initial Bonus',
-				DI: "Don't Include Initial Bonus"
-			},
+			title: "Product Sales by Source of Business",		
 			mainChart: {
 				TW: {
 					
@@ -161,7 +155,7 @@ const agencyAppDB = {
 			}
 		},
 		{
-			id: 'Agency_Multiline_ViewYearTotalsByProduct_PieChart',
+			id: 'Agency_Multiline_PieChart',
 			title: 'Agency Premium by Policy Type',
 			mainChart: {
 				labels: [
@@ -173,7 +167,7 @@ const agencyAppDB = {
 				],
 				datasets: [
 					{
-						data: [12, 17, 28, 25, 15],
+						data: [],
 						backgroundColor: ['#F44336', '#9C27B0', '#03A9F4', '#E91E63', '#FFC107'],
 						hoverBackgroundColor: ['#F45A4D', '#A041B0', '#25B6F4', '#E9487F', '#FFD341']
 					}
@@ -195,16 +189,9 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Agency_Multiline_Chart',
-			title: "Agency Sales Goals vs. Actual Production",
-			ranges: {
-				TW: 'As A Team',
-				IN: 'Individually',
-				IC: 'Include Initial Bonus',
-				DI: "Don't Include Initial Bonus"
-			},
+			title: "Agency Sales Goals vs. Actual Production",			
 			mainChart: {
-				TW: {
-					
+				TW: {					
 					labels: [],
 					datasets: [
 						{
@@ -240,7 +227,7 @@ const agencyAppDB = {
 					scales: {
 						xAxes: [
 							{
-								stacked: true,
+								stacked: false,
 								display: true,
 								gridLines: {
 									display: true
@@ -250,7 +237,7 @@ const agencyAppDB = {
 						],
 						yAxes: [
 							{
-								stacked: true,
+								stacked: false,
 								type: 'linear',
 								display: true,
 								position: 'left',
@@ -384,7 +371,7 @@ const agencyAppDB = {
 				columns: [
 					{
 						id: 'avatar',
-						title: 'GOALS',
+						title: 'Product',
 						color: '',
 						align: 'center',
 						rowSpan: 2,
@@ -396,52 +383,21 @@ const agencyAppDB = {
 						colSpan: 4,
 					},
 				],
-				rows: [],
-				headers: [],
-				tableContent : {
-					Auto:{
-						salesGoal:'-',
-						actualSales:'-',
-						totalPremium:'-',
-						averagePrenium:'-',	
-					},
-					Fire:{
-						salesGoal:'-',
-						actualSales:'-',
-						totalPremium:'-',
-						averagePrenium:'-',	
-					},
-					Life:{
-						salesGoal:'-',
-						actualSales:'-',
-						totalPremium:'-',
-						averagePrenium:'-',	
-					},
-					Health:{
-						salesGoal:'-',
-						actualSales:'-',
-						totalPremium:'-',
-						averagePrenium:'-',	
-					},
-					Bank:{
-						salesGoal:'-',
-						actualSales:'-',
-						totalPremium:'-',
-						averagePrenium:'-',	
-					},
-					Policies:{
-						salesGoal:'-',
-						actualSales:'-',
-						totalPremium:'-',
-						averagePrenium:'-',	
-					},	
-					Products:{
-						salesGoal:'-',
-						actualSales:'-',
-						totalPremium:'-',
-						averagePrenium:'-',	
-					},											
-				},
+				rows: [
+					{ value: 'Total', type: true, color:'', border: 'border-b-4' },
+					{ value: 'Auto', type: true, color:''},
+					{ value: 'Fire', type: true, color:''},
+					{ value: 'Life', type: true, color:''},
+					{ value: 'Halth', type: true, color:''},
+					{ value: 'Bank', type: true, color:''},
+				],
+				headers: [
+					{ value: 'Sales Goal', type:true, color:''},
+					{ value: 'Actual Sales', type:true, color:''},
+					{ value: 'Total Premium / Dollars', type:true, color:''},
+					{ value: 'Average Premium / Dollars', type:true, color:''},
+				],
+				tableContent : {},
 			}
 		},
 		{
@@ -452,7 +408,7 @@ const agencyAppDB = {
 					{
 						id: 'avatar',
 						title: 'GOALS',
-						color: '',
+						color: 'Product',
 						align: 'center',
 						rowSpan: 2,
 					},
@@ -460,1843 +416,23 @@ const agencyAppDB = {
 						id: '*',
 						title: 'Where your Production Came From - Sources of Business',
 						color: '',
-						colSpan: 20,
+						colSpan: 100,
 					},
 				],
-				rows: [],
+				rows: [
+					{ value: 'Total', type: true, color: '', border: 'border-b-4' },
+					{ value: 'Auto', type: true, color: '' },
+					{ value: 'Fire', type: true, color: '' },
+					{ value: 'Life', type: true, color: '' },
+					{ value: 'Health', type: true, color: '' },
+					{ value: 'Bank', type: true, color: '' },					
+				],
 				headers: [],
-				tableContent : {
-					Auto:{
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						label1:'-',
-						label:'-',
-						parkBench:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Fire:{
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						label1:'-',
-						label:'-',
-						parkBench:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Life:{
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						label1:'-',
-						label:'-',
-						parkBench:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Health:{
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						label1:'-',
-						label:'-',
-						parkBench:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Bank:{
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						label1:'-',
-						label:'-',
-						parkBench:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Totals:{
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						label1:'-',
-						label:'-',
-						parkBench:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},											
-				},
+				tableContent : {},
 			}
 		},	
 		{
-			id: 'Agency_ProductLine_Auto_Table_1',
-			title: '',
-			table: {
-				columns: [
-					{
-						id: 'avatar',
-						title: 'Month',
-						color: '',
-						align: 'center',
-						colSpan: 1,
-						rowSpan: 2
-					},
-					{
-						id: 'policiesAndPremium',
-						title: 'Policies & Premium',
-						color: '',
-						colSpan: 3
-					},
-					{
-						id: 'policySalesByPolicyType',
-						title: 'POLICY SALES by Policy Type',
-						color: '',
-						colSpan: 13
-					},
-					// {
-					// 	id: 'policySalesBySourcesBusiness',
-					// 	title: 'POLICY SALES by Sources of Business',
-					// 	color: '',
-					// 	colSpan: 20
-					// },					
-				],
-				rows: [],
-				headers: [],
-				tableContent : {
-					January:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					February:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					March:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					April:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					May:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					June:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					July:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					August:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					September:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					October:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					November:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					December:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					Quarter_1_Totals:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					Quarter_2_Totals:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					Quarter_3_Totals:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					Quarter_4_Totals:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					AnnualTotals:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					ProjectedForYear:{
-						// autoPolicies:'-',
-						// autoPremium:'-',
-						// firePolicies:'-',
-						// firePremium:'-',
-						// lifePolicies:'-',
-						// lifePremium:'-',
-						// healthPolicies:'-',
-						// healthPremium:'-',
-						// bankProducts:'-',
-						// bankDollars:'-',					
-						// totalProducts:'-',
-						// totalPremium:'-',
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					}					
-				},
-			}
-		},
-		{
-			id: 'Agency_ProductLine_Auto_Table_2',
-			title: '',
-			table: {
-				columns: [
-					{
-						id: 'avatar',
-						title: 'Month',
-						color: '',
-						align: 'center',
-						colSpan: 1,
-						rowSpan: 2
-					},
-					{
-						id: 'policiesAndPremium',
-						title: 'Policies & Premium',
-						color: '',
-						colSpan: 3
-					},
-					// {
-					// 	id: 'policySalesByPolicyType',
-					// 	title: 'POLICY SALES by Policy Type',
-					// 	color: '',
-					// 	colSpan: 13
-					// },
-					{
-						id: 'policySalesBySourcesBusiness',
-						title: 'POLICY SALES by Sources of Business',
-						color: '',
-						colSpan: 20
-					},					
-				],
-				rows: [],
-				headers: [],
-				tableContent : {
-					January:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					February:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					March:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					April:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					May:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					June:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					July:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					August:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					September:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					October:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					November:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					December:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Quarter_1_Totals:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Quarter_2_Totals:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Quarter_3_Totals:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Quarter_4_Totals:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					AnnualTotals:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					ProjectedForYear:{
-						averagePremium:'-',
-						numberOfPolicies:'-',
-						policyPremium:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					}					
-				},
-			}
-		},
-		{
-			id: 'Agency_ProductLine_Auto_Table_3',
-			title: '',
-			table: {
-				columns: [
-					{
-						id: 'avatar',
-						title: 'Month',
-						color: '',
-						align: 'center',
-						colSpan: 1,
-						rowSpan: 2
-					},
-					// {
-					// 	id: 'policiesAndPremium',
-					// 	title: 'Policies & Premium',
-					// 	color: '',
-					// 	colSpan: 3
-					// },
-					{
-						id: 'PremiumSalesByPolicyType',
-						title: 'PREMIUM SALES by Policy Type(In Thousands)',
-						color: '',
-						colSpan: 13
-					},
-					// {
-					// 	id: 'policySalesBySourcesBusiness',
-					// 	title: 'POLICY SALES by Sources of Business',
-					// 	color: '',
-					// 	colSpan: 20
-					// },					
-				],
-				rows: [],
-				headers: [],
-				tableContent : {
-					January:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					February:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					March:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					April:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					May:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					June:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					July:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					August:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					September:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					October:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					November:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					December:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					Quarter_1_Totals:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					Quarter_2_Totals:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					Quarter_3_Totals:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					Quarter_4_Totals:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					AnnualTotals:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					},
-					ProjectedForYear:{						
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						// policyPremium:'-',
-						personallyProduced:'-',
-						rawNew:'-',
-						addOn:'-',
-						transferIn:'-',
-						label1:'-',
-						label2:'-',
-						label3:'-',
-						label4:'-',					
-						label5:'-',
-						label6:'-',
-						label7:'-',
-						label8:'-',
-						Bonus:'-',
-					}					
-				},
-			}
-		},
-		{
-			id: 'Agency_ProductLine_Auto_Table_4',
-			title: '',
-			table: {
-				columns: [
-					{
-						id: 'avatar',
-						title: 'Month',
-						color: '',
-						align: 'center',
-						colSpan: 1,
-						rowSpan: 2
-					},
-					// {
-					// 	id: 'policiesAndPremium',
-					// 	title: 'Policies & Premium',
-					// 	color: '',
-					// 	colSpan: 3
-					// },
-					// {
-					// 	id: 'policySalesByPolicyType',
-					// 	title: 'POLICY SALES by Policy Type',
-					// 	color: '',
-					// 	colSpan: 13
-					// },
-					{
-						id: 'policySalesBySourcesBusiness',
-						title: 'PREMIUM SALES by Sources of Business(In Thousands)',
-						color: '',
-						colSpan: 20
-					},					
-				],
-				rows: [],
-				headers: [],
-				tableContent : {
-					January:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					February:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					March:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					April:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					May:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					June:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					July:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					August:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					September:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					October:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					November:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					December:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Quarter_1_Totals:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Quarter_2_Totals:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Quarter_3_Totals:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					Quarter_4_Totals:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					AnnualTotals:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					},
-					ProjectedForYear:{
-						// averagePremium:'-',
-						// numberOfPolicies:'-',
-						centerOfInfluences:'-',
-						clientRequest:'-',
-						directMailLetter:'-',
-						internetLead:'-',	
-						multilineReview:'-',
-						networkingMeeting:'-',
-						callIn:'-',
-						outboundCalling:'-',
-						personalVisit:'-',
-						postcard:'-',
-						referral:'-',
-						salespersonPivot:'-',
-						sign:'-',
-						television:'-',
-						transfer:'-',
-						walkIn:'-',
-						website:'-',
-						webSearch:'-',
-						yellowPages:'-',
-						other:'-',
-					}					
-				},
-			}
-		},
-		{
-			id: 'Agency_TargetReports_Table',
+			id: 'Agency_TargetReports_Auto_Table',
 			title: "AUTO",
 			table: {
 				columns: [
@@ -2362,86 +498,86 @@ const agencyAppDB = {
 						id: 1,
 						cells: [
 							{
-								id: 'budget_type',
+								id: 'left_title',
 								value: 'Policies',
 								classes: 'bg-blue text-white',
 								icon: ''
 							},
 							{
 								id: 'January',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'February',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'March',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'April',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'May',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'June',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'July',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'August',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'September',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'October',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'November',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'December',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'total',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							}
@@ -2451,80 +587,80 @@ const agencyAppDB = {
 						id: 2,
 						cells: [
 							{
-								id: 'budget_type',
+								id: 'left_title',
 								value: 'Anual Preminum',
 								classes: 'bg-green text-white',
 								icon: ''
 							},
 							{
 								id: 'January',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'February',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'March',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'April',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'May',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'June',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'July',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'August',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'September',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'October',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'November',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'December',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
@@ -2534,80 +670,80 @@ const agencyAppDB = {
 						id: 3,
 						cells: [
 							{
-								id: 'budget_type',
+								id: 'left_title',
 								value: 'Level Reached',
 								classes: 'bg-red text-white',
 								icon: ''
 							},
 							{
 								id: 'January',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'February',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'March',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'April',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'May',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'June',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'July',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'August',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'September',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'October',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'November',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'December',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
@@ -2617,80 +753,80 @@ const agencyAppDB = {
 						id: 4,
 						cells: [
 							{
-								id: 'budget_type',
+								id: 'left_title',
 								value: 'Flat S Amount',
 								classes: 'bg-pink text-white',
 								icon: ''
 							},
 							{
 								id: 'January',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'February',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'March',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'April',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'May',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'June',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'July',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'August',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'September',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'October',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'November',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'December',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
@@ -2700,80 +836,567 @@ const agencyAppDB = {
 						id: 5,
 						cells: [
 							{
-								id: 'budget_type',
+								id: 'left_title',
 								value: 'Target Bonus Earned',
 								classes: 'bg-orange text-white',
 								icon: ''
 							},
 							{
 								id: 'January',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'February',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'March',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'April',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'May',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'June',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'July',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'August',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'September',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'October',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'November',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'December',
-								value: '$100.00',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					}
+				]
+			}
+		},
+		{
+			id: 'Agency_TargetReports_Fire_Table',
+			title: "FIRE",
+			table: {
+				columns: [
+					{
+						id: 'id',
+						title: ''
+					},
+					{
+						id: 'January',
+						title: 'January'
+					},
+					{
+						id: 'February',
+						title: 'February'
+					},
+					{
+						id: 'March',
+						title: 'March'
+					},
+					{
+						id: 'April',
+						title: 'April'
+					},
+					{
+						id: 'May',
+						title: 'May'
+					},
+					{
+						id: 'June',
+						title: 'June'
+					},
+					{
+						id: 'July',
+						title: 'July'
+					},
+					{
+						id: 'August',
+						title: 'August'
+					},
+					{
+						id: 'September',
+						title: 'September'
+					},
+					{
+						id: 'October',
+						title: 'October'
+					},
+					{
+						id: 'November',
+						title: 'November'
+					},
+					{
+						id: 'December',
+						title: 'December'
+					},
+					{
+						id: 'Total',
+						title: 'Total'
+					}
+				],
+				rows: [
+					{
+						id: 1,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Policies',
+								classes: 'bg-blue text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'total',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 2,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Anual Preminum',
+								classes: 'bg-green text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 3,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Level Reached',
+								classes: 'bg-red text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 4,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Flat S Amount',
+								classes: 'bg-pink text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 5,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Target Bonus Earned',
+								classes: 'bg-orange text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
 								classes: '',
 								icon: ''
 							},
@@ -2821,44 +1444,44 @@ const agencyAppDB = {
 						id: 1,
 						cells: [
 							{
-								id: 'budget_type',
+								id: 'left_title',
 								value: 'Policies',
 								classes: 'bg-blue text-white',
 								icon: ''
 							},
 							{
 								id: 'total_budget',
-								value: '$14,880.00',
-								classes: 'font-bold',
+								value: '',
+								classes: '',
 								icon: ''
 							},
 							{
 								id: 'spent_usd',
-								value: '$14,000.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'spent_perc',
-								value: '$94.08',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'remaining_usd',
-								value: '$880.00',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'remaining_perc',
-								value: '$5.92',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
 								id: 'total',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							}
@@ -2868,7 +1491,7 @@ const agencyAppDB = {
 						id: 2,
 						cells: [
 							{
-								id: 'budget_type',
+								id: 'left_title',
 								value: 'Anual Preminum',
 								classes: 'bg-green text-white',
 								icon: ''
@@ -2876,7 +1499,7 @@ const agencyAppDB = {
 							{
 								id: 'total_budget',
 								value: '$21,080.00',
-								classes: 'font-bold',
+								classes: '',
 								icon: ''
 							},
 							{
@@ -2909,7 +1532,7 @@ const agencyAppDB = {
 						id: 3,
 						cells: [
 							{
-								id: 'budget_type',
+								id: 'left_title',
 								value: 'Avg Premium',
 								classes: 'bg-red text-white',
 								icon: ''
@@ -2917,7 +1540,7 @@ const agencyAppDB = {
 							{
 								id: 'total_budget',
 								value: '$34,720.00',
-								classes: 'font-bold',
+								classes: '',
 								icon: ''
 							},
 							{
@@ -2950,7 +1573,7 @@ const agencyAppDB = {
 						id: 4,
 						cells: [
 							{
-								id: 'budget_type',
+								id: 'left_title',
 								value: 'Level Reached',
 								classes: 'bg-pink text-white',
 								icon: ''
@@ -2958,7 +1581,7 @@ const agencyAppDB = {
 							{
 								id: 'total_budget',
 								value: '$34,720.00',
-								classes: 'font-bold',
+								classes: '',
 								icon: ''
 							},
 							{
@@ -2981,7 +1604,7 @@ const agencyAppDB = {
 							},
 							{
 								id: 'remaining_perc',
-								value: '$100.00',
+								value: '',
 								classes: '',
 								icon: ''
 							}
@@ -2991,7 +1614,7 @@ const agencyAppDB = {
 						id: 5,
 						cells: [
 							{
-								id: 'budget_type',
+								id: 'left_title',
 								value: 'Target Bonus Earned',
 								classes: 'bg-orange text-white',
 								icon: ''
@@ -2999,7 +1622,7 @@ const agencyAppDB = {
 							{
 								id: 'total_budget',
 								value: '$18,600.00',
-								classes: 'font-bold',
+								classes: '',
 								icon: ''
 							},
 							{
@@ -3022,7 +1645,2215 @@ const agencyAppDB = {
 							},
 							{
 								id: 'remaining_perc',
-								value: '$100.00',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			id: 'Agency_TargetReports_Life_Table',
+			title: "FIRE",
+			table: {
+				columns: [
+					{
+						id: 'id',
+						title: ''
+					},
+					{
+						id: 'January',
+						title: 'January'
+					},
+					{
+						id: 'February',
+						title: 'February'
+					},
+					{
+						id: 'March',
+						title: 'March'
+					},
+					{
+						id: 'April',
+						title: 'April'
+					},
+					{
+						id: 'May',
+						title: 'May'
+					},
+					{
+						id: 'June',
+						title: 'June'
+					},
+					{
+						id: 'July',
+						title: 'July'
+					},
+					{
+						id: 'August',
+						title: 'August'
+					},
+					{
+						id: 'September',
+						title: 'September'
+					},
+					{
+						id: 'October',
+						title: 'October'
+					},
+					{
+						id: 'November',
+						title: 'November'
+					},
+					{
+						id: 'December',
+						title: 'December'
+					},
+					{
+						id: 'Total',
+						title: 'Total'
+					}
+				],
+				rows: [
+					{
+						id: 1,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Policies',
+								classes: 'bg-blue text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'total',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 2,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Anual Preminum',
+								classes: 'bg-green text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 3,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Level Reached',
+								classes: 'bg-red text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 4,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Flat S Amount',
+								classes: 'bg-pink text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 5,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Target Bonus Earned',
+								classes: 'bg-orange text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					}
+				]
+			}
+		},
+		{
+			id: 'Agency_TargetReports_Health_Table',
+			title: "FIRE",
+			table: {
+				columns: [
+					{
+						id: 'id',
+						title: ''
+					},
+					{
+						id: 'January',
+						title: 'January'
+					},
+					{
+						id: 'February',
+						title: 'February'
+					},
+					{
+						id: 'March',
+						title: 'March'
+					},
+					{
+						id: 'April',
+						title: 'April'
+					},
+					{
+						id: 'May',
+						title: 'May'
+					},
+					{
+						id: 'June',
+						title: 'June'
+					},
+					{
+						id: 'July',
+						title: 'July'
+					},
+					{
+						id: 'August',
+						title: 'August'
+					},
+					{
+						id: 'September',
+						title: 'September'
+					},
+					{
+						id: 'October',
+						title: 'October'
+					},
+					{
+						id: 'November',
+						title: 'November'
+					},
+					{
+						id: 'December',
+						title: 'December'
+					},
+					{
+						id: 'Total',
+						title: 'Total'
+					}
+				],
+				rows: [
+					{
+						id: 1,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Policies',
+								classes: 'bg-blue text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'total',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 2,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Anual Preminum',
+								classes: 'bg-green text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 3,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Level Reached',
+								classes: 'bg-red text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 4,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Flat S Amount',
+								classes: 'bg-pink text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 5,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Target Bonus Earned',
+								classes: 'bg-orange text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					}
+				]
+			}
+		},
+		{
+			id: 'Agency_TargetReports_Bank_Table',
+			title: "FIRE",
+			table: {
+				columns: [
+					{
+						id: 'id',
+						title: ''
+					},
+					{
+						id: 'January',
+						title: 'January'
+					},
+					{
+						id: 'February',
+						title: 'February'
+					},
+					{
+						id: 'March',
+						title: 'March'
+					},
+					{
+						id: 'April',
+						title: 'April'
+					},
+					{
+						id: 'May',
+						title: 'May'
+					},
+					{
+						id: 'June',
+						title: 'June'
+					},
+					{
+						id: 'July',
+						title: 'July'
+					},
+					{
+						id: 'August',
+						title: 'August'
+					},
+					{
+						id: 'September',
+						title: 'September'
+					},
+					{
+						id: 'October',
+						title: 'October'
+					},
+					{
+						id: 'November',
+						title: 'November'
+					},
+					{
+						id: 'December',
+						title: 'December'
+					},
+					{
+						id: 'Total',
+						title: 'Total'
+					}
+				],
+				rows: [
+					{
+						id: 1,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Policies',
+								classes: 'bg-blue text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'total',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 2,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Anual Preminum',
+								classes: 'bg-green text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 3,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Level Reached',
+								classes: 'bg-red text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 4,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Flat S Amount',
+								classes: 'bg-pink text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					},
+					{
+						id: 5,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Target Bonus Earned',
+								classes: 'bg-orange text-white',
+								icon: ''
+							},
+							{
+								id: 'January',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'February',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'March',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'April',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'May',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'June',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'July',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'August',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'September',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'October',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'November',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'December',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+						]
+					}
+				]
+			}
+		},
+		{
+			id: 'Agency_PossibleMoney_Table',
+			title: "This is what you're making at your Current Level of Production",
+			table: {
+				columns: [
+					{
+						id: 'id',
+						title: ''
+					},
+					{
+						id: 'auto',
+						title: 'AUTO'
+					},
+					{
+						id: 'fire',
+						title: 'FIRE'
+					},
+					{
+						id: 'life',
+						title: 'LIFE'
+					},
+					{
+						id: 'health',
+						title: 'HEALTH'
+					},
+					{
+						id: 'bank',
+						title: 'BANK'
+					},
+					{
+						id: 'total',
+						title: 'TOTAL'
+					}
+				],
+				rows: [
+					{
+						id: 1,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Policies',
+								classes: 'bg-blue text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'total',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 2,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Anual Preminum',
+								classes: 'bg-green text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$21,080.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$17,240.34',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$3,839.66',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '$8.22',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 3,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Avg Premium',
+								classes: 'bg-red text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$3,518.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$31,202.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '$89.87',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 4,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Level Reached',
+								classes: 'bg-pink text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$0.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 5,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Target Bonus Earned',
+								classes: 'bg-orange text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$18,600.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$0.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			id: 'Agency_PossibleMoney_Table',
+			title: "This is what you're making at your Current Level of Production",
+			table: {
+				columns: [
+					{
+						id: 'id',
+						title: ''
+					},
+					{
+						id: 'auto',
+						title: 'AUTO'
+					},
+					{
+						id: 'fire',
+						title: 'FIRE'
+					},
+					{
+						id: 'life',
+						title: 'LIFE'
+					},
+					{
+						id: 'health',
+						title: 'HEALTH'
+					},
+					{
+						id: 'bank',
+						title: 'BANK'
+					},
+					{
+						id: 'total',
+						title: 'TOTAL'
+					}
+				],
+				rows: [
+					{
+						id: 1,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Policies',
+								classes: 'bg-blue text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'total',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 2,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Anual Preminum',
+								classes: 'bg-green text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$21,080.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$17,240.34',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$3,839.66',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '$8.22',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 3,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Avg Premium',
+								classes: 'bg-red text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$3,518.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$31,202.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '$89.87',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 4,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Level Reached',
+								classes: 'bg-pink text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$0.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 5,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Target Bonus Earned',
+								classes: 'bg-orange text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$18,600.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$0.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			id: 'Agency_PossibleMoney_Table',
+			title: "This is what you're making at your Current Level of Production",
+			table: {
+				columns: [
+					{
+						id: 'id',
+						title: ''
+					},
+					{
+						id: 'auto',
+						title: 'AUTO'
+					},
+					{
+						id: 'fire',
+						title: 'FIRE'
+					},
+					{
+						id: 'life',
+						title: 'LIFE'
+					},
+					{
+						id: 'health',
+						title: 'HEALTH'
+					},
+					{
+						id: 'bank',
+						title: 'BANK'
+					},
+					{
+						id: 'total',
+						title: 'TOTAL'
+					}
+				],
+				rows: [
+					{
+						id: 1,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Policies',
+								classes: 'bg-blue text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'total',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 2,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Anual Preminum',
+								classes: 'bg-green text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$21,080.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$17,240.34',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$3,839.66',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '$8.22',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 3,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Avg Premium',
+								classes: 'bg-red text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$3,518.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$31,202.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '$89.87',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 4,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Level Reached',
+								classes: 'bg-pink text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$0.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '',
+								classes: '',
+								icon: ''
+							}
+						]
+					},
+					{
+						id: 5,
+						cells: [
+							{
+								id: 'left_title',
+								value: 'Target Bonus Earned',
+								classes: 'bg-orange text-white',
+								icon: ''
+							},
+							{
+								id: 'total_budget',
+								value: '$18,600.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_usd',
+								value: '$0.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'spent_perc',
+								value: '$81.78',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_usd',
+								value: '$34,720.00',
+								classes: '',
+								icon: ''
+							},
+							{
+								id: 'remaining_perc',
+								value: '',
 								classes: '',
 								icon: ''
 							}
