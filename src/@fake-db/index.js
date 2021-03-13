@@ -25,6 +25,7 @@ import './db/vision-db';
 import './db/activity-db';
 import './db/production-db';
 import './db/bonus-plan-db';
+import './db/bonus-plan-template-db';
 import './db/producer-db';
 import './db/agency-db';
 import './db/marketing-db';

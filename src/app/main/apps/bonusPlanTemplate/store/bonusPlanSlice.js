@@ -15,7 +15,7 @@ export const getAutoBonus = createAsyncThunk('bonusPlanTemplate/autoBonus/getCon
 	
 		new Promise((resolve, reject) => {
 			var belongTo = localStorage.getItem('@BELONGTO')
-			var starCountRef = realDb.ref(`BonusPlan/${belongTo}/${routeParam}`);
+			var starCountRef = realDb.ref(`BonusPlanTemplate/${belongTo}/`);
 			var bonusPlans = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
@@ -40,7 +40,7 @@ export const addContact = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/addContact',
 	async (contact, { dispatch, getState }) => {
 		console.log(contact, contact.routeParam )
-		const response = await axios.post('/api/bonus-plan/add-contact', { contact });
+		const response = await axios.post('/api/bonus-plan-template/add-contact', { contact });
 		const data = await response.data;
 		
 		dispatch(getAutoBonus(contact.routeParam));
@@ -53,7 +53,7 @@ export const updateContact = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/updateContact',
 	async (contact, { dispatch, getState }) => {
 		
-		const response = await axios.post('/api/bonus-plan/update-contact', { contact});
+		const response = await axios.post('/api/bonus-plan-template/update-contact', { contact});
 		const data = await response.data;
 
 		dispatch(getAutoBonus(contact.routeParam));
@@ -66,7 +66,7 @@ export const removeContact = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/removeContact',
 	async (contact, { dispatch, getState }) => {
 		
-		const response = await axios.post('/api/bonus-plan/remove-contact', { contact });
+		const response = await axios.post('/api/bonus-plan-template/remove-contact', { contact });
 		const data = await response.data;
 		var belongTo = localStorage.getItem('@BELONGTO')
 		realDb.ref(`BonusPlan/${belongTo}/${contact.routeParam}/${contact.planType}/${contact.id}`).remove();
@@ -79,7 +79,7 @@ export const removeContact = createAsyncThunk(
 export const removeContacts = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/removeContacts',
 	async (contactIds, { dispatch, getState }) => {
-		const response = await axios.post('/api/bonus-plan/remove-contacts', { contactIds });
+		const response = await axios.post('/api/bonus-plan-template/remove-contacts', { contactIds });
 		const data = await response.data;
 
 		dispatch(getAutoBonus());
@@ -91,7 +91,7 @@ export const removeContacts = createAsyncThunk(
 export const toggleStarredContact = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/toggleStarredContact',
 	async (contactId, { dispatch, getState }) => {
-		const response = await axios.post('/api/bonus-plan/toggle-starred-contact', { contactId });
+		const response = await axios.post('/api/bonus-plan-template/toggle-starred-contact', { contactId });
 		const data = await response.data;
 
 		dispatch(getUserData());
@@ -105,7 +105,7 @@ export const toggleStarredContact = createAsyncThunk(
 export const toggleStarredContacts = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/toggleStarredContacts',
 	async (contactIds, { dispatch, getState }) => {
-		const response = await axios.post('/api/bonus-plan/toggle-starred-contacts', { contactIds });
+		const response = await axios.post('/api/bonus-plan-template/toggle-starred-contacts', { contactIds });
 		const data = await response.data;
 
 		dispatch(getUserData());
@@ -119,7 +119,7 @@ export const toggleStarredContacts = createAsyncThunk(
 export const setContactsStarred = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/setContactsStarred',
 	async (contactIds, { dispatch, getState }) => {
-		const response = await axios.post('/api/bonus-plan/set-contacts-starred', { contactIds });
+		const response = await axios.post('/api/bonus-plan-template/set-contacts-starred', { contactIds });
 		const data = await response.data;
 
 		dispatch(getUserData());
@@ -133,7 +133,7 @@ export const setContactsStarred = createAsyncThunk(
 export const setContactsUnstarred = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/setContactsUnstarred',
 	async (contactIds, { dispatch, getState }) => {
-		const response = await axios.post('/api/bonus-plan/set-contacts-unstarred', { contactIds });
+		const response = await axios.post('/api/bonus-plan-template/set-contacts-unstarred', { contactIds });
 		const data = await response.data;
 
 		dispatch(getUserData());
