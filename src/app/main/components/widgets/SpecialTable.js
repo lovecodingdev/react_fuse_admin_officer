@@ -20,7 +20,7 @@ function Widget10(props) {
 					<TableHead>
 						<TableRow>
 							{props.widget.table.columns.map(column => (
-								<TableCell key={column.id} className="whitespace-nowrap">
+								<TableCell key={column.id} className="whitespace-nowrap" align="center">
 									{column.title}
 								</TableCell>
 							))}
@@ -31,39 +31,28 @@ function Widget10(props) {
 							<TableRow key={row.id}>
 								{row.cells.map(cell => {
 									switch (cell.id) {
-										case 'budget_type': {
+										case 'left_title': {
 											return (
 												<TableCell key={cell.id} component="th" scope="row">
-													<Typography
-														className={clsx(
-															cell.classes,
-															'inline text-11 font-500 px-8 py-4 rounded-4'
-														)}
-													>
-														{cell.value}
+													<Typography className={clsx(cell.classes, 'inline text-11 font-500 px-8 py-4 rounded-4')}>
+														{cell.value===0 ? "" : cell.value}
 													</Typography>
 												</TableCell>
 											);
-										}
-										case 'spent_perc': {
-											return (
-												<TableCell key={cell.id} component="th" scope="row">
-													<Typography className={clsx(cell.classes, 'flex items-center')}>
-														{cell.value}
-														<Icon className="text-14 mx-4">{cell.icon}</Icon>
-													</Typography>
-												</TableCell>
-											);
-										}
+										}									
 										case 'total':{
 											return(
-												<TableCell key={cell.id} rowSpan={5} className='border-1' align="center">{cell.value}</TableCell>
+												<TableCell key={cell.id} rowSpan={5} className='border-l-1' align="center">
+													{cell.value===0 ? "" : cell.value}
+												</TableCell>
 											)
 										}
 										default: {
 											return (
-												<TableCell key={cell.id} component="th" scope="row">
-													<Typography className={cell.classes}>{cell.value}</Typography>
+												<TableCell key={cell.id} component="th" scope="row" align="center">
+													<Typography className={cell.classes}>
+														{cell.value===0 ? "" : cell.value}
+													</Typography>
 												</TableCell>
 											);
 										}
