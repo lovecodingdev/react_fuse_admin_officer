@@ -10,30 +10,46 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
 
-function Widget1(props) { 
+function Widget1(props) {
+	const { data } = props.data;
+	const length = data.length;
 	return (
-		<Paper className="w-full rounded-8 shadow">
+		<Paper className={`w-full shadow h-full`}>
 			<div className="flex items-center justify-between px-4 pt-4">
-				<Typography className="text-15 flex w-full" color="textSecondary">
-					<span className="truncate">{props.data.title}</span>									
-				</Typography>
-				<IconButton aria-label="more">
-					<Icon>more_vert</Icon>
-				</IconButton>
-			</div>
-			<div className="text-center pt-12 pb-28">
-				<Typography className={`text-72 leading-none ${props.data.color}`}>
-					{props.data.count}
-				</Typography>
-				<Typography className="text-16" color="textSecondary">
-					{props.label}
+				<Typography className="text-15 flex w-full border-b-1" color="textSecondary">
+					<span className="truncate">{props.data.title}</span>
 				</Typography>
 			</div>
-			<div className="flex items-center px-16 h-52 border-t-1">
-				<Typography className="text-15 flex w-full" color="textSecondary">
-					<span className="truncate">Subtitle</span>:
-					<b className="px-8">{`${props.data.label}-${props.data.id}`}</b>
-				</Typography>
+			<div className="h-full text-center"> 
+				<div className="h-full flex flex-wrap">
+					{data.map((item, index) => (
+						data.length===1 ?
+						(	<div className="w-full" key={index} >								
+								<Typography className={`flex flex-col justify-center h-full text-48 leading-none  ${props.data.color}`}>
+									{item[Object.keys(item)[0]]} {'%'}
+								</Typography>
+							</div>
+						) : 
+						(	<div className="w-1/2" key={index}>
+								<Typography
+									className={`leading-none border-b-1 ${length % (index + 1) !== 0 && `border-r-1`} ${
+										index === 0 && `border-r-1`
+									} py-5`}
+								>
+									{Object.keys(item)[0]}
+								</Typography>
+								<Typography
+									className={`text-48 leading-none ${props.data.color} ${
+										length % (index + 1) !== 0 && `border-r-1`
+									} ${index === 0 && `border-r-1`} border-b-1 py-5`}
+								>
+									{item[Object.keys(item)[0]]}
+									{props.data.title === 'Lapse Rate' && '%'}
+								</Typography>
+							</div>
+						)																			
+					))}
+				</div>
 			</div>
 		</Paper>
 	);

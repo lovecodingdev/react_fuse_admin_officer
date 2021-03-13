@@ -15,7 +15,7 @@ import _ from '@lodash';
 import reducer from './store';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import Table from '../../components/widgets/TempTable';
+import Table from '../../components/widgets/Table';
 import Chart from '../../components/widgets/BarChart';
 import PieChart from '../../components/widgets/PieChart';
 import SelectBox from '../../components/CustomSelectBox';

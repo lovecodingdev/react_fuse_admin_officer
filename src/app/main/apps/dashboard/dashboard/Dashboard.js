@@ -14,7 +14,7 @@ import _ from '@lodash';
 import reducer from '../store';
 import Table from '../../../components/widgets/Table';
 import HorizontalBarChart from '../../../components/widgets/HorizontalBarChart';
-import Panel from '../widget/Panel';
+import Panel from '../../../components/widgets/Panel';
 import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
