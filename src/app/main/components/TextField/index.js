@@ -32,6 +32,7 @@ function TextInput(props) {
             onChange={handleChange}
             type={type==='percent'?"number":'text'}
             size="small"
+			multiline={true}
             name={validation}
 			InputProps={size?{
 				style:{width:size},

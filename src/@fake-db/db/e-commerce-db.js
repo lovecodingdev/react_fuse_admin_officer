@@ -51,17 +51,15 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 		product = data;
 		eCommerceDB.entrys = [...eCommerceDB.entrys, product];
 	}
-	console.log('-----------------------------------', data)
-	data.policyType.map(item => {
-		if (data.user) {
+	data.map(item => {
+		if (item.user) {
 
-			uid = data.user.uid
+			uid = item.user.uid
 		}
-		data = { ...data, sellerId: data.user ? data.user.uid : data.uid }
+		data = { ...item, sellerId: item.user ? item.user.uid : item.uid }
 		var id = Date.now()
 
-		console.log(`Sales/${data.belongTo}/${item}/${data.sellerId}/${id}`)
-		realDb.ref(`Sales/${data.belongTo}/${item}/${data.user === 'OfficeCount' ? `OfficeCount` : data.sellerId}/${id}`).set({
+		realDb.ref(`Sales/${item.belongTo}/${item.policyType[0]}/${item.user === 'OfficeCount' ? `OfficeCount` : data.sellerId}/${id}`).set({
 			...data, id: id
 		});
 	})
@@ -87,7 +85,7 @@ mock.onPost('/api/e-commerce-app/product/update').reply(async request => {
 		eCommerceDB.entrys = [...eCommerceDB.entrys, product];
 	}
 
-	data = { ...data, sellerId: uid }
+	data = { ...data[0], sellerId: uid }
 
 	if (data.user) {
 		uid = data.user.uid

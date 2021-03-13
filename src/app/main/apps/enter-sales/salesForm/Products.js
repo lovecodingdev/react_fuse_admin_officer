@@ -32,7 +32,8 @@ const useStyles = makeStyles(theme => ({
 		}
 	},
 	datePicker: {
-		width: 250
+		width: 250,
+		marginTop: '0'
 	}
 }));
 
@@ -118,11 +119,17 @@ function Products() {
 		policyHolderTypeValidation: false,
 		percentOfSaleCreditValidation: false,
 		typeOfProductValidation: false,
+		typeOfProductFireValidation: false,
+		typeOfProductHealthValidation: false,
+		typeOfProductLifeValidation: false,
 		policyPremiumValidation: false,
 		userValidation: false,
 		marketings: [],
 		usersList: [],
-		productLists: []
+		productLists: [],
+		fireProductList: [],
+		healthProductList: [],
+		lifeProductList: []
 	});
 
 	useEffect(() => {
@@ -148,6 +155,10 @@ function Products() {
 		var temp = [];
 		var tempMarketing = [];
 		var tempProductList = [];
+		var tempBonus = [];
+		var tempFireBonus = [];
+		var tempHealthBonus = [];
+		var tempLifeBonus = [];
 		if (productType.length > 0) {
 			Object.keys(productType[0]).map(i => {
 				tempProductList.push({
@@ -168,23 +179,173 @@ function Products() {
 			temp.push({ item: 'Office Count', value: 'OfficeCount' });
 		}
 		if (routeParams.id === 'edit' && editData) {
+			console.log(editData);
+			if (bonus.length > 0) {
+				if (editData.user) {
+					if (editData.user === 'OfficeCount') {
+						Object.keys(bonus[0]['all']['autoBonus']).map(item => {
+							tempBonus.push({
+								item: bonus[0]['all']['autoBonus'][item].name,
+								value: bonus[0]['all']['autoBonus'][item].name
+							});
+						});
+						Object.keys(bonus[0]['all']['fireBonus']).map(item => {
+							tempFireBonus.push({
+								item: bonus[0]['all']['fireBonus'][item].name,
+								value: bonus[0]['all']['fireBonus'][item].name
+							});
+						});
+						Object.keys(bonus[0]['all']['healthBonus']).map(item => {
+							tempHealthBonus.push({
+								item: bonus[0]['all']['healthBonus'][item].name,
+								value: bonus[0]['all']['healthBonus'][item].name
+							});
+						});
+
+						Object.keys(bonus[0]['all']['lifeBonus']).map(item => {
+							tempLifeBonus.push({
+								item: bonus[0]['all']['lifeBonus'][item].name,
+								value: bonus[0]['all']['lifeBonus'][item].name
+							});
+						});
+						setState({
+							...state,
+							...data,
+							productLists: tempBonus,
+							fireProductList: tempFireBonus,
+							healthProductList: tempHealthBonus,
+							lifeProductList: tempLifeBonus
+						});
+					} else {
+						Object.keys(bonus[0][editData.user.uid]['autoBonus']).map(item => {
+							tempBonus.push({
+								item: bonus[0][editData.user.uid]['autoBonus'][item].name,
+								value: bonus[0][editData.user.uid]['autoBonus'][item].name
+							});
+						});
+						Object.keys(bonus[0][editData.user.uid]['fireBonus']).map(item => {
+							tempFireBonus.push({
+								item: bonus[0][editData.user.uid]['fireBonus'][item].name,
+								value: bonus[0][editData.user.uid]['fireBonus'][item].name
+							});
+						});
+						Object.keys(bonus[0][editData.user.uid]['healthBonus']).map(item => {
+							tempHealthBonus.push({
+								item: bonus[0][editData.user.uid]['healthBonus'][item].name,
+								value: bonus[0][editData.user.uid]['healthBonus'][item].name
+							});
+						});
+
+						Object.keys(bonus[0][editData.user.uid]['lifeBonus']).map(item => {
+							tempLifeBonus.push({
+								item: bonus[0][editData.user.uid]['lifeBonus'][item].name,
+								value: bonus[0][editData.user.uid]['lifeBonus'][item].name
+							});
+						});
+						setState({
+							...state,
+							...data,
+							productLists: tempBonus,
+							fireProductList: tempFireBonus,
+							healthProductList: tempHealthBonus,
+							lifeProductList: tempLifeBonus
+						});
+					}
+				} else {
+					Object.keys(bonus[0]['all']['autoBonus']).map(item => {
+						tempBonus.push({
+							item: bonus[0]['all']['autoBonus'][item].name,
+							value: bonus[0]['all']['autoBonus'][item].name
+						});
+					});
+					Object.keys(bonus[0]['all']['fireBonus']).map(item => {
+						tempFireBonus.push({
+							item: bonus[0]['all']['fireBonus'][item].name,
+							value: bonus[0]['all']['fireBonus'][item].name
+						});
+					});
+					Object.keys(bonus[0]['all']['healthBonus']).map(item => {
+						tempHealthBonus.push({
+							item: bonus[0]['all']['healthBonus'][item].name,
+							value: bonus[0]['all']['healthBonus'][item].name
+						});
+					});
+
+					Object.keys(bonus[0]['all']['lifeBonus']).map(item => {
+						tempLifeBonus.push({
+							item: bonus[0]['all']['lifeBonus'][item].name,
+							value: bonus[0]['all']['lifeBonus'][item].name
+						});
+					});
+					setState({
+						...state,
+						...data,
+						productLists: tempBonus,
+						fireProductList: tempFireBonus,
+						healthProductList: tempHealthBonus,
+						lifeProductList: tempLifeBonus
+					});
+				}
+			}
 			setState({
 				...state,
 				...editData,
 				usersList: temp,
 				marketings: tempMarketing,
-				productLists: tempProductList
+				productLists: tempBonus,
+				fireProductList: tempFireBonus,
+				healthProductList: tempHealthBonus,
+				lifeProductList: tempLifeBonus
 			});
 		} else {
-			setState({ ...state, usersList: temp, marketings: tempMarketing, productLists: tempProductList });
+			if (bonus.length > 0) {
+				Object.keys(bonus[0]['all']['autoBonus']).map(item => {
+					tempBonus.push({
+						item: bonus[0]['all']['autoBonus'][item].name,
+						value: bonus[0]['all']['autoBonus'][item].name
+					});
+				});
+				Object.keys(bonus[0]['all']['fireBonus']).map(item => {
+					tempFireBonus.push({
+						item: bonus[0]['all']['fireBonus'][item].name,
+						value: bonus[0]['all']['fireBonus'][item].name
+					});
+				});
+				Object.keys(bonus[0]['all']['healthBonus']).map(item => {
+					tempHealthBonus.push({
+						item: bonus[0]['all']['healthBonus'][item].name,
+						value: bonus[0]['all']['healthBonus'][item].name
+					});
+				});
+
+				Object.keys(bonus[0]['all']['lifeBonus']).map(item => {
+					tempLifeBonus.push({
+						item: bonus[0]['all']['lifeBonus'][item].name,
+						value: bonus[0]['all']['lifeBonus'][item].name
+					});
+				});
+			}
+			setState({
+				...state,
+				usersList: temp,
+				marketings: tempMarketing,
+				productLists: tempBonus,
+				fireProductList: tempFireBonus,
+				healthProductList: tempHealthBonus,
+				lifeProductList: tempLifeBonus
+			});
 		}
-	}, [users, marketing, productType, editData]);
+	}, [users, marketing, productType, editData, bonus]);
 
 	function handleDateChange(date, id) {
 		setState({ ...state, [id]: date });
 	}
 
 	function handleChangeValue(data) {
+		var tempBonus = [];
+		var tempFireBonus = [];
+		var tempHealthBonus = [];
+		var tempLifeBonus = [];
 		console.log(data);
 		if (Object.keys(data)[0] === 'policyType') {
 			if (typeof data['policyType'] === 'object') {
@@ -194,6 +355,76 @@ function Products() {
 					...state,
 					policyType: [data['policyType']],
 					policyTypeValidation: data['policyTypeValidation']
+				});
+			}
+		} else if (Object.keys(data)[0] === 'user') {
+			if (data.user === 'OfficeCount') {
+				Object.keys(bonus[0]['all']['autoBonus']).map(item => {
+					tempBonus.push({
+						item: bonus[0]['all']['autoBonus'][item].name,
+						value: bonus[0]['all']['autoBonus'][item].name
+					});
+				});
+				Object.keys(bonus[0]['all']['fireBonus']).map(item => {
+					tempFireBonus.push({
+						item: bonus[0]['all']['fireBonus'][item].name,
+						value: bonus[0]['all']['fireBonus'][item].name
+					});
+				});
+				Object.keys(bonus[0]['all']['healthBonus']).map(item => {
+					tempHealthBonus.push({
+						item: bonus[0]['all']['healthBonus'][item].name,
+						value: bonus[0]['all']['healthBonus'][item].name
+					});
+				});
+
+				Object.keys(bonus[0]['all']['lifeBonus']).map(item => {
+					tempLifeBonus.push({
+						item: bonus[0]['all']['lifeBonus'][item].name,
+						value: bonus[0]['all']['lifeBonus'][item].name
+					});
+				});
+				setState({
+					...state,
+					...data,
+					productLists: tempBonus,
+					fireProductList: tempFireBonus,
+					healthProductList: tempHealthBonus,
+					lifeProductList: tempLifeBonus
+				});
+			} else {
+				Object.keys(bonus[0][data.user.uid]['autoBonus']).map(item => {
+					tempBonus.push({
+						item: bonus[0][data.user.uid]['autoBonus'][item].name,
+						value: bonus[0][data.user.uid]['autoBonus'][item].name
+					});
+				});
+				Object.keys(bonus[0][data.user.uid]['fireBonus']).map(item => {
+					tempFireBonus.push({
+						item: bonus[0][data.user.uid]['fireBonus'][item].name,
+						value: bonus[0][data.user.uid]['fireBonus'][item].name
+					});
+				});
+				Object.keys(bonus[0][data.user.uid]['healthBonus']).map(item => {
+					tempHealthBonus.push({
+						item: bonus[0][data.user.uid]['healthBonus'][item].name,
+						value: bonus[0][data.user.uid]['healthBonus'][item].name
+					});
+				});
+
+				Object.keys(bonus[0][data.user.uid]['lifeBonus']).map(item => {
+					tempLifeBonus.push({
+						item: bonus[0][data.user.uid]['lifeBonus'][item].name,
+						value: bonus[0][data.user.uid]['lifeBonus'][item].name
+					});
+				});
+				setState({
+					...state,
+					...data,
+					productLists: tempBonus,
+					fireProductList: tempFireBonus,
+					healthProductList: tempHealthBonus,
+					lifeProductList: tempLifeBonus
 				});
 			}
 		} else {
@@ -230,6 +461,7 @@ function Products() {
 		if (checkValidation()) {
 			let belongTo = localStorage.getItem('@BELONGTO');
 			let uid = localStorage.getItem('@UID');
+			var requestForm = [];
 			let form = {
 				id: state.id ? state.id : Date.now(),
 				policyHolderName: state.policyHolderName,
@@ -252,7 +484,135 @@ function Products() {
 
 			if (state.datePolicyIsIssued) {
 				if (state.user) {
-					if(state.user==='OfficeCount'){
+					if (state.typeOfProduct && state.policyType.includes('Entries')) {
+						if (state.user === 'OfficeCount') {
+							form = {
+								...form,
+								dollarBonus:
+									Math.ceil(
+										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+											100) *
+											(parseInt(bonusLists['all'][state.typeOfProduct]) / 100) *
+											100
+									) / 100,
+								policyType: ['Entries'],
+								typeOfProduct: state.typeOfProduct
+							};
+							requestForm.push(form);
+						} else {
+							form = {
+								...form,
+								dollarBonus:
+									Math.ceil(
+										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+											100) *
+											(parseInt(bonusLists[state.user.id][state.typeOfProduct]) / 100) *
+											100
+									) / 100,
+								policyType: ['Entries'],
+								typeOfProduct: state.typeOfProduct
+							};
+							requestForm.push(form);
+						}
+					}
+
+					if (state.typeOfProduct && state.policyType.includes('FireEntries')) {
+						if (state.user === 'OfficeCount') {
+							form = {
+								...form,
+								dollarBonus:
+									Math.ceil(
+										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+											100) *
+											(parseInt(bonusLists['all'][state.typeOfProductFire]) / 100) *
+											100
+									) / 100,
+								policyType: ['FireEntries'],
+								typeOfProductFire: state.typeOfProductFire
+							};
+							requestForm.push(form);
+						} else {
+							form = {
+								...form,
+								dollarBonus:
+									Math.ceil(
+										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+											100) *
+											(parseInt(bonusLists[state.user.id][state.typeOfProductFire]) / 100) *
+											100
+									) / 100,
+								policyType: ['FireEntries'],
+								typeOfProductFire: state.typeOfProductFire
+							};
+							requestForm.push(form);
+						}
+					}
+
+					if (state.typeOfProduct && state.policyType.includes('HealthEntries')) {
+						if (state.user === 'OfficeCount') {
+							form = {
+								...form,
+								dollarBonus:
+									Math.ceil(
+										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+											100) *
+											(parseInt(bonusLists['all'][state.typeOfProductHealth]) / 100) *
+											100
+									) / 100,
+								policyType: ['HealthEntries'],
+								typeOfProductHealth: state.typeOfProductHealth
+							};
+							requestForm.push(form);
+						} else {
+							form = {
+								...form,
+								dollarBonus:
+									Math.ceil(
+										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+											100) *
+											(parseInt(bonusLists[state.user.id][state.typeOfProductHealth]) / 100) *
+											100
+									) / 100,
+								policyType: ['HealthEntries'],
+								typeOfProductHealth: state.typeOfProductHealth
+							};
+							requestForm.push(form);
+						}
+					}
+
+					if (state.typeOfProduct && state.policyType.includes('LifeEntries')) {
+						if (state.user === 'OfficeCount') {
+							form = {
+								...form,
+								dollarBonus:
+									Math.ceil(
+										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+											100) *
+											(parseInt(bonusLists['all'][state.typeOfProductLife]) / 100) *
+											100
+									) / 100,
+								policyType: ['LifeEntries'],
+								typeOfProductLife: state.typeOfProductLife
+							};
+							requestForm.push(form);
+						} else {
+							form = {
+								...form,
+								dollarBonus:
+									Math.ceil(
+										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+											100) *
+											(parseInt(bonusLists[state.user.id][state.typeOfProductLife]) / 100) *
+											100
+									) / 100,
+								policyType: ['LifeEntries'],
+								typeOfProductLife: state.typeOfProductLife
+							};
+							requestForm.push(form);
+						}
+					}
+				} else {
+					if (state.typeOfProduct && state.policyType.includes('Entries')) {
 						form = {
 							...form,
 							dollarBonus:
@@ -260,39 +620,63 @@ function Products() {
 									((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
 										(parseInt(bonusLists['all'][state.typeOfProduct]) / 100) *
 										100
-								) / 100
+								) / 100,
+							policyType: ['Entries'],
+							typeOfProduct: state.typeOfProduct
 						};
-					} else {
+						requestForm.push(form);
+					}
+					if (state.typeOfProduct && state.policyType.includes('FireEntries')) {
 						form = {
 							...form,
 							dollarBonus:
 								Math.ceil(
 									((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-										(parseInt(bonusLists[state.user.id][state.typeOfProduct]) / 100) *
+										(parseInt(bonusLists['all'][state.typeOfProductFire]) / 100) *
 										100
-								) / 100
+								) / 100,
+							policyType: ['FireEntries'],
+							typeOfProductFire: state.typeOfProductFire
 						};
+						requestForm.push(form);
 					}
-					
-				} else {
-					form = {
-						...form,
-						dollarBonus:
-							Math.ceil(
-								((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-									(parseInt(bonusLists['all'][state.typeOfProduct]) / 100) *
-									100
-							) / 100
-					};
+					if (state.typeOfProduct && state.policyType.includes('HealthEntries')) {
+						form = {
+							...form,
+							dollarBonus:
+								Math.ceil(
+									((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
+										(parseInt(bonusLists['all'][state.typeOfProductHealth]) / 100) *
+										100
+								) / 100,
+							policyType: ['HealthEntries'],
+							typeOfProductHealth: state.typeOfProductHealth
+						};
+						requestForm.push(form);
+					}
+					if (state.typeOfProduct && state.policyType.includes('LifeEntries')) {
+						form = {
+							...form,
+							dollarBonus:
+								Math.ceil(
+									((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
+										(parseInt(bonusLists['all'][state.typeOfProductLife]) / 100) *
+										100
+								) / 100,
+							policyType: ['LifeEntries'],
+							typeOfProductLife: state.typeOfProductLife
+						};
+						requestForm.push(form);
+					}
 				}
 			}
 			if (uid && belongTo) {
 				if (routeParams.id === 'edit' && editData) {
-					dispatch(updateProduct(form)).then(() => {
+					dispatch(updateProduct(requestForm)).then(() => {
 						history.goBack();
 					});
 				} else {
-					dispatch(saveProduct(form)).then(() => {
+					dispatch(saveProduct(requestForm)).then(() => {
 						history.goBack();
 					});
 				}
@@ -359,82 +743,82 @@ function Products() {
 				<div className="w-full flex flex-col">
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<FuseScrollbars className="flex-grow overflow-x-auto">
-							<div className="min-w-xl p-96 h-full flex flex-col justify-around">
-								<div className="flex w-full justify-between items-center flex-wrap py-12">
-									<SelectBox
-										id="outlined-basic"
-										label="User Lists"
-										data={state.usersList}
-										variant="outlined"
-										value={state.user}
-										validation="user"
-										handleChangeValue={handleChangeValue}
-										willvalidation={false}
-										validate={state.userValidation}
-									/>
-									<TextInput
-										id="outlined-basic"
-										label="Policy Holder Name"
-										variant="outlined"
-										value={state.policyHolderName}
-										validation="policyHolderName"
-										onChange={handleChangeValue}
-										willvalidation={false}
-										validate={false}
-										size={250}
-									/>
-									<TextInput
-										id="outlined-basic"
-										label="Policy Information"
-										variant="outlined"
-										value={state.policyInformation}
-										validation="policyInformation"
-										onChange={handleChangeValue}
-										willvalidation={false}
-										validate={false}
-										size={250}
-									/>
+							<div className="min-w-xl p-96 h-full w-full flex flex-row justify-around flex-wrap">
+								{/* <div className="flex w-full justify-between items-center flex-wrap py-12"> */}
+								<SelectBox
+									id="outlined-basic"
+									label="User Lists"
+									data={state.usersList}
+									variant="outlined"
+									value={state.user}
+									validation="user"
+									handleChangeValue={handleChangeValue}
+									willvalidation={false}
+									validate={state.userValidation}
+								/>
+								<TextInput
+									id="outlined-basic"
+									label="Policy Holder Name"
+									variant="outlined"
+									value={state.policyHolderName}
+									validation="policyHolderName"
+									onChange={handleChangeValue}
+									willvalidation={false}
+									validate={false}
+									size={250}
+								/>
+								<TextInput
+									id="outlined-basic"
+									label="Policy Information"
+									variant="outlined"
+									value={state.policyInformation}
+									validation="policyInformation"
+									onChange={handleChangeValue}
+									willvalidation={false}
+									validate={false}
+									size={250}
+								/>
 
-									<KeyboardDatePicker
-										margin="normal"
-										id="date-picker-dialog"
-										format="MM/dd/yyyy"
-										className={classes.datePicker}
-										label="Date Policy Is Written"
-										value={state.datePolicyIsWritten}
-										onChange={date => handleDateChange(date, 'datePolicyIsWritten')}
-										KeyboardButtonProps={{
-											'aria-label': 'change date'
-										}}
-									/>
-								</div>
+								<KeyboardDatePicker
+									margin="normal"
+									id="date-picker-dialog"
+									format="MM/dd/yyyy"
+									className={classes.datePicker}
+									label="Date Policy Is Written"
+									value={state.datePolicyIsWritten}
+									onChange={date => handleDateChange(date, 'datePolicyIsWritten')}
+									KeyboardButtonProps={{
+										'aria-label': 'change date'
+									}}
+								/>
+								{/* </div>
 
-								<div className="flex w-full justify-between items-center flex-wrap py-12">
-									<KeyboardDatePicker
-										margin="normal"
-										id="date-picker-dialog"
-										format="MM/dd/yyyy"
-										className={classes.datePicker}
-										label="Date Policy Is Issued"
-										value={state.datePolicyIsIssued}
-										onChange={date => handleDateChange(date, 'datePolicyIsIssued')}
-										KeyboardButtonProps={{
-											'aria-label': 'change date'
-										}}
-									/>
-									<TextInput
-										id="outlined-basic"
-										label="Percent of Sale Credit"
-										variant="outlined"
-										value={state.percentOfSaleCredit}
-										validation="percentOfSaleCredit"
-										type="percent"
-										onChange={handleChangeValue}
-										willvalidation={true}
-										validate={state.percentOfSaleCreditValidation}
-										size={250}
-									/>
-									<SelectBox
+								<div className="flex w-full justify-between items-center flex-wrap py-12"> */}
+								<KeyboardDatePicker
+									margin="normal"
+									id="date-picker-dialog"
+									format="MM/dd/yyyy"
+									className={classes.datePicker}
+									label="Date Policy Is Issued"
+									value={state.datePolicyIsIssued}
+									onChange={date => handleDateChange(date, 'datePolicyIsIssued')}
+									KeyboardButtonProps={{
+										'aria-label': 'change date'
+									}}
+								/>
+								<TextInput
+									id="outlined-basic"
+									label="Percent of Sale Credit"
+									variant="outlined"
+									value={state.percentOfSaleCredit}
+									validation="percentOfSaleCredit"
+									type="percent"
+									onChange={handleChangeValue}
+									willvalidation={true}
+									validate={state.percentOfSaleCreditValidation}
+									size={250}
+								/>
+								{/* <SelectBox
 										id="outlined-basic"
 										label="Type of Product"
 										data={state.productLists}
@@ -445,70 +829,129 @@ function Products() {
 										willvalidation={true}
 										validate={state.typeOfProductValidation}
 										size={250}
-									/>
+									/> */}
+								<SelectBox
+									id="outlined-basic"
+									label="Type of Placeholder"
+									data={policyholderTypeLists}
+									variant="outlined"
+									value={state.policyHolderType}
+									validation="policyHolderType"
+									handleChangeValue={handleChangeValue}
+									willvalidation={true}
+									validate={state.policyHolderTypeValidation}
+								/>
+								{/* </div>
+								<div className="flex w-full justify-between items-center flex-wrap py-12"> */}
+								{(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
 									<SelectBox
 										id="outlined-basic"
-										label="Type of Placeholder"
-										data={policyholderTypeLists}
+										label="Policy Type"
+										data={typeList}
 										variant="outlined"
-										value={state.policyHolderType}
-										validation="policyHolderType"
+										value={state.policyType[0]}
+										validation="policyType"
 										handleChangeValue={handleChangeValue}
 										willvalidation={true}
-										validate={state.policyHolderTypeValidation}
+										validate={state.typeValidation}
 									/>
-								</div>
-								<div className="flex w-full justify-between items-center flex-wrap py-12">
-									{(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
-										<SelectBox
-											id="outlined-basic"
-											label="Policy Type"
-											data={typeList}
-											variant="outlined"
-											value={state.policyType[0]}
-											validation="policyType"
-											handleChangeValue={handleChangeValue}
-											willvalidation={true}
-											validate={state.typeValidation}
-										/>
-										// </TableCell>
-									)}
-									{state.policyHolderType === 'household' && (
-										<MultiSelectBox
-											id="outlined-basic"
-											label="Policy Type"
-											data={typeList}
-											variant="outlined"
-											value={state.policyType}
-											validation="policyType"
-											handleChangeValue={handleChangeValue}
-											willvalidation={true}
-											validate={state.typeValidation}
-										/>
-									)}
-									<FormattedInput
+									// </TableCell>
+								)}
+								{state.policyHolderType === 'household' && (
+									<MultiSelectBox
 										id="outlined-basic"
-										label="Policy Premium"
+										label="Policy Type"
+										data={typeList}
 										variant="outlined"
-										value={state.policyPremium}
-										validation="policyPremium"
-										type="percent"
-										willvalidation={true}
-										validate={state.policyPremiumValidation}
+										value={state.policyType}
+										validation="policyType"
 										handleChangeValue={handleChangeValue}
+										willvalidation={true}
+										validate={state.typeValidation}
+									/>
+								)}
+								{state.policyType.includes('Entries') && (
+									<SelectBox
+										id="outlined-basic"
+										label="Product Type of Auto Entries"
+										data={state.productLists}
+										variant="outlined"
+										value={state.typeOfProduct}
+										validation="typeOfProduct"
+										handleChangeValue={handleChangeValue}
+										willvalidation={true}
+										validate={state.typeOfProductValidation}
 										size={250}
 									/>
+								)}
+
+								{state.policyType.includes('FireEntries') && (
 									<SelectBox
 										id="outlined-basic"
-										label="Source of Business"
-										data={state.marketings}
+										label="Product Type of Fire Entries"
+										data={state.fireProductList}
 										variant="outlined"
-										value={state.sourceOfBusiness}
-										validation="sourceOfBusiness"
+										value={state.typeOfProductFire}
+										validation="typeOfProductFire"
 										handleChangeValue={handleChangeValue}
-										willvalidation={false}
+										willvalidation={true}
+										validate={state.typeOfProductFireValidation}
+										size={250}
 									/>
-								</div>
+								)}
+
+								{state.policyType.includes('HealthEntries') && (
+									<SelectBox
+										id="outlined-basic"
+										label="Product Type of Health Entries"
+										data={state.healthProductList}
+										variant="outlined"
+										value={state.typeOfProductHealth}
+										validation="typeOfProductHealth"
+										handleChangeValue={handleChangeValue}
+										willvalidation={true}
+										validate={state.typeOfProductHealthValidation}
+										size={250}
+									/>
+								)}
+
+								{state.policyType.includes('LifeEntries') && (
+									<SelectBox
+										id="outlined-basic"
+										label="Product Type of Life Entries"
+										data={state.lifeProductList}
+										variant="outlined"
+										value={state.typeOfProductLife}
+										validation="typeOfProductLife"
+										handleChangeValue={handleChangeValue}
+										willvalidation={true}
+										validate={state.typeOfProductLifeValidation}
+										size={250}
+									/>
+								)}
+								<FormattedInput
+									id="outlined-basic"
+									label="Policy Premium"
+									variant="outlined"
+									value={state.policyPremium}
+									validation="policyPremium"
+									type="percent"
+									willvalidation={true}
+									validate={state.policyPremiumValidation}
+									handleChangeValue={handleChangeValue}
+									size={250}
+								/>
+								<SelectBox
+									id="outlined-basic"
+									label="Source of Business"
+									data={state.marketings}
+									variant="outlined"
+									value={state.sourceOfBusiness}
+									validation="sourceOfBusiness"
+									handleChangeValue={handleChangeValue}
+									willvalidation={false}
+								/>
+								{/* </div> */}
 							</div>
 						</FuseScrollbars>
 					</MuiPickersUtilsProvider>

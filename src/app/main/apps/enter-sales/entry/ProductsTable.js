@@ -28,57 +28,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-const productLists = [
-	{ item: 'Personally Produced', value: 'Personally Produced' },
-	{ item: 'Raw New', value: 'Raw New' },
-	{ item: 'Add On', value: 'Add On' },
-	{ item: 'Transfer In', value: 'Transfer In' }
-];
 
-const policyholderTypeLists = [
-	{ item: 'Household', value: 'household' },
-	{ item: 'Individual', value: 'individual' }
-];
-
-const typeList = [
-	{ item: 'Auto', value: 'Entries' },
-	{ item: 'Fire', value: 'FireEntries' },
-	{ item: 'Life', value: 'LifeEntries' },
-	{ item: 'Health', value: 'HealthEntries' }
-];
-
-const sourceLists = [
-	{ item: 'Center of Influence', value: 'Center of Influence' },
-	{ item: 'Client Request', value: 'Client Request' },
-	{ item: 'Direct Mail Letter', value: 'Direct Mail Letter' },
-	{ item: 'Internet Lead >>', value: 'Internet Lead >>' },
-	{ item: 'Multiline Review', value: 'Multiline Review' },
-	{ item: 'Networking Meeting', value: 'Networking Meeting' },
-	{ item: 'News Ad', value: 'News Ad' },
-	{ item: 'Park Bench', value: 'Park Bench' },
-	{ item: 'Personal Visit', value: 'Personal Visit' },
-	{ item: 'Postcard', value: 'Postcard' },
-	{ item: 'Referral', value: 'Referral ' },
-	{ item: 'Salesperson Pivot', value: 'Salesperson Pivot' },
-	{ item: 'Sign', value: 'Sign' },
-	{ item: 'Television', value: 'Television' },
-	{ item: 'Transfer', value: 'Transfer' },
-	{ item: 'Walk-In', value: 'Walk-In' },
-	{ item: 'Website', value: 'Website' },
-	{ item: 'Web Search', value: 'Web Search' },
-	{ item: 'Yellow Pages', value: 'Yellow Pages' },
-	{ item: 'Other', value: 'Other' }
-];
-
-function makeid(length) {
-	var result = '';
-	var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	var charactersLength = characters.length;
-	for (var i = 0; i < length; i++) {
-		result += characters.charAt(Math.floor(Math.random() * charactersLength));
-	}
-	return result;
-}
 
 function ProductsTable(props) {
 	const dispatch = useDispatch();
@@ -87,7 +37,8 @@ function ProductsTable(props) {
 	const productType = useSelector(selectProductType);
 
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-
+	
+	const displayName = useSelector(({ auth }) => auth.user.data.displayName);
 	const classes = useStyles();
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
@@ -215,7 +166,11 @@ function ProductsTable(props) {
 				adjustments: item.adjustments,
 				dollarBonus: item.dollarBonus,
 				policyHolderType: item.policyHolderType,
-				policyType: item.policyType
+				policyType: item.policyType,
+				typeOfProductFire: item.typeOfProductFire,
+				typeOfProductHealth: item.typeOfProductHealth,
+				typeOfProductLife: item.typeOfProductLife,
+				user:item.user
 			})
 		);
 	}
@@ -329,11 +284,14 @@ function ProductsTable(props) {
 												{n.percentOfSaleCredit}%
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.typeOfProduct}
+											{n.policyType[0] === 'Entries' && n.typeOfProduct}
+												{n.policyType[0] === 'FireEntries' && n.typeOfProductFire}
+												{n.policyType[0] === 'HealthEntries' && n.typeOfProductHealth}
+												{n.policyType[0] === 'LifeEntries' && n.typeOfProductLife}
 											</TableCell>
-											{/* <TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.policyHolderType}
-											</TableCell> */}
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+												{n.user?n.user.data.displayName:users.map(user=>user.id===n.sellerId&& user.data.displayName)}
+											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.policyType[0]==='Entries'?"AutoEntries":n.policyType[0]}
 											</TableCell>

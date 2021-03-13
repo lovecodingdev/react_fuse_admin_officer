@@ -15,7 +15,6 @@ export const getEntries = createAsyncThunk(
 			var entries = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
-
 				if (data) {
 					Object.keys(data).map(item => {
 						// if (uid) {
@@ -61,6 +60,7 @@ export const removeProducts = createAsyncThunk(
 		const response = await axios.post('/api/e-commerce-app/remove-products', { productIds });
 		const data = await response.data;
 		const uid = localStorage.getItem('@UID');
+		console.log(`Sales/${belongTo}/Entries/${uid}/${productIds[0]}`)
 		productIds.map(item => {
 			var starCountRef = realDb.ref(`Sales/${belongTo}/Entries/${uid}/${item}`);
 			var starAutoRef = realDb.ref(`Sales/${belongTo}/LifeEntries/${uid}/${item}`);
