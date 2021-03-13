@@ -14,6 +14,7 @@ export const getUsers = createAsyncThunk(
 			var belongTo = localStorage.getItem('@BELONGTO');
 			var starCountRef = realDb.ref(`users/`);
 			var agencyCountRef = realDb.ref(`agency/`);
+			var invitationCountRef = realDb.ref(`Invitation/${belongTo}/`);
 			var users = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
@@ -31,7 +32,18 @@ export const getUsers = createAsyncThunk(
 							if (belongTo === agencyData[item].belongTo) users.push(agencyData[item]);
 						});
 					}
-					resolve(users);
+					invitationCountRef.on('value',snaps=>{
+						const invitationData = snaps.val()
+						
+						if(invitationData){
+							Object.keys(invitationData).map(item => {
+								users.push(invitationData[item]);
+							});
+						}
+						console.log('--------------------------------',users)
+						resolve(users);
+					})
+					
 				});
 			});
 		})
@@ -85,6 +97,11 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 	const response = await axios.post(firebaseFuncitonSendEmailEndpoint, form);
 	console.log(response);
 	const data = await response.data;
+	const belongTo = localStorage.getItem('@BELONGTO');	
+	realDb.ref(`Invitation/${belongTo}/${contact.email.replace('.','').replace('.','').replace('.','')}/`).set({
+		email: contact.email,
+		id:contact.email.replace('.','').replace('.','').replace('.','')
+	})
 
 	dispatch(getUsers());
 

@@ -35,7 +35,6 @@ function FirebaseLoginTab(props) {
 	}
 
 	function handleSubmit(model) {
-		console.log(model)
 		dispatch(submitLoginWithFireBase(model));
 	}
 

@@ -7,7 +7,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +14,11 @@ import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectBox from '../components/SelectBox';
 import { addUser, openUserDialog, closeUserDialog } from '../store/userSlice';
+import Alert from '@material-ui/lab/Alert';
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
+import { showMessage } from 'app/store/fuse/messageSlice';
 
 const defaultFormState = {
 	id: '',
@@ -62,6 +66,8 @@ function AddUserDialog(props) {
 		}
 	}, [addUserDialog.data, addUserDialog.type, setForm]);
 
+	const [open, setOpen] = React.useState(true);
+
 	useEffect(() => {
 		/**
 		 * After Dialog Open
@@ -84,7 +90,7 @@ function AddUserDialog(props) {
 
 		if (addUserDialog.type === 'new') {
 			console.log("---------------------------")
-			dispatch(addUser({ ...form }));
+			dispatch(addUser({ ...form })).then(dispatch(showMessage({ message: 'Invitation sent to email. Please check the email!' })));
 		} else {
 			dispatch(addUser({ ...form }));
 		}
@@ -106,6 +112,7 @@ function AddUserDialog(props) {
 			fullWidth
 			maxWidth="xs"
 		>
+			
 			<AppBar position="static" className="shadow-md">
 				<Toolbar className="flex w-full">
 					<Typography variant="subtitle1" color="inherit">

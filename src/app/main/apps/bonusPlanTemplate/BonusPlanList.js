@@ -1280,6 +1280,7 @@ function ContactsList(props) {
 
 	return (
 		<FuseAnimateGroup animation="transition.slideUpIn" delay={300}>
+			
 			<Paper className="w-full rounded-8 shadow mb-5">
 				<div className="flex items-center justify-between px-16 py-16 border-b-1">
 					<Typography className="text-16">PER PRODUCT BONUSES (Paid from First Policy)</Typography>

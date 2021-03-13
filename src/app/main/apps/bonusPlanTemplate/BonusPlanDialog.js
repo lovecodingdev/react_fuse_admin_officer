@@ -43,6 +43,16 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
+function makeid(length) {
+	var result           = '';
+	var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	var charactersLength = characters.length;
+	for ( var i = 0; i < length; i++ ) {
+	   result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return result;
+ }
+
 function ContactDialog(props) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
@@ -152,7 +162,7 @@ function ContactDialog(props) {
 							<Icon color="action">account_circle</Icon>
 						</div> */}
 
-						{/* <TextField
+						<TextField
 							className="mb-24"
 							label="Policy Type"
 							autoFocus
@@ -163,7 +173,7 @@ function ContactDialog(props) {
 							variant="outlined"
 							required
 							fullWidth
-						/> */}
+						/>
 						{/* <FormControl variant="outlined" className={classes.formControl}>
 							<InputLabel id="demo-simple-select-outlined-label">{'Policy Type'}</InputLabel>
 							<Select

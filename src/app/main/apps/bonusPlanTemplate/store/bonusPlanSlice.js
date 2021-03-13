@@ -15,7 +15,7 @@ export const getAutoBonus = createAsyncThunk('bonusPlanTemplate/autoBonus/getCon
 	
 		new Promise((resolve, reject) => {
 			var belongTo = localStorage.getItem('@BELONGTO')
-			var starCountRef = realDb.ref(`BonusPlanTemplate/${belongTo}/`);
+			var starCountRef = realDb.ref(`BonusPlanTemplate/${belongTo}/all`);
 			var bonusPlans = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();

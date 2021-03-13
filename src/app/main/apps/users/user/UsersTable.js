@@ -39,12 +39,11 @@ const teamBonusList = [
 	{ item: 'No', value: false }
 ];
 
-
 function ProductsTable(props) {
 	const dispatch = useDispatch();
 	const products = useSelector(selectUsers);
 	const searchText = useSelector(({ users }) => users.users.searchText);
-	const isAdmin = useSelector(({auth})=>auth.user.role[0])
+	const isAdmin = useSelector(({ auth }) => auth.user.role[0]);
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(products);
@@ -174,7 +173,6 @@ function ProductsTable(props) {
 		props.history.push(`/apps/setup/bonus-plan/${uid}`);
 	}
 
-
 	function goReport() {
 		props.history.push('/apps/production/sales-results');
 	}
@@ -222,8 +220,8 @@ function ProductsTable(props) {
 							{_.orderBy(data, [order.id], [order.direction])
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((n, index) => {
-									if(isAdmin==='agency'&& n.role[0]==='agency'){
-										return
+									if (isAdmin === 'agency' && n.role[0] === 'agency') {
+										return;
 									}
 									const isSelected = selected.indexOf(n.id) !== -1;
 									return (
@@ -251,7 +249,7 @@ function ProductsTable(props) {
 												align="center"
 												onClick={() => dispatch(openUserProfileDialog(n.data))}
 											>
-												{n.data.displayName}
+												{n.data && n.data.displayName}
 											</TableCell>
 
 											<TableCell
@@ -260,13 +258,15 @@ function ProductsTable(props) {
 												scope="row"
 												align="center"
 											>
-												<SelectBox
-													data={teamBonusList}
-													willvalidation={false}
-													validation="includeTeamBonus"
-													handleChangeValue={handleChangeValue}
-													// value={state.includeTeamBonus}
-												/>
+												{n.data && (
+													<SelectBox
+														data={teamBonusList}
+														willvalidation={false}
+														validation="includeTeamBonus"
+														handleChangeValue={handleChangeValue}
+														// value={state.includeTeamBonus}
+													/>
+												)}
 											</TableCell>
 
 											<TableCell
@@ -274,10 +274,10 @@ function ProductsTable(props) {
 												component="th"
 												scope="row"
 												align="center"
-												onClick={() => goBonusPlan(n.uid)}
+												onClick={() => n.data && goBonusPlan(n.uid)}
 											>
 												{/* <span>$</span> */}
-												Bonus Setup
+												{n.data && 'Bonus Setup'}
 											</TableCell>
 
 											<TableCell
@@ -285,16 +285,16 @@ function ProductsTable(props) {
 												component="th"
 												scope="row"
 												align="center"
-												onClick={() => goReport()}
+												onClick={() => n.data && goReport()}
 											>
-												Producer File
+												{n.data && 'Producer File'}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.data.email}
+												{n.data ? n.data.email : n.email}
 											</TableCell>
 
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.active ? 'Active' : 'Revoked'}
+												{n.active ? 'Active' : n.data ? 'Revoked' : 'Pending'}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.active && (
@@ -336,7 +336,7 @@ function ProductsTable(props) {
 					aria-labelledby="alert-dialog-title"
 					aria-describedby="alert-dialog-description"
 				>
-					<DialogTitle id="alert-dialog-title">{"Are you really revoke this user?"}</DialogTitle>
+					<DialogTitle id="alert-dialog-title">{'Are you really revoke this user?'}</DialogTitle>
 					<DialogContent>
 						<DialogContentText id="alert-dialog-description">
 							You will lost this users data.
