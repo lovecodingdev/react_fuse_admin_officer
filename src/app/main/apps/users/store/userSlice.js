@@ -76,26 +76,35 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 			email: contact.email,
 			subject: 'Sent Invitation',
 			emailBody:
-				'Please touch this link to register to Back Office Web App as Agency \t ' +
-				deployOfficerEndpoint +
+				'<div><p>Please touch this link to register to Back Office Web App as Agency <p> ' +
+				`<a href='`+deployOfficerEndpoint +
 				'/register/' +
 				contact.belongTo +
-				'/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l'
+				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l'>`+deployOfficerEndpoint +
+				'/register/' +
+				contact.belongTo +
+				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l</a></div>`
 		};
 	} else {
 		var form = {
 			email: contact.email,
 			subject: 'Sent Invitation',
 			emailBody:
-				'Please touch this link to register to Back Office Web App as Producer \t ' +
-				deployProducerEndpoint +
+				'<div><p>Please touch this link to register to Back Office Web App as Producer <p> ' +
+				`<a href='`+deployProducerEndpoint +
 				'/register/' +
-				contact.belongTo
+				contact.belongTo+`'>`+ deployProducerEndpoint +
+				'/register/' +
+				contact.belongTo+`</a></div>`
 		};
 	}
 
 	const response = await axios.post(firebaseFuncitonSendEmailEndpoint, form);
-	console.log(response);
+	console.log('<div><p>Please touch this link to register to Back Office Web App as Agency <p> ' +
+	`<a href='`+deployOfficerEndpoint +
+	'/register/' +
+	contact.belongTo +
+	`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l'/></div>`);
 	const data = await response.data;
 	const belongTo = localStorage.getItem('@BELONGTO');	
 	realDb.ref(`Invitation/${belongTo}/${contact.email.replace('.','').replace('.','').replace('.','')}/`).set({
