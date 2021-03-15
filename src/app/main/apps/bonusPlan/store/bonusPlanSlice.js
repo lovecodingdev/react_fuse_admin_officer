@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { getUserData } from './userSlice';
-import {realDb} from '../../../../../@fake-db/db/firebase'
+import { realDb } from '../../../../../@fake-db/db/firebase';
 
-export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts', 
-	
+export const getAutoBonus = createAsyncThunk(
+	'bonusPlan/autoBonus/getContacts',
+
 	// const response = await axios.get('/api/bonus-plan/contacts', {
 	// 	params: routeParams
 	// });
@@ -12,9 +13,8 @@ export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts',
 
 	// return { data, routeParams };
 	(routeParam, { getState }) =>
-	
 		new Promise((resolve, reject) => {
-			var belongTo = localStorage.getItem('@BELONGTO')
+			var belongTo = localStorage.getItem('@BELONGTO');
 			var starCountRef = realDb.ref(`BonusPlan/${belongTo}/${routeParam}`);
 			var bonusPlans = [];
 			starCountRef.on('value', snapshot => {
@@ -22,16 +22,10 @@ export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts',
 
 				if (data) {
 					Object.keys(data).map(item => {
-						bonusPlans.push(data[item]);
+						bonusPlans.push(data);
 					});
 				}
-	
-				if(data){
-					resolve([data])
-				} else {
-					resolve([]);
-				}
-				
+				resolve(bonusPlans);
 			});
 		})
 );
@@ -39,10 +33,9 @@ export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts',
 export const addContact = createAsyncThunk(
 	'bonusPlan/autoBonus/addContact',
 	async (contact, { dispatch, getState }) => {
-	
 		const response = await axios.post('/api/bonus-plan/add-contact', { contact });
 		const data = await response.data;
-		
+
 		dispatch(getAutoBonus(contact.routeParam));
 
 		return data;
@@ -52,8 +45,7 @@ export const addContact = createAsyncThunk(
 export const updateContact = createAsyncThunk(
 	'bonusPlan/autoBonus/updateContact',
 	async (contact, { dispatch, getState }) => {
-		
-		const response = await axios.post('/api/bonus-plan/update-contact', { contact});
+		const response = await axios.post('/api/bonus-plan/update-contact', { contact });
 		const data = await response.data;
 
 		dispatch(getAutoBonus(contact.routeParam));
@@ -65,10 +57,9 @@ export const updateContact = createAsyncThunk(
 export const removeContact = createAsyncThunk(
 	'bonusPlan/autoBonus/removeContact',
 	async (contact, { dispatch, getState }) => {
-		
 		const response = await axios.post('/api/bonus-plan/remove-contact', { contact });
 		const data = await response.data;
-		var belongTo = localStorage.getItem('@BELONGTO')
+		var belongTo = localStorage.getItem('@BELONGTO');
 		realDb.ref(`BonusPlan/${belongTo}/${contact.routeParam}/${contact.planType}/${contact.id}`).remove();
 		dispatch(getAutoBonus(contact.routeParam));
 
@@ -185,9 +176,9 @@ const contactsSlice = createSlice({
 		},
 		tempData: {},
 		addTempData: {},
-		removeTempData:{},
-		data:{},
-		template:{}
+		removeTempData: {},
+		data: {},
+		template: {}
 	}),
 	reducers: {
 		setContactsSearchText: {
@@ -353,17 +344,17 @@ const contactsSlice = createSlice({
 		setRemoveTempData: (state, action) => {
 			state.removeTempData = {
 				...action.payload
-			}
+			};
 		},
-		setData: (state, action)=>{
+		setData: (state, action) => {
 			state.data = {
 				...action.payload
-			}
+			};
 		},
-		setTemplate: (state, action)=>{
+		setTemplate: (state, action) => {
 			state.template = {
 				...action.payload
-			}
+			};
 		}
 	},
 	extraReducers: {
@@ -371,10 +362,10 @@ const contactsSlice = createSlice({
 		[addContact.fulfilled]: contactsAdapter.addOne,
 		[getAutoBonus.fulfilled]: contactsAdapter.setAll
 		// (state, action) => {
-			// const { data, routeParams } = action.payload;
-			// contactsAdapter.setAll;
-			// state.routeParams = routeParams;
-			// state.searchText = '';
+		// const { data, routeParams } = action.payload;
+		// contactsAdapter.setAll;
+		// state.routeParams = routeParams;
+		// state.searchText = '';
 		// }
 	}
 });

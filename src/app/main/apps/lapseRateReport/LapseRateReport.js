@@ -184,7 +184,8 @@ function ProjectDashboardApp(props) {
 					if (item.includes('monthlyAgencyLapseAutoBonus')) {
 						Object.keys(contacts[0].monthlyAgencyLapseAutoBonus).map(i => {
 							if (
-								parseFloat(contacts[0]['monthlyAgencyLapseAutoBonus'][i].percent) === parseFloat(value)
+								parseFloat(contacts[0]['monthlyAgencyLapseAutoBonus'][i].percent)+1 > parseFloat(value) &&
+								parseFloat(contacts[0]['monthlyAgencyLapseAutoBonus'][i].percent)-1< parseFloat(value) 
 							) {
 								temp = {
 									...state.autoRows,
@@ -256,10 +257,14 @@ function ProjectDashboardApp(props) {
 			if (contacts.length > 0) {
 				Object.keys(contacts[0]).map((item, index) => {
 					if (item.includes('monthlyAgencyLapseFireBonus')) {
-						Object.keys(contacts[0].monthlyAgencyLapseFireBonus).map(i => {
+					
+						Object.keys(contacts[0].monthlyAgencyLapseFireBonus).map((i) => {
+							
 							if (
-								parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent) === parseFloat(value)
+								parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent)+1 > parseFloat(value) &&
+								parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent)-1< parseFloat(value) 
 							) {
+								
 								temp = {
 									...state.fireRows,
 									[month]: {
@@ -281,8 +286,9 @@ function ProjectDashboardApp(props) {
 											value: nextMonthValue
 										}
 									}
-								};
+								};								
 							}
+						
 						});
 					}
 				});
