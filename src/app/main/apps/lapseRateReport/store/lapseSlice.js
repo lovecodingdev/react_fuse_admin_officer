@@ -2,7 +2,7 @@ import { createEntityAdapter, createSlice, createAsyncThunk } from '@reduxjs/too
 import axios from 'axios';
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
-var belongTo = localStorage.getItem('@BELONGTO')
+
 
 export const getProjects = createAsyncThunk('lapseRate/projects/getProjects', 
 // async () => {
@@ -11,15 +11,18 @@ export const getProjects = createAsyncThunk('lapseRate/projects/getProjects',
 // }
 () =>
 		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`LapseRateReport/${belongTo}/`);
+			var belongTo = localStorage.getItem('@BELONGTO')
+			var uid = localStorage.getItem('@UID')
+			var starCountRef = realDb.ref(`LapseRateReport/${belongTo}/${uid}/`);
 			var entries = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
 
 				if (data) {
-					Object.keys(data).map(item => {
-						entries.push(data[item]);
-					});
+					// Object.keys(data).map(item => {
+					// 	entries.push(data);
+					// });
+					entries.push(data)
 				}
 
 				resolve(entries);
@@ -28,15 +31,19 @@ export const getProjects = createAsyncThunk('lapseRate/projects/getProjects',
 );
 
 export const saveLapseRate = createAsyncThunk('lapseRate/projects/saveLapseBonus',async (data)=> {
+	var belongTo = localStorage.getItem('@BELONGTO')
+	var uid = localStorage.getItem('@UID')
 	const response = await axios.get('/api/lapse-rate/projects');
 	
-	realDb.ref(`LapseRateReport/${belongTo}/Auto/`).set({...data, id:"auto"})
+	realDb.ref(`LapseRateReport/${belongTo}/${uid}/Auto/`).set({...data, id:"auto"})
 	return response.data;
 });
 export const saveFireLapseRate = createAsyncThunk('lapseRate/projects/saveLapseBonus',async (data)=> {
+	var belongTo = localStorage.getItem('@BELONGTO')
+	var uid = localStorage.getItem('@UID')
 	const response = await axios.get('/api/lapse-rate/projects');
 	
-	realDb.ref(`LapseRateReport/${belongTo}/Fire/`).set({...data, id:"fire"})
+	realDb.ref(`LapseRateReport/${belongTo}/${uid}/Fire/`).set({...data, id:"fire"})
 	return response.data;
 });
 

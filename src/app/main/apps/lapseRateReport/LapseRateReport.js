@@ -19,7 +19,7 @@ import { getWidgets, selectWidgets } from './store/widgetsSlice';
 import { rows, columns, levelColumns, firerows } from './tableDataTemplate';
 import Widget10 from './widgets/Widget10';
 import TargetTable from './widgets/TargetTable';
-import {saveLapseRate, saveFireLapseRate} from './store/lapseSlice'
+import { saveLapseRate, saveFireLapseRate } from './store/lapseSlice';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -59,7 +59,7 @@ function ProjectDashboardApp(props) {
 	const dispatch = useDispatch();
 	const widgets = useSelector(selectWidgets);
 	const projects = useSelector(selectProjects);
-	console.log(projects)
+	console.log(projects);
 	const contacts = useSelector(selectContacts);
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
@@ -81,13 +81,38 @@ function ProjectDashboardApp(props) {
 		dispatch(getAutoBonus());
 	}, [dispatch]);
 
-	useEffect(()=>{
-		if(projects.length>0){
-			console.log(projects[0])
-			// setState({...state,autoRows:{...projects[0]}, fireRows:{...projects[1]}})
+	useEffect(() => {
+		if (projects.length > 0) {
+			console.log(projects[0]);
+			var data = { ...projects[0] };
+
+			if (Object.keys(projects[0]).includes('Auto')) {
+				Object.keys(data['Auto']).map(month => {
+					Object.keys(data['Auto'][month]).map(policy => {
+						console.log(policy);
+						if (month !== 'id') {
+							var value = data['Auto'][month][policy].value;
+							rows[month][policy].value = value;
+						}
+					});
+				});
+			}
+
+			if (Object.keys(projects[0]).includes('Fire')) {
+				Object.keys(data['Fire']).map(month => {
+					Object.keys(data['Fire'][month]).map(policy => {
+						console.log(policy);
+						if (month !== 'id') {
+							var value = data['Fire'][month][policy].value;
+							firerows[month][policy].value = value;
+						}
+					});
+				});
+			}
+
+			setState({ ...state, autoRows: rows, fireRows: firerows });
 		}
-		
-	},[projects])
+	}, [projects]);
 
 	useEffect(() => {
 		let tempJSON = {
@@ -188,8 +213,8 @@ function ProjectDashboardApp(props) {
 					}
 				});
 			}
-			console.log(temp)
-			dispatch(saveLapseRate(temp))
+			console.log(temp);
+			dispatch(saveLapseRate(temp));
 			setState({ ...state, autoRows: temp });
 		} else {
 			let monthIndex = months.indexOf(month);
@@ -262,12 +287,12 @@ function ProjectDashboardApp(props) {
 					}
 				});
 			}
-			dispatch(saveFireLapseRate(temp))
+			dispatch(saveFireLapseRate(temp));
 			setState({ ...state, fireRows: temp });
 		}
 	}
 	// return null;
-	if (_.isEmpty(widgets) || _.isEmpty(projects)) {
+	if (_.isEmpty(widgets)) {
 		return null;
 	}
 
