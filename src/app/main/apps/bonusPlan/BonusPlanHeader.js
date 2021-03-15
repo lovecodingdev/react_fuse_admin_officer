@@ -2,7 +2,6 @@ import FuseAnimate from '@fuse/core/FuseAnimate';
 import Hidden from '@material-ui/core/Hidden';
 import Icon from '@material-ui/core/Icon';
 import Paper from '@material-ui/core/Paper';
-import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
@@ -56,8 +55,10 @@ function ContactsHeader(props) {
 	}, [user]);
 
 	const addNewTemplate = () => {
-		if (Object.keys(template).length > 0&& templateName) {
-			dispatch(addContact({ ...template, routeParam: props.name })).then(dispatch(showMessage({ message: 'Saved Successfully!' })));
+		if (Object.keys(template).length > 0 && templateName) {
+			dispatch(addContact({ ...template, routeParam: props.name })).then(
+				dispatch(showMessage({ message: 'Saved Successfully!' }))
+			);
 		} else {
 			dispatch(showMessage({ message: 'Please Select Bonus Plan Template!' }));
 		}
@@ -65,7 +66,7 @@ function ContactsHeader(props) {
 
 	const handleChangeValue = data => {
 		dispatch(setTemplate(bonusPlanTemplates[0][data.template]));
-		setTemplateName(data.template)
+		setTemplateName(data.template);
 	};
 
 	return (
@@ -88,7 +89,7 @@ function ContactsHeader(props) {
 					</FuseAnimate>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Typography variant="h6" className="mx-12 hidden sm:flex">
-							{ `${name}'s Bonus Plan`}
+							{`${name}'s Bonus Plan`}
 						</Typography>
 					</FuseAnimate>
 				</div>

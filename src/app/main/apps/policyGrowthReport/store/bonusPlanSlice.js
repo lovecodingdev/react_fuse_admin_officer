@@ -22,7 +22,7 @@ export const getAutoBonus = createAsyncThunk(
 				}
 
 				if (data) {
-					resolve([data]);
+					resolve([autoBonus]);
 				} else {
 					resolve([]);
 				}
