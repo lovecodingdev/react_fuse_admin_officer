@@ -1656,7 +1656,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Agency_TargetReports_Life_Table',
-			title: "FIRE",
+			title: "LIFE",
 			table: {
 				columns: [
 					{
@@ -2143,7 +2143,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Agency_TargetReports_Health_Table',
-			title: "FIRE",
+			title: "HEALTH",
 			table: {
 				columns: [
 					{
@@ -2630,7 +2630,7 @@ const agencyAppDB = {
 		},
 		{
 			id: 'Agency_TargetReports_Bank_Table',
-			title: "FIRE",
+			title: "BANK",
 			table: {
 				columns: [
 					{
