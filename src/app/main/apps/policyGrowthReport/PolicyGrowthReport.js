@@ -588,6 +588,10 @@ function ProjectDashboardApp(props) {
 			}
 		};
 
+
+
+
+
 		let percentRows = {
 			'31-Dec': {
 				month: {
@@ -1509,7 +1513,16 @@ function ProjectDashboardApp(props) {
 	}
 
 	function percentValue(value1, value2) {
-		return String(Math.round(((value1 - value2) / value2) * 10000) / 100) + '%';
+		if(value2){
+			return String(Math.round(((value1 - value2) / value2) * 10000) / 100) + '%';
+		} else if(!value1&&!value2) {
+			return ''
+		} else if(!value2){
+			return ''
+		} else {
+			return ''
+		}
+		
 	}
 
 	function houseHoldValue(value1, value2) {
