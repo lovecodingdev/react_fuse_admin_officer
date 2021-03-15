@@ -29,12 +29,23 @@ const useStyles = makeStyles(theme => ({
 
 function ContactsList(props) {
 	const dispatch = useDispatch();
-	const contacts = useSelector(selectContacts);
+	const contact = useSelector(selectContacts);
+	const [contacts, setContacts] = useState(contact)
 	console.log(contacts);
-
+	const template = useSelector(({ bonusPlan }) => bonusPlan.autoBonus.template);
 	const searchText = useSelector(({ bonusPlan }) => bonusPlan.autoBonus.searchText);
 	const user = useSelector(({ bonusPlan }) => bonusPlan.user);
 	const classes = useStyles(props);
+	useEffect(()=>{
+		if(Object.keys(template).length>0){
+			setContacts([template])
+		}
+	},[template])
+	useEffect(()=>{
+		if(contact.length>0){
+			setContacts(contact)
+		}
+	},[contact])
 	const [state, setState] = useState({
 		autoBonus: [],
 		fireBonus: [],
@@ -521,36 +532,36 @@ function ContactsList(props) {
 				className: 'font-bold',
 				sortable: true
 			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewNetBonuseDialog('otherActivityBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
-			}
+			// {
+			// 	id: 'action',
+			// 	// width: 128,
+			// 	sortable: false,
+			// 	Header: ({ selectedFlatRows }) => {
+			// 		return (
+			// 			<Fab
+			// 				color="secondary"
+			// 				aria-label="add"
+			// 				// className={classes.addButton}
+			// 				size="small"
+			// 				onClick={() => dispatch(openNewNetBonuseDialog('otherActivityBonus'))}
+			// 			>
+			// 				<Icon>add</Icon>
+			// 			</Fab>
+			// 		);
+			// 	},
+			// 	Cell: ({ row }) => (
+			// 		<div className="flex items-center">
+			// 			<IconButton
+			// 				onClick={ev => {
+			// 					ev.stopPropagation();
+			// 					dispatch(removeContact(row.original));
+			// 				}}
+			// 			>
+			// 				<Icon>delete</Icon>
+			// 			</IconButton>
+			// 		</div>
+			// 	)
+			// }
 		],
 		[dispatch, user.starred]
 	);

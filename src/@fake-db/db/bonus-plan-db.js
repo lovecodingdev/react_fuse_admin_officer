@@ -107,12 +107,11 @@ mock.onPost('/api/bonus-plan/add-contact').reply(request => {
 	const { contact } = JSON.parse(request.data);
 	const newContact = {
 		...contact,
-		dollar: contact.dollar?parseFloat(contact.dollar):'',
-		percent: contact.percent?parseFloat(contact.percent):'',
+		
 		id: Date.now()
 	};
 	var belongTo = localStorage.getItem('@BELONGTO')
-	realDb.ref(`BonusPlan/${belongTo}/${contact.routeParam}/${contact.planType}/${newContact.id}`).set({
+	realDb.ref(`BonusPlan/${belongTo}/${contact.routeParam}/`).set({
 		...newContact
 	});
 	contactsDB.contacts = [...contactsDB.contacts, newContact];

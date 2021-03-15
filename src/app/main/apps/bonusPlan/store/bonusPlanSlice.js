@@ -39,7 +39,7 @@ export const getAutoBonus = createAsyncThunk('bonusPlan/autoBonus/getContacts',
 export const addContact = createAsyncThunk(
 	'bonusPlan/autoBonus/addContact',
 	async (contact, { dispatch, getState }) => {
-		console.log(contact, contact.routeParam )
+	
 		const response = await axios.post('/api/bonus-plan/add-contact', { contact });
 		const data = await response.data;
 		
@@ -182,7 +182,12 @@ const contactsSlice = createSlice({
 				open: false
 			},
 			data: null
-		}
+		},
+		tempData: {},
+		addTempData: {},
+		removeTempData:{},
+		data:{},
+		template:{}
 	}),
 	reducers: {
 		setContactsSearchText: {
@@ -334,6 +339,31 @@ const contactsSlice = createSlice({
 				},
 				data: null
 			};
+		},
+		setTempData: (state, action) => {
+			state.tempData = {
+				...action.payload
+			};
+		},
+		setAddTempData: (state, action) => {
+			state.addTempData = {
+				...action.payload
+			};
+		},
+		setRemoveTempData: (state, action) => {
+			state.removeTempData = {
+				...action.payload
+			}
+		},
+		setData: (state, action)=>{
+			state.data = {
+				...action.payload
+			}
+		},
+		setTemplate: (state, action)=>{
+			state.template = {
+				...action.payload
+			}
 		}
 	},
 	extraReducers: {
@@ -366,7 +396,12 @@ export const {
 	openNewNetBonuseDialog,
 	closeNewNetBonusDialog,
 	openEditNetBonusDialog,
-	closeEditNetBonusDialog
+	closeEditNetBonusDialog,
+	setTempData,
+	setAddTempData,
+	setRemoveTempData,
+	setData,
+	setTemplate
 } = contactsSlice.actions;
 
 export default contactsSlice.reducer;
