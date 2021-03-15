@@ -1,22 +1,28 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Hidden from '@material-ui/core/Hidden';
 import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
+import Input from '@material-ui/core/Input';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import { getUserData } from './store/userSlice';
+import { addContact } from './store/bonusPlanSlice';
+import { showMessage } from 'app/store/fuse/messageSlice';
 
 function ContactsHeader(props) {
 	const dispatch = useDispatch();
 	const searchText = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.searchText);
 	const mainTheme = useSelector(selectMainTheme);
 	const user = useSelector(({bonusPlanTemplate})=> bonusPlanTemplate.user)
+	const data = useSelector(({bonusPlanTemplate})=> bonusPlanTemplate.autoBonus.data)
 	const [name, setName] = React.useState("")
+	const [templateName, setTemplateName] = React.useState("")
 	React.useEffect(()=>{
 		dispatch(getUserData(props.name))
 	},[])
@@ -30,6 +36,16 @@ function ContactsHeader(props) {
 		}
 		
 	},[user])
+
+	const addNewTemplate = () => {
+		if(!templateName){
+			dispatch(showMessage({ message: 'Please Enter Bonus Plan Template Name!' }))
+		} else {
+			dispatch(addContact({...data, name: templateName}))
+			dispatch(showMessage({ message: 'Successfully Saved!' }))
+			setTemplateName("")
+		}
+	}
 
 	return (
 		<div className="flex flex-1 items-center justify-between p-4 sm:p-24">
@@ -56,28 +72,40 @@ function ContactsHeader(props) {
 					</FuseAnimate>
 				</div>
 			</div>
-
-			{/* <div className="flex flex-1 items-center justify-center px-8 sm:px-12">
+			<div className="flex flex-1 items-center justify-center px-8 sm:px-12">
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Paper className="flex p-4 items-center w-full max-w-512 h-48 px-8 py-4 rounded-8 shadow">
-							<Icon color="action">search</Icon>
 
 							<Input
-								placeholder="Search for anything"
+								placeholder="New Bonus Plan Template Name"
 								className="flex flex-1 px-16"
 								disableUnderline
 								fullWidth
-								value={searchText}
+								value={templateName}
 								inputProps={{
 									'aria-label': 'Search'
 								}}
-								onChange={ev => dispatch(setContactsSearchText(ev))}
+								onChange={ev => setTemplateName(ev.target.value)}
 							/>
 						</Paper>
 					</FuseAnimate>
 				</ThemeProvider>
-			</div> */}
+			</div>
+			<FuseAnimate animation="transition.slideRightIn" delay={300}>
+				<Button
+					component={Link}					
+					className="whitespace-nowrap normal-case"
+					variant="contained"
+					color="secondary"
+					onClick={addNewTemplate}
+				>
+					<span className="hidden sm:flex">Save New Bonus Plan Template</span>
+					
+				</Button>
+			</FuseAnimate>
+
+			
 		</div>
 	);
 }

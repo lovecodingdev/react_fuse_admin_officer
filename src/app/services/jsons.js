@@ -571,14 +571,6 @@ export const bonusPlanTemplate = {
         "percent" : "",
         "planType" : "otherActivityBonus",
         "routeParam" : "all"
-      },
-      "1614454850394" : {
-        "dollar" : 2,
-        "id" : 1614454850394,
-        "name" : "asdf",
-        "percent" : "",
-        "planType" : "otherActivityBonus",
-        "routeParam" : "all"
       }
     },
     "teamAutoTargetBonus" : {

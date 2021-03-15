@@ -21,7 +21,8 @@ import {
 	updateContact,
 	addContact,
 	closeNewContactDialog,
-	closeEditContactDialog
+	closeEditContactDialog,
+	setTempData
 } from './store/bonusPlanSlice';
 import MenuItem from '@material-ui/core/MenuItem';
 import { selectTypeProduct } from './store/productTypeSlice';
@@ -120,7 +121,8 @@ function ContactDialog(props) {
 		if (contactDialog.type === 'new') {
 			dispatch(addContact({ ...form, routeParam: props.routeParam }));
 		} else {
-			dispatch(updateContact({ ...form, routeParam: props.routeParam }));
+			// console.log({...form})
+			dispatch(setTempData({ ...form}));
 		}
 		closeComposeDialog();
 	}
@@ -162,7 +164,7 @@ function ContactDialog(props) {
 							<Icon color="action">account_circle</Icon>
 						</div> */}
 
-						<TextField
+						{/* <TextField
 							className="mb-24"
 							label="Policy Type"
 							autoFocus
@@ -173,7 +175,7 @@ function ContactDialog(props) {
 							variant="outlined"
 							required
 							fullWidth
-						/>
+						/> */}
 						{/* <FormControl variant="outlined" className={classes.formControl}>
 							<InputLabel id="demo-simple-select-outlined-label">{'Policy Type'}</InputLabel>
 							<Select

@@ -15,11 +15,14 @@ import {
 	openNewTeamTargetBonusDialog,
 	openEditTeamTargetBonusDialog,
 	openNewNetBonuseDialog,
-	openEditNetBonusDialog
+	openEditNetBonusDialog,
+	setRemoveTempData,
+	setData
 } from './store/bonusPlanSlice';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import { openNewContactDialog } from './store/bonusPlanSlice';
 import { makeStyles } from '@material-ui/core/styles';
+import { bonusPlanTemplate } from 'app/services/jsons';
 
 const useStyles = makeStyles(theme => ({
 	addButton: {
@@ -29,9 +32,53 @@ const useStyles = makeStyles(theme => ({
 
 function ContactsList(props) {
 	const dispatch = useDispatch();
-	const contacts = useSelector(selectContacts);
-	console.log(contacts);
+	// const contacts = useSelector(selectContacts);
+	const tempData = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.tempData);
+	const data = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.data);
+	const addTempData = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.addTempData);
+	const removeTempData = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.removeTempData);
+	const [contacts, setContact] = useState(bonusPlanTemplate);
 
+	useEffect(() => {
+		if (tempData) {
+			setContact({
+				...contacts,
+				[tempData.planType]: {
+					...contacts[tempData.planType],
+					[tempData.id]: { ...tempData }
+				}
+			});
+		}
+	}, [tempData]);
+
+	useEffect(() => {
+		if (addTempData) {
+			setContact({
+				...contacts,
+				[addTempData.planType]: {
+					...contacts[addTempData.planType],
+					[addTempData.id]: { ...addTempData }
+				}
+			});
+		}
+	}, [addTempData]);
+
+	useEffect(() => {
+		if (Object.keys(removeTempData).length > 0) {
+			var temp = { ...contacts };
+			var subTemp = { ...temp[removeTempData.planType] };
+			delete subTemp[removeTempData.id];
+
+			setContact({
+				...temp,
+				[removeTempData.planType]: { ...subTemp }
+			});
+		}
+	}, [removeTempData]);
+
+	useEffect(() => {
+		dispatch(setData({ ...contacts }));
+	}, [contacts]);
 	const searchText = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.searchText);
 	const user = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.user);
 	const classes = useStyles(props);
@@ -77,36 +124,6 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({}) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewContactDialog('autoBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -131,36 +148,6 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewContactDialog('fireBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -185,36 +172,6 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewContactDialog('lifeBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -239,36 +196,6 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewContactDialog('healthBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -293,36 +220,6 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewContactDialog('bankBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -347,36 +244,6 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewTargetBonusDialog('individualAutoTargetBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -401,36 +268,6 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewTargetBonusDialog('individualFireTargetBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -455,36 +292,6 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewTargetBonusDialog('individualLifeTargetBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -509,36 +316,6 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewTargetBonusDialog('individualHealthTargetBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -563,36 +340,6 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewTargetBonusDialog('individualBankTargetBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -617,36 +364,6 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamAutoTargetBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -671,36 +388,6 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamFireTargetBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -725,36 +412,6 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamLifeTargetBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -779,36 +436,6 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamHealthTargetBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -833,36 +460,6 @@ function ContactsList(props) {
 				accessor: 'amount',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewTeamTargetBonusDialog('teamBankTargetBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -887,36 +484,6 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewContactDialog('monthlyAgencyLapseAutoBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -941,36 +508,6 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewContactDialog('monthlyAgencyLapseFireBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
@@ -990,41 +527,10 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewNetBonuseDialog('monthlyAutoNetGrowthBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
 	);
-
 
 	const monthlyFireNetGrowthBonusColumns = React.useMemo(
 		() => [
@@ -1040,41 +546,10 @@ function ContactsList(props) {
 				accessor: 'dollar',
 				className: 'font-bold',
 				sortable: true
-			},
-			{
-				id: 'action',
-				// width: 128,
-				sortable: false,
-				Header: ({ selectedFlatRows }) => {
-					return (
-						<Fab
-							color="secondary"
-							aria-label="add"
-							// className={classes.addButton}
-							size="small"
-							onClick={() => dispatch(openNewNetBonuseDialog('monthlyFireNetGrowthBonus'))}
-						>
-							<Icon>add</Icon>
-						</Fab>
-					);
-				},
-				Cell: ({ row }) => (
-					<div className="flex items-center">
-						<IconButton
-							onClick={ev => {
-								ev.stopPropagation();
-								dispatch(removeContact(row.original));
-							}}
-						>
-							<Icon>delete</Icon>
-						</IconButton>
-					</div>
-				)
 			}
 		],
 		[dispatch, user.starred]
 	);
-
 
 	const otherActivityBonusColumns = React.useMemo(
 		() => [
@@ -1113,7 +588,7 @@ function ContactsList(props) {
 						<IconButton
 							onClick={ev => {
 								ev.stopPropagation();
-								dispatch(removeContact(row.original));
+								dispatch(setRemoveTempData(row.original));
 							}}
 						>
 							<Icon>delete</Icon>
@@ -1148,126 +623,126 @@ function ContactsList(props) {
 			monthlyFireNetGrowthBonus: [],
 			otherActivityBonus: []
 		};
-		if (contacts.length > 0) {
-			Object.keys(contacts[0]).map((item, index) => {
+		if (contacts) {
+			Object.keys(contacts).map((item, index) => {
 				if (item.includes('autoBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].autoBonus).map(i => {
-						tempData.push(contacts[0]['autoBonus'][i]);
+					Object.keys(contacts.autoBonus).map(i => {
+						tempData.push(contacts['autoBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, autoBonus: tempData };
 				} else if (item.includes('fireBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].fireBonus).map(i => {
-						tempData.push(contacts[0]['fireBonus'][i]);
+					Object.keys(contacts.fireBonus).map(i => {
+						tempData.push(contacts['fireBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, fireBonus: tempData };
 				} else if (item.includes('lifeBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].lifeBonus).map(i => {
-						tempData.push(contacts[0]['lifeBonus'][i]);
+					Object.keys(contacts.lifeBonus).map(i => {
+						tempData.push(contacts['lifeBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, lifeBonus: tempData };
 				} else if (item.includes('healthBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].healthBonus).map(i => {
-						tempData.push(contacts[0]['healthBonus'][i]);
+					Object.keys(contacts.healthBonus).map(i => {
+						tempData.push(contacts['healthBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, healthBonus: tempData };
 				} else if (item.includes('bankBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].bankBonus).map(i => {
-						tempData.push(contacts[0]['bankBonus'][i]);
+					Object.keys(contacts.bankBonus).map(i => {
+						tempData.push(contacts['bankBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, bankBonus: tempData };
 				} else if (item.includes('individualAutoTargetBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].individualAutoTargetBonus).map(i => {
-						tempData.push(contacts[0]['individualAutoTargetBonus'][i]);
+					Object.keys(contacts.individualAutoTargetBonus).map(i => {
+						tempData.push(contacts['individualAutoTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, individualAutoTargetBonus: tempData };
 				} else if (item.includes('teamAutoTargetBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].teamAutoTargetBonus).map(i => {
-						tempData.push(contacts[0]['teamAutoTargetBonus'][i]);
+					Object.keys(contacts.teamAutoTargetBonus).map(i => {
+						tempData.push(contacts['teamAutoTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, teamAutoTargetBonus: tempData };
 				} else if (item.includes('individualFireTargetBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].individualFireTargetBonus).map(i => {
-						tempData.push(contacts[0]['individualFireTargetBonus'][i]);
+					Object.keys(contacts.individualFireTargetBonus).map(i => {
+						tempData.push(contacts['individualFireTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, individualFireTargetBonus: tempData };
 				} else if (item.includes('individualLifeTargetBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].individualLifeTargetBonus).map(i => {
-						tempData.push(contacts[0]['individualLifeTargetBonus'][i]);
+					Object.keys(contacts.individualLifeTargetBonus).map(i => {
+						tempData.push(contacts['individualLifeTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, individualLifeTargetBonus: tempData };
 				} else if (item.includes('individualHealthTargetBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].individualHealthTargetBonus).map(i => {
-						tempData.push(contacts[0]['individualHealthTargetBonus'][i]);
+					Object.keys(contacts.individualHealthTargetBonus).map(i => {
+						tempData.push(contacts['individualHealthTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, individualHealthTargetBonus: tempData };
 				} else if (item.includes('individualBankTargetBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].individualBankTargetBonus).map(i => {
-						tempData.push(contacts[0]['individualBankTargetBonus'][i]);
+					Object.keys(contacts.individualBankTargetBonus).map(i => {
+						tempData.push(contacts['individualBankTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, individualBankTargetBonus: tempData };
 				} else if (item.includes('teamFireTargetBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].teamFireTargetBonus).map(i => {
-						tempData.push(contacts[0]['teamFireTargetBonus'][i]);
+					Object.keys(contacts.teamFireTargetBonus).map(i => {
+						tempData.push(contacts['teamFireTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, teamFireTargetBonus: tempData };
 				} else if (item.includes('teamLifeTargetBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].teamLifeTargetBonus).map(i => {
-						tempData.push(contacts[0]['teamLifeTargetBonus'][i]);
+					Object.keys(contacts.teamLifeTargetBonus).map(i => {
+						tempData.push(contacts['teamLifeTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, teamLifeTargetBonus: tempData };
 				} else if (item.includes('teamHealthTargetBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].teamHealthTargetBonus).map(i => {
-						tempData.push(contacts[0]['teamHealthTargetBonus'][i]);
+					Object.keys(contacts.teamHealthTargetBonus).map(i => {
+						tempData.push(contacts['teamHealthTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, teamHealthTargetBonus: tempData };
 				} else if (item.includes('teamBankTargetBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].teamBankTargetBonus).map(i => {
-						tempData.push(contacts[0]['teamBankTargetBonus'][i]);
+					Object.keys(contacts.teamBankTargetBonus).map(i => {
+						tempData.push(contacts['teamBankTargetBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, teamBankTargetBonus: tempData };
 				} else if (item.includes('monthlyAgencyLapseAutoBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].monthlyAgencyLapseAutoBonus).map(i => {
-						tempData.push(contacts[0]['monthlyAgencyLapseAutoBonus'][i]);
+					Object.keys(contacts.monthlyAgencyLapseAutoBonus).map(i => {
+						tempData.push(contacts['monthlyAgencyLapseAutoBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, monthlyAgencyLapseAutoBonus: tempData };
 				} else if (item.includes('monthlyAgencyLapseFireBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].monthlyAgencyLapseFireBonus).map(i => {
-						tempData.push(contacts[0]['monthlyAgencyLapseFireBonus'][i]);
+					Object.keys(contacts.monthlyAgencyLapseFireBonus).map(i => {
+						tempData.push(contacts['monthlyAgencyLapseFireBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, monthlyAgencyLapseFireBonus: tempData };
 				} else if (item.includes('monthlyAutoNetGrowthBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].monthlyAutoNetGrowthBonus).map(i => {
-						tempData.push(contacts[0]['monthlyAutoNetGrowthBonus'][i]);
+					Object.keys(contacts.monthlyAutoNetGrowthBonus).map(i => {
+						tempData.push(contacts['monthlyAutoNetGrowthBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, monthlyAutoNetGrowthBonus: tempData };
 				} else if (item.includes('monthlyFireNetGrowthBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].monthlyFireNetGrowthBonus).map(i => {
-						tempData.push(contacts[0]['monthlyFireNetGrowthBonus'][i]);
+					Object.keys(contacts.monthlyFireNetGrowthBonus).map(i => {
+						tempData.push(contacts['monthlyFireNetGrowthBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, monthlyFireNetGrowthBonus: tempData };
 				} else if (item.includes('otherActivityBonus')) {
 					const tempData = [];
-					Object.keys(contacts[0].otherActivityBonus).map(i => {
-						tempData.push(contacts[0]['otherActivityBonus'][i]);
+					Object.keys(contacts.otherActivityBonus).map(i => {
+						tempData.push(contacts['otherActivityBonus'][i]);
 					});
 					tempJSON = { ...tempJSON, otherActivityBonus: tempData };
 				}
@@ -1280,7 +755,6 @@ function ContactsList(props) {
 
 	return (
 		<FuseAnimateGroup animation="transition.slideUpIn" delay={300}>
-			
 			<Paper className="w-full rounded-8 shadow mb-5">
 				<div className="flex items-center justify-between px-16 py-16 border-b-1">
 					<Typography className="text-16">PER PRODUCT BONUSES (Paid from First Policy)</Typography>
@@ -1572,7 +1046,7 @@ function ContactsList(props) {
 								data={state.otherActivityBonus}
 								onRowClick={(ev, row) => {
 									if (row) {
-										dispatch(openEditTargetBonusDialog(row.original));
+										dispatch(openEditNetBonusDialog(row.original));
 									}
 								}}
 								title="OTHER ACTIVITY BONUSES"

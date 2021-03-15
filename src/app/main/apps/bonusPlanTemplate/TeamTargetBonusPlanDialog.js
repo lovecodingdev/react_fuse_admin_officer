@@ -18,7 +18,8 @@ import {
 	updateContact,
 	addContact,
 	closeNewTeamTargetBonusDialog,
-	closeEditTeamTargetBonusDialog
+	closeEditTeamTargetBonusDialog,
+	setTempData
 } from './store/bonusPlanSlice';
 
 const defaultFormState = {
@@ -81,7 +82,7 @@ function ContactDialog(props) {
 		if (contactDialog.type === 'new') {
 			dispatch(addContact({...form, routeParam: props.routeParam}));
 		} else {
-			dispatch(updateContact({...form, routeParam: props.routeParam}));
+			dispatch(setTempData({...form}));
 		}
 		closeComposeDialog();
 	}

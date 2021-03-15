@@ -18,7 +18,9 @@ import {
 	updateContact,
 	addContact,
 	closeNewNetBonusDialog,
-	closeEditNetBonusDialog
+	closeEditNetBonusDialog,
+	setTempData,
+	setAddTempData
 } from './store/bonusPlanSlice';
 
 const defaultFormState = {
@@ -50,7 +52,7 @@ function ContactDialog(props) {
 				...defaultFormState,
 				// ...contactDialog.data,
 				planType:contactDialog.data,
-				id: FuseUtils.generateGUID()
+				id: Date.now()
 			});
 		}
 	}, [contactDialog.data, contactDialog.type, setForm]);
@@ -76,9 +78,9 @@ function ContactDialog(props) {
 		event.preventDefault();
 
 		if (contactDialog.type === 'new') {
-			dispatch(addContact({...form, routeParam: props.routeParam}));
+			dispatch(setAddTempData({...form, routeParam: props.routeParam}));
 		} else {
-			dispatch(updateContact({...form, routeParam: props.routeParam}));
+			dispatch(setTempData({ ...form}));
 		}
 		closeComposeDialog();
 	}

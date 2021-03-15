@@ -1,10 +1,11 @@
 import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { getUserData } from './userSlice';
-import {realDb} from '../../../../../@fake-db/db/firebase'
+import { realDb } from '../../../../../@fake-db/db/firebase';
 
-export const getAutoBonus = createAsyncThunk('bonusPlanTemplate/autoBonus/getContacts', 
-	
+export const getAutoBonus = createAsyncThunk(
+	'bonusPlanTemplate/autoBonus/getContacts',
+
 	// const response = await axios.get('/api/bonus-plan/contacts', {
 	// 	params: routeParams
 	// });
@@ -12,9 +13,8 @@ export const getAutoBonus = createAsyncThunk('bonusPlanTemplate/autoBonus/getCon
 
 	// return { data, routeParams };
 	(routeParam, { getState }) =>
-	
 		new Promise((resolve, reject) => {
-			var belongTo = localStorage.getItem('@BELONGTO')
+			var belongTo = localStorage.getItem('@BELONGTO');
 			var starCountRef = realDb.ref(`BonusPlanTemplate/${belongTo}/all`);
 			var bonusPlans = [];
 			starCountRef.on('value', snapshot => {
@@ -25,13 +25,12 @@ export const getAutoBonus = createAsyncThunk('bonusPlanTemplate/autoBonus/getCon
 						bonusPlans.push(data[item]);
 					});
 				}
-	
-				if(data){
-					resolve([data])
+
+				if (data) {
+					resolve([data]);
 				} else {
 					resolve([]);
 				}
-				
 			});
 		})
 );
@@ -39,10 +38,10 @@ export const getAutoBonus = createAsyncThunk('bonusPlanTemplate/autoBonus/getCon
 export const addContact = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/addContact',
 	async (contact, { dispatch, getState }) => {
-		console.log(contact, contact.routeParam )
+		// console.log(contact, contact.routeParam);
 		const response = await axios.post('/api/bonus-plan-template/add-contact', { contact });
 		const data = await response.data;
-		
+
 		dispatch(getAutoBonus(contact.routeParam));
 
 		return data;
@@ -52,8 +51,7 @@ export const addContact = createAsyncThunk(
 export const updateContact = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/updateContact',
 	async (contact, { dispatch, getState }) => {
-		
-		const response = await axios.post('/api/bonus-plan-template/update-contact', { contact});
+		const response = await axios.post('/api/bonus-plan-template/update-contact', { contact });
 		const data = await response.data;
 
 		dispatch(getAutoBonus(contact.routeParam));
@@ -65,10 +63,9 @@ export const updateContact = createAsyncThunk(
 export const removeContact = createAsyncThunk(
 	'bonusPlanTemplate/autoBonus/removeContact',
 	async (contact, { dispatch, getState }) => {
-		
 		const response = await axios.post('/api/bonus-plan-template/remove-contact', { contact });
 		const data = await response.data;
-		var belongTo = localStorage.getItem('@BELONGTO')
+		var belongTo = localStorage.getItem('@BELONGTO');
 		realDb.ref(`BonusPlan/${belongTo}/${contact.routeParam}/${contact.planType}/${contact.id}`).remove();
 		dispatch(getAutoBonus(contact.routeParam));
 
@@ -182,7 +179,11 @@ const contactsSlice = createSlice({
 				open: false
 			},
 			data: null
-		}
+		},
+		tempData: {},
+		addTempData: {},
+		removeTempData:{},
+		data:{}
 	}),
 	reducers: {
 		setContactsSearchText: {
@@ -334,6 +335,26 @@ const contactsSlice = createSlice({
 				},
 				data: null
 			};
+		},
+		setTempData: (state, action) => {
+			state.tempData = {
+				...action.payload
+			};
+		},
+		setAddTempData: (state, action) => {
+			state.addTempData = {
+				...action.payload
+			};
+		},
+		setRemoveTempData: (state, action) => {
+			state.removeTempData = {
+				...action.payload
+			}
+		},
+		setData: (state, action)=>{
+			state.data = {
+				...action.payload
+			}
 		}
 	},
 	extraReducers: {
@@ -341,10 +362,10 @@ const contactsSlice = createSlice({
 		[addContact.fulfilled]: contactsAdapter.addOne,
 		[getAutoBonus.fulfilled]: contactsAdapter.setAll
 		// (state, action) => {
-			// const { data, routeParams } = action.payload;
-			// contactsAdapter.setAll;
-			// state.routeParams = routeParams;
-			// state.searchText = '';
+		// const { data, routeParams } = action.payload;
+		// contactsAdapter.setAll;
+		// state.routeParams = routeParams;
+		// state.searchText = '';
 		// }
 	}
 });
@@ -366,7 +387,11 @@ export const {
 	openNewNetBonuseDialog,
 	closeNewNetBonusDialog,
 	openEditNetBonusDialog,
-	closeEditNetBonusDialog
+	closeEditNetBonusDialog,
+	setTempData,
+	setAddTempData,
+	setRemoveTempData,
+	setData
 } = contactsSlice.actions;
 
 export default contactsSlice.reducer;
