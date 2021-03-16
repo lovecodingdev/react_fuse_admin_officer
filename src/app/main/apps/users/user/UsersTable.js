@@ -82,6 +82,7 @@ function ProductsTable(props) {
 	}, [dispatch]);
 
 	useEffect(() => {
+		console.log('-----------------------------------------', products)
 		if (searchText.length !== 0) {
 			setData(_.filter(products, item => item.data.displayName.toLowerCase().includes(searchText.toLowerCase())));
 			setPage(0);
@@ -255,7 +256,7 @@ function ProductsTable(props) {
 												align="center"
 												onClick={() => dispatch(openUserProfileDialog(n.data))}
 											>
-												{n.data && n.data.displayName}
+												{n.active && n.data.displayName}
 											</TableCell>
 
 											<TableCell
@@ -264,7 +265,7 @@ function ProductsTable(props) {
 												scope="row"
 												align="center"
 											>
-												{n.data && (
+												{n.active && (
 													<SelectBox
 														data={teamBonusList}
 														willvalidation={false}
@@ -283,7 +284,7 @@ function ProductsTable(props) {
 												onClick={() => n.data && goBonusPlan(n.uid)}
 											>
 												{/* <span>$</span> */}
-												{n.data && 'Bonus Setup'}
+												{n.active && 'Bonus Setup'}
 											</TableCell>
 
 											<TableCell
@@ -293,14 +294,14 @@ function ProductsTable(props) {
 												align="center"
 												onClick={() => n.data && goReport()}
 											>
-												{n.data && 'Producer File'}
+												{n.active && 'Producer File'}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.data ? n.data.email : n.email}
+												{n.active ? n.data.email : n.email}
 											</TableCell>
 
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.active ? 'Active' : n.data ? 'Revoked' : 'Invite sent'}
+												{n.active ? 'Active' : n.belongTo ? 'Revoked' : 'Invite sent'}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.active && (

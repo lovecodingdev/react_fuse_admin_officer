@@ -135,6 +135,7 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 	const belongTo = localStorage.getItem('@BELONGTO');
 	realDb.ref(`Invitation/${belongTo}/${contact.email.replace('.', '').replace('.', '').replace('.', '')}/`).set({
 		email: contact.email,
+		data:{displayName:''},
 		id: contact.email.replace('.', '').replace('.', '').replace('.', '')
 	});
 
