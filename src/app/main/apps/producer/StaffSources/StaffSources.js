@@ -23,8 +23,9 @@ import { getMarketings, selectMarketings } from '../store/marketingsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
-import { monthsAndQuarters, colors, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing, getMain } from '../../../utils/Function';
+import { colors, policies, months, Options as options } from '../../../utils/Globals';
+import { dividing, getMain } from '../../../utils/Function';
+
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
 
@@ -311,10 +312,8 @@ function StaffSources(props) {
 				Object.keys(marketings).map((key, n) => {
 					const marketing = marketings[key];	
 
-					const value = ceil(
-						dividing(
-							tableContent[marketing.marketingName]['Total'] *100, tableContent['Total']['Total']
-						)
+					const value = dividing(
+						tableContent[marketing.marketingName]['Total'] *100, tableContent['Total']['Total']
 					);
 					if(value > 0) {
 						tempLabels.push(marketing.marketingName);
@@ -360,10 +359,8 @@ function StaffSources(props) {
 				const tableContent = widgets.Producer_StaffSources_ViewGrid_Table.table.tableContent;
 
 				options.product.data.map((policy, n) => {					
-					const value = ceil(
-						dividing(
-							tableContent['Total'][policy.value] *100, tableContent['Total']['Total']
-						)
+					const value = dividing(
+						tableContent['Total'][policy.value] *100, tableContent['Total']['Total']
 					);
 					if(value > 0) {
 						tempLabels.push(policy.value);

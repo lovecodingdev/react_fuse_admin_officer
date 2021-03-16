@@ -8,6 +8,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
+import { ceil, formattedString } from '../../utils/Function'
 
 function Widget10(props) {
 	return (
@@ -43,7 +44,7 @@ function Widget10(props) {
 										case 'total':{
 											return(
 												<TableCell key={cell.id} rowSpan={5} className='border-l-1' align="center">
-													{cell.value===0 ? "" : cell.value}
+													{formattedString(cell.value)}
 												</TableCell>
 											)
 										}
@@ -51,7 +52,7 @@ function Widget10(props) {
 											return (
 												<TableCell key={cell.id} component="th" scope="row" align="center">
 													<Typography className={cell.classes}>
-														{cell.value===0 ? "" : cell.value}
+														{formattedString(cell.value)}
 													</Typography>
 												</TableCell>
 											);

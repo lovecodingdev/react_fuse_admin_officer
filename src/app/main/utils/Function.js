@@ -27,6 +27,18 @@ export const formattedDate = (date) => {
   return mm+'/'+dd+'/'+yyyy;
 }
 
+export const formattedString = (val) => {
+  if(IsNumeric(val)) {
+    return val===0 ? '' : ceil(val);
+  } else {
+    return val;
+  }
+}
+
+export const IsNumeric = (input) => {
+    return (input - 0) == input && (''+input).trim().length > 0;
+}
+
 export const getLevel =(policyCount, policyName, bonusPlans) => { 
   // console.log(policyCount, policyName, bonusPlans)
   let dbName = "";

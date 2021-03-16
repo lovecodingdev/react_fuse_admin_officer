@@ -23,8 +23,8 @@ import { getMarketings, selectMarketings } from '../store/marketingsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
-import { monthsAndQuarters, colors, bonusPlanDbNames, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing, getMain } from '../../../utils/Function';
+import { Options as options } from '../../../utils/Globals';
+import { getMain } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -122,25 +122,26 @@ function PoliciesAndBank(props) {
 						tableContent[user.data.displayName] = {};
 						tableHeaders.map((header) => {
 							if(header.value.substring(header.value.indexOf('@')+1) != 'Total') {
-								tableContent[user.data.displayName][header.value] = ceil(
+								tableContent[user.data.displayName][header.value] = 
 									main[production][period][user.data.displayName][header.value.split('@')[0]][`${header.value.split('@')[1]}@${report}`]
-								)
 									
 								// Total per Policy	
-								if(!tableContent[user.data.displayName].hasOwnProperty(`${header.value.split('@')[0]}@Total`))
+								if(!tableContent[user.data.displayName].hasOwnProperty(`${header.value.split('@')[0]}@Total`)) {
 									tableContent[user.data.displayName][`${header.value.split('@')[0]}@Total`] = 0;
-								tableContent[user.data.displayName][`${header.value.split('@')[0]}@Total`] += ceil(tableContent[user.data.displayName][header.value]);
+								}									
+								tableContent[user.data.displayName][`${header.value.split('@')[0]}@Total`] += 
+									parseFloat(tableContent[user.data.displayName][header.value]);
 
 								// Annual Total
 								if(!tableContent['Total'].hasOwnProperty(header.value)) {
 									tableContent['Total'][header.value] = 0;
 								}
-								tableContent['Total'][header.value] += ceil(tableContent[user.data.displayName][header.value]);
+								tableContent['Total'][header.value] += tableContent[user.data.displayName][header.value];
 						
 								if(!tableContent['Total'].hasOwnProperty(`${header.value.split('@')[0]}@Total`)) {
 									tableContent['Total'][`${header.value.split('@')[0]}@Total`] = 0;
 								}
-								tableContent['Total'][`${header.value.split('@')[0]}@Total`] += ceil(tableContent[user.data.displayName][header.value]);								
+								tableContent['Total'][`${header.value.split('@')[0]}@Total`] += parseFloat(tableContent[user.data.displayName][header.value]);								
 							}															
 						});
 					}

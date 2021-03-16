@@ -20,8 +20,8 @@ import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
-import { monthsAndQuarters, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing, getMain } from '../../../utils/Function';
+import { months, Options as options } from '../../../utils/Globals';
+import { getMain } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -81,7 +81,7 @@ function Payroll(props) {
 								if(colNum < 11) {
 									if(header.value !== 'Bank Products') {
 										tableContent[user.data.displayName][header.value] = 
-											ceil(main[production][period][user.data.displayName][header.value.split(' ')[0]][header.value.split(' ')[1]]);
+											main[production][period][user.data.displayName][header.value.split(' ')[0]][header.value.split(' ')[1]];
 									}									
 									else {
 										tableContent[user.data.displayName][header.value] = '';
@@ -95,7 +95,7 @@ function Payroll(props) {
 										tableContent[user.data.displayName]['Total Policies'] = 0;
 									}	
 									if(header.value.includes('Policies')) {
-										tableContent[user.data.displayName]['Total Policies'] += ceil(tableContent[user.data.displayName][header.value]);
+										tableContent[user.data.displayName]['Total Policies'] += tableContent[user.data.displayName][header.value];
 									}	
 
 									// total bonuses
@@ -103,13 +103,13 @@ function Payroll(props) {
 										tableContent[user.data.displayName]['Total Bonuses'] = 0;
 									}	
 									if(header.value.includes('Bonuses')) {
-										tableContent[user.data.displayName]['Total Bonuses'] += ceil(tableContent[user.data.displayName][header.value]);
+										tableContent[user.data.displayName]['Total Bonuses'] += tableContent[user.data.displayName][header.value];
 									}	
 								}																
 								if(!tableContent['Total'].hasOwnProperty(header.value)) {
 									tableContent['Total'][header.value] = 0;
 								}							
-								tableContent['Total'][header.value] += ceil(tableContent[user.data.displayName][header.value]);
+								tableContent['Total'][header.value] += tableContent[user.data.displayName][header.value];
 							} 							
 						});
 					}
@@ -169,7 +169,7 @@ function Payroll(props) {
 										}																		
 										months.map((month) => {										
 											tableContent[user.data.displayName][header.value] += 
-												ceil(main[production][month.value][user.data.displayName][header.value.split(' ')[0]][header.value.split(' ')[1]]);
+												main[production][month.value][user.data.displayName][header.value.split(' ')[0]][header.value.split(' ')[1]];
 										})
 									}									
 									else {
@@ -185,7 +185,7 @@ function Payroll(props) {
 										tableContent[user.data.displayName]['Total Policies'] = 0;
 									}	
 									if(header.value.includes('Policies')) {
-										tableContent[user.data.displayName]['Total Policies'] += ceil(tableContent[user.data.displayName][header.value]);
+										tableContent[user.data.displayName]['Total Policies'] += tableContent[user.data.displayName][header.value];
 									}	
 
 									// total bonuses
@@ -193,13 +193,13 @@ function Payroll(props) {
 										tableContent[user.data.displayName]['Total Bonuses'] = 0;
 									}	
 									if(header.value.includes('Bonuses')) {
-										tableContent[user.data.displayName]['Total Bonuses'] += ceil(tableContent[user.data.displayName][header.value]);
+										tableContent[user.data.displayName]['Total Bonuses'] += tableContent[user.data.displayName][header.value];
 									}	
 								}																
 								if(!tableContent['Total'].hasOwnProperty(header.value)) {
 									tableContent['Total'][header.value] = 0;
 								}							
-								tableContent['Total'][header.value] += ceil(tableContent[user.data.displayName][header.value]);
+								tableContent['Total'][header.value] += tableContent[user.data.displayName][header.value];
 							} 							
 						});
 					}
@@ -255,7 +255,7 @@ function Payroll(props) {
 									users.map((user) => {	
 										if(user.belongTo === UID) {
 											tableContent[month.value][header.value] += 
-												ceil(main[production][month.value][user.data.displayName][header.value.split(' ')[0]][header.value.split(' ')[1]]);
+												main[production][month.value][user.data.displayName][header.value.split(' ')[0]][header.value.split(' ')[1]];
 										}																			
 									})
 								}									
@@ -271,7 +271,7 @@ function Payroll(props) {
 									tableContent[month.value]['Total Policies'] = 0;
 								}	
 								if(header.value.includes('Policies')) {
-									tableContent[month.value]['Total Policies'] += ceil(tableContent[month.value][header.value]);
+									tableContent[month.value]['Total Policies'] += tableContent[month.value][header.value];
 								}	
 
 								// total bonuses
@@ -279,13 +279,13 @@ function Payroll(props) {
 									tableContent[month.value]['Total Bonuses'] = 0;
 								}	
 								if(header.value.includes('Bonuses')) {
-									tableContent[month.value]['Total Bonuses'] += ceil(tableContent[month.value][header.value]);
+									tableContent[month.value]['Total Bonuses'] += tableContent[month.value][header.value];
 								}	
 							}																
 							if(!tableContent['Total'].hasOwnProperty(header.value)) {
 								tableContent['Total'][header.value] = 0;
 							}							
-							tableContent['Total'][header.value] += ceil(tableContent[month.value][header.value]);
+							tableContent['Total'][header.value] += tableContent[month.value][header.value];
 						} 							
 					});
 					// }

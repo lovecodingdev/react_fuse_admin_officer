@@ -21,8 +21,8 @@ import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
-import { monthsAndQuarters, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing, getMain } from '../../../utils/Function';
+import { Options as options } from '../../../utils/Globals';
+import { getMain } from '../../../utils/Function';
 const belongTo = localStorage.getItem('@BELONGTO')
 const UID = localStorage.getItem('@UID')
 
@@ -66,7 +66,20 @@ function GoalsAndActual(props) {
 				}
 			];
 			let tableContent = {};			
-			tableContent["Total"] = {};
+			tableContent["Total"] = {
+				'Auto@Goals': 0,
+				'Auto@Actual': 0,
+				'Fire@Goals': 0,
+				'Fire@Actual': 0,
+				'Life@Goals': 0,
+				'Life@Actual': 0,
+				'Health@Goals': 0,
+				'Health@Actual': 0,
+				'Bank@Goals': 0,
+				'Bank@Actual': 0,
+				'Total@Goals': 0,
+				'Total@Actual': 0,
+			};
 			users.map((user) => {
 				if(user.belongTo === UID) {
 					tableRows.push({ 
@@ -80,35 +93,15 @@ function GoalsAndActual(props) {
 					let totalActual = 0;					
 					tableContent[user.data.displayName] = {};
 					options.product.data.map((policy) => { // except for Total
-						tableContent[user.data.displayName][`${policy.value}@Goals`] = 
-							ceil(
-								main[production][period][user.data.displayName][policy.value]["Goals"]
-							);						
-						tableContent[user.data.displayName][`${policy.value}@Actual`] = 
-							ceil(
-								main[production][period][user.data.displayName][policy.value]["Policies"]
-							);						
+						tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.data.displayName][policy.value]["Goals"]
+						tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
 						totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
-						totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];						
-						
-						if(!tableContent['Total'].hasOwnProperty(`${policy.value}@Goals`)) {
-							tableContent['Total'][`${policy.value}@Goals`] = 0;
-						}
-						if(!tableContent['Total'].hasOwnProperty(`${policy.value}@Actual`)) {
-							tableContent['Total'][`${policy.value}@Actual`] = 0;
-						}
+						totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];												
 						tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
 						tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
 					});
 					tableContent[user.data.displayName]['Total@Goals'] = totalGoals;
-					tableContent[user.data.displayName]['Total@Actual'] = totalActual;										
-
-					if(!tableContent['Total'].hasOwnProperty(`Total@Goals`)) {
-						tableContent['Total'][`Total@Goals`] = 0;
-					}
-					if(!tableContent['Total'].hasOwnProperty(`Total@Actual`)) {
-						tableContent['Total'][`Total@Actual`] = 0;
-					}
+					tableContent[user.data.displayName]['Total@Actual'] = totalActual;														
 					tableContent['Total'][`Total@Goals`] += totalGoals;
 					tableContent['Total'][`Total@Actual`] += totalActual;
 				}				
@@ -175,7 +168,20 @@ function GoalsAndActual(props) {
 				}
 			];
 			let tableContent = {};			
-			tableContent["Total"] = {};
+			tableContent["Total"] = {
+				'Auto@Goals': 0,
+				'Auto@Actual': 0,
+				'Fire@Goals': 0,
+				'Fire@Actual': 0,
+				'Life@Goals': 0,
+				'Life@Actual': 0,
+				'Health@Goals': 0,
+				'Health@Actual': 0,
+				'Bank@Goals': 0,
+				'Bank@Actual': 0,
+				'Total@Goals': 0,
+				'Total@Actual': 0,
+			};
 			users.map((user) => {
 				if(user.belongTo === UID) {
 					tableRows.push({ 
@@ -189,35 +195,15 @@ function GoalsAndActual(props) {
 					let totalActual = 0;					
 					tableContent[user.data.displayName] = {};
 					options.product.data.map((policy) => { // except for Total
-						tableContent[user.data.displayName][`${policy.value}@Goals`] = 
-							ceil(
-								main[production][period][user.data.displayName][policy.value]["Goals"]
-							);						
-						tableContent[user.data.displayName][`${policy.value}@Actual`] = 
-							ceil(
-								main[production][period][user.data.displayName][policy.value]["Policies"]
-							);						
+						tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.data.displayName][policy.value]["Goals"]
+						tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
 						totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
-						totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];						
-						
-						if(!tableContent['Total'].hasOwnProperty(`${policy.value}@Goals`)) {
-							tableContent['Total'][`${policy.value}@Goals`] = 0;
-						}
-						if(!tableContent['Total'].hasOwnProperty(`${policy.value}@Actual`)) {
-							tableContent['Total'][`${policy.value}@Actual`] = 0;
-						}
+						totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];												
 						tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
 						tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
 					});
 					tableContent[user.data.displayName]['Total@Goals'] = totalGoals;
 					tableContent[user.data.displayName]['Total@Actual'] = totalActual;										
-
-					if(!tableContent['Total'].hasOwnProperty(`Total@Goals`)) {
-						tableContent['Total'][`Total@Goals`] = 0;
-					}
-					if(!tableContent['Total'].hasOwnProperty(`Total@Actual`)) {
-						tableContent['Total'][`Total@Actual`] = 0;
-					}
 					tableContent['Total'][`Total@Goals`] += totalGoals;
 					tableContent['Total'][`Total@Actual`] += totalActual;
 				}				

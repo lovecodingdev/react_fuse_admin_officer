@@ -23,8 +23,8 @@ import { getMarketings, selectMarketings } from '../store/marketingsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
-import { policiesAndPremium1, monthsAndQuarters, colors, bonusPlanDbNames, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing, getMain } from '../../../utils/Function';
+import { policiesAndPremium1, monthsAndQuarters, bonusPlanDbNames, Options as options } from '../../../utils/Globals';
+import { getMain } from '../../../utils/Function';
 import OtherLine from './OtherLine.js';
 
 const belongTo = localStorage.getItem('@BELONGTO');
@@ -106,19 +106,17 @@ function ProductLine(props) {
 									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue];									
 								}	
 								if (row>11 && row<16) {
-									tableContent[month.value][item.value] = ceil(
+									tableContent[month.value][item.value] = 
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue])
-									);										
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.value] = ceil(
+									tableContent[month.value][item.value] = 
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[15].value][item.value])
-									);										
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.value] = '';
@@ -142,19 +140,17 @@ function ProductLine(props) {
 									tableContent[month.value][item.name] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue];									
 								}			
 								if(row>11 && row<16) {
-									tableContent[month.value][item.name] = ceil(
+									tableContent[month.value][item.name] = 
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue])
-									);										
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.name] = ceil(
+									tableContent[month.value][item.name] = 
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.name]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.name]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.name]) +
 										parseFloat(tableContent[monthsAndQuarters[15].value][item.name])
-									);
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.name] = '';
@@ -210,19 +206,17 @@ function ProductLine(props) {
 									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue];									
 								}	
 								if (row>11 && row<16) {
-									tableContent[month.value][item.value] = ceil(
+									tableContent[month.value][item.value] = 
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue])
-									);
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.value] = ceil(
+									tableContent[month.value][item.value] = 
 										parseFloat(tableContent[monthsAndQuarters[12].value][itemValue]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][itemValue]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][itemValue]) +
 										parseFloat(tableContent[monthsAndQuarters[15].value][itemValue])
-									);
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.value] = '';
@@ -238,19 +232,17 @@ function ProductLine(props) {
 									tableContent[month.value][item.marketingName] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName];									
 								}			
 								if(row>11 && row<16) {
-									tableContent[month.value][item.marketingName] = ceil(
+									tableContent[month.value][item.marketingName] = 
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName])
-									);
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.marketingName] = ceil(
+									tableContent[month.value][item.marketingName] = 
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.marketingName]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.marketingName]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.marketingName]) +
 										parseFloat(tableContent[monthsAndQuarters[15].value][item.marketingName])
-									);
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.marketingName] = '';
@@ -298,19 +290,17 @@ function ProductLine(props) {
 									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.value];									
 								}	
 								if (row>11 && row<16) {
-									tableContent[month.value][item.value] = ceil(
+									tableContent[month.value][item.value] = 
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value])
-									);
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.value] = ceil(
+									tableContent[month.value][item.value] = 
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[15].value][item.value])
-									);										
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.value] = '';

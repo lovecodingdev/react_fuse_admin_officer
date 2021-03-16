@@ -23,8 +23,8 @@ import { getMarketings, selectMarketings } from '../store/marketingsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
-import { policiesAndPremium1, monthsAndQuarters, colors, bonusPlanDbNames, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing, getMain } from '../../../utils/Function';
+import { policies, months, Options as options } from '../../../utils/Globals';
+import { dividing, getMain } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -89,20 +89,16 @@ function Sources(props) {
 						});
 					});
 					tableContent['Total']['Products'] += tableContent[marketing.marketingName]['Products'];
-					tableContent[marketing.marketingName]['Percent of Total'] = ceil(
-						dividing(
-							tableContent[marketing.marketingName]['Products'] * 100 ,
-							tableContent[marketing.marketingName]['Percent of Total']
-						)						
+					tableContent[marketing.marketingName]['Percent of Total'] = dividing(
+						tableContent[marketing.marketingName]['Products'] * 100 ,
+						tableContent[marketing.marketingName]['Percent of Total']
 					);
 				});
 				Object.keys(marketings).map(key => {
 					const marketing = marketings[key];
-					tableContent[marketing.marketingName]['Percent of Total'] = ceil(
-						dividing(
-							tableContent[marketing.marketingName]['Products'] * 100,
-							tableContent['Total']['Products']
-						)
+					tableContent[marketing.marketingName]['Percent of Total'] = dividing(
+						tableContent[marketing.marketingName]['Products'] * 100,
+						tableContent['Total']['Products']
 					);
 				});
 
