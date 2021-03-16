@@ -9,7 +9,7 @@ new Promise((resolve, reject) => {
 	var starCountRef = realDb.ref(`BonusPlanTemplate/${belongTo}/`);
 
 	var bonusPlans = [];
-	starCountRef.on('value', snapshot => {
+	starCountRef.once('value', snapshot => {
 		const data = snapshot.val();
 		console.log(`users/${uid}/`)
 		if (data) {
@@ -17,9 +17,7 @@ new Promise((resolve, reject) => {
 			resolve(bonusPlans)
 		} else {
 			resolve(bonusPlans)
-		}
-
-		
+		}	
 		
 	});
 }));
