@@ -272,7 +272,7 @@ const agencyAppDB = {
 							type: 'bar',
 							barPercentage: 0.5,
 							label: 'Auto',
-							data: [ 20, 25, 22],
+							data: [],
 							backgroundColor: '#42BFF7',
 							hoverBackgroundColor: '#87CDF7',
 							categoryPercentage: 1,
@@ -281,7 +281,7 @@ const agencyAppDB = {
 							type: 'bar',
 							barPercentage: 0.5,
 							label: 'Fire',
-							data: [11, 8, 10],
+							data: [],
 							backgroundColor: '#C6ECFD',
 							hoverBackgroundColor: '#D7EFFD',
 							categoryPercentage: 1
@@ -290,7 +290,7 @@ const agencyAppDB = {
 							type: 'bar',
 							label: 'Life',
 							barPercentage: 0.5,
-							data: [45, 7, 8],
+							data: [],
 							backgroundColor: '#f9cfcf',
 							hoverBackgroundColor: '#ffcece',
 							categoryPercentage: 1
@@ -299,7 +299,7 @@ const agencyAppDB = {
 							type: 'bar',
 							label: 'Health',
 							barPercentage: 0.5,
-							data: [67, 34, 34],
+							data: [],
 							backgroundColor: '#77ff99',
 							hoverBackgroundColor: '#c9ffd6',
 							categoryPercentage: 1
@@ -308,7 +308,7 @@ const agencyAppDB = {
 							type: 'bar',
 							label: 'Bank',
 							barPercentage: 0.5,
-							data: [45, 7, 8],
+							data: [],
 							backgroundColor: '#f9cfcf',
 							hoverBackgroundColor: '#ffcece',
 							categoryPercentage: 1
@@ -317,7 +317,7 @@ const agencyAppDB = {
 							type: 'bar',
 							label: 'Total',
 							barPercentage: 0.5,
-							data: [67, 34, 34],
+							data: [],
 							backgroundColor: '#77ff99',
 							hoverBackgroundColor: '#c9ffd6',
 							categoryPercentage: 1
@@ -1405,255 +1405,1002 @@ const agencyAppDB = {
 				]
 			}
 		},
+		// {
+		// 	id: 'Agency_PossibleMoney_Table',
+		// 	title: "This is what you're making at your Current Level of Production",
+		// 	table: {
+		// 		columns: [
+		// 			{
+		// 				id: 'id',
+		// 				title: ''
+		// 			},
+		// 			{
+		// 				id: 'auto',
+		// 				title: 'AUTO'
+		// 			},
+		// 			{
+		// 				id: 'fire',
+		// 				title: 'FIRE'
+		// 			},
+		// 			{
+		// 				id: 'life',
+		// 				title: 'LIFE'
+		// 			},
+		// 			{
+		// 				id: 'health',
+		// 				title: 'HEALTH'
+		// 			},
+		// 			{
+		// 				id: 'bank',
+		// 				title: 'BANK'
+		// 			},
+		// 			{
+		// 				id: 'total',
+		// 				title: 'TOTAL'
+		// 			}
+		// 		],
+		// 		rows: [
+		// 			{
+		// 				id: 1,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Policies',
+		// 						classes: 'bg-blue text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 2,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Anual Preminum',
+		// 						classes: 'bg-green text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$21,080.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$17,240.34',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$3,839.66',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '$8.22',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 3,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Avg Premium',
+		// 						classes: 'bg-red text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$3,518.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$31,202.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '$89.87',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 4,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Level Reached',
+		// 						classes: 'bg-pink text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$0.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 5,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Target Bonus Earned',
+		// 						classes: 'bg-orange text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$18,600.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$0.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			}
+		// 		]
+		// 	}
+		// },
 		{
-			id: 'Agency_PossibleMoney_Table',
-			title: "This is what you're making at your Current Level of Production",
-			table: {
-				columns: [
-					{
-						id: 'id',
-						title: ''
-					},
-					{
-						id: 'auto',
-						title: 'AUTO'
-					},
-					{
-						id: 'fire',
-						title: 'FIRE'
-					},
-					{
-						id: 'life',
-						title: 'LIFE'
-					},
-					{
-						id: 'health',
-						title: 'HEALTH'
-					},
-					{
-						id: 'bank',
-						title: 'BANK'
-					},
-					{
-						id: 'total',
-						title: 'TOTAL'
-					}
-				],
-				rows: [
-					{
-						id: 1,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Policies',
-								classes: 'bg-blue text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'total',
-								value: '',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 2,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Anual Preminum',
-								classes: 'bg-green text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$21,080.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$17,240.34',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$3,839.66',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '$8.22',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 3,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Avg Premium',
-								classes: 'bg-red text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$3,518.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$31,202.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '$89.87',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 4,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Level Reached',
-								classes: 'bg-pink text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$0.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 5,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Target Bonus Earned',
-								classes: 'bg-orange text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$18,600.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$0.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							}
-						]
-					}
-				]
-			}
-		},
+    id: 'Agency_PossibleMoney_Current_Level_Table',
+    title: "This is what you're making at your Current Level of Production",
+    table: {
+        columns: [
+            {
+                id: 'id',
+                title: ''
+            },
+            {
+                id: 'auto',
+                title: 'AUTO'
+            },
+            {
+                id: 'fire',
+                title: 'FIRE'
+            },
+            {
+                id: 'life',
+                title: 'LIFE'
+            },
+            {
+                id: 'health',
+                title: 'HEALTH'
+            },
+            {
+                id: 'bank',
+                title: 'BANK'
+            },
+            {
+                id: 'total',
+                title: 'TOTAL'
+            }
+        ],
+        rows: [
+            {
+                id: 1,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Policies',
+                        classes: 'bg-blue text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'total',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 2,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Annual Premium',
+                        classes: 'bg-green text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 3,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Avg Premium',
+                        classes: 'bg-red text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 4,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Level Reached',
+                        classes: 'bg-pink text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 5,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Target Bonus Earned',
+                        classes: 'bg-orange text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            }
+        ]
+    }
+},
+{
+    id: 'Agency_PossibleMoney_Next_Level_Table',
+    title: "If you are reached the Next Target, this is what you could at the Next Level of Production",
+    table: {
+        columns: [
+            {
+                id: 'id',
+                title: ''
+            },
+            {
+                id: 'auto',
+                title: 'AUTO'
+            },
+            {
+                id: 'fire',
+                title: 'FIRE'
+            },
+            {
+                id: 'life',
+                title: 'LIFE'
+            },
+            {
+                id: 'health',
+                title: 'HEALTH'
+            },
+            {
+                id: 'bank',
+                title: 'BANK'
+            },
+            {
+                id: 'total',
+                title: 'TOTAL'
+            }
+        ],
+        rows: [
+            {
+                id: 1,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Policies',
+                        classes: 'bg-blue text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'total',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 2,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Annual Premium',
+                        classes: 'bg-green text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 3,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Avg Premium',
+                        classes: 'bg-red text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 4,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Level Reached',
+                        classes: 'bg-pink text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 5,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Target Bonus Earned',
+                        classes: 'bg-orange text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            }
+        ]
+    }
+},
+{
+    id: 'Agency_PossibleMoney_Max_Level_Table',
+    title: "This is what you could at the Max Level of Production",
+    table: {
+        columns: [
+            {
+                id: 'id',
+                title: ''
+            },
+            {
+                id: 'auto',
+                title: 'AUTO'
+            },
+            {
+                id: 'fire',
+                title: 'FIRE'
+            },
+            {
+                id: 'life',
+                title: 'LIFE'
+            },
+            {
+                id: 'health',
+                title: 'HEALTH'
+            },
+            {
+                id: 'bank',
+                title: 'BANK'
+            },
+            {
+                id: 'total',
+                title: 'TOTAL'
+            }
+        ],
+        rows: [
+            {
+                id: 1,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Policies',
+                        classes: 'bg-blue text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'total',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 2,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Annual Premium',
+                        classes: 'bg-green text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 3,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Avg Premium',
+                        classes: 'bg-red text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 4,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Level Reached',
+                        classes: 'bg-pink text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            },
+            {
+                id: 5,
+                cells: [
+                    {
+                        id: 'left_title',
+                        value: 'Target Bonus Earned',
+                        classes: 'bg-orange text-white',
+                        icon: ''
+                    },
+                    {
+                        id: 'auto',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'fire',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'life',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'health',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    },
+                    {
+                        id: 'bank',
+                        value: '',
+                        classes: '',
+                        icon: ''
+                    }
+                ]
+            }
+        ]
+    }
+},
 		{
 			id: 'Agency_TargetReports_Life_Table',
 			title: "LIFE",
@@ -3116,8 +3863,8 @@ const agencyAppDB = {
 			}
 		},
 		{
-			id: 'Agency_PossibleMoney_Table',
-			title: "This is what you're making at your Current Level of Production",
+			id: 'Agency_PossibleMoney_BonusPlan_Table',
+			title: "",
 			table: {
 				columns: [
 					{
@@ -3126,28 +3873,24 @@ const agencyAppDB = {
 					},
 					{
 						id: 'auto',
-						title: 'AUTO'
+						title: 'Auto Policies'
 					},
 					{
 						id: 'fire',
-						title: 'FIRE'
+						title: 'Fire Policies'
 					},
 					{
 						id: 'life',
-						title: 'LIFE'
+						title: 'Life Policies'
 					},
 					{
 						id: 'health',
-						title: 'HEALTH'
+						title: 'Health Policies'
 					},
 					{
 						id: 'bank',
-						title: 'BANK'
-					},
-					{
-						id: 'total',
-						title: 'TOTAL'
-					}
+						title: 'Bank Products'
+					},					
 				],
 				rows: [
 					{
@@ -3155,46 +3898,40 @@ const agencyAppDB = {
 						cells: [
 							{
 								id: 'left_title',
-								value: 'Policies',
+								value: 'Level1',
 								classes: 'bg-blue text-white',
 								icon: ''
 							},
 							{
-								id: 'total_budget',
+								id: 'auto',
 								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'spent_usd',
+								id: 'fire',
 								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'spent_perc',
+								id: 'life',
 								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'remaining_usd',
+								id: 'health',
 								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'remaining_perc',
+								id: 'bank',
 								value: '',
 								classes: '',
 								icon: ''
-							},
-							{
-								id: 'total',
-								value: '',
-								classes: '',
-								icon: ''
-							}
+							},							
 						]
 					},
 					{
@@ -3202,37 +3939,37 @@ const agencyAppDB = {
 						cells: [
 							{
 								id: 'left_title',
-								value: 'Anual Preminum',
+								value: 'Level2',
 								classes: 'bg-green text-white',
 								icon: ''
 							},
 							{
-								id: 'total_budget',
-								value: '$21,080.00',
+								id: 'auto',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'spent_usd',
-								value: '$17,240.34',
+								id: 'fire',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'spent_perc',
-								value: '$81.78',
+								id: 'life',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'remaining_usd',
-								value: '$3,839.66',
+								id: 'health',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'remaining_perc',
-								value: '$8.22',
+								id: 'bank',
+								value: '',
 								classes: '',
 								icon: ''
 							}
@@ -3243,37 +3980,37 @@ const agencyAppDB = {
 						cells: [
 							{
 								id: 'left_title',
-								value: 'Avg Premium',
+								value: 'Level3',
 								classes: 'bg-red text-white',
 								icon: ''
 							},
 							{
-								id: 'total_budget',
-								value: '$34,720.00',
+								id: 'auto',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'spent_usd',
-								value: '$3,518.00',
+								id: 'fire',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'spent_perc',
-								value: '$81.78',
+								id: 'life',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'remaining_usd',
-								value: '$31,202.00',
+								id: 'health',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'remaining_perc',
-								value: '$89.87',
+								id: 'bank',
+								value: '',
 								classes: '',
 								icon: ''
 							}
@@ -3284,36 +4021,36 @@ const agencyAppDB = {
 						cells: [
 							{
 								id: 'left_title',
-								value: 'Level Reached',
+								value: 'Level4',
 								classes: 'bg-pink text-white',
 								icon: ''
 							},
 							{
-								id: 'total_budget',
-								value: '$34,720.00',
+								id: 'auto',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'spent_usd',
-								value: '$0.00',
+								id: 'fire',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'spent_perc',
-								value: '$81.78',
+								id: 'life',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'remaining_usd',
-								value: '$34,720.00',
+								id: 'health',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'remaining_perc',
+								id: 'bank',
 								value: '',
 								classes: '',
 								icon: ''
@@ -3325,36 +4062,36 @@ const agencyAppDB = {
 						cells: [
 							{
 								id: 'left_title',
-								value: 'Target Bonus Earned',
+								value: 'Level5',
 								classes: 'bg-orange text-white',
 								icon: ''
 							},
 							{
-								id: 'total_budget',
-								value: '$18,600.00',
+								id: 'auto',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'spent_usd',
-								value: '$0.00',
+								id: 'fire',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'spent_perc',
-								value: '$81.78',
+								id: 'life',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'remaining_usd',
-								value: '$34,720.00',
+								id: 'health',
+								value: '',
 								classes: '',
 								icon: ''
 							},
 							{
-								id: 'remaining_perc',
+								id: 'bank',
 								value: '',
 								classes: '',
 								icon: ''
@@ -3364,504 +4101,753 @@ const agencyAppDB = {
 				]
 			}
 		},
-		{
-			id: 'Agency_PossibleMoney_Table',
-			title: "This is what you're making at your Current Level of Production",
-			table: {
-				columns: [
-					{
-						id: 'id',
-						title: ''
-					},
-					{
-						id: 'auto',
-						title: 'AUTO'
-					},
-					{
-						id: 'fire',
-						title: 'FIRE'
-					},
-					{
-						id: 'life',
-						title: 'LIFE'
-					},
-					{
-						id: 'health',
-						title: 'HEALTH'
-					},
-					{
-						id: 'bank',
-						title: 'BANK'
-					},
-					{
-						id: 'total',
-						title: 'TOTAL'
-					}
-				],
-				rows: [
-					{
-						id: 1,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Policies',
-								classes: 'bg-blue text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'total',
-								value: '',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 2,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Anual Preminum',
-								classes: 'bg-green text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$21,080.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$17,240.34',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$3,839.66',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '$8.22',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 3,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Avg Premium',
-								classes: 'bg-red text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$3,518.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$31,202.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '$89.87',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 4,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Level Reached',
-								classes: 'bg-pink text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$0.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 5,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Target Bonus Earned',
-								classes: 'bg-orange text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$18,600.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$0.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							}
-						]
-					}
-				]
-			}
-		},
-		{
-			id: 'Agency_PossibleMoney_Table',
-			title: "This is what you're making at your Current Level of Production",
-			table: {
-				columns: [
-					{
-						id: 'id',
-						title: ''
-					},
-					{
-						id: 'auto',
-						title: 'AUTO'
-					},
-					{
-						id: 'fire',
-						title: 'FIRE'
-					},
-					{
-						id: 'life',
-						title: 'LIFE'
-					},
-					{
-						id: 'health',
-						title: 'HEALTH'
-					},
-					{
-						id: 'bank',
-						title: 'BANK'
-					},
-					{
-						id: 'total',
-						title: 'TOTAL'
-					}
-				],
-				rows: [
-					{
-						id: 1,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Policies',
-								classes: 'bg-blue text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'total',
-								value: '',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 2,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Anual Preminum',
-								classes: 'bg-green text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$21,080.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$17,240.34',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$3,839.66',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '$8.22',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 3,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Avg Premium',
-								classes: 'bg-red text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$3,518.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$31,202.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '$89.87',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 4,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Level Reached',
-								classes: 'bg-pink text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$0.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							}
-						]
-					},
-					{
-						id: 5,
-						cells: [
-							{
-								id: 'left_title',
-								value: 'Target Bonus Earned',
-								classes: 'bg-orange text-white',
-								icon: ''
-							},
-							{
-								id: 'total_budget',
-								value: '$18,600.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_usd',
-								value: '$0.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'spent_perc',
-								value: '$81.78',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_usd',
-								value: '$34,720.00',
-								classes: '',
-								icon: ''
-							},
-							{
-								id: 'remaining_perc',
-								value: '',
-								classes: '',
-								icon: ''
-							}
-						]
-					}
-				]
-			}
-		},
+		// {
+		// 	id: 'Agency_PossibleMoney_Table',
+		// 	title: "This is what you're making at your Current Level of Production",
+		// 	table: {
+		// 		columns: [
+		// 			{
+		// 				id: 'id',
+		// 				title: ''
+		// 			},
+		// 			{
+		// 				id: 'auto',
+		// 				title: 'AUTO'
+		// 			},
+		// 			{
+		// 				id: 'fire',
+		// 				title: 'FIRE'
+		// 			},
+		// 			{
+		// 				id: 'life',
+		// 				title: 'LIFE'
+		// 			},
+		// 			{
+		// 				id: 'health',
+		// 				title: 'HEALTH'
+		// 			},
+		// 			{
+		// 				id: 'bank',
+		// 				title: 'BANK'
+		// 			},
+		// 			{
+		// 				id: 'total',
+		// 				title: 'TOTAL'
+		// 			}
+		// 		],
+		// 		rows: [
+		// 			{
+		// 				id: 1,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Policies',
+		// 						classes: 'bg-blue text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 2,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Anual Preminum',
+		// 						classes: 'bg-green text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$21,080.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$17,240.34',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$3,839.66',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '$8.22',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 3,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Avg Premium',
+		// 						classes: 'bg-red text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$3,518.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$31,202.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '$89.87',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 4,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Level Reached',
+		// 						classes: 'bg-pink text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$0.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 5,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Target Bonus Earned',
+		// 						classes: 'bg-orange text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$18,600.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$0.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			}
+		// 		]
+		// 	}
+		// },
+		// {
+		// 	id: 'Agency_PossibleMoney_Table',
+		// 	title: "This is what you're making at your Current Level of Production",
+		// 	table: {
+		// 		columns: [
+		// 			{
+		// 				id: 'id',
+		// 				title: ''
+		// 			},
+		// 			{
+		// 				id: 'auto',
+		// 				title: 'AUTO'
+		// 			},
+		// 			{
+		// 				id: 'fire',
+		// 				title: 'FIRE'
+		// 			},
+		// 			{
+		// 				id: 'life',
+		// 				title: 'LIFE'
+		// 			},
+		// 			{
+		// 				id: 'health',
+		// 				title: 'HEALTH'
+		// 			},
+		// 			{
+		// 				id: 'bank',
+		// 				title: 'BANK'
+		// 			},
+		// 			{
+		// 				id: 'total',
+		// 				title: 'TOTAL'
+		// 			}
+		// 		],
+		// 		rows: [
+		// 			{
+		// 				id: 1,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Policies',
+		// 						classes: 'bg-blue text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 2,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Anual Preminum',
+		// 						classes: 'bg-green text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$21,080.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$17,240.34',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$3,839.66',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '$8.22',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 3,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Avg Premium',
+		// 						classes: 'bg-red text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$3,518.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$31,202.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '$89.87',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 4,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Level Reached',
+		// 						classes: 'bg-pink text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$0.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 5,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Target Bonus Earned',
+		// 						classes: 'bg-orange text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$18,600.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$0.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			}
+		// 		]
+		// 	}
+		// },
+		// {
+		// 	id: 'Agency_PossibleMoney_Table',
+		// 	title: "This is what you're making at your Current Level of Production",
+		// 	table: {
+		// 		columns: [
+		// 			{
+		// 				id: 'id',
+		// 				title: ''
+		// 			},
+		// 			{
+		// 				id: 'auto',
+		// 				title: 'AUTO'
+		// 			},
+		// 			{
+		// 				id: 'fire',
+		// 				title: 'FIRE'
+		// 			},
+		// 			{
+		// 				id: 'life',
+		// 				title: 'LIFE'
+		// 			},
+		// 			{
+		// 				id: 'health',
+		// 				title: 'HEALTH'
+		// 			},
+		// 			{
+		// 				id: 'bank',
+		// 				title: 'BANK'
+		// 			},
+		// 			{
+		// 				id: 'total',
+		// 				title: 'TOTAL'
+		// 			}
+		// 		],
+		// 		rows: [
+		// 			{
+		// 				id: 1,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Policies',
+		// 						classes: 'bg-blue text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 2,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Anual Preminum',
+		// 						classes: 'bg-green text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$21,080.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$17,240.34',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$3,839.66',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '$8.22',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 3,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Avg Premium',
+		// 						classes: 'bg-red text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$3,518.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$31,202.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '$89.87',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 4,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Level Reached',
+		// 						classes: 'bg-pink text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$0.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			},
+		// 			{
+		// 				id: 5,
+		// 				cells: [
+		// 					{
+		// 						id: 'left_title',
+		// 						value: 'Target Bonus Earned',
+		// 						classes: 'bg-orange text-white',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'total_budget',
+		// 						value: '$18,600.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_usd',
+		// 						value: '$0.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'spent_perc',
+		// 						value: '$81.78',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_usd',
+		// 						value: '$34,720.00',
+		// 						classes: '',
+		// 						icon: ''
+		// 					},
+		// 					{
+		// 						id: 'remaining_perc',
+		// 						value: '',
+		// 						classes: '',
+		// 						icon: ''
+		// 					}
+		// 				]
+		// 			}
+		// 		]
+		// 	}
+		// },
 		{
 			id: 'Agency_ProductLine_Table_1',
 			title: '',

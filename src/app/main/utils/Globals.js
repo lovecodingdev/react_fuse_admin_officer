@@ -151,11 +151,11 @@ export const months1 = [
 ];
 
 export const bonusPlanDbNames = {
-	Auto: { name: "Auto", db: "autoBonus", indDb: "individualAutoTargetBonus" },
-	Fire: { name: "Fire", db: "fireBonus", indDb: "individualFireTargetBonus" },
-	Life: { name: "Life", db: "lifeBonus", indDb: "individualLifeTargetBonus" },
-	Health: { name: "Health", db: "healthBonus", indDb: "individualHealthTargetBonus" },
-	Bank: { name: "Bank", db: "bankBonus", indDb: "individualBankTargetBonus" },
+	Auto: { name: "Auto", db: "autoBonus", indDb: "individualAutoTargetBonus", teamDb: "teamAutoTargetBonus" },
+	Fire: { name: "Fire", db: "fireBonus", indDb: "individualFireTargetBonus", teamDb: "teamFireTargetBonus" },
+	Life: { name: "Life", db: "lifeBonus", indDb: "individualLifeTargetBonus", teamDb: "teamLifeTargetBonus" },
+	Health: { name: "Health", db: "healthBonus", indDb: "individualHealthTargetBonus", teamDb: "teamHealthTargetBonus" },
+	Bank: { name: "Bank", db: "bankBonus", indDb: "individualBankTargetBonus", teamDb: "teamBankTargetBonus" },
     Total: { name: "Total", db: "totalBonus", indDb: "individualTotalTargetBonus" },
 	Other: { name: "Other", db: "otherBonus", indDb: "individualOtherTargetBonus" },
 };

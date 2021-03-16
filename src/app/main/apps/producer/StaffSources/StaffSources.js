@@ -465,7 +465,7 @@ function StaffSources(props) {
 							</FuseAnimate>
 						</div>	
 					}	
-					{tabValue === 1 &&
+					{tabValue===1 && userList.length>0 &&
 						<div className="flex flex-1 items-center justify-center px-12 w-40">
 							<FuseAnimate animation="transition.slideUpIn" delay={300}>
 								<SelectBox
