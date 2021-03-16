@@ -669,6 +669,125 @@ function Products() {
 						requestForm.push(form);
 					}
 				}
+			} else {
+				if (state.user) {
+					if (state.typeOfProduct && state.policyType.includes('Entries')) {
+						if (state.user === 'OfficeCount') {
+							form = {
+								...form,
+								dollarBonus: '',
+								policyType: ['Entries'],
+								typeOfProduct: state.typeOfProduct
+							};
+							requestForm.push(form);
+						} else {
+							form = {
+								...form,
+								dollarBonus: '',
+								policyType: ['Entries'],
+								typeOfProduct: state.typeOfProduct
+							};
+							requestForm.push(form);
+						}
+					}
+
+					if (state.typeOfProduct && state.policyType.includes('FireEntries')) {
+						if (state.user === 'OfficeCount') {
+							form = {
+								...form,
+								dollarBonus: '',
+								policyType: ['FireEntries'],
+								typeOfProductFire: state.typeOfProductFire
+							};
+							requestForm.push(form);
+						} else {
+							form = {
+								...form,
+								dollarBonus: '',
+								policyType: ['FireEntries'],
+								typeOfProductFire: state.typeOfProductFire
+							};
+							requestForm.push(form);
+						}
+					}
+
+					if (state.typeOfProduct && state.policyType.includes('HealthEntries')) {
+						if (state.user === 'OfficeCount') {
+							form = {
+								...form,
+								dollarBonus: '',
+								policyType: ['HealthEntries'],
+								typeOfProductHealth: state.typeOfProductHealth
+							};
+							requestForm.push(form);
+						} else {
+							form = {
+								...form,
+								dollarBonus: '',
+								policyType: ['HealthEntries'],
+								typeOfProductHealth: state.typeOfProductHealth
+							};
+							requestForm.push(form);
+						}
+					}
+
+					if (state.typeOfProduct && state.policyType.includes('LifeEntries')) {
+						if (state.user === 'OfficeCount') {
+							form = {
+								...form,
+								dollarBonus: '',
+								policyType: ['LifeEntries'],
+								typeOfProductLife: state.typeOfProductLife
+							};
+							requestForm.push(form);
+						} else {
+							form = {
+								...form,
+								dollarBonus: '',
+								policyType: ['LifeEntries'],
+								typeOfProductLife: state.typeOfProductLife
+							};
+							requestForm.push(form);
+						}
+					}
+				} else {
+					if (state.typeOfProduct && state.policyType.includes('Entries')) {
+						form = {
+							...form,
+							dollarBonus: '',
+							policyType: ['Entries'],
+							typeOfProduct: state.typeOfProduct
+						};
+						requestForm.push(form);
+					}
+					if (state.typeOfProduct && state.policyType.includes('FireEntries')) {
+						form = {
+							...form,
+							dollarBonus: '',
+							policyType: ['FireEntries'],
+							typeOfProductFire: state.typeOfProductFire
+						};
+						requestForm.push(form);
+					}
+					if (state.typeOfProduct && state.policyType.includes('HealthEntries')) {
+						form = {
+							...form,
+							dollarBonus: '',
+							policyType: ['HealthEntries'],
+							typeOfProductHealth: state.typeOfProductHealth
+						};
+						requestForm.push(form);
+					}
+					if (state.typeOfProduct && state.policyType.includes('LifeEntries')) {
+						form = {
+							...form,
+							dollarBonus: '',
+							policyType: ['LifeEntries'],
+							typeOfProductLife: state.typeOfProductLife
+						};
+						requestForm.push(form);
+					}
+				}
 			}
 			if (uid && belongTo) {
 				if (routeParams.id === 'edit' && editData) {
@@ -745,7 +864,7 @@ function Products() {
 						<FuseScrollbars className="flex-grow overflow-x-auto">
 							<div className="min-w-xl p-96 h-full w-full flex flex-row justify-around flex-wrap">
 								{/* <div className="flex w-full justify-between items-center flex-wrap py-12"> */}
-								
+
 								<SelectBox
 									id="outlined-basic"
 									label="User Lists"
