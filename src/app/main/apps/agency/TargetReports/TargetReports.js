@@ -24,7 +24,7 @@ import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
 import { policies, months, Options as options } from '../../../utils/Globals';
-import { dividing, getMain } from '../../../utils/Function';
+import { getMain, getLevel } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -74,7 +74,9 @@ function TargetReports(props) {
 	}, [entries, bonusPlans, users]);
 
 	useEffect(() => {	
-		if(!_.isEmpty(widgets) && !_.isEmpty(main) && user!=='') {
+		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {
+			if(tabValue===0 && user==='')
+				return;
 			if(widgets.Agency_TargetReports_Auto_Table) {					
 				policies.map(policy => {
 					let tempRows = [];
@@ -98,7 +100,7 @@ function TargetReports(props) {
 					}];
 					let flatSAmountCells = [{
 						id: 'left_title',
-						value: 'Flat S Amount',
+						value: tabValue===0 ? '% of Auto & Fire Premium' : 'Flat S Amount',
 						classes: 'bg-pink text-white',
 						icon: ''
 					}];
@@ -108,40 +110,77 @@ function TargetReports(props) {
 						classes: 'bg-orange text-white',
 						icon: ''
 					}];
-					if(policy.value !== 'Total') {
+
+					let totalBonus = 0;
+					if(policy.value !== 'Total') {						
 						months.map((month) => { 
+							let policySum = 0;
+							let premiumSum = 0;
+							let levelReached = '';
+							let amount = 0;
+							let bonusSum = 0;
+							if(tabValue === 0) {
+								policySum = main[production][month.value][user][policy.value]['Policies'];
+								premiumSum = main[production][month.value][user][policy.value]['Premium'];
+								levelReached =  getLevel(main[production][month.value][user][policy.value]['Policies'], policy.value, bonusPlans).level;
+								amount = getLevel(main[production][month.value][user][policy.value]['Policies'], policy.value, bonusPlans).amount;
+								bonusSum = (
+									main[production][month.value][user]['Auto']['Premium'] / 2 +
+									main[production][month.value][user]['Fire']['Premium']
+								) * getLevel(main[production][month.value][user][policy.value]['Policies'], policy.value, bonusPlans).amount / 100;
+								totalBonus += bonusSum;
+							} else {
+								users.map(user1 => {
+									if(user1.belongTo === UID) {
+										policySum += main[production][month.value][user1.data.displayName][policy.value]['Policies'];
+										premiumSum += main[production][month.value][user1.data.displayName][policy.value]['Premium'];
+										levelReached =  getLevel(policySum, `Team${policy.value}`, bonusPlans).level;
+										amount = getLevel(policySum, `Team${policy.value}`, bonusPlans).amount;
+										bonusSum += amount;										
+									}
+								});
+							}
+							totalBonus += bonusSum;
+
+						// months.map((month) => { 
 							policiesCells.push({
 								id: month.value,
-								value: main[production][month.value][user][policy.value]['Policies'],
+								value: policySum,
 								classes: '',
 								icon: ''
 							});
 							annualPremiumCells.push({
 								id: month.value,
-								value: main[production][month.value][user][policy.value]['Premium'],
+								value: premiumSum,
 								classes: '',
 								icon: ''
 							});
 							levelReachedCells.push({
 								id: month.value,
-								value: getLevel(main[production][month.value][user][policy.value]['Policies'], policy.value).level,
+								value: levelReached,
 								classes: '',
 								icon: ''
 							});
 							flatSAmountCells.push({
 								id: month.value,
-								value: getLevel(main[production][month.value][user][policy.value]['Policies'], policy.value).amount,
+								value: amount,
 								classes: '',
 								icon: ''
 							});
 							targetBonusEarned.push({
 								id: month.value,
-								value: main[production][month.value][user][policy.value]['Bonuses'],
+								value: bonusSum,
 								classes: '',
 								icon: ''
-							});
+							});							
 						});
-					
+						policiesCells.push({
+							id: 'total',
+							value: totalBonus,
+							classes: '',
+							icon: ''
+						});
+
 						tempRows.push({
 							id: 1,
 							cells: policiesCells
@@ -185,73 +224,7 @@ function TargetReports(props) {
 
 		console.log('---------widgets', widgets)
 		setData({ widgets });
-	}, [widgets, main, user, production]);
-
-	
-
-	function getLevel(policyCount, policyName) {
-		let dbName = "";
-		if(policyName==="Auto")
-			dbName = "individualAutoTargetBonus";
-			// dbName = "teamAutoTargetBonus";
-		if(policyName==="Fire")
-			dbName = "individualFireTargetBonus";
-			// dbName = "teamFireTargetBonus";
-		if(policyName==="Life")
-			dbName = "individualLifeTargetBonus";
-			// dbName = "teamLifeTargetBonus";
-		if(policyName==="Health")
-			dbName = "individualHealthTargetBonus";
-			// dbName = "teamHealthTargetBonus";
-		if(policyName==="Bank")
-			dbName = "individualBankTargetBonus";
-			// dbName = "teamBankTargetBonus";
-		if(policyName==="Other")
-			dbName = "individualOtherTargetBonus";	
-			// dbName = "teamOtherTargetBonus";	
-
-		let level = { 
-			level: "", 
-			policies: 0, 
-			amount: 0, 
-			nextLevel: "", 
-			nextPolicies: 0, 
-			nextAmount: 0, 
-			maxLevel: "", 
-			maxPolicies: 0, 
-			maxAmount: 0 
-		};
-		let count = 0
-		if(bonusPlans.length>0 && bonusPlans[0].hasOwnProperty(dbName)) {
-			Object.keys(bonusPlans[0][dbName]).map((key, n) => {
-				const item = bonusPlans[0][dbName][key];
-				if(policyCount > 0) {
-					if(n===0) {
-						level.level = "None Reached";
-					}
-					if(policyCount >= item.policies) { 
-						level.level = item.level; 
-						level.policies = item.policies;
-						level.amount = item.amount;
-						count ++;
-					}	
-					if(n === count) { 				
-						level.nextLevel = item.level;
-						level.nextPolicies = item.policies;
-						level.nextAmount = item.amount;
-					}	
-					if(n === Object.keys(bonusPlans[0][dbName]).length-1) {
-						level.maxLevel = item.level;
-						level.maxPolicies = item.policies;
-						level.maxAmount = item.amount;
-						;
-					}
-				}							
-			});
-		} 
-		
-		return level;
-	}
+	}, [widgets, main, user, production, tabValue]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -290,17 +263,43 @@ function TargetReports(props) {
 			}}
 			header={
 				<Header title={title}>
-					<div className="flex flex-1 items-center justify-center px-12 w-40">
+					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
-								value={user}
-								onChange={ev => handleChangeUser(ev)}
-								label="Users"
-								data={userList}
+								value={production}
+								onChange={ev => handleChangeProduction(ev)}
+								label="Production"
+								data={options.production.data}
 							/>
 						</FuseAnimate>
-					</div>					
+					</div>	
+					{tabValue===0 &&
+						<div className="flex flex-1 items-center justify-center px-12 w-40">
+							<FuseAnimate animation="transition.slideUpIn" delay={300}>
+								<SelectBox
+									value={user}
+									onChange={ev => handleChangeUser(ev)}
+									label="Users"
+									data={userList}
+								/>
+							</FuseAnimate>
+						</div>
+					}					
 				</Header>
+			}
+			contentToolbar={
+				<Tabs
+					value={tabValue}
+					onChange={handleChangeTab}
+					indicatorColor="primary"
+					textColor="primary"
+					variant="scrollable"
+					scrollButtons="auto"
+					classes={{ root: 'w-full h-64' }}
+				>
+					<Tab className="h-64 normal-case" label="INDIVIDUALLY" />
+					<Tab className="h-64 normal-case" label="AS A TEAM" />					
+				</Tabs>
 			}
 			content={
 				<div className="w-full p-12">	
