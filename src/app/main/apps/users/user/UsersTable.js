@@ -22,7 +22,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import SelectBox from '../../../components/SelectBox';
 import DateFnsUtils from '@date-io/date-fns';
-import { openUserProfileDialog } from '../store/userSlice';
+import { openUserProfileDialog, deleteUser } from '../store/userSlice';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
@@ -38,6 +38,8 @@ const teamBonusList = [
 	{ item: 'Yes', value: true },
 	{ item: 'No', value: false }
 ];
+
+var selectedUID = ""
 
 function ProductsTable(props) {
 	const dispatch = useDispatch();
@@ -59,9 +61,10 @@ function ProductsTable(props) {
 		includeTeamBonus: ''
 	});
 	const [open, setOpen] = React.useState(false);
-
-	const handleClickOpen = () => {
+	
+	const handleClickOpen = (uid) => {
 		setOpen(true);
+		selectedUID = uid
 	};
 
 	const handleClose = () => {
@@ -70,6 +73,8 @@ function ProductsTable(props) {
 
 	const handleDelete = () => {
 		setOpen(false);
+		console.log(selectedUID)
+		dispatch(deleteUser(selectedUID))
 	};
 
 	useEffect(() => {
@@ -303,7 +308,7 @@ function ProductsTable(props) {
 														className="whitespace-nowrap normal-case"
 														variant="contained"
 														color="secondary"
-														onClick={handleClickOpen}
+														onClick={()=>handleClickOpen(n.uid)}
 													>
 														<span className="hidden sm:flex">Revoke</span>
 													</Button>

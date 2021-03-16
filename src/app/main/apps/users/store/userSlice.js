@@ -3,6 +3,7 @@ import axios from 'axios';
 import { realDb } from '../../../../../@fake-db/db/firebase';
 import {
 	firebaseFuncitonSendEmailEndpoint,
+	firebaseFunctionDeleteUserEndpoint,
 	deployOfficerEndpoint,
 	deployProducerEndpoint
 } from 'app/fuse-configs/endpointConfig';
@@ -32,18 +33,17 @@ export const getUsers = createAsyncThunk(
 							if (belongTo === agencyData[item].belongTo) users.push(agencyData[item]);
 						});
 					}
-					invitationCountRef.on('value',snaps=>{
-						const invitationData = snaps.val()
-						
-						if(invitationData){
+					invitationCountRef.on('value', snaps => {
+						const invitationData = snaps.val();
+
+						if (invitationData) {
 							Object.keys(invitationData).map(item => {
 								users.push(invitationData[item]);
 							});
 						}
-						console.log('--------------------------------',users)
+
 						resolve(users);
-					})
-					
+					});
 				});
 			});
 		})
@@ -70,6 +70,23 @@ export const removeProducts = createAsyncThunk('users/users/removeUser', async (
 	return data;
 });
 
+export const deleteUser = createAsyncThunk('users/users/deleteUser', async (UID, { dispatch, getState }) => {
+	// const res = await axios.post('/api/users/remove-users', { UID });
+	// const data = await res.data;
+	const uid = localStorage.getItem('@UID');
+	const form = { uid: UID };
+	const response = await axios.post(firebaseFunctionDeleteUserEndpoint, form);
+	var agencyDelRef = realDb.ref(`agency/${UID}`);
+	var userDelRef = realDb.ref(`users/${UID}`);
+	agencyDelRef.remove()
+	userDelRef.remove()
+	console.log(response, UID);
+
+	dispatch(getUsers());
+
+	return [];
+});
+
 export const addUser = createAsyncThunk('users/user/addUser', async (contact, { dispatch, getState }) => {
 	if (contact.role === 'agency') {
 		var form = {
@@ -77,10 +94,12 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 			subject: 'Sent Invitation',
 			emailBody:
 				'<div><p>Please touch this link to register to Back Office Web App as Agency <p> ' +
-				`<a href='`+deployOfficerEndpoint +
+				`<a href='` +
+				deployOfficerEndpoint +
 				'/register/' +
 				contact.belongTo +
-				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l'>`+deployOfficerEndpoint +
+				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l'>` +
+				deployOfficerEndpoint +
 				'/register/' +
 				contact.belongTo +
 				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l</a></div>`
@@ -91,26 +110,33 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 			subject: 'Sent Invitation',
 			emailBody:
 				'<div><p>Please touch this link to register to Back Office Web App as Producer <p> ' +
-				`<a href='`+deployProducerEndpoint +
+				`<a href='` +
+				deployProducerEndpoint +
 				'/register/' +
-				contact.belongTo+`'>`+ deployProducerEndpoint +
+				contact.belongTo +
+				`'>` +
+				deployProducerEndpoint +
 				'/register/' +
-				contact.belongTo+`</a></div>`
+				contact.belongTo +
+				`</a></div>`
 		};
 	}
 
 	const response = await axios.post(firebaseFuncitonSendEmailEndpoint, form);
-	console.log('<div><p>Please touch this link to register to Back Office Web App as Agency <p> ' +
-	`<a href='`+deployOfficerEndpoint +
-	'/register/' +
-	contact.belongTo +
-	`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l'/></div>`);
+	console.log(
+		'<div><p>Please touch this link to register to Back Office Web App as Agency <p> ' +
+			`<a href='` +
+			deployOfficerEndpoint +
+			'/register/' +
+			contact.belongTo +
+			`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l'/></div>`
+	);
 	const data = await response.data;
-	const belongTo = localStorage.getItem('@BELONGTO');	
-	realDb.ref(`Invitation/${belongTo}/${contact.email.replace('.','').replace('.','').replace('.','')}/`).set({
+	const belongTo = localStorage.getItem('@BELONGTO');
+	realDb.ref(`Invitation/${belongTo}/${contact.email.replace('.', '').replace('.', '').replace('.', '')}/`).set({
 		email: contact.email,
-		id:contact.email.replace('.','').replace('.','').replace('.','')
-	})
+		id: contact.email.replace('.', '').replace('.', '').replace('.', '')
+	});
 
 	dispatch(getUsers());
 

@@ -51,10 +51,12 @@ export const registerWithFirebase = model => async dispatch => {
 
 					realDb.ref(`BonusPlan/${belongTo}/${response.user.uid}/`).set({
 						...bonusPlanTemplate
-					})
+					});
 
-					var inviteUserRef = realDb.ref(`Invitation/${belongTo}/${email.replace('.','').replace('.','').replace('.','')}`)
-					inviteUserRef.remove()
+					var inviteUserRef = realDb.ref(
+						`Invitation/${belongTo}/${email.replace('.', '').replace('.', '').replace('.', '')}`
+					);
+					inviteUserRef.remove();
 					dispatch(
 						createUserSettingsFirebase({
 							...response.user,
@@ -78,14 +80,14 @@ export const registerWithFirebase = model => async dispatch => {
 				});
 				realDb.ref(`BonusPlan/${response.user.uid}/all/`).set({
 					...bonusPlanTemplate
-				})
+				});
 				dispatch(
 					createUserSettingsFirebase({
 						...response.user,
 						displayName,
 						email,
 						role,
-						belongTo:response.user.uid
+						belongTo: response.user.uid
 					})
 				);
 			}
