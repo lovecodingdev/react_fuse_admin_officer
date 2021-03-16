@@ -24,7 +24,7 @@ import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
 import { monthsAndQuarters, colors, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing } from '../../../utils/Function';
+import { ceil, dividing, getMain } from '../../../utils/Function';
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
 
@@ -51,93 +51,23 @@ function StaffSources(props) {
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
-	useEffect(() => {		
-		// creating temp
-		if(Object.keys(marketings).length>0 && users.length>0 && entries.length>0) {
-			// user options
-			var tempUserList = [];
-			if (users.length > 0) {
-				users.map(user => {
-					if(user.belongTo === UID) {
-						tempUserList.push({ 
-							item: user.data.displayName, 
-							value: user.data.displayName 
-						});
-					}
-				});
-				setUserList(tempUserList);
-			}
-
-			let temp = {};		
-			options.production.data.map((pro) => {
-				temp[pro.value] = {};
-				monthsAndQuarters.map((month) => {				
-					temp[pro.value][month.value] = {};
-					users.map((user) => {
-						let userOptions = { id: 'Users', data: [] };
-						userOptions.data.push({ 
-							item: user.data.displayName, 
-							value: user.data.displayName 
-						});
-
-						temp[pro.value][month.value][user.data.displayName] = {};
-						policies.map((policy) => {
-							temp[pro.value][month.value][user.data.displayName][policy.value] = {
-								"Bonuses": 0,
-								"Premium": 0,
-								"Policies": 0,
-								"Average Premium": 0,
-							};
-
-							// adding marketing items
-							Object.keys(marketings).map((key) => {
-								const marketing = marketings[key];
-								temp[pro.value][month.value][user.data.displayName][policy.value][marketing.marketingName] = 0;			
-							}); 							
-						});
-							
-					});						
-				});
-
-				if(entries.length > 0) {
-					const entryNames = {
-						"Entries": "Auto", 
-						"FireEntries": "Fire", 
-						"LifeEntries": "Life", 
-						"HealthEntries": "Health", 
-						"BankEntries": "Bank", 
-						"OtherEntries": "Other"
-					};
-					users.map((user) => {
-						const userName = user.data.displayName;
-						Object.keys(entries[0]).map((entryName) => {
-							if(entries[0][entryName].hasOwnProperty(user.id)) {
-								Object.keys(entries[0][entryName][user.id]).map((key) => {
-									const item = entries[0][entryName][user.id][key];
-									const issuedMonth = (new Date(item.datePolicyIsIssued)).getMonth();
-									const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
-									const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
-									temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
-									temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100)
-									temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));
-									temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
-									temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
-									temp[pro.value][month][userName][entryNames[entryName]]["Average Premium"] = dividing(
-										temp[pro.value][month][userName][entryNames[entryName]]["Premium"],
-										temp[pro.value][month][userName][entryNames[entryName]]["Policies"]		
-									)
-														
-								});
-							}
-						});	
-					});	
-				}
-			});		
-			
-			console.log('--------------------temp=', temp)
-			setMain(temp)
+	useEffect(() => {
+		var temp = [];
+		if (users.length > 0) {
+			users.map(user => {
+				if(user.belongTo === UID)
+					temp.push({ item: user.data.displayName, value: user.data.displayName });
+			});
+			setUserList(temp);
 		}
-	}, [marketings, entries, users]);
+	}, [users]);
+	
+	useEffect(() => {		
+		if(Object.keys(marketings).length>0 && users.length>0 && entries.length>0) {
+			const temp = getMain(entries, [], marketings, users, []);										
+			setMain(temp);
+		}	
+	}, [entries, marketings, users]);
 
 	useEffect(() => {
 		if(Object.keys(widgets).length>0 && Object.keys(main).length>0) {	

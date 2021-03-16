@@ -23,8 +23,8 @@ import { getMarketings, selectMarketings } from '../store/marketingsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
-import { policiesAndPremium1, monthsAndQuarters, colors, bonusPlanDbNames, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing } from '../../../utils/Function';
+import { policies, months, Options as options } from '../../../utils/Globals';
+import { ceil, dividing, getMain } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -55,130 +55,12 @@ function Multiline(props) {
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
-	useEffect(() => {		
-		// creating temp
-		if(users.length>0 && Object.keys(marketings).length>0 && entries.length>0) {
-			let temp = {};	
-			const visionNames = {
-				"Auto": "autoPolicies",
-				"Fire": "firePolicies",
-				"Life": "lifePolicies",
-				"Health": "healthPolicies",
-				"Bank": "bankProducts",
-				"Totals": "totalProducts",
-			};	
-			options.production.data.map((pro) => {
-				temp[pro.value] = {};
-				monthsAndQuarters.map((month) => {				
-					temp[pro.value][month.value] = {};
-					users.map((user) => {
-						// let userOptions = { id: 'Users', data: [] };
-						// userOptions.data.push({ 
-						// 	item: user.data.displayName, 
-						// 	value: user.data.displayName 
-						// });
-
-						temp[pro.value][month.value][user.data.displayName] = {};
-						policies.map((policy) => {
-							temp[pro.value][month.value][user.data.displayName][policy.value] = {
-								"Bonuses": 0,
-								"Policy Premium": 0,
-								"Number of Policies": 0,
-								"Average Premium": 0,
-								"Goal": 0,
-							};
-
-							// adding marketing items
-							Object.keys(marketings).map((key) => {
-								const marketing = marketings[key];
-								temp[pro.value][month.value][user.data.displayName][policy.value][marketing.marketingName] = 0;			
-							}); 
-							
-							// //adding bonusPlan items
-							// const bonusPlan = bonusPlans.length > 0 && 
-							// 	bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy.value].db) ? 
-							// 	bonusPlans[0][bonusPlanDbNames[policy.value].db] : 
-							// 	{};				
-							// Object.keys(bonusPlan).map((key) => {		
-							// 	const item = bonusPlan[key];
-							// 	temp[pro.value][month.value][user.data.displayName][policy.value][item.name] = 0;
-							// 	temp[pro.value][month.value][user.data.displayName][policy.value][`Bonuses`] = 0;
-							// 	temp[pro.value][month.value][user.data.displayName][policy.value][`Policy Premium`] = 0;
-							// 	temp[pro.value][month.value][user.data.displayName][policy.value][`Number of Policies`] = 0;
-							// 	temp[pro.value][month.value][user.data.displayName][policy.value][`Average Premium`] = 0;
-							// });	
-
-							// adding vision items
-							if(vision.length > 0) {	
-								let trimedMonth = month.value;
-								switch(month.value) {
-									case "Quarter 1 Totals":
-										trimedMonth = "Quarter1";
-									case "Quarter 2 Totals":
-										trimedMonth = "Quarter2";
-									case "Quarter 3 Totals":
-										trimedMonth = "Quarter3";
-									case "Quarter 4 Totals":
-										trimedMonth = "Quarter4";	
-									case "Annual Totals":
-										trimedMonth = "Total";
-									case "Projected for Year":
-										trimedMonth = "Total";									
-			
-								}		
-								if(vision[0].hasOwnProperty(user.id)) {
-									temp[pro.value][month.value][user.data.displayName][policy.value]["Goal"] = 
-										vision[0][user.id]['Goals'][trimedMonth][visionNames[policy.value]];
-								}
-								
-							}
-						});
-							
-					});						
-				});
-
-				if(entries.length > 0) {
-					const entryNames = {
-						"Entries": "Auto", 
-						"FireEntries": "Fire", 
-						"LifeEntries": "Life", 
-						"HealthEntries": "Health", 
-						"BankEntries": "Bank", 
-						"OtherEntries": "Other"
-					};
-					let dbName = '';
-
-					users.map((user) => {
-						const userName = user.data.displayName;
-						Object.keys(entries[0]).map((entryName) => {
-							if(entries[0][entryName].hasOwnProperty(user.id)) {
-								Object.keys(entries[0][entryName][user.id]).map((key) => {
-									const item = entries[0][entryName][user.id][key];
-									const issuedMonth = (new Date(item.datePolicyIsIssued)).getMonth();
-									const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
-									const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
-									temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
-									temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
-									temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));									
-									temp[pro.value][month][userName][entryNames[entryName]]["Policy Premium"] += ceil(parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100);									
-									temp[pro.value][month][userName][entryNames[entryName]]["Number of Policies"] += ceil(parseFloat(item.percentOfSaleCredit / 100));	
-									temp[pro.value][month][userName][entryNames[entryName]]["Average Premium"] = ceil(
-										dividing(
-											temp[pro.value][month][userName][entryNames[entryName]]["Policy Premium"],
-											temp[pro.value][month][userName][entryNames[entryName]]["Number of Policies"]		
-										)	
-									)
-								});
-							}
-						});	
-					});	
-				}
-			});		
-			
-			console.log('--------------------temp=', temp)
-			setMain(temp)
+	useEffect(() => {				
+		if(users.length>0 && Object.keys(marketings).length>0 && entries.length>0) {	
+			const temp = getMain(entries, bonusPlans, marketings, users, vision);										
+			setMain(temp);
 		}
-	}, [marketings, entries, bonusPlans, users, vision]);
+	}, [entries, bonusPlans, marketings, users, vision]);
 
 	useEffect(() => {	
 		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {
@@ -191,15 +73,15 @@ function Multiline(props) {
 						tableContent[policy.value] = { 'Sales Goal': 0, 'Actual Sales': 0, 'Total Premium / Dollars': 0, 'Average Premium / Dollars': 0 };
 						users.map(user => {
 							if(user.belongTo === UID) {
-								tableContent[policy.value]['Sales Goal'] += main[production][period][user.data.displayName][policy.value]['Goal'];	
-								tableContent[policy.value]['Actual Sales'] += main[production][period][user.data.displayName][policy.value]['Number of Policies'];										
-								tableContent[policy.value]['Total Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Policy Premium'];										
-								tableContent[policy.value]['Average Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Average Premium'];	
-								console.log(period, user.data.displayName, policy.value, main[production][period][user.data.displayName][policy.value]['Average Premium'])
-								tableContent['Total']['Sales Goal'] += main[production][period][user.data.displayName][policy.value]['Goal'];	
-								tableContent['Total']['Actual Sales'] += main[production][period][user.data.displayName][policy.value]['Number of Policies'];										
-								tableContent['Total']['Total Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Policy Premium'];										
-								tableContent['Total']['Average Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Average Premium'];	
+								tableContent[policy.value]['Sales Goal'] += main[production][period][user.data.displayName][policy.value]['Goals'];	
+								tableContent[policy.value]['Actual Sales'] += main[production][period][user.data.displayName][policy.value]['Policies'];										
+								tableContent[policy.value]['Total Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Premium'];										
+								tableContent[policy.value]['Average Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Averages'];	
+								console.log(period, user.data.displayName, policy.value, main[production][period][user.data.displayName][policy.value]['Averages'])
+								tableContent['Total']['Sales Goal'] += main[production][period][user.data.displayName][policy.value]['Goals'];	
+								tableContent['Total']['Actual Sales'] += main[production][period][user.data.displayName][policy.value]['Policies'];										
+								tableContent['Total']['Total Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Premium'];										
+								tableContent['Total']['Average Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Averages'];	
 							}			
 						});
 					}

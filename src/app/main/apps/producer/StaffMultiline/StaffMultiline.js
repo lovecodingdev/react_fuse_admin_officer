@@ -24,7 +24,8 @@ import { getMarketings, selectMarketings } from '../store/marketingsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import usersSlice, { getUsers, selectUsers } from '../store/usersSlice';
 import { monthsAndQuarters, colors, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing } from '../../../utils/Function';
+import { ceil, dividing, getMain } from '../../../utils/Function';
+
 const belongTo = localStorage.getItem('@BELONGTO')
 const UID = localStorage.getItem('@UID')
 
@@ -53,69 +54,11 @@ function StaffMultiline(props) {
 	}, [dispatch]);
 
 	useEffect(() => {		
-		// creating temp
-		let temp = {};
-		options.production.data.map((pro) => {
-			temp[pro.value] = {};
-			monthsAndQuarters.map((month) => {				
-				temp[pro.value][month.value] = {};
-					users.map((user) => {
-						temp[pro.value][month.value][user.data.displayName] = {};
-						policies.map((policy) => {
-							temp[pro.value][month.value][user.data.displayName][policy.value] = {
-								"Bonuses": 0,
-								"Premium": 0,
-								"Policies": 0,
-								"Average Premium": 0,
-							};
-	
-							// adding marketing items
-							Object.keys(marketings).map((key) => {
-								const marketing = marketings[key];
-								temp[pro.value][month.value][user.data.displayName][policy.value][marketing.marketingName] = 0;			
-							}); 					
-						});	
-					});						
-			});
-
-			if(entries.length > 0) {
-				const entryNames = {
-					"Entries": "Auto", 
-					"FireEntries": "Fire", 
-					"LifeEntries": "Life", 
-					"HealthEntries": "Health", 
-					"BankEntries": "Bank", 
-					"OtherEntries": "Other"
-				};
-				users.map((user) => {
-					const userName = user.data.displayName;
-					Object.keys(entries[0]).map((entryName) => {
-						if(entries[0][entryName].hasOwnProperty(user.id)) {
-							Object.keys(entries[0][entryName][user.id]).map((key) => {
-								const item = entries[0][entryName][user.id][key];
-								const issuedMonth = (new Date(item.datePolicyIsIssued)).getMonth();
-								const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
-								const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
-								temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
-								temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100)
-								temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));
-								temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
-								temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
-								temp[pro.value][month][userName][entryNames[entryName]]["Average Premium"] = dividing(
-									temp[pro.value][month][userName][entryNames[entryName]]["Premium"],
-									temp[pro.value][month][userName][entryNames[entryName]]["Policies"]		
-								)
-													
-							});
-						}
-					});	
-				});	
-			}
-		});		
-		
-		console.log('--------------------temp=', temp)
-		setMain(temp)
-	}, [bonusPlans, marketings, entries]);
+		if(users.length>0 && Object.keys(marketings).length>0 && entries.length>0) {	
+			const temp = getMain(entries, bonusPlans, marketings, users, []);										
+			setMain(temp);
+		}
+	}, [entries, bonusPlans, marketings, users]);
 
 	useEffect(() => {
 		//	Producer_StaffMultiline_Summary_Table
@@ -140,7 +83,7 @@ function StaffMultiline(props) {
 					policies.map((policy) => {
 						tableContent[user.data.displayName][`${policy.value}@Policies`] = ceil(main[production][period][user.data.displayName][policy.value]["Policies"]);						
 						tableContent[user.data.displayName][`${policy.value}@Annual Premium`] = ceil(main[production][period][user.data.displayName][policy.value]["Premium"]);
-						tableContent[user.data.displayName][`${policy.value}@Average Premium`] = ceil(main[production][period][user.data.displayName][policy.value]["Average Premium"]);
+						tableContent[user.data.displayName][`${policy.value}@Average Premium`] = ceil(main[production][period][user.data.displayName][policy.value]["Averages"]);
 						tableContent[user.data.displayName][`${policy.value}@Auto Bonus`] = ceil(main[production][period][user.data.displayName][policy.value]["Bonuses"]);
 						totalPolicies += tableContent[user.data.displayName][`${policy.value}@Policies`];
 						totalAnnualPremium += tableContent[user.data.displayName][`${policy.value}@Annual Premium`];

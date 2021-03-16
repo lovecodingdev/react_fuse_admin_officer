@@ -24,7 +24,7 @@ import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
 import { monthsAndQuarters, colors, bonusPlanDbNames, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing } from '../../../utils/Function';
+import { ceil, dividing, getMain } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -55,120 +55,11 @@ function PoliciesAndBank(props) {
 	}, [dispatch]);
 
 	useEffect(() => {		
-		// creating temp
 		if(Object.keys(marketings).length>0 && users.length>0 && entries.length>0 && bonusPlans.length>0) {
-			// user options
-			var tempUserList = [];
-			if (users.length > 0) {
-				users.map(user => {
-					if(user.belongTo === UID) {
-						tempUserList.push({ 
-							item: user.data.displayName, 
-							value: user.data.displayName 
-						});
-					}
-				});
-				setUserList(tempUserList);
-			}
-
-			let temp = {};		
-			options.production.data.map((pro) => {
-				temp[pro.value] = {};
-				monthsAndQuarters.map((month) => {				
-					temp[pro.value][month.value] = {};
-					users.map((user) => {
-						let userOptions = { id: 'Users', data: [] };
-						userOptions.data.push({ 
-							item: user.data.displayName, 
-							value: user.data.displayName 
-						});
-
-						temp[pro.value][month.value][user.data.displayName] = {};
-						policies.map((policy) => {
-							temp[pro.value][month.value][user.data.displayName][policy.value] = {
-								"Bonuses": 0,
-								"Premium": 0,
-								"Policies": 0,
-								"Averages": 0,
-							};
-
-							// adding marketing items
-							Object.keys(marketings).map((key) => {
-								const marketing = marketings[key];
-								temp[pro.value][month.value][user.data.displayName][policy.value][marketing.marketingName] = 0;			
-							}); 
-							
-							//adding bonusPlan items
-							const bonusPlan = bonusPlans.length > 0 && 
-								bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy.value].db) ? 
-								bonusPlans[0][bonusPlanDbNames[policy.value].db] : 
-								{};				
-							Object.keys(bonusPlan).map((key) => {		
-								const item = bonusPlan[key];
-								temp[pro.value][month.value][user.data.displayName][policy.value][item.name] = 0;
-								temp[pro.value][month.value][user.data.displayName][policy.value][`${item.name}@Bonuses`] = 0;
-								temp[pro.value][month.value][user.data.displayName][policy.value][`${item.name}@Premium`] = 0;
-								temp[pro.value][month.value][user.data.displayName][policy.value][`${item.name}@Policies`] = 0;
-								temp[pro.value][month.value][user.data.displayName][policy.value][`${item.name}@Averages`] = 0;
-							});	
-						});
-							
-					});						
-				});
-
-				if(entries.length > 0) {
-					const entryNames = {
-						"Entries": "Auto", 
-						"FireEntries": "Fire", 
-						"LifeEntries": "Life", 
-						"HealthEntries": "Health", 
-						"BankEntries": "Bank", 
-						"OtherEntries": "Other"
-					};
-					let dbName = '';
-
-					users.map((user) => {
-						const userName = user.data.displayName;
-						Object.keys(entries[0]).map((entryName) => {
-							if(entries[0][entryName].hasOwnProperty(user.id)) {
-								Object.keys(entries[0][entryName][user.id]).map((key) => {
-									const item = entries[0][entryName][user.id][key];
-									const issuedMonth = (new Date(item.datePolicyIsIssued)).getMonth();
-									const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
-									const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
-									temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
-									temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
-									temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));
-									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Bonuses`] += ceil(parseFloat(item.dollarBonus));
-									temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += ceil(parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100);
-									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Premium`] += ceil(parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100);
-									temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += ceil(parseFloat(item.percentOfSaleCredit / 100));	
-									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Policies`] +=ceil( parseFloat(item.percentOfSaleCredit / 100));	
-									temp[pro.value][month][userName][entryNames[entryName]]["Averages"] = ceil(
-										dividing(
-											temp[pro.value][month][userName][entryNames[entryName]]["Premium"],
-											temp[pro.value][month][userName][entryNames[entryName]]["Policies"]		
-										)	
-									)
-										
-									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Averages`] = ceil(
-										dividing(
-											temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Premium`],
-											temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Policies`]		
-										)
-									)
-																																	
-								});
-							}
-						});	
-					});	
-				}
-			});		
-			
-			console.log('--------------------temp=', temp)
-			setMain(temp)
+			const temp = getMain(entries, bonusPlans, marketings, users, []);										
+			setMain(temp);
 		}
-	}, [marketings, entries, bonusPlans, users]);
+	}, [entries, bonusPlans, marketings, users]);
 
 	useEffect(() => {	
 		if(Object.keys(widgets).length>0 && Object.keys(main).length>0) {	
@@ -231,24 +122,25 @@ function PoliciesAndBank(props) {
 						tableContent[user.data.displayName] = {};
 						tableHeaders.map((header) => {
 							if(header.value.substring(header.value.indexOf('@')+1) != 'Total') {
-								tableContent[user.data.displayName][header.value] = 
-									main[production][period][user.data.displayName][header.value.split('@')[0]][`${header.value.split('@')[1]}@${report}`];
+								tableContent[user.data.displayName][header.value] = ceil(
+									main[production][period][user.data.displayName][header.value.split('@')[0]][`${header.value.split('@')[1]}@${report}`]
+								)
 									
 								// Total per Policy	
 								if(!tableContent[user.data.displayName].hasOwnProperty(`${header.value.split('@')[0]}@Total`))
 									tableContent[user.data.displayName][`${header.value.split('@')[0]}@Total`] = 0;
-								tableContent[user.data.displayName][`${header.value.split('@')[0]}@Total`] += tableContent[user.data.displayName][header.value];
+								tableContent[user.data.displayName][`${header.value.split('@')[0]}@Total`] += ceil(tableContent[user.data.displayName][header.value]);
 
 								// Annual Total
 								if(!tableContent['Total'].hasOwnProperty(header.value)) {
 									tableContent['Total'][header.value] = 0;
 								}
-								tableContent['Total'][header.value] += tableContent[user.data.displayName][header.value];
+								tableContent['Total'][header.value] += ceil(tableContent[user.data.displayName][header.value]);
 						
 								if(!tableContent['Total'].hasOwnProperty(`${header.value.split('@')[0]}@Total`)) {
 									tableContent['Total'][`${header.value.split('@')[0]}@Total`] = 0;
 								}
-								tableContent['Total'][`${header.value.split('@')[0]}@Total`] += tableContent[user.data.displayName][header.value];								
+								tableContent['Total'][`${header.value.split('@')[0]}@Total`] += ceil(tableContent[user.data.displayName][header.value]);								
 							}															
 						});
 					}

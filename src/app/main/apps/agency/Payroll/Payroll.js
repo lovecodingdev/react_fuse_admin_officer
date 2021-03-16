@@ -21,7 +21,7 @@ import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { monthsAndQuarters, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing } from '../../../utils/Function';
+import { ceil, dividing, getMain } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -45,70 +45,10 @@ function Payroll(props) {
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);	
 
-	useEffect(() => {		
-		// creating temp
+	useEffect(() => {			
 		if(users.length>0 && entries.length>0) {			
-			let temp = {};		
-			options.production.data.map((pro) => {
-				temp[pro.value] = {};
-				monthsAndQuarters.map((month) => {				
-					temp[pro.value][month.value] = {};
-					users.map((user) => {
-						let userOptions = { id: 'Users', data: [] };
-						userOptions.data.push({ 
-							item: user.data.displayName, 
-							value: user.data.displayName 
-						});
-
-						temp[pro.value][month.value][user.data.displayName] = {};
-						policies.map((policy) => {
-							temp[pro.value][month.value][user.data.displayName][policy.value] = {
-								"Bonuses": 0,
-								"Premium": 0,
-								"Policies": 0,
-								"Averages": 0,
-							};	
-						});	
-					});						
-				});
-
-				if(entries.length > 0) {
-					const entryNames = {
-						"Entries": "Auto", 
-						"FireEntries": "Fire", 
-						"LifeEntries": "Life", 
-						"HealthEntries": "Health", 
-						"BankEntries": "Bank", 
-						"OtherEntries": "Other"
-					};
-					let dbName = '';
-
-					users.map((user) => {
-						const userName = user.data.displayName;
-						Object.keys(entries[0]).map((entryName) => {
-							if(entries[0][entryName].hasOwnProperty(user.id)) {
-								Object.keys(entries[0][entryName][user.id]).map((key) => {
-									const item = entries[0][entryName][user.id][key];
-									const issuedMonth = (new Date(item.datePolicyIsIssued)).getMonth();
-									const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
-									const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
-									temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
-									temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
-									temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));
-									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Bonuses`] += ceil(parseFloat(item.dollarBonus));
-									temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
-									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Premium`] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
-									temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
-									temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Policies`] += parseFloat(item.percentOfSaleCredit / 100);																														
-								});
-							}
-						});	
-					});	
-				}
-			});		
-			
-			console.log('--------------------temp=', temp)
-			setMain(temp)
+			const temp = getMain(entries, [], [], users, []);										
+			setMain(temp);
 		}
 	}, [entries, users]);
 

@@ -22,7 +22,7 @@ import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
 import { monthsAndQuarters, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing } from '../../../utils/Function';
+import { ceil, dividing, getMain } from '../../../utils/Function';
 const belongTo = localStorage.getItem('@BELONGTO')
 const UID = localStorage.getItem('@UID')
 
@@ -46,97 +46,12 @@ function GoalsAndActual(props) {
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
-	useEffect(() => {		
-		// creating temp
-		let temp = {};
-		const visionNames = {
-			"Auto": "autoPolicies",
-			"Fire": "firePolicies",
-			"Life": "lifePolicies",
-			"Health": "healthPolicies",
-			"Bank": "bankProducts",
-			"Totals": "totalProducts",
-		};
-		options.production.data.map((pro) => {
-			temp[pro.value] = {};
-			monthsAndQuarters.map((month) => {				
-				temp[pro.value][month.value] = {};
-					users.map((user) => {
-						temp[pro.value][month.value][user.data.displayName] = {};
-						policies.map((policy) => {
-							temp[pro.value][month.value][user.data.displayName][policy.value] = {
-								"Bonuses": 0,
-								"Premium": 0,
-								"Policies": 0,
-								"Averages": 0,
-							};							
-
-							if(vision.length > 0) {	
-								let trimedMonth = month.value;
-								switch(month.value) {
-									case "Quarter 1 Totals":
-										trimedMonth = "Quarter1";
-									case "Quarter 2 Totals":
-										trimedMonth = "Quarter2";
-									case "Quarter 3 Totals":
-										trimedMonth = "Quarter3";
-									case "Quarter 4 Totals":
-										trimedMonth = "Quarter4";	
-									case "Annual Totals":
-										trimedMonth = "Total";
-									case "Projected for Year":
-										trimedMonth = "Total";									
-			
-								}		
-								if(vision[0].hasOwnProperty(user.id)) {
-									temp[pro.value][month.value][user.data.displayName][policy.value]["Goals"] = 
-										vision[0][user.id]['Goals'][trimedMonth][visionNames[policy.value]];
-								}
-								
-							}
-						});
-							
-					});						
-			});
-
-			if(entries.length > 0) {
-				const entryNames = {
-					"Entries": "Auto", 
-					"FireEntries": "Fire", 
-					"LifeEntries": "Life", 
-					"HealthEntries": "Health", 
-					"BankEntries": "Bank", 
-					"OtherEntries": "Other"
-				};
-				users.map((user) => {
-					const userName = user.data.displayName;
-					Object.keys(entries[0]).map((entryName) => {
-						if(entries[0][entryName].hasOwnProperty(user.id)) {
-							Object.keys(entries[0][entryName][user.id]).map((key) => {
-								const item = entries[0][entryName][user.id][key];
-								const issuedMonth = (new Date(item.datePolicyIsIssued)).getMonth();
-								const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
-								const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
-								temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
-								temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100)
-								temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));
-								temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
-								temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
-								temp[pro.value][month][userName][entryNames[entryName]]["Average"] = dividing(
-									temp[pro.value][month][userName][entryNames[entryName]]["Premium"],
-									temp[pro.value][month][userName][entryNames[entryName]]["Policies"]		
-								)
-													
-							});
-						}
-					});	
-				});	
-			}
-		});		
-		
-		console.log('--------------------temp=', temp)
-		setMain(temp)
-	}, [entries, vision]);
+	useEffect(() => {				
+		if(users.length>0 && entries.length>0) {	
+			const temp = getMain(entries, [], [], users, vision);										
+			setMain(temp);
+		}
+	}, [entries, [], [], users, vision]);
 
 	useEffect(() => {	
 		// Producer_GoalsAndActual_AgencyGoals_Table

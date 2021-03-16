@@ -23,19 +23,8 @@ import { setProduction, setPeriod, setUser, setReport, setBonus } from '../store
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { Options as options } from '../../../utils/Globals';
 
-
-const useStyles = makeStyles(theme => ({
-	content: {
-		'& canvas': {
-			maxHeight: '100%'
-		}
-	},
-}));
-
 function PossibleMoney(props) {
 	const dispatch = useDispatch();
-	const classes = useStyles(props);
-	const pageLayout = useRef(null);
 	const users = useSelector(selectUsers);
 	const widgets = useSelector(selectWidgets);
 	const production = useSelector(({ agencyApp }) => agencyApp.products.production);

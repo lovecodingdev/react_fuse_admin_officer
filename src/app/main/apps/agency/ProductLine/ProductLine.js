@@ -24,7 +24,7 @@ import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
 import { policiesAndPremium1, monthsAndQuarters, colors, bonusPlanDbNames, policies, months, Options as options } from '../../../utils/Globals';
-import { ceil, dividing } from '../../../utils/Function';
+import { ceil, dividing, getMain } from '../../../utils/Function';
 import OtherLine from './OtherLine.js';
 
 const belongTo = localStorage.getItem('@BELONGTO');
@@ -56,109 +56,11 @@ function ProductLine(props) {
 	}, [dispatch]);
 
 	useEffect(() => {		
-		// creating temp
 		if(Object.keys(marketings).length>0 && users.length>0 && entries.length>0 && bonusPlans.length>0) {
-			// user options
-			var tempUserList = [];
-			if (users.length > 0) {
-				users.map(user => {
-					if(user.belongTo === UID) {
-						tempUserList.push({ 
-							item: user.data.displayName, 
-							value: user.data.displayName 
-						});
-					}
-				});
-				setUserList(tempUserList);
-			}
-
-			let temp = {};		
-			options.production.data.map((pro) => {
-				temp[pro.value] = {};
-				monthsAndQuarters.map((month) => {				
-					temp[pro.value][month.value] = {};
-					users.map((user) => {
-						let userOptions = { id: 'Users', data: [] };
-						userOptions.data.push({ 
-							item: user.data.displayName, 
-							value: user.data.displayName 
-						});
-
-						temp[pro.value][month.value][user.data.displayName] = {};
-						policies.map((policy) => {
-							temp[pro.value][month.value][user.data.displayName][policy.value] = {
-								"Bonuses": 0,
-								"Policy Premium": 0,
-								"Number of Policies": 0,
-								"Averages Premium": 0,
-							};
-
-							// adding marketing items
-							Object.keys(marketings).map((key) => {
-								const marketing = marketings[key];
-								temp[pro.value][month.value][user.data.displayName][policy.value][marketing.marketingName] = 0;			
-							}); 
-							
-							//adding bonusPlan items
-							const bonusPlan = bonusPlans.length > 0 && 
-								bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy.value].db) ? 
-								bonusPlans[0][bonusPlanDbNames[policy.value].db] : 
-								{};				
-							Object.keys(bonusPlan).map((key) => {		
-								const item = bonusPlan[key];
-								temp[pro.value][month.value][user.data.displayName][policy.value][item.name] = 0;
-								temp[pro.value][month.value][user.data.displayName][policy.value][`Bonuses`] = 0;
-								temp[pro.value][month.value][user.data.displayName][policy.value][`Policy Premium`] = 0;
-								temp[pro.value][month.value][user.data.displayName][policy.value][`Number of Policies`] = 0;
-								temp[pro.value][month.value][user.data.displayName][policy.value][`Average Premium`] = 0;
-							});	
-						});
-							
-					});						
-				});
-
-				if(entries.length > 0) {
-					const entryNames = {
-						"Entries": "Auto", 
-						"FireEntries": "Fire", 
-						"LifeEntries": "Life", 
-						"HealthEntries": "Health", 
-						"BankEntries": "Bank", 
-						"OtherEntries": "Other"
-					};
-					let dbName = '';
-
-					users.map((user) => {
-						const userName = user.data.displayName;
-						Object.keys(entries[0]).map((entryName) => {
-							if(entries[0][entryName].hasOwnProperty(user.id)) {
-								Object.keys(entries[0][entryName][user.id]).map((key) => {
-									const item = entries[0][entryName][user.id][key];
-									const issuedMonth = (new Date(item.datePolicyIsIssued)).getMonth();
-									const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
-									const month = pro.value==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value; 
-									temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
-									temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
-									temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += ceil(parseFloat(item.dollarBonus));									
-									temp[pro.value][month][userName][entryNames[entryName]]["Policy Premium"] += ceil(parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100);									
-									temp[pro.value][month][userName][entryNames[entryName]]["Number of Policies"] += ceil(parseFloat(item.percentOfSaleCredit / 100));	
-									temp[pro.value][month][userName][entryNames[entryName]]["Average Premium"] = ceil(
-										dividing(
-											temp[pro.value][month][userName][entryNames[entryName]]["Policy Premium"],
-											temp[pro.value][month][userName][entryNames[entryName]]["Number of Policies"]		
-										)	
-									)
-								});
-							}
-						});	
-					});	
-				}
-			});		
-			
-			console.log('--------------------temp=', temp)
-			setMain(temp)
+			const temp = getMain(entries, bonusPlans, marketings, users, []);										
+			setMain(temp);
 		}
-	}, [marketings, entries, bonusPlans, users]);
+	}, [entries, bonusPlans, marketings, users]);
 
 	useEffect(() => { 
 		let policy = '';
@@ -192,21 +94,31 @@ function ProductLine(props) {
 					policiesAndPremium1.map((item) => {	
 						users.map(user => {
 							if(user.belongTo === UID) {
+								let itemValue = '';
+								if(item.value === 'Average Premium') {
+									itemValue = 'Averages';
+								} else if (item.value === 'Number of Policies') {
+									itemValue = 'Policies';
+								} else if(item.value === 'Policy Premium') {
+									itemValue = 'Premium';
+								}
 								if(row < 12) {
-									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.value];									
+									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue];									
 								}	
 								if (row>11 && row<16) {
-									tableContent[month.value][item.value] =
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]);
+									tableContent[month.value][item.value] = ceil(
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue])
+									);										
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.value] =
+									tableContent[month.value][item.value] = ceil(
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[15].value][item.value])
+									);										
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.value] = '';
@@ -218,21 +130,31 @@ function ProductLine(props) {
 						const item = bonusPlan[key];
 						users.map(user => {
 							if(user.belongTo === UID) {
+								let itemValue = '';
+								if(item.value === 'Average Premium') {
+									itemValue = 'Averages';
+								} else if (item.value === 'Number of Policies') {
+									itemValue = 'Policies';
+								} else if(item.value === 'Policy Premium') {
+									itemValue = 'Premium';
+								}
 								if(row < 12) {
-									tableContent[month.value][item.name] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.name];									
+									tableContent[month.value][item.name] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue];									
 								}			
 								if(row>11 && row<16) {
-									tableContent[month.value][item.name] =
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]);
+									tableContent[month.value][item.name] = ceil(
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue])
+									);										
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.name] =
+									tableContent[month.value][item.name] = ceil(
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.name]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.name]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.name]) +
-										parseFloat(tableContent[monthsAndQuarters[15].value][item.name]);
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.name])
+									);
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.name] = '';
@@ -276,21 +198,31 @@ function ProductLine(props) {
 					policiesAndPremium1.map((item) => {				
 						users.map(user => {
 							if(user.belongTo === UID) {
+								let itemValue = '';
+								if(item.value === 'Average Premium') {
+									itemValue = 'Averages';
+								} else if (item.value === 'Number of Policies') {
+									itemValue = 'Policies';
+								} else if(item.value === 'Policy Premium') {
+									itemValue = 'Premium';
+								}
 								if(row < 12) {
-									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.value];									
+									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue];									
 								}	
 								if (row>11 && row<16) {
-									tableContent[month.value][item.value] =
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]);
+									tableContent[month.value][item.value] = ceil(
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue])
+									);
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.value] =
-										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
-										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
-										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
-										parseFloat(tableContent[monthsAndQuarters[15].value][item.value])
+									tableContent[month.value][item.value] = ceil(
+										parseFloat(tableContent[monthsAndQuarters[12].value][itemValue]) +
+										parseFloat(tableContent[monthsAndQuarters[13].value][itemValue]) +
+										parseFloat(tableContent[monthsAndQuarters[14].value][itemValue]) +
+										parseFloat(tableContent[monthsAndQuarters[15].value][itemValue])
+									);
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.value] = '';
@@ -306,17 +238,19 @@ function ProductLine(props) {
 									tableContent[month.value][item.marketingName] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName];									
 								}			
 								if(row>11 && row<16) {
-									tableContent[month.value][item.marketingName] =
+									tableContent[month.value][item.marketingName] = ceil(
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]);
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName])
+									);
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.marketingName] =
+									tableContent[month.value][item.marketingName] = ceil(
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.marketingName]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.marketingName]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.marketingName]) +
-										parseFloat(tableContent[monthsAndQuarters[15].value][item.marketingName]);
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.marketingName])
+									);
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.marketingName] = '';
@@ -364,17 +298,19 @@ function ProductLine(props) {
 									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.value];									
 								}	
 								if (row>11 && row<16) {
-									tableContent[month.value][item.value] =
+									tableContent[month.value][item.value] = ceil(
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
 										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]);
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value])
+									);
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.value] =
+									tableContent[month.value][item.value] = ceil(
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[15].value][item.value])
+									);										
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.value] = '';
@@ -575,7 +511,7 @@ function ProductLine(props) {
 					<Tab className="h-64 normal-case" label="Fire" />
 					<Tab className="h-64 normal-case" label="Life" />
 					<Tab className="h-64 normal-case" label="Health" />
-					<Tab className="h-64 normal-case" label="Bank" />
+					{/* <Tab className="h-64 normal-case" label="Bank" /> */}
 					{/* <Tab className="h-64 normal-case" label="Other" /> */}
 				</Tabs>
 			}
