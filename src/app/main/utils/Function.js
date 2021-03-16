@@ -27,6 +27,88 @@ export const formattedDate = (date) => {
   return mm+'/'+dd+'/'+yyyy;
 }
 
+export const getLevel =(policyCount, policyName, bonusPlans) => { 
+  // console.log(policyCount, policyName, bonusPlans)
+  let dbName = "";
+  if(policyName==="Auto")
+    dbName = "individualAutoTargetBonus";
+  if(policyName==="TeamAuto") 
+    dbName = "teamAutoTargetBonus";
+  if(policyName==="Fire")
+    dbName = "individualFireTargetBonus";
+  if(policyName==="TeamFire")
+    dbName = "teamFireTargetBonus";
+  if(policyName==="Life")
+    dbName = "individualLifeTargetBonus";
+  if(policyName==="TeamLife") 
+    dbName = "teamLifeTargetBonus";
+  if(policyName==="Health")
+    dbName = "individualHealthTargetBonus";
+  if(policyName==="TeamHealth")
+    dbName = "teamHealthTargetBonus";
+  if(policyName==="Bank")
+    dbName = "individualBankTargetBonus";
+  if(policyName==="TeamBank")
+    dbName = "teamBankTargetBonus";
+  if(policyName==="Other")
+    dbName = "otherActivityBonus";	
+
+  let level = { 
+    level: "", 
+    policies: 0, 
+    amount: 0, 
+    nextLevel: "", 
+    nextPolicies: 0, 
+    nextAmount: 0, 
+    maxLevel: "", 
+    maxPolicies: 0, 
+    maxAmount: 0 
+  };
+  let count = 0
+  if(bonusPlans.length>0 && bonusPlans[0].hasOwnProperty(dbName)) {
+    Object.keys(bonusPlans[0][dbName]).map((key, n) => {
+      const item = bonusPlans[0][dbName][key];     
+      if(policyCount > 0) {
+        if(n===0) {
+          level.level = "None Reached";
+        }
+        if(policyCount >= item.policies) { 
+          level.level = item.level; 
+          level.policies = item.policies;
+          level.amount = item.amount;
+          count ++;
+        }	
+        if(n === count) { 				
+          level.nextLevel = item.level;
+          level.nextPolicies = item.policies;
+          level.nextAmount = item.amount;
+        }	
+        if(n === Object.keys(bonusPlans[0][dbName]).length-1) {
+          level.maxLevel = item.level;
+          level.maxPolicies = item.policies;
+          level.maxAmount = item.amount;
+          ;
+        }
+      }							
+    });
+  } 
+  
+  return level;
+}
+
+export const getOtherActivityBonus = (name, bonusPlans) => {
+  if(bonusPlans.length>0 && bonusPlans[0].hasOwnProperty('otherActivityBonus')) {
+    let value = 0;
+    Object.keys(bonusPlans[0]['otherActivityBonus']).map((key, n) => {
+      const item = bonusPlans[0]['otherActivityBonus'][key];      
+      if(item.name === name) {console.log(item.name, name, item.dollar)
+        value = item.dollar;
+      }
+    });
+    return value;
+  }
+}
+
 export const getMain = (entries, bonusPlans, marketings, users, vision) => {
   let temp = {};	
   const visionNames = {
