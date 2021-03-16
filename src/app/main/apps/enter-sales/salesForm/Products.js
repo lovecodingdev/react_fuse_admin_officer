@@ -435,11 +435,11 @@ function Products() {
 	function checkValidation() {
 		if (
 			!state.percentOfSaleCreditValidation &&
-			!state.typeOfProductValidation &&
+			// !state.typeOfProductValidation &&
 			!state.policyPremiumValidation &&
 			!state.policyHolderTypeValidation &&
 			state.percentOfSaleCredit &&
-			state.typeOfProduct &&
+			// state.typeOfProduct &&
 			state.policyHolderType &&
 			state.policyType.length > 0
 		) {
@@ -516,7 +516,7 @@ function Products() {
 						}
 					}
 
-					if (state.typeOfProduct && state.policyType.includes('FireEntries')) {
+					if (state.typeOfProductFire && state.policyType.includes('FireEntries')) {
 						if (state.user === 'OfficeCount') {
 							form = {
 								...form,
@@ -548,7 +548,7 @@ function Products() {
 						}
 					}
 
-					if (state.typeOfProduct && state.policyType.includes('HealthEntries')) {
+					if (state.typeOfProductHealth && state.policyType.includes('HealthEntries')) {
 						if (state.user === 'OfficeCount') {
 							form = {
 								...form,
@@ -580,7 +580,7 @@ function Products() {
 						}
 					}
 
-					if (state.typeOfProduct && state.policyType.includes('LifeEntries')) {
+					if (state.typeOfProductLife && state.policyType.includes('LifeEntries')) {
 						if (state.user === 'OfficeCount') {
 							form = {
 								...form,
@@ -626,7 +626,7 @@ function Products() {
 						};
 						requestForm.push(form);
 					}
-					if (state.typeOfProduct && state.policyType.includes('FireEntries')) {
+					if (state.typeOfProductFire && state.policyType.includes('FireEntries')) {
 						form = {
 							...form,
 							dollarBonus:
@@ -640,7 +640,7 @@ function Products() {
 						};
 						requestForm.push(form);
 					}
-					if (state.typeOfProduct && state.policyType.includes('HealthEntries')) {
+					if (state.typeOfProductHealth && state.policyType.includes('HealthEntries')) {
 						form = {
 							...form,
 							dollarBonus:
@@ -654,7 +654,7 @@ function Products() {
 						};
 						requestForm.push(form);
 					}
-					if (state.typeOfProduct && state.policyType.includes('LifeEntries')) {
+					if (state.typeOfProductLife && state.policyType.includes('LifeEntries')) {
 						form = {
 							...form,
 							dollarBonus:
@@ -691,7 +691,7 @@ function Products() {
 						}
 					}
 
-					if (state.typeOfProduct && state.policyType.includes('FireEntries')) {
+					if (state.typeOfProductFire && state.policyType.includes('FireEntries')) {
 						if (state.user === 'OfficeCount') {
 							form = {
 								...form,
@@ -711,7 +711,7 @@ function Products() {
 						}
 					}
 
-					if (state.typeOfProduct && state.policyType.includes('HealthEntries')) {
+					if (state.typeOfProductHealth && state.policyType.includes('HealthEntries')) {
 						if (state.user === 'OfficeCount') {
 							form = {
 								...form,
@@ -731,7 +731,7 @@ function Products() {
 						}
 					}
 
-					if (state.typeOfProduct && state.policyType.includes('LifeEntries')) {
+					if (state.typeOfProductLife && state.policyType.includes('LifeEntries')) {
 						if (state.user === 'OfficeCount') {
 							form = {
 								...form,
@@ -760,7 +760,7 @@ function Products() {
 						};
 						requestForm.push(form);
 					}
-					if (state.typeOfProduct && state.policyType.includes('FireEntries')) {
+					if (state.typeOfProductFire && state.policyType.includes('FireEntries')) {
 						form = {
 							...form,
 							dollarBonus: '',
@@ -769,7 +769,7 @@ function Products() {
 						};
 						requestForm.push(form);
 					}
-					if (state.typeOfProduct && state.policyType.includes('HealthEntries')) {
+					if (state.typeOfProductHealth && state.policyType.includes('HealthEntries')) {
 						form = {
 							...form,
 							dollarBonus: '',
@@ -778,7 +778,7 @@ function Products() {
 						};
 						requestForm.push(form);
 					}
-					if (state.typeOfProduct && state.policyType.includes('LifeEntries')) {
+					if (state.typeOfProductLife && state.policyType.includes('LifeEntries')) {
 						form = {
 							...form,
 							dollarBonus: '',
