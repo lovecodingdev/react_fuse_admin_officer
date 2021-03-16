@@ -53,6 +53,8 @@ export const registerWithFirebase = model => async dispatch => {
 						...bonusPlanTemplate
 					})
 
+					var inviteUserRef = realDb.ref(`Invitation/${belongTo}/${email.replace('.','').replace('.','').replace('.','')}`)
+					inviteUserRef.remove()
 					dispatch(
 						createUserSettingsFirebase({
 							...response.user,

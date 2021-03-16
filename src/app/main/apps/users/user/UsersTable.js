@@ -48,6 +48,7 @@ function ProductsTable(props) {
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(products);
 	console.log(products, isAdmin);
+	
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -220,7 +221,7 @@ function ProductsTable(props) {
 							{_.orderBy(data, [order.id], [order.direction])
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((n, index) => {
-									if (isAdmin === 'agency' && n.role[0] === 'agency') {
+									if (isAdmin === 'agency' && (n.role&&n.role[0] === 'agency')) {
 										return;
 									}
 									const isSelected = selected.indexOf(n.id) !== -1;

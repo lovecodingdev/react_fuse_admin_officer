@@ -10,7 +10,7 @@ import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SelectBox from '../components/SelectBox';
 import { addUser, openUserDialog, closeUserDialog } from '../store/userSlice';
@@ -27,10 +27,12 @@ const defaultFormState = {
 	emailValidation: false,
 	role: '',
 	roleValidation: false,
-	belongTo:localStorage.getItem("@BELONGTO")
+	belongTo: localStorage.getItem('@BELONGTO')
 };
 
-const sourceLists = [
+const sourceLists = [{ item: 'Producer', value: 'producer' }];
+
+const sourceAdminLists = [
 	{ item: 'Agency', value: 'agency' },
 	{ item: 'Producer', value: 'producer' }
 ];
@@ -38,7 +40,14 @@ const sourceLists = [
 function AddUserDialog(props) {
 	const dispatch = useDispatch();
 	const addUserDialog = useSelector(({ users }) => users.users.addUserDialog);
+	const role = useSelector(({ auth }) => auth.user.role[0]);
+	const [lists, setLists] = useState(sourceAdminLists);
 
+	useEffect(() => {
+		if (role === 'agency') {
+			setLists(sourceLists);
+		}
+	}, [role]);
 	const { form, handleChange, setForm } = useForm(defaultFormState);
 
 	const handleChangeValue = data => {
@@ -82,15 +91,16 @@ function AddUserDialog(props) {
 	}
 
 	function canBeSubmitted() {
-		return form.email.length > 0 && form.role.length>0;
+		return form.email.length > 0 && form.role.length > 0;
 	}
 
 	function handleSubmit(event) {
 		event.preventDefault();
 
 		if (addUserDialog.type === 'new') {
-			console.log("---------------------------")
-			dispatch(addUser({ ...form })).then(dispatch(showMessage({ message: 'Invitation sent to email. Please check the email!' })));
+			dispatch(addUser({ ...form })).then(
+				dispatch(showMessage({ message: 'Invitation sent to email. Please check the email!' }))
+			);
 		} else {
 			dispatch(addUser({ ...form }));
 		}
@@ -112,18 +122,16 @@ function AddUserDialog(props) {
 			fullWidth
 			maxWidth="xs"
 		>
-			
 			<AppBar position="static" className="shadow-md">
 				<Toolbar className="flex w-full">
 					<Typography variant="subtitle1" color="inherit">
 						{addUserDialog.type === 'new' ? 'Send Invitation' : 'Edit Plan'}
 					</Typography>
-				</Toolbar>			
+				</Toolbar>
 			</AppBar>
 			<form noValidate onSubmit={handleSubmit} className="flex flex-col md:overflow-hidden">
 				<DialogContent classes={{ root: 'p-24' }}>
-					<div className="flex">					
-
+					<div className="flex">
 						<TextField
 							className="mb-24"
 							label="Email"
@@ -139,11 +147,10 @@ function AddUserDialog(props) {
 					</div>
 
 					<div className="flex">
-					
 						<SelectBox
 							id="outlined-basic"
 							label="Role"
-							data={sourceLists}
+							data={lists}
 							variant="outlined"
 							value={form.role}
 							validation="role"
