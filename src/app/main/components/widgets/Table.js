@@ -132,7 +132,6 @@ function Widget(props) {
 											!props.editable && 
 											columns.length===0 && 
 											headers.length>0 && 
-											tableData[rowKey][headers[colNum+1].value]!==0 &&											
 												formattedString(tableData[rowKey][headers[colNum+1].value])
 										}
 
@@ -140,8 +139,7 @@ function Widget(props) {
 											!props.editable && 
 											columns.length!==0 && 
 											headers.length>0 && 
-											tableData[rowKey][headers[colNum].value]!==0 && 											
-												formattedString(tableData[rowKey][headers[colNum+1].value])
+												formattedString(tableData[rowKey][headers[colNum].value])
 										}
 									
 										{props.editable &&
