@@ -660,7 +660,7 @@ export const bonusPlanTemplate = {
         "amount" : "100",
         "dollar" : "",
         "id" : 1611356583273,
-        "level" : "level 4 ",
+        "level" : "level 4",
         "percent" : "",
         "planType" : "teamBankTargetBonus",
         "policies" : "4",
