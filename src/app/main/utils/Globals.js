@@ -198,7 +198,7 @@ export const policiesAndBonuses = [
     { id: "Team Target Bonuses", value: "Team Target Bonuses"},
     { id: "Policy Growth Bonuses", value: "Policy Growth Bonuses"},
     { id: "Lapse Rate % Bonus", value: "Lapse Rate % Bonus"},
-    { id: "Special Promotion	", value: "Special Promotion	"},
+    { id: "Special Promotion	", value: "Special Promotion"},
     { id: "Total Policies", value: "Total Policies"},
     { id: "Total Bonuses", value: "Total Bonuses"},
     { id: "Bonus Verified?", value: "Bonus Verified?"},
@@ -246,6 +246,7 @@ export const incomeGoalsHeaders = [
     {id: "bankDocumentsBoughtIn", value: 'Bank Documents Bought In', type: false, color: '' },
     {id: "ifrCompleted", value: 'IFR Completed', type: false, color: '' },
 ];
+
 export const incomeBonusesHeaders = [
     { id: "autoPolicyBonuses", value: 'Auto Policy Bonuses', type: false, color: '' }, 
     { id: "firePolicyBonuses", value: 'Fire Policy Bonuses', type: false, color: '' },
