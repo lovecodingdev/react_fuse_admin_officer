@@ -39,7 +39,7 @@ const teamBonusList = [
 	{ item: 'No', value: false }
 ];
 
-var selectedUID = ""
+var selectedUID = '';
 
 function ProductsTable(props) {
 	const dispatch = useDispatch();
@@ -50,7 +50,7 @@ function ProductsTable(props) {
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(products);
 	console.log(products, isAdmin);
-	
+
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -61,10 +61,10 @@ function ProductsTable(props) {
 		includeTeamBonus: ''
 	});
 	const [open, setOpen] = React.useState(false);
-	
-	const handleClickOpen = (uid) => {
+
+	const handleClickOpen = uid => {
 		setOpen(true);
-		selectedUID = uid
+		selectedUID = uid;
 	};
 
 	const handleClose = () => {
@@ -73,8 +73,8 @@ function ProductsTable(props) {
 
 	const handleDelete = () => {
 		setOpen(false);
-		console.log(selectedUID)
-		dispatch(deleteUser(selectedUID))
+		console.log(selectedUID);
+		dispatch(deleteUser(selectedUID));
 	};
 
 	useEffect(() => {
@@ -82,7 +82,6 @@ function ProductsTable(props) {
 	}, [dispatch]);
 
 	useEffect(() => {
-		console.log('-----------------------------------------', products)
 		if (searchText.length !== 0) {
 			setData(_.filter(products, item => item.data.displayName.toLowerCase().includes(searchText.toLowerCase())));
 			setPage(0);
@@ -227,7 +226,7 @@ function ProductsTable(props) {
 							{_.orderBy(data, [order.id], [order.direction])
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((n, index) => {
-									if (isAdmin === 'agency' && (n.role&&n.role[0] === 'agency')) {
+									if (isAdmin === 'agency' && n.role && n.role[0] === 'agency') {
 										return;
 									}
 									const isSelected = selected.indexOf(n.id) !== -1;
@@ -309,7 +308,7 @@ function ProductsTable(props) {
 														className="whitespace-nowrap normal-case"
 														variant="contained"
 														color="secondary"
-														onClick={()=>handleClickOpen(n.uid)}
+														onClick={() => handleClickOpen(n.uid)}
 													>
 														<span className="hidden sm:flex">Revoke</span>
 													</Button>

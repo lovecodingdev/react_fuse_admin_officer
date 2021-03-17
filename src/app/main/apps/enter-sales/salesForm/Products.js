@@ -891,6 +891,7 @@ function Products() {
 									id="outlined-basic"
 									label="Policy Information"
 									variant="outlined"
+									rows={7}
 									value={state.policyInformation}
 									validation="policyInformation"
 									onChange={handleChangeValue}

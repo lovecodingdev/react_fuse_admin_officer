@@ -6,7 +6,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 
 function TextInput(props) {
-	const { id, label, variant, value, onChange, validation, type, willvalidation, validate, size } = props;
+	const { id, label, variant, value, onChange, validation, type, willvalidation, validate, size, rows } = props;
 	function handleChange(event) {
 		
 		if(willvalidation){
@@ -28,6 +28,7 @@ function TextInput(props) {
 			error={validate?true:false}
 			label={label}
 			variant={variant}
+			rows={rows?rows:1}
 			value={value}
             onChange={handleChange}
             type={type==='percent'?"number":'text'}
