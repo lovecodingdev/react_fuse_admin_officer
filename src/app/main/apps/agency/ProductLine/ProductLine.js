@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FusePageSimple from '@fuse/core/FusePageSimple';
@@ -40,7 +41,7 @@ function ProductLine(props) {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [main, setMain] = useState({});
-	const [period, setPeriod] = useState("January");
+	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [production, setProduction] = useState("Show Written Production");
 	const [report, setReport] = useState("Policies");
 	const [userList, setUserList] = useState("");
@@ -102,17 +103,17 @@ function ProductLine(props) {
 								} else if(item.value === 'Policy Premium') {
 									itemValue = 'Premium';
 								}
-								if(row < 12) {
-									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue];									
+								if(row < 12) { 
+									tableContent[month.value][item.value] += parseFloat(main[production][month.value][user.data.displayName][policy][itemValue]);									
 								}	
 								if (row>11 && row<16) {
-									tableContent[month.value][item.value] = 
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue])
+									tableContent[month.value][item.value] += 
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][policy][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][policy][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][policy][itemValue])
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.value] = 
+									tableContent[month.value][item.value] += 
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
@@ -127,26 +128,18 @@ function ProductLine(props) {
 					Object.keys(bonusPlan).map((key) => {		
 						const item = bonusPlan[key];
 						users.map(user => {
-							if(user.belongTo === UID) {
-								let itemValue = '';
-								if(item.value === 'Average Premium') {
-									itemValue = 'Averages';
-								} else if (item.value === 'Number of Policies') {
-									itemValue = 'Policies';
-								} else if(item.value === 'Policy Premium') {
-									itemValue = 'Premium';
-								}
+							if(user.belongTo === UID) {							
 								if(row < 12) {
-									tableContent[month.value][item.name] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue];									
+									tableContent[month.value][item.name] += main[production][month.value][user.data.displayName][policy][item.name];									
 								}			
 								if(row>11 && row<16) {
-									tableContent[month.value][item.name] = 
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue])
+									tableContent[month.value][item.name] += 
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][policy][item.name]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][policy][item.name]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][policy][item.name])
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.name] = 
+									tableContent[month.value][item.name] += 
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.name]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.name]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.name]) +
@@ -203,20 +196,20 @@ function ProductLine(props) {
 									itemValue = 'Premium';
 								}
 								if(row < 12) {
-									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue];									
+									tableContent[month.value][item.value] += main[production][month.value][user.data.displayName][policy][itemValue];									
 								}	
 								if (row>11 && row<16) {
-									tableContent[month.value][item.value] = 
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][itemValue])
+									tableContent[month.value][item.value] += 
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][policy][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][policy][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][policy][itemValue])
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.value] = 
-										parseFloat(tableContent[monthsAndQuarters[12].value][itemValue]) +
-										parseFloat(tableContent[monthsAndQuarters[13].value][itemValue]) +
-										parseFloat(tableContent[monthsAndQuarters[14].value][itemValue]) +
-										parseFloat(tableContent[monthsAndQuarters[15].value][itemValue])
+									tableContent[month.value][item.value] += 
+										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
+										parseFloat(tableContent[monthsAndQuarters[15].value][item.value])
 								} 
 								if(row === 17) {
 									tableContent[month.value][item.value] = '';
@@ -229,16 +222,16 @@ function ProductLine(props) {
 						users.map(user => {
 							if(user.belongTo === UID) {
 								if(row < 12) {
-									tableContent[month.value][item.marketingName] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName];									
+									tableContent[month.value][item.marketingName] += main[production][month.value][user.data.displayName][policy][item.marketingName];									
 								}			
 								if(row>11 && row<16) {
-									tableContent[month.value][item.marketingName] = 
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName])
+									tableContent[month.value][item.marketingName] += 
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][policy][item.marketingName]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][policy][item.marketingName]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][policy][item.marketingName])
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.marketingName] = 
+									tableContent[month.value][item.marketingName] += 
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.marketingName]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.marketingName]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.marketingName]) +
@@ -284,19 +277,27 @@ function ProductLine(props) {
 				monthsAndQuarters.map((month, row) => {
 					tableContent[month.value] = {};			
 					policiesAndPremium1.map((item) => {	
+						let itemValue = '';
+							if(item.value === 'Average Premium') {
+								itemValue = 'Averages';
+							} else if (item.value === 'Number of Policies') {
+								itemValue = 'Policies';
+							} else if(item.value === 'Policy Premium') {
+								itemValue = 'Premium';
+							}
 						users.map(user => {
 							if(user.belongTo === UID) {
 								if(row < 12) {
-									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.value];									
+									tableContent[month.value][item.value] += main[production][month.value][user.data.displayName][policy][itemValue];									
 								}	
 								if (row>11 && row<16) {
-									tableContent[month.value][item.value] = 
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value])
+									tableContent[month.value][item.value] += 
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][policy][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][policy][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][policy][itemValue])
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.value] = 
+									tableContent[month.value][item.value] += 
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
@@ -313,16 +314,16 @@ function ProductLine(props) {
 						users.map(user => {
 							if(user.belongTo === UID) {
 								if(row < 12) {
-									tableContent[month.value][item.name] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.name];									
+									tableContent[month.value][item.name] += main[production][month.value][user.data.displayName][policy][item.name];									
 								}			
 								if(row>11 && row<16) {
-									tableContent[month.value][item.name] =
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.name]);
+									tableContent[month.value][item.name] +=
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][policy][item.name]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][policy][item.name]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][policy][item.name]);
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.name] =
+									tableContent[month.value][item.name] +=
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.name]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.name]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.name]) +
@@ -367,20 +368,28 @@ function ProductLine(props) {
 				});	
 				monthsAndQuarters.map((month, row) => {
 					tableContent[month.value] = {};			
-					policiesAndPremium1.map((item) => {				
+					policiesAndPremium1.map((item) => {	
+						let itemValue = '';
+						if(item.value === 'Average Premium') {
+							itemValue = 'Averages';
+						} else if (item.value === 'Number of Policies') {
+							itemValue = 'Policies';
+						} else if(item.value === 'Policy Premium') {
+							itemValue = 'Premium';
+						}			
 						users.map(user => {
 							if(user.belongTo === UID) {
 								if(row < 12) {
-									tableContent[month.value][item.value] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.value];									
+									tableContent[month.value][item.value] = +main[production][month.value][user.data.displayName][policy][itemValue];									
 								}	
 								if (row>11 && row<16) {
-									tableContent[month.value][item.value] =
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.value]);
+									tableContent[month.value][item.value] +=
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][policy][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][policy][itemValue]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][policy][itemValue]);
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.value] =
+									tableContent[month.value][item.value] +=
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.value]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.value]) +
@@ -397,16 +406,16 @@ function ProductLine(props) {
 						users.map(user => {
 							if(user.belongTo === UID) {
 								if(row < 12) {
-									tableContent[month.value][item.marketingName] = main[production][month.value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName];									
+									tableContent[month.value][item.marketingName] += main[production][month.value][user.data.displayName][policy][item.marketingName];									
 								}			
 								if(row>11 && row<16) {
-									tableContent[month.value][item.marketingName] =
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]) +
-										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][bonusPlanDbNames[policy].name][item.marketingName]);
+									tableContent[month.value][item.marketingName] +=
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+0].value][user.data.displayName][policy][item.marketingName]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+1].value][user.data.displayName][policy][item.marketingName]) +
+										parseFloat(main[production][monthsAndQuarters[(row-12)*3+2].value][user.data.displayName][policy][item.marketingName]);
 								} 
 								if(row === 16) {
-									tableContent[month.value][item.marketingName] =
+									tableContent[month.value][item.marketingName] +=
 										parseFloat(tableContent[monthsAndQuarters[12].value][item.marketingName]) +
 										parseFloat(tableContent[monthsAndQuarters[13].value][item.marketingName]) +
 										parseFloat(tableContent[monthsAndQuarters[14].value][item.marketingName]) +

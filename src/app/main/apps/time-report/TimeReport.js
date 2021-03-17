@@ -21,7 +21,7 @@ import { getWidgets, selectWidgets } from './store/widgetsSlice';
 import Header from '../../components/widgets/Header';
 import { Options as options } from '../../utils/Globals';
 
-
+console.log('-----------------------', moment().format('dddd'))
 let startOfYear = moment().startOf('year');
 let lastOfYear = moment().endOf('year'); 
 startOfYear = startOfYear.startOf('isoWeek');
@@ -52,7 +52,7 @@ function TimeReport(props) {
 	let widgets = useSelector(selectWidgets);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
-	// const [period, setPeriod] = useState("January");
+	// const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [weekEnding, setWeekEnding] = useState("");
 	const [title, setTitle] = useState('Time Report');
 	
