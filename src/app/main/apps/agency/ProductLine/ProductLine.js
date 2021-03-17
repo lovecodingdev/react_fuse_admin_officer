@@ -93,6 +93,7 @@ function ProductLine(props) {
 				monthsAndQuarters.map((month, row) => {
 					tableContent[month.value] = {};			
 					policiesAndPremium1.map((item) => {	
+						tableContent[month.value][item.value] = 0;						
 						users.map(user => {
 							if(user.belongTo === UID) {
 								let itemValue = '';
@@ -102,9 +103,10 @@ function ProductLine(props) {
 									itemValue = 'Policies';
 								} else if(item.value === 'Policy Premium') {
 									itemValue = 'Premium';
-								}
+								}								
 								if(row < 12) { 
-									tableContent[month.value][item.value] += parseFloat(main[production][month.value][user.data.displayName][policy][itemValue]);									
+									tableContent[month.value][item.value] += parseFloat(main[production][month.value][user.data.displayName][policy][itemValue]);
+									console.log(tableContent[month.value][item.value],parseFloat(main[production][month.value][user.data.displayName][policy][itemValue]))									
 								}	
 								if (row>11 && row<16) {
 									tableContent[month.value][item.value] += 
@@ -127,6 +129,7 @@ function ProductLine(props) {
 					});	
 					Object.keys(bonusPlan).map((key) => {		
 						const item = bonusPlan[key];
+						tableContent[month.value][item.name] = 0;
 						users.map(user => {
 							if(user.belongTo === UID) {							
 								if(row < 12) {
@@ -184,7 +187,8 @@ function ProductLine(props) {
 				});	
 				monthsAndQuarters.map((month, row) => {
 					tableContent[month.value] = {};			
-					policiesAndPremium1.map((item) => {				
+					policiesAndPremium1.map((item) => {
+						tableContent[month.value][item.value] = 0;				
 						users.map(user => {
 							if(user.belongTo === UID) {
 								let itemValue = '';
@@ -218,7 +222,8 @@ function ProductLine(props) {
 						});									
 					});	
 					Object.keys(marketings).map((key) => {		
-						const item = marketings[key];			
+						const item = marketings[key];	
+						tableContent[month.value][item.marketingName] = 0;		
 						users.map(user => {
 							if(user.belongTo === UID) {
 								if(row < 12) {
@@ -277,6 +282,7 @@ function ProductLine(props) {
 				monthsAndQuarters.map((month, row) => {
 					tableContent[month.value] = {};			
 					policiesAndPremium1.map((item) => {	
+						tableContent[month.value][item.value] = 0;
 						let itemValue = '';
 							if(item.value === 'Average Premium') {
 								itemValue = 'Averages';
@@ -311,6 +317,7 @@ function ProductLine(props) {
 					});	
 					Object.keys(bonusPlan).map((key) => {		
 						const item = bonusPlan[key];
+						tableContent[month.value][item.name] = 0;
 						users.map(user => {
 							if(user.belongTo === UID) {
 								if(row < 12) {
@@ -369,6 +376,7 @@ function ProductLine(props) {
 				monthsAndQuarters.map((month, row) => {
 					tableContent[month.value] = {};			
 					policiesAndPremium1.map((item) => {	
+						tableContent[month.value][item.value] = 0;
 						let itemValue = '';
 						if(item.value === 'Average Premium') {
 							itemValue = 'Averages';
@@ -402,7 +410,8 @@ function ProductLine(props) {
 						});									
 					});	
 					Object.keys(marketings).map((key) => {		
-						const item = marketings[key];			
+						const item = marketings[key];		
+						tableContent[month.value][item.marketingName] = 0;	
 						users.map(user => {
 							if(user.belongTo === UID) {
 								if(row < 12) {
