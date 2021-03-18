@@ -19,12 +19,16 @@ export const dividing = (n1, n2) => {
 }
 
 export const formattedDate = (date) => {
-  var dd = date.getDate();
-  var mm = date.getMonth()+1;//January is 0!`
-  var yyyy = date.getFullYear();
-  if(dd<10){dd='0'+dd}
-  if(mm<10){mm='0'+mm}
-  return mm+'/'+dd+'/'+yyyy;
+  if(date==='' || isNaN(date)) {
+    return '';
+  } else {
+    var dd = date.getDate();
+    var mm = date.getMonth() + 1;//January is 0!
+    var yyyy = date.getFullYear();
+    if(dd < 10) { dd = '0' + dd };
+    if(mm < 10) { mm = '0' + mm };
+    return mm + '/' + dd + '/' + yyyy;
+  }
 }
 
 export const formattedString = (val) => {
