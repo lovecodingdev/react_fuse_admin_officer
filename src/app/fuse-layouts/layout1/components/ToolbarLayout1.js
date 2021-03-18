@@ -13,6 +13,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectToolbarTheme } from 'app/store/fuse/settingsSlice';
 import FullScreenToggle from '../../shared-components/FullScreenToggle';
+import DownloadButton from '../../shared-components/DownloadButton';
 import LanguageSwitcher from '../../shared-components/LanguageSwitcher';
 
 const useStyles = makeStyles(theme => ({
@@ -48,7 +49,7 @@ function ToolbarLayout1(props) {
 
 					<div className="flex items-center px-8">
 						{/* <LanguageSwitcher /> */}
-
+						<DownloadButton />
 						<FullScreenToggle />
 
 						{/* <FuseSearch /> */}
