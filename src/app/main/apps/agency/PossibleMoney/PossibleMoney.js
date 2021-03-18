@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import moment from 'moment';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FusePageSimple from '@fuse/core/FusePageSimple';
@@ -45,7 +46,7 @@ function PossibleMoney(props) {
 	const [bonus, setBonus] = useState('Include Initial Bonus in Calculation');
 	const [user, setUser] = useState("");
 	const [userList, setUserList] = useState("");
-	const [period, setPeriod] = useState("January");
+	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [title, setTitle] = useState('Possible Money');
 
 	useEffect(() => {

@@ -56,7 +56,7 @@ function TimeTrack(props) {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [ot, setOT] = useState("No");
-	const [month, setMonth] = useState("January");
+	const [month, setMonth] = useState(moment().format('MMMM'));
 	const [main, setMain] = useState({});
 	const [title, setTitle] = useState('Time Track');
 

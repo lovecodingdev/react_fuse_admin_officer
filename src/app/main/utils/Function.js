@@ -243,22 +243,18 @@ export const getMain = (entries, bonusPlans, marketings, users, vision) => {
               temp[pro.value][month][userName][entryNames[entryName]][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
               temp[pro.value][month][userName][entryNames[entryName]][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
               temp[pro.value][month][userName][entryNames[entryName]]["Bonuses"] += bonus;									
-              temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += ceil(parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100);									
-              temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += ceil(parseFloat(item.percentOfSaleCredit / 100));	
-              temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Bonuses`] += ceil(parseFloat(item.dollarBonus));
-              temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Premium`] += ceil(parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100);
-              temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Policies`] +=ceil( parseFloat(item.percentOfSaleCredit / 100));	
-              temp[pro.value][month][userName][entryNames[entryName]]["Averages"] = ceil(
-                dividing(
-                  temp[pro.value][month][userName][entryNames[entryName]]["Premium"],
-                  temp[pro.value][month][userName][entryNames[entryName]]["Policies"]		
-                )	
+              temp[pro.value][month][userName][entryNames[entryName]]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;									
+              temp[pro.value][month][userName][entryNames[entryName]]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
+              temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Bonuses`] += parseFloat(item.dollarBonus);
+              temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Premium`] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * 2 / 100;
+              temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Policies`] += parseFloat(item.percentOfSaleCredit / 100);	
+              temp[pro.value][month][userName][entryNames[entryName]]["Averages"] = dividing(
+                temp[pro.value][month][userName][entryNames[entryName]]["Premium"],
+                temp[pro.value][month][userName][entryNames[entryName]]["Policies"]		
               )              
-              temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Averages`] = ceil(
-                dividing(
-                  temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Premium`],
-                  temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Policies`]		
-                )
+              temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Averages`] = dividing(
+                temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Premium`],
+                temp[pro.value][month][userName][entryNames[entryName]][`${item.typeOfProduct}@Policies`]		
               )
             });
           }
