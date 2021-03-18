@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-export default function SimpleCard() {
+export default function SimpleCard(props) {
 	const classes = useStyles();
 
 	return (
@@ -38,7 +38,7 @@ export default function SimpleCard() {
 											$
 										</Typography>
 										<div className="flex items-end">
-											<Typography className="text-72 mx-4 font-light leading-none">4</Typography>
+											<Typography className="text-72 mx-4 font-light leading-none">{props.price}</Typography>
 											<Typography variant="subtitle1" color="textSecondary">
 												/ month
 											</Typography>
@@ -64,7 +64,7 @@ export default function SimpleCard() {
 								</CardContent>
 
 								<div className="flex justify-center pb-32">
-									<Button variant="contained" color="secondary" className="w-128">
+									<Button variant="contained" color="secondary" className="w-128" onClick={()=>props.setBuy(props.token)}>
 										BUY NOW
 									</Button>
 								</div>

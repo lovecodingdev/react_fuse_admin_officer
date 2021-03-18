@@ -6,15 +6,21 @@ import { darken } from '@material-ui/core/styles/colorManipulator';
 import { useParams } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import Auth0RegisterTab from './tabs/Auth0RegisterTab';
+import CardElements from '../components/CardElements';
 import FirebaseRegisterTab from './tabs/FirebaseRegisterTab';
 import JWTRegisterTab from './tabs/JWTRegisterTab';
 import SubscriptionCard from './components/subscriptionCard';
+import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import { firebaseFunctionGetProductsEndpoint } from 'app/fuse-configs/endpointConfig';
+import axios from 'axios';
 
-
-
+const stripePromise = loadStripe(
+	'pk_test_51IFn0pAfN4Ms4oOXNtWGRfBvhbBdJ0zIV4bCiefjGeRgt8eMDfq7Cm4jovgdj5BfdQm2qbV6oL7jzgcQ13jQ70l800ocRcNzky'
+);
 const useStyles = makeStyles(theme => ({
 	root: {
 		background: `linear-gradient(to left, ${theme.palette.primary.dark} 0%, ${darken(
@@ -33,14 +39,37 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-
-
 function Register() {
 	const classes = useStyles();
 	const [selectedTab, setSelectedTab] = useState(1);
+	const [state, setState] = useState({
+		showPaymentForm: false,
+		name: '',
+		cardNumber: '',
+		subscriptionStatus: false,
+		token: ''
+	});
+	const [count, setCount] = useState([]);
 	const routeParams = useParams();
-	function handleTabChange(event, value) {
-		setSelectedTab(value);
+	function handleTabChange(token) {
+		setState({ ...state, showPaymentForm: true, token: token });
+	}
+
+	function setPaymentState(result) {
+		console.log(result);
+		setState({ ...state, subscriptionStatus: result });
+	}
+
+	useEffect(() => {
+		setMembership();
+	}, []);
+
+	async function setMembership() {
+		const response = await axios.post(firebaseFunctionGetProductsEndpoint);
+		console.log(response.data);
+		if (response.data) {
+			setCount(response.data.data);
+		}
 	}
 
 	return (
@@ -78,40 +107,7 @@ function Register() {
 								</div>
 							</FuseAnimate>
 
-							{/* <Tabs
-								value={selectedTab}
-								onChange={handleTabChange}
-								variant="fullWidth"
-								className="w-full mb-32"
-							>
-								<Tab
-									icon={
-										<img
-											className="h-40 p-4 bg-black rounded-12"
-											src="assets/images/logos/jwt.svg"
-											alt="firebase"
-										/>
-									}
-									className="min-w-0"
-									label="JWT"
-								/>
-								<Tab
-									icon={
-										<img className="h-40" src="assets/images/logos/firebase.svg" alt="firebase" />
-									}
-									className="min-w-0"
-									label="Firebase"
-								/>
-								<Tab
-									icon={<img className="h-40" src="assets/images/logos/auth0.svg" alt="auth0" />}
-									className="min-w-0"
-									label="Auth0"
-								/>
-							</Tabs> */}
-
-							{/* {selectedTab === 0 && <JWTRegisterTab />} */}
-							{selectedTab === 1 && <FirebaseRegisterTab />}
-							{/* {selectedTab === 2 && <Auth0RegisterTab />} */}
+							{selectedTab === 1 && <FirebaseRegisterTab state={state.subscriptionStatus} />}
 						</CardContent>
 
 						<div className="flex flex-col items-center justify-center pb-32">
@@ -131,11 +127,29 @@ function Register() {
 						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-64')}
 					>
 						<div className="max-w-320">
-							{routeParams.id.length === 32 && (
+							{routeParams.id.length === 32 && !state.showPaymentForm && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
-									<SubscriptionCard />
+									<div>
+									{count.length > 0 &&
+										count.map(item => {
+											return (
+												<SubscriptionCard
+													setBuy={handleTabChange}
+													price={item.amount / 100}
+													token={item.id}
+												/>
+											);
+										})}
+									</div>
 								</FuseAnimate>
-							 )} 
+							)}
+							{routeParams.id.length === 32 && state.showPaymentForm && (
+								<FuseAnimate animation="transition.slideUpIn" delay={400}>
+									<Elements stripe={stripePromise}>
+										<CardElements setPaymentState={setPaymentState} token={state.token}/>
+									</Elements>
+								</FuseAnimate>
+							)}
 							{routeParams.id.length !== 32 && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
 									<Typography variant="h3" color="inherit" className="font-800 leading-tight">

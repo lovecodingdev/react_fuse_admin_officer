@@ -7,6 +7,8 @@ import Formsy from 'formsy-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerWithFirebase } from 'app/auth/store/registerSlice';
+import { showMessage } from 'app/store/fuse/messageSlice';
+
 
 function FirebaseRegisterTab(props) {
 	const routeParams = useParams();
@@ -17,6 +19,7 @@ function FirebaseRegisterTab(props) {
 	const register = useSelector(({ auth }) => auth.register);
 
 	const [isFormValid, setIsFormValid] = useState(false);
+	
 	const formRef = useRef(null);
 
 	useEffect(() => {
@@ -26,7 +29,11 @@ function FirebaseRegisterTab(props) {
 			});
 			disableButton();
 		}
+		
+		
 	}, [register]);
+
+	
 
 	function disableButton() {
 		setIsFormValid(false);
@@ -37,6 +44,10 @@ function FirebaseRegisterTab(props) {
 	}
 
 	function handleSubmit(model) {
+		if(routeParams.belongTo==='admin'&&!props.state){
+			dispatch(showMessage({ message: 'Please choose the membership!' }))
+			return
+		}
 		if(routeParams.id.length===32){
 			dispatch(registerWithFirebase({...model, role: "admin", belongTo}));
 		} else if(routeParams.id.length===150) {
