@@ -126,7 +126,7 @@ function Register() {
 					<div
 						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-64')}
 					>
-						<div className="max-w-400">
+						<div className="max-w-640">
 							{routeParams.id.length === 32 && !state.showPaymentForm && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
 									<div className="flex">
