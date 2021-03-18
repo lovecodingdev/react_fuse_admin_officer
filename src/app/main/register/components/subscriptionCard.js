@@ -25,49 +25,48 @@ export default function SimpleCard(props) {
 	const classes = useStyles();
 
 	return (
-		<Card className="rounded-8 mx-4">
-								<div className={clsx(classes.cardHeader, 'px-24 py-16')}>
-									<Typography variant="subtitle1" color="inherit">
-										BASIC
-									</Typography>
-								</div>
+		<Card className="rounded-8 mx-6">
+			<div className={clsx(classes.cardHeader, 'px-24 py-16')}>
+				<Typography variant="subtitle1" color="inherit">
+					BASIC
+				</Typography>
+			</div>
 
-								<CardContent className="p-32">
-									<div className="flex justify-center">
-										<Typography variant="h5" color="textSecondary">
-											$
-										</Typography>
-										<div className="flex items-end">
-											<Typography className="text-72 mx-4 font-light leading-none">{props.price}</Typography>
-											<Typography variant="subtitle1" color="textSecondary">
-												/ month
-											</Typography>
-										</div>
-									</div>
+			<CardContent className="p-32">
+				<div className="flex justify-center">
+					<Typography variant="h5" color="textSecondary">
+						$
+					</Typography>
+					<div className="flex items-end">
+						<Typography className="text-72 mx-4 font-light leading-none">{props.price}</Typography>
+						<Typography variant="subtitle1" color="textSecondary">
+							/ month
+						</Typography>
+					</div>
+				</div>
 
-									<Divider className="my-32" />
+				<Divider className="my-32" />
 
-									<div className="flex flex-col">
-										<Typography variant="subtitle1" className="">
-											<span className="font-bold mx-4">10</span>
-											Projects
-										</Typography>
-										<Typography variant="subtitle1" className="">
-											<span className="font-bold mx-4">10</span>
-											Pages
-										</Typography>
-										<Typography variant="subtitle1" className="">
-											<span className="font-bold mx-4">100</span>
-											Mb Disk Space
-										</Typography>
-									</div>
-								</CardContent>
+				<div className="flex flex-col">
+					<Typography variant="subtitle1" className="">
+						Producer Management
+					</Typography>
+					<Typography variant="subtitle1" className="">
+						Team Management
+					</Typography>
+				</div>
+			</CardContent>
 
-								<div className="flex justify-center pb-32">
-									<Button variant="contained" color="secondary" className="w-128" onClick={()=>props.setBuy(props.token)}>
-										BUY NOW
-									</Button>
-								</div>
-							</Card>
+			<div className="flex justify-center pb-32">
+				<Button
+					variant="contained"
+					color="secondary"
+					className="w-128"
+					onClick={() => props.setBuy(props.token)}
+				>
+					BUY NOW
+				</Button>
+			</div>
+		</Card>
 	);
 }
