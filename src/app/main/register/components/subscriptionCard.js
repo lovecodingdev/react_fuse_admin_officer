@@ -25,7 +25,7 @@ export default function SimpleCard(props) {
 	const classes = useStyles();
 
 	return (
-		<Card className="rounded-8">
+		<Card className="rounded-8 mx-4">
 								<div className={clsx(classes.cardHeader, 'px-24 py-16')}>
 									<Typography variant="subtitle1" color="inherit">
 										BASIC

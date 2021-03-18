@@ -126,29 +126,33 @@ function Register() {
 					<div
 						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-64')}
 					>
-						<div className="max-w-320">
+						<div className="max-w-400">
 							{routeParams.id.length === 32 && !state.showPaymentForm && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
-									<div>
-									{count.length > 0 &&
-										count.map(item => {
-											return (
-												<SubscriptionCard
-													setBuy={handleTabChange}
-													price={item.amount / 100}
-													token={item.id}
-												/>
-											);
-										})}
+									<div className="flex">
+										{count.length > 0 &&
+											count.map(item => {
+												return (
+													<SubscriptionCard
+														setBuy={handleTabChange}
+														price={item.amount / 100}
+														token={item.id}
+													/>
+												);
+											})}
 									</div>
 								</FuseAnimate>
 							)}
 							{routeParams.id.length === 32 && state.showPaymentForm && (
+								
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
-									<Elements stripe={stripePromise}>
-										<CardElements setPaymentState={setPaymentState} token={state.token}/>
-									</Elements>
+									
+										<Elements stripe={stripePromise}>
+											<CardElements setPaymentState={setPaymentState} token={state.token} />
+										</Elements>
+								
 								</FuseAnimate>
+						
 							)}
 							{routeParams.id.length !== 32 && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
