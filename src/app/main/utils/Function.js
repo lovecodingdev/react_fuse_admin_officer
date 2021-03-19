@@ -231,13 +231,14 @@ export const getMain = (entries, bonusPlans, marketings, users, vision) => {
               }            
               const month = production==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value;
               const semiAnnual = policy==='Auto' ? 2 : 1;
+              const bonus = item.dollarBonus==='' ? 0 : item.dollarBonus;
               temp[production][month][userName][policy][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
               temp[production][month][userName][policy][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
-              temp[production][month][userName][policy]["Bonuses"] += parseFloat(item.dollarBonus);									
+              temp[production][month][userName][policy]["Bonuses"] += parseFloat(bonus);									
               temp[production][month][userName][policy]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;									
               temp[production][month][userName][policy]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
               temp[production][month][userName][policy]["Averages"] = dividing(temp[production][month][userName][policy]["Premium"], temp[production][month][userName][policy]["Policies"])              
-              temp[production][month][userName][policy][`${item.typeOfProduct}@Bonuses`] += parseFloat(item.dollarBonus);
+              temp[production][month][userName][policy][`${item.typeOfProduct}@Bonuses`] += parseFloat(bonus);
               temp[production][month][userName][policy][`${item.typeOfProduct}@Premium`] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;
               temp[production][month][userName][policy][`${item.typeOfProduct}@Policies`] += parseFloat(item.percentOfSaleCredit / 100);	              
               temp[production][month][userName][policy][`${item.typeOfProduct}@Averages`] = dividing(temp[production][month][userName][policy][`${item.typeOfProduct}@Premium`], temp[production][month][userName][policy][`${item.typeOfProduct}@Policies`])              

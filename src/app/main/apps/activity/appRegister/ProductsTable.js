@@ -107,7 +107,7 @@ function ProductsTable(props) {
 											return o[order.id];
 										}
 									}
-								}
+								}, 
 							],
 							[order.direction]
 						)

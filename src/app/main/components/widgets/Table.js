@@ -80,7 +80,7 @@ function Widget(props) {
 										key={cell.id}
 										component="th"
 										scope="rowNum"
-										align="center"
+										align={"center"}
 										className={clsx(`
 											w-md p-0 text-xs p-4 
 											${col === (headers.length-1) ? `border-r-0` : `border-r-1`} 
