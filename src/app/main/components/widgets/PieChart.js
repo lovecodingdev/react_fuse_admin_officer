@@ -5,7 +5,7 @@ import { Doughnut } from 'react-chartjs-2';
 import _ from '@lodash';
 
 function PieChart(props) {
-	const widget = _.merge({}, props.widget);
+	const widget = _.merge({}, props.data);
 
 	return (
 		<Paper className="w-full rounded-8 shadow">

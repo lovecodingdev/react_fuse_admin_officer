@@ -316,12 +316,12 @@ function PoliciesAndBank(props) {
 					{/* {tabValue === 0 &&  */}
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-full p-12">
-							<Table widget={data.widgets.Producer_PoliciesAndBank_AutoAndFire_Table} />
+							<Table data={data.widgets.Producer_PoliciesAndBank_AutoAndFire_Table} />
 						</div>							
 					</FuseAnimateGroup>
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>							
 						<div className="widget flex w-full p-12">
-							<Chart widget={data.widgets.Producer_PolicesAndBank_Premium_Chart} />
+							<Chart data={data.widgets.Producer_PolicesAndBank_Premium_Chart} />
 						</div>							
 					</FuseAnimateGroup>					
 					{/* {tabValue === 3 && 
@@ -330,7 +330,7 @@ function PoliciesAndBank(props) {
 								<Table header={bankHeader} widget={widgets.Producer_PoliciesAndBank_Bank_Table} />
 							</div>
 							<div className='p-12'>
-								<Chart widget={widgets.Producer_PolicesAndBank_Bank_Chart} />
+								<Chart data={widgets.Producer_PolicesAndBank_Bank_Chart} />
 							</div>	
 						</div>
 					}						  */}

@@ -601,26 +601,26 @@ function StaffMultiline(props) {
 					{tabValue === 0 && 
 						<div>
 							<div className='p-12'>
-								<Table widget={data.widgets.Producer_StaffMultiline_Summary_Table} />
+								<Table data={data.widgets.Producer_StaffMultiline_Summary_Table} />
 							</div>	
 							<div className='p-12'>
-								<Chart widget={data.widgets.StaffMultiline_Summary_Policies_Chart} />
+								<Chart data={data.widgets.StaffMultiline_Summary_Policies_Chart} />
 							</div>
 							<div className='p-12'>
-								<HorizontalBarChart widget={data.widgets.StaffMultiline_Summary_Producer_Chart} />								
+								<HorizontalBarChart data={data.widgets.StaffMultiline_Summary_Producer_Chart} />								
 							</div>							
 						</div>
 					}				
 					{tabValue === 1 &&  
 						<div>
 							<div className='p-12'>
-								<Chart widget={data.widgets.Producer_StaffMultiline_Ratios_Chart_1} />
+								<Chart data={data.widgets.Producer_StaffMultiline_Ratios_Chart_1} />
 							</div>
 							<div className='p-12'>
-								<Chart widget={data.widgets.Producer_StaffMultiline_Ratios_Chart_2} />
+								<Chart data={data.widgets.Producer_StaffMultiline_Ratios_Chart_2} />
 							</div>	
 							<div className='p-12'>
-								<Table widget={data.widgets.Producer_StaffMultiline_Ratio_Table} />
+								<Table data={data.widgets.Producer_StaffMultiline_Ratio_Table} />
 							</div>	
 						</div>
 					}													

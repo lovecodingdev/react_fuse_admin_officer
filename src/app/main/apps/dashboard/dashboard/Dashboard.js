@@ -203,18 +203,18 @@ function Dashboard(props) {
 					</FuseAnimateGroup>					
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-2/5 p-12">
-							<HorizontalBarChart widget={chartData} />
+							<HorizontalBarChart data={chartData} />
 						</div>
 						<div className="widget flex w-3/5 p-12">
-							<HorizontalBarChart widget={chartData} />
+							<HorizontalBarChart data={chartData} />
 						</div>
 					</FuseAnimateGroup>
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-2/5 p-12">
-							<HorizontalBarChart widget={chartData} />
+							<HorizontalBarChart data={chartData} />
 						</div>
 						<div className="widget flex w-3/5 p-12">
-							<HorizontalBarChart widget={chartData} />
+							<HorizontalBarChart data={chartData} />
 						</div>
 					</FuseAnimateGroup>
 				</div>

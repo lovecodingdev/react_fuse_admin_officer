@@ -10,7 +10,7 @@ function Chart(props) {
 	const [currentRange, setCurrentRange] = useState('TW');
 	const theme = useTheme();
 
-	const widget = _.merge({}, props.widget);
+	const widget = _.merge({}, props.data);
 
 	_.setWith(widget, 'widget.mainChart.options.scales.xAxes[0].ticks.fontColor', theme.palette.text.secondary);
 	_.setWith(widget, 'widget.mainChart.options.scales.yAxes[0].ticks.fontColor', theme.palette.text.secondary);

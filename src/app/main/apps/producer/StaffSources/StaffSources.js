@@ -500,27 +500,27 @@ function StaffSources(props) {
 						<div>
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 								<div className="widget flex w-full p-12">
-									<Chart widget={data.widgets.Producer_StaffSources_SourcesOfBusiness_Chart} />
+									<Chart data={data.widgets.Producer_StaffSources_SourcesOfBusiness_Chart} />
 								</div>						
 							</FuseAnimateGroup>
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 								<div className="widget flex w-full p-12">
-									<Table widget={data.widgets.Producer_StaffSources_Auto_Table} />
+									<Table data={data.widgets.Producer_StaffSources_Auto_Table} />
 								</div>	
 								<div className="widget flex w-full p-12">
-									<Table widget={data.widgets.Producer_StaffSources_Fire_Table} />
+									<Table data={data.widgets.Producer_StaffSources_Fire_Table} />
 								</div>	
 								<div className="widget flex w-full p-12">
-									<Table widget={data.widgets.Producer_StaffSources_Life_Table} />
+									<Table data={data.widgets.Producer_StaffSources_Life_Table} />
 								</div>
 								<div className="widget flex w-full p-12">
-									<Table widget={data.widgets.Producer_StaffSources_Health_Table} />
+									<Table data={data.widgets.Producer_StaffSources_Health_Table} />
 								</div>
 								<div className="widget flex w-full p-12">
-									<Table widget={data.widgets.Producer_StaffSources_Bank_Table} />
+									<Table data={data.widgets.Producer_StaffSources_Bank_Table} />
 								</div>
 								<div className="widget flex w-full p-12">
-									<Table widget={data.widgets.Producer_StaffSources_Total_Table} />
+									<Table data={data.widgets.Producer_StaffSources_Total_Table} />
 								</div>					
 							</FuseAnimateGroup>
 						</div>
@@ -529,15 +529,15 @@ function StaffSources(props) {
 						<div>
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 								<div className="widget flex w-2/4 p-12">
-									<PieChart widget={data.widgets.Producer_StaffSources_ProductSales_PieChart} />
+									<PieChart data={data.widgets.Producer_StaffSources_ProductSales_PieChart} />
 								</div>	
 								<div className="widget flex w-2/4 p-12">
-									<PieChart widget={data.widgets.Producer_StaffSources_Production_PieChart} />
+									<PieChart data={data.widgets.Producer_StaffSources_Production_PieChart} />
 								</div>				
 							</FuseAnimateGroup>	
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>	
 								<div className='widget flex w-full p-12'>
-									<Table widget={data.widgets.Producer_StaffSources_ViewGrid_Table} />
+									<Table data={data.widgets.Producer_StaffSources_ViewGrid_Table} />
 								</div>	
 							</FuseAnimateGroup>	
 						</div>

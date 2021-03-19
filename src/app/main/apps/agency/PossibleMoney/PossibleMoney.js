@@ -666,27 +666,27 @@ function PossibleMoney(props) {
 				<div className="w-full p-12">	
 					<div className='flex items-center justify-center p-12'>
 						<FuseAnimateGroup className="flex flex-wrap w-1/2" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Chart widget={data.widgets.Agency_PossibleMoney_Chart} />						
+							<Chart data={data.widgets.Agency_PossibleMoney_Chart} />						
 						</FuseAnimateGroup>	
 					</div>
 					<div className='p-12'>
 						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<SpecialTable widget={data.widgets.Agency_PossibleMoney_Current_Level_Table} />						
+							<SpecialTable data={data.widgets.Agency_PossibleMoney_Current_Level_Table} />						
 						</FuseAnimateGroup>	
 					</div>
 					<div className='p-12'>
 						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<SpecialTable widget={data.widgets.Agency_PossibleMoney_Next_Level_Table} />						
+							<SpecialTable data={data.widgets.Agency_PossibleMoney_Next_Level_Table} />						
 						</FuseAnimateGroup>	
 					</div>
 					<div className='p-12'>
 						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<SpecialTable widget={data.widgets.Agency_PossibleMoney_Max_Level_Table} />						
+							<SpecialTable data={data.widgets.Agency_PossibleMoney_Max_Level_Table} />						
 						</FuseAnimateGroup>	
 					</div>					
 					<div className='p-12'>
 						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<SpecialTable widget={data.widgets.Agency_PossibleMoney_BonusPlan_Table} />						
+							<SpecialTable data={data.widgets.Agency_PossibleMoney_BonusPlan_Table} />						
 						</FuseAnimateGroup>	
 					</div>	
 				</div>

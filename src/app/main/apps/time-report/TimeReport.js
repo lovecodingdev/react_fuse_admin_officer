@@ -146,10 +146,10 @@ function TimeReport(props) {
 			content={
 				<div className="w-full p-12">
 					<div className="p-12">
-						<Table widget={data.widgets.Time_Report_Table} />
+						<Table data={data.widgets.Time_Report_Table} />
 					</div>
 					<div className="p-12">
-						<Table widget={data.widgets.Time_Report_Table} />
+						<Table data={data.widgets.Time_Report_Table} />
 					</div>
 				</div>
 				

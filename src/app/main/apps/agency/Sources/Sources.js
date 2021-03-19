@@ -407,10 +407,10 @@ function Sources(props) {
 						<div>
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 								<div className="widget flex w-2/3 p-12">
-									<Chart widget={data.widgets.Agency_Sources_ViewYearTotalsByProduct_Chart} />
+									<Chart data={data.widgets.Agency_Sources_ViewYearTotalsByProduct_Chart} />
 								</div>	
 								<div className="widget flex w-1/3 p-12">
-									<Table widget={data.widgets.Agency_Sources_ViewYearTotalsByProduct_Table} />
+									<Table data={data.widgets.Agency_Sources_ViewYearTotalsByProduct_Table} />
 								</div>				
 							</FuseAnimateGroup>								
 						</div>
@@ -419,15 +419,15 @@ function Sources(props) {
 						<div>							
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 								<div className="widget flex w-2/3 p-12">
-									<Chart widget={data.widgets.Agency_Sources_ViewMonthlyTotals_Chart} />
+									<Chart data={data.widgets.Agency_Sources_ViewMonthlyTotals_Chart} />
 								</div>	
 								<div className="widget flex w-1/3 p-12">
-									<PieChart widget={data.widgets.Agency_Sources_ViewMonthlyTotals_PieChart} />
+									<PieChart data={data.widgets.Agency_Sources_ViewMonthlyTotals_PieChart} />
 								</div>				
 							</FuseAnimateGroup>	
 							<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>	
 								<div className='widget flex w-full p-12'>
-									<Table widget={data.widgets.Agency_Sources_ViewMonthlyTotals_Table} />
+									<Table data={data.widgets.Agency_Sources_ViewMonthlyTotals_Table} />
 								</div>	
 							</FuseAnimateGroup>	
 						</div>

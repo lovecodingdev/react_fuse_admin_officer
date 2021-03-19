@@ -14,13 +14,13 @@ function Widget10(props) {
 	return (
 		<Paper className="w-full rounded-8 shadow">
 			<div className="flex items-center justify-between px-16 h-64 border-b-1">
-				<Typography className="text-16">{props.widget.title}</Typography>
+				<Typography className="text-16">{props.data.title}</Typography>
 			</div>
 			<div className="table-responsive">
 				<Table className="w-full min-w-full">
 					<TableHead>
 						<TableRow>
-							{props.widget.table.columns.map(column => (
+							{props.data.table.columns.map(column => (
 								<TableCell key={column.id} className="whitespace-nowrap" align="center">
 									{column.title}
 								</TableCell>
@@ -28,7 +28,7 @@ function Widget10(props) {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{props.widget.table.rows.map(row => (
+						{props.data.table.rows.map(row => (
 							<TableRow key={row.id}>
 								{row.cells.map(cell => {
 									switch (cell.id) {

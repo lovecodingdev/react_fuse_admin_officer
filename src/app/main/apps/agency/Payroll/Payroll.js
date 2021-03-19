@@ -430,17 +430,17 @@ function Payroll(props) {
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						{tabValue===0 &&						
 							<div className="p-12">
-								<Table widget={data.widgets.Agency_Payroll_Table} />
+								<Table data={data.widgets.Agency_Payroll_Table} />
 							</div>						
 						}
 						{tabValue===1 &&						
 							<div className="p-12">
-								<Table widget={data.widgets.Agency_Payroll_Yearly_Table} />
+								<Table data={data.widgets.Agency_Payroll_Yearly_Table} />
 							</div>						
 						}
 						{tabValue===2 &&						
 							<div className="p-12">
-								<Table widget={data.widgets.Agency_Payroll_Summary_Table} />
+								<Table data={data.widgets.Agency_Payroll_Summary_Table} />
 							</div>						
 						}
 					</FuseAnimateGroup>

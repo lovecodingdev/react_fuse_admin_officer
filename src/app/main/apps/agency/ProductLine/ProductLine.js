@@ -527,16 +527,16 @@ function ProductLine(props) {
 				<div className="w-full p-12">					
 					<div>
 						<div className='p-12'>
-							<Table widget={data.widgets.Agency_ProductLine_Table_1} />							
+							<Table data={data.widgets.Agency_ProductLine_Table_1} />							
 						</div>
 						<div className='p-12'>
-							<Table widget={data.widgets.Agency_ProductLine_Table_2} />
+							<Table data={data.widgets.Agency_ProductLine_Table_2} />
 						</div>	
 						<div className='p-12'>
-							<Table widget={data.widgets.Agency_ProductLine_Table_3} />							
+							<Table data={data.widgets.Agency_ProductLine_Table_3} />							
 						</div>
 						<div className='p-12'>
-							<Table widget={data.widgets.Agency_ProductLine_Table_4} />
+							<Table data={data.widgets.Agency_ProductLine_Table_4} />
 						</div>
 					</div>					
 				</div>
