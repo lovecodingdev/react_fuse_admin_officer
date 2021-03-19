@@ -56,7 +56,7 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 
 			uid = item.user.uid
 		}
-		data = { ...item, sellerId: item.user ? item.user.uid : item.uid }
+		data = { ...item, sellerId: item.uid }
 		var id = Date.now()
 
 		realDb.ref(`Sales/${item.belongTo}/${item.policyType[0]}/${item.user === 'OfficeCount' ? `OfficeCount` : data.sellerId}/${id}`).set({

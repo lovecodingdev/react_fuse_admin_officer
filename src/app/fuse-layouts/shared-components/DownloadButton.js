@@ -8,9 +8,7 @@ import {useHistory} from 'react-router-dom'
 
 const HeaderDownLoadButton = props => {
 	const history = useHistory()
-	function toggleFullScreen() {
-		history.push("https://firebasestorage.googleapis.com/v0/b/insurancewebapptest.appspot.com/o/Timesheet%20Template.xlsx?alt=media&token=8e28b55b-fdca-48bf-baf5-0de84fb2564b")
-	}
+
 
 	return (
 		<Tooltip title="Time track excel file download" placement="bottom">
