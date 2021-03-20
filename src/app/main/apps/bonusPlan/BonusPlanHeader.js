@@ -132,7 +132,7 @@ function ContactsHeader(props) {
 			{props.name === 'all'&&<FuseAnimate animation="transition.slideRightIn" delay={300}>
 				<Button
 					component={Link}
-					className="whitespace-nowrap normal-case"
+					className="whitespace-nowrap normal-case mr-5"
 					variant="contained"
 					color="secondary"
 					onClick={goEdit}
