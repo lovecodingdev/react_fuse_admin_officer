@@ -1117,16 +1117,16 @@ const producerAppDB = {
 						title: 'HEALTH',
 						color: '',
 						colSpan: 4
-					},
+					},					
 					{
-						id: 'total',
-						title: 'TOTAL',
+						id: 'bank',
+						title: 'BANK',
 						color: '',
 						colSpan: 4
 					},
 					{
-						id: 'bank',
-						title: 'BANK',
+						id: 'total',
+						title: 'TOTAL',
 						color: '',
 						colSpan: 4
 					},

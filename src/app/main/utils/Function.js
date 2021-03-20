@@ -193,12 +193,12 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
             temp[production][month.value][userName][policy][`${item.name}@Averages`] = 0;
           });	
 
-           //adding lapseRate items
-          //  const lapse = lapseRate.length > 0 &&	lapseRate[0].hasOwnProperty(policy) ?	lapseRate[0][policy] : {};				
-          //  Object.keys(lapse).map((month) => {		
-          //    const item = lapse[month];
-          //    temp[production][month.value][userName][policy]['lapseRate'] = item.;            
-          //  });	
+          //  adding lapseRate items
+          const lapse = lapseRate.length > 0 &&	
+          lapseRate[0].hasOwnProperty(policy) && 
+          lapseRate[0][policy].hasOwnProperty(month.value) ? 
+          lapseRate[0][policy][month.value]['previousMonth']['value'] : 0;				
+          temp[production][month.value][userName][policy]['lapseRate'] = lapse;            
 
           // adding vision items
           if(vision.length > 0) {	

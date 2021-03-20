@@ -58,7 +58,7 @@ function Multiline(props) {
 
 	useEffect(() => {				
 		if(users.length>0 && Object.keys(marketings).length>0 && entries.length>0) {	
-			const temp = getMain(entries, bonusPlans, marketings, users, vision);										
+			const temp = getMain(entries, bonusPlans, marketings, users, vision, []);										
 			setMain(temp);
 		}
 	}, [entries, bonusPlans, marketings, users, vision]);

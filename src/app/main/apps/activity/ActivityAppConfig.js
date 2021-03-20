@@ -8,7 +8,7 @@ const ActivityAppConfig = {
 	routes: [	
 		{
 			path: '/apps/activity/appRegister',
-			component: React.lazy(() => import('./appRegister/Products'))
+			component: React.lazy(() => import('./appRegister/AppRegister'))
 		},	
 		{
 			path: '/apps/activity',

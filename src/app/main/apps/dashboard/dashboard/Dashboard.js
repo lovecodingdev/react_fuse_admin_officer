@@ -28,7 +28,6 @@ import { getVision, selectVision } from '../store/visionSlice';
 import { getLapseRate, selectLapseRate } from '../store/lapseRateSlice';
 import { Options as options, policies } from '../../../utils/Globals';
 import { dividing, getMain } from '../../../utils/Function';
-import { houseHoldColumns } from '../../policyGrowthReport/tableDataTemplate';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -63,8 +62,8 @@ function Dashboard(props) {
 	}, [dispatch]);
 
 	useEffect(() => {		
-		if(users.length>0 && entries.length>0 && bonusPlans.length>0) {
-			const temp = getMain(entries, bonusPlans, [], users, vision);										
+		if(users.length>0 && entries.length>0 && bonusPlans.length>0, lapseRate.length>0) {
+			const temp = getMain(entries, bonusPlans, [], users, vision, lapseRate);										
 			setMain(temp);
 		}
 	}, [entries, bonusPlans, users, vision, lapseRate]);
@@ -76,18 +75,26 @@ function Dashboard(props) {
 				let actual = 0;
 				let household = 0;
 				let individual = 0;
-				let auto = 1;
-				let fire = 2;
-				let life = 3;
-				let health = 4;
+				let auto = 0;
+				let fire = 0;
+				let life = 0;
+				let health = 0;
+
 				policies.map(policy => {
 					if(policy.value !== 'Total') {
 						users.map(user => {
-							if(user.belongTo === UID) { console.log('----------',user.data.displayName,main[production][period][user.data.displayName][policy.value]['household'],main[production][period][user.data.displayName][policy.value]['individual'], policy.value, period)
+							if(user.belongTo === UID) { 
 								goals += main[production][period][user.data.displayName][policy.value]['Goals'];
 								actual += main[production][period][user.data.displayName][policy.value]['Policies'];
 								household += main[production][period][user.data.displayName][policy.value]['household'];
 								individual += main[production][period][user.data.displayName][policy.value]['individual'];
+
+								if(lapseRate.length > 0) {
+									auto = main[production][period][user.data.displayName]['Auto']['lapseRate'];
+									fire = main[production][period][user.data.displayName]['Fire']['lapseRate'];
+									life = main[production][period][user.data.displayName]['Life']['lapseRate'];
+									health = main[production][period][user.data.displayName]['Health']['lapseRate'];
+								}
 							}
 						});
 					}
@@ -101,7 +108,7 @@ function Dashboard(props) {
 				policyData = {
 					...policyData, data: 
 						[
-							{ Auto: auto },
+							{ Auto:  auto },
 							{ Fire: fire },
 							{ Life: life },
 							{ Health: health },

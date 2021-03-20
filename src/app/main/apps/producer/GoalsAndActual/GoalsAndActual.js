@@ -49,7 +49,7 @@ function GoalsAndActual(props) {
 
 	useEffect(() => {				
 		if(users.length>0 && entries.length>0) {	
-			const temp = getMain(entries, [], [], users, vision);										
+			const temp = getMain(entries, [], [], users, vision, []);										
 			setMain(temp);
 		}
 	}, [entries, users, vision]);

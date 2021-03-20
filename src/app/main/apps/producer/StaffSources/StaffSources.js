@@ -66,7 +66,7 @@ function StaffSources(props) {
 	
 	useEffect(() => {		
 		if(Object.keys(marketings).length>0 && users.length>0 && entries.length>0) {
-			const temp = getMain(entries, [], marketings, users, []);										
+			const temp = getMain(entries, [], marketings, users, [], []);										
 			setMain(temp);
 		}	
 	}, [entries, marketings, users]);

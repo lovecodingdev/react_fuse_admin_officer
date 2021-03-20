@@ -58,7 +58,7 @@ function Payroll(props) {
 
 	useEffect(() => {				
 		if(users.length>0 && bonusPlans.length>0 && entries.length>0) {	
-			const temp = getMain(entries, bonusPlans, [], users, []);										
+			const temp = getMain(entries, bonusPlans, [], users, [], []);										
 			setMain(temp);
 		}
 	}, [entries, bonusPlans, users]);

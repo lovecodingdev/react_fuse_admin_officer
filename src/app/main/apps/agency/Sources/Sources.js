@@ -56,7 +56,7 @@ function Sources(props) {
 
 	useEffect(() => {		
 		if(Object.keys(marketings).length>0 && users.length>0 && entries.length>0 && bonusPlans.length>0) {
-			const temp = getMain(entries, bonusPlans, marketings, users, []);										
+			const temp = getMain(entries, bonusPlans, marketings, users, [], []);										
 			setMain(temp);
 		}
 	}, [entries, bonusPlans, marketings, users]);
