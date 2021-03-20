@@ -15,6 +15,7 @@ import { getTemplateData } from './store/bonusPlanTemplateSlice';
 import { addContact, setTemplate } from './store/bonusPlanSlice';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import SelectBox from '../../components/SelectBox';
+import {useHistory} from 'react-router-dom'
 
 function ContactsHeader(props) {
 	const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function ContactsHeader(props) {
 	const data = useSelector(({ bonusPlan }) => bonusPlan.autoBonus.data);
 	const bonusPlanTemplates = useSelector(({ bonusPlan }) => bonusPlan.templates);
 	const template = useSelector(({ bonusPlan }) => bonusPlan.autoBonus.template);
-
+	const history = useHistory()
 	const [name, setName] = React.useState('');
 	const [templateName, setTemplateName] = React.useState('');
 	const [state, setState] = React.useState({
@@ -68,6 +69,10 @@ function ContactsHeader(props) {
 		dispatch(setTemplate(bonusPlanTemplates[0][data.template]));
 		setTemplateName(data.template);
 	};
+
+	const goEdit = () =>{
+		history.push('/apps/setup/bonus-plan-template/all')
+	}
 
 	return (
 		<div className="flex flex-1 items-center justify-between p-4 sm:p-24">
@@ -124,6 +129,18 @@ function ContactsHeader(props) {
 					</FuseAnimate>
 				</ThemeProvider>
 			</div>
+			{props.name === 'all'&&<FuseAnimate animation="transition.slideRightIn" delay={300}>
+				<Button
+					component={Link}
+					className="whitespace-nowrap normal-case"
+					variant="contained"
+					color="secondary"
+					onClick={goEdit}
+				>
+					<span className="hidden sm:flex">Edit</span>
+				</Button>
+			</FuseAnimate>}
+			
 			<FuseAnimate animation="transition.slideRightIn" delay={300}>
 				<Button
 					component={Link}

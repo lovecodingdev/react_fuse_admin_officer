@@ -34,7 +34,7 @@ function Widget10(props) {
 							<TableRow key={index}>
 								{firstKey!=='id'&&Object.keys(props.rows[firstKey]).map((monthKey, i) => {
 									let cell = props.rows[firstKey][monthKey]
-									if ((props.title==="Auto"||props.title==="Fire") && i===1){
+									if ((props.title==="Auto"||props.title==="Fire"||props.title==="Life"||props.title==="Health") && i===1){
 										return <TableCell key={cell.id} component="th" scope="row" align="center" className="p-3">
 											<TextInput
 											id="outlined-basic"
