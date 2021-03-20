@@ -44,7 +44,7 @@ function StaffSources(props) {
 	const [user, setUser] = useState("");
 	const [userList, setUserList] = useState("");
 	const [tabValue, setTabValue] = useState(0);
-	const [title, setTitle] = useState('Goals & Actual');
+	const [title, setTitle] = useState('Stuff Sources');
 	
 	useEffect(() => {
 		dispatch(getUsers());
@@ -72,7 +72,7 @@ function StaffSources(props) {
 	}, [entries, marketings, users]);
 
 	useEffect(() => {
-		if(Object.keys(widgets).length>0 && Object.keys(main).length>0) {	
+		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {
 			// Producer_StaffSources_Auto_Table
 			if(widgets.Producer_StaffSources_Auto_Table) {
 				policies.map(policy => {			

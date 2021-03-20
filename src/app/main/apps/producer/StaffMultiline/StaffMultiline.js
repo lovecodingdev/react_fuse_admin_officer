@@ -62,230 +62,417 @@ function StaffMultiline(props) {
 	}, [entries, bonusPlans, marketings, users]);
 
 	useEffect(() => {
-		//	Producer_StaffMultiline_Summary_Table
-		if(widgets.Producer_StaffMultiline_Summary_Table && Object.keys(main).length>0 && users.length>0) {
-			let tableRows = [];
-			let tableContent = {};			
-			
-			users.map((user) => {
-				if(user.belongTo === UID) {
-					tableRows.push({ 
-						id: user.id, 
-						value: user.data.displayName, 
-						type: true, 
-						color: '' 
-					});
-					
-					let totalPolicies = 0;
-					let totalAnnualPremium = 0;
-					let totalAveragePremium = 0;
-					let totalAutoBonus = 0;
-					tableContent[user.data.displayName] = {};
-					policies.map((policy) => {
-						tableContent[user.data.displayName][`${policy.value}@Policies`] = main[production][period][user.data.displayName][policy.value]["Policies"];						
-						tableContent[user.data.displayName][`${policy.value}@Annual Premium`] = main[production][period][user.data.displayName][policy.value]["Premium"];
-						tableContent[user.data.displayName][`${policy.value}@Average Premium`] = main[production][period][user.data.displayName][policy.value]["Averages"];
-						tableContent[user.data.displayName][`${policy.value}@Auto Bonus`] = main[production][period][user.data.displayName][policy.value]["Bonuses"];
-						totalPolicies += tableContent[user.data.displayName][`${policy.value}@Policies`];
-						totalAnnualPremium += tableContent[user.data.displayName][`${policy.value}@Annual Premium`];
-						totalAveragePremium += tableContent[user.data.displayName][`${policy.value}@Average Premium`];
-						totalAutoBonus += tableContent[user.data.displayName][`${policy.value}@Auto Bonus`];
-					});
-					tableContent[user.data.displayName]['Total@Policies'] = totalPolicies;
-					tableContent[user.data.displayName]['Total@Annual Premium'] = totalAnnualPremium;
-					tableContent[user.data.displayName]['Total@Average Premium'] = totalAveragePremium;
-					tableContent[user.data.displayName]['Total@Auto Bonus'] = totalAutoBonus;
-					tableContent[user.data.displayName]["Multiline Ratio"] = dividing(
-						(
-							tableContent[user.data.displayName]['Life@Policies'] +
-							tableContent[user.data.displayName]['Health@Policies'] +
-							tableContent[user.data.displayName]['Bank@Policies']
-						) * 100,
-						tableContent[user.data.displayName]['Auto@Policies'] +
-						tableContent[user.data.displayName]['Fire@Policies']
-					);
-				}				
-			});
-			widgets = {
-				...widgets, Producer_StaffMultiline_Summary_Table: {
-					...widgets.Producer_StaffMultiline_Summary_Table, table: {
-						...widgets.Producer_StaffMultiline_Summary_Table.table, rows:
-							tableRows
-					}
-				}
-			};
-			widgets = {
-				...widgets, Producer_StaffMultiline_Summary_Table: {
-					...widgets.Producer_StaffMultiline_Summary_Table, table: {
-						...widgets.Producer_StaffMultiline_Summary_Table.table, tableContent:
-							tableContent
-					}
-				}
-			};			
-		}
-
-		// StaffMultiline_Summary_Policies_Chart
-		if(widgets.StaffMultiline_Summary_Policies_Chart && Object.keys(main).length>0 && users.length>0) {		
-			let tempDatasets = [];
-			widgets.StaffMultiline_Summary_Policies_Chart.mainChart.TW.datasets.map((dataset) => {
-				let tempDataset = dataset;
-				let tempData = [];
+		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {
+			//	Producer_StaffMultiline_Summary_Table
+			if(widgets.Producer_StaffMultiline_Summary_Table) {
+				let tableRows = [];
+				let tableContent = {};			
+				
 				users.map((user) => {
 					if(user.belongTo === UID) {
-						tempData.push(main[production][period][user.data.displayName][dataset.label][report]);
-					}							
+						tableRows.push({ 
+							id: user.id, 
+							value: user.data.displayName, 
+							type: true, 
+							color: '' 
+						});
+						
+						let totalPolicies = 0;
+						let totalAnnualPremium = 0;
+						let totalAveragePremium = 0;
+						let totalAutoBonus = 0;
+						tableContent[user.data.displayName] = {};
+						policies.map((policy) => {
+							tableContent[user.data.displayName][`${policy.value}@Policies`] = main[production][period][user.data.displayName][policy.value]["Policies"];						
+							tableContent[user.data.displayName][`${policy.value}@Annual Premium`] = main[production][period][user.data.displayName][policy.value]["Premium"];
+							tableContent[user.data.displayName][`${policy.value}@Average Premium`] = main[production][period][user.data.displayName][policy.value]["Averages"];
+							tableContent[user.data.displayName][`${policy.value}@Auto Bonus`] = main[production][period][user.data.displayName][policy.value]["Bonuses"];
+							totalPolicies += tableContent[user.data.displayName][`${policy.value}@Policies`];
+							totalAnnualPremium += tableContent[user.data.displayName][`${policy.value}@Annual Premium`];
+							totalAveragePremium += tableContent[user.data.displayName][`${policy.value}@Average Premium`];
+							totalAutoBonus += tableContent[user.data.displayName][`${policy.value}@Auto Bonus`];
+						});
+						tableContent[user.data.displayName]['Total@Policies'] = totalPolicies;
+						tableContent[user.data.displayName]['Total@Annual Premium'] = totalAnnualPremium;
+						tableContent[user.data.displayName]['Total@Average Premium'] = totalAveragePremium;
+						tableContent[user.data.displayName]['Total@Auto Bonus'] = totalAutoBonus;
+						tableContent[user.data.displayName]["Multiline Ratio"] = dividing(
+							(
+								tableContent[user.data.displayName]['Life@Policies'] +
+								tableContent[user.data.displayName]['Health@Policies'] +
+								tableContent[user.data.displayName]['Bank@Policies']
+							) * 100,
+							tableContent[user.data.displayName]['Auto@Policies'] +
+							tableContent[user.data.displayName]['Fire@Policies']
+						);
+					}				
 				});
-
-				tempDataset = {...tempDataset, data: tempData}
-				tempDatasets.push(tempDataset);
-			});
-			widgets = {
-				...widgets, StaffMultiline_Summary_Policies_Chart: 
-					{...widgets.StaffMultiline_Summary_Policies_Chart, mainChart: {
-						...widgets.StaffMultiline_Summary_Policies_Chart.mainChart, TW: {
-							...widgets.StaffMultiline_Summary_Policies_Chart.mainChart.TW, datasets: [
-								...tempDatasets
-							] 
+				widgets = {
+					...widgets, Producer_StaffMultiline_Summary_Table: {
+						...widgets.Producer_StaffMultiline_Summary_Table, table: {
+							...widgets.Producer_StaffMultiline_Summary_Table.table, rows:
+								tableRows
 						}
 					}
-				}
-			};
-
-			let tempXAxes = [];
-			let tempLabels = [];
-			let temp = widgets.StaffMultiline_Summary_Policies_Chart.mainChart.options.scales.xAxes[0];
-			users.map((user) => {
-				if(user.belongTo === UID) 
-					tempLabels.push(user.data.displayName);
-			}); 
-			temp = { ...temp, labels: tempLabels };
-			tempXAxes.push(temp);			
-
-			widgets = {
-				...widgets, StaffMultiline_Summary_Policies_Chart: {
-					...widgets.StaffMultiline_Summary_Policies_Chart, mainChart: {
-						...widgets.StaffMultiline_Summary_Policies_Chart.mainChart, options: {
-							...widgets.StaffMultiline_Summary_Policies_Chart.mainChart.options, scales: {
-								...widgets.StaffMultiline_Summary_Policies_Chart.mainChart.options.scales, xAxes: [
-									...tempXAxes
-								]
-							} 
-						}	
-					}
-				}
-			};
-		} 	
-
-		// StaffMultiline_Summary_Producer_Chart
-		if(widgets.StaffMultiline_Summary_Producer_Chart && Object.keys(main).length>0 && users.length>0) {	
-			let tempDatasets = [];	
-			let sumPolicies = { Auto: 0, Fire: 0, Life: 0, Health: 0, Bank: 0 };
-			users.map((user) => {
-				if(user.belongTo === UID) {
-					widgets.StaffMultiline_Summary_Producer_Chart.mainChart.options.scales.yAxes[0].labels.map((policy) => {						
-							sumPolicies[policy] += main[production][period][user.data.displayName][policy][report]											
-					});					
-				}
-			});
-			users.map((user, n) => {
-				if(user.belongTo === UID) {
-					let tempData = [];
-					widgets.StaffMultiline_Summary_Producer_Chart.mainChart.options.scales.yAxes[0].labels.map((policy) => {						
-							tempData.push(main[production][period][user.data.displayName][policy][report] * 100 / sumPolicies[policy]);												
-					});
-					tempDatasets.push({
-						barPercentage: 0.5,
-						label: user.data.displayName,
-						data: [ ...tempData ],
-						backgroundColor: colors[n].backgroundColor,
-						hoverBackgroundColor: colors[n].hoverBackgroundColor,
-						categoryPercentage: 1,
-					});
-				}
-			});
-			widgets = {
-				...widgets, StaffMultiline_Summary_Producer_Chart: 
-					{...widgets.StaffMultiline_Summary_Producer_Chart, mainChart: {
-						...widgets.StaffMultiline_Summary_Producer_Chart.mainChart, TW: {
-							...widgets.StaffMultiline_Summary_Producer_Chart.mainChart.TW, datasets: [
-								...tempDatasets
-							] 
+				};
+				widgets = {
+					...widgets, Producer_StaffMultiline_Summary_Table: {
+						...widgets.Producer_StaffMultiline_Summary_Table, table: {
+							...widgets.Producer_StaffMultiline_Summary_Table.table, tableContent:
+								tableContent
 						}
 					}
-				}
-			};
-		} 		
+				};			
+			}
 
-		// Producer_StaffMultiline_Ratios_Chart_1
-		if(widgets.Producer_StaffMultiline_Ratios_Chart_1 && Object.keys(main).length>0 && users.length>0) {		
-			let tempDatasets = [];			
-			widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.TW.datasets.map((dataset) => {
-				if(dataset.label==="Life" || dataset.label==="Health" || dataset.label==="Bank") {
+			// StaffMultiline_Summary_Policies_Chart
+			if(widgets.StaffMultiline_Summary_Policies_Chart) {		
+				let tempDatasets = [];
+				widgets.StaffMultiline_Summary_Policies_Chart.mainChart.TW.datasets.map((dataset) => {
 					let tempDataset = dataset;
 					let tempData = [];
 					users.map((user) => {
-						if(user.belongTo === UID) {							
-							tempData.push(dividing(
-									main[production][period][user.data.displayName][dataset.label]['Policies'],
-									(
-										main[production][period][user.data.displayName]['Auto']['Policies'] +
-										main[production][period][user.data.displayName]['Fire']['Policies']
-									)
-								)
-							);
-						}						
+						if(user.belongTo === UID) {
+							tempData.push(main[production][period][user.data.displayName][dataset.label][report]);
+						}							
 					});
 
 					tempDataset = {...tempDataset, data: tempData}
 					tempDatasets.push(tempDataset);
-				}
-			});
-			widgets = {
-				...widgets, Producer_StaffMultiline_Ratios_Chart_1: 
-					{...widgets.Producer_StaffMultiline_Ratios_Chart_1, mainChart: {
-						...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart, TW: {
-							...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.TW, datasets: [
-								...tempDatasets
-							] 
+				});
+				widgets = {
+					...widgets, StaffMultiline_Summary_Policies_Chart: 
+						{...widgets.StaffMultiline_Summary_Policies_Chart, mainChart: {
+							...widgets.StaffMultiline_Summary_Policies_Chart.mainChart, TW: {
+								...widgets.StaffMultiline_Summary_Policies_Chart.mainChart.TW, datasets: [
+									...tempDatasets
+								] 
+							}
 						}
 					}
-				}
-			};
+				};
 
-			let tempXAxes = [];
-			let tempLabels = [];
-			let temp = widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.options.scales.xAxes[0];
-			users.map((user) => {
-				if(user.belongTo === UID) 
-					tempLabels.push(user.data.displayName);
-			}); 
-			temp = { ...temp, labels: tempLabels };
-			tempXAxes.push(temp);			
-			widgets = {
-				...widgets, Producer_StaffMultiline_Ratios_Chart_1: {
-					...widgets.Producer_StaffMultiline_Ratios_Chart_1, mainChart: {
-						...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart, options: {
-							...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.options, scales: {
-								...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.options.scales, xAxes: [
-									...tempXAxes
-								]
-							} 
-						}	
-					}
-				}
-			};
-		} 
-
-		// Producer_StaffMultiline_Ratios_Chart_2
-		if(widgets.Producer_StaffMultiline_Ratios_Chart_2 && Object.keys(main).length>0 && users.length>0) {		
-			let tempDatasets = [];			
-			widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.TW.datasets.map((dataset) => {
-				let tempDataset = dataset;
-				let tempData = [];
+				let tempXAxes = [];
+				let tempLabels = [];
+				let temp = widgets.StaffMultiline_Summary_Policies_Chart.mainChart.options.scales.xAxes[0];
 				users.map((user) => {
-					if(user.belongTo === UID) {													
-						tempData.push(dividing(
-								main[production][period][user.data.displayName][dataset.label]['Policies'] * 100,
+					if(user.belongTo === UID) 
+						tempLabels.push(user.data.displayName);
+				}); 
+				temp = { ...temp, labels: tempLabels };
+				tempXAxes.push(temp);			
+
+				widgets = {
+					...widgets, StaffMultiline_Summary_Policies_Chart: {
+						...widgets.StaffMultiline_Summary_Policies_Chart, mainChart: {
+							...widgets.StaffMultiline_Summary_Policies_Chart.mainChart, options: {
+								...widgets.StaffMultiline_Summary_Policies_Chart.mainChart.options, scales: {
+									...widgets.StaffMultiline_Summary_Policies_Chart.mainChart.options.scales, xAxes: [
+										...tempXAxes
+									]
+								} 
+							}	
+						}
+					}
+				};
+			} 	
+
+			// StaffMultiline_Summary_Producer_Chart
+			if(widgets.StaffMultiline_Summary_Producer_Chart) {	
+				let tempDatasets = [];	
+				let sumPolicies = { Auto: 0, Fire: 0, Life: 0, Health: 0, Bank: 0 };
+				users.map((user) => {
+					if(user.belongTo === UID) {
+						widgets.StaffMultiline_Summary_Producer_Chart.mainChart.options.scales.yAxes[0].labels.map((policy) => {						
+								sumPolicies[policy] += main[production][period][user.data.displayName][policy][report]											
+						});					
+					}
+				});
+				users.map((user, n) => {
+					if(user.belongTo === UID) {
+						let tempData = [];
+						widgets.StaffMultiline_Summary_Producer_Chart.mainChart.options.scales.yAxes[0].labels.map((policy) => {						
+								tempData.push(main[production][period][user.data.displayName][policy][report] * 100 / sumPolicies[policy]);												
+						});
+						tempDatasets.push({
+							barPercentage: 0.5,
+							label: user.data.displayName,
+							data: [ ...tempData ],
+							backgroundColor: colors[n].backgroundColor,
+							hoverBackgroundColor: colors[n].hoverBackgroundColor,
+							categoryPercentage: 1,
+						});
+					}
+				});
+				widgets = {
+					...widgets, StaffMultiline_Summary_Producer_Chart: 
+						{...widgets.StaffMultiline_Summary_Producer_Chart, mainChart: {
+							...widgets.StaffMultiline_Summary_Producer_Chart.mainChart, TW: {
+								...widgets.StaffMultiline_Summary_Producer_Chart.mainChart.TW, datasets: [
+									...tempDatasets
+								] 
+							}
+						}
+					}
+				};
+			} 		
+
+			// Producer_StaffMultiline_Ratios_Chart_1
+			if(widgets.Producer_StaffMultiline_Ratios_Chart_1) {		
+				let tempDatasets = [];			
+				widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.TW.datasets.map((dataset) => {
+					if(dataset.label==="Life" || dataset.label==="Health" || dataset.label==="Bank") {
+						let tempDataset = dataset;
+						let tempData = [];
+						users.map((user) => {
+							if(user.belongTo === UID) {							
+								tempData.push(dividing(
+										main[production][period][user.data.displayName][dataset.label]['Policies'],
+										(
+											main[production][period][user.data.displayName]['Auto']['Policies'] +
+											main[production][period][user.data.displayName]['Fire']['Policies']
+										)
+									)
+								);
+							}						
+						});
+
+						tempDataset = {...tempDataset, data: tempData}
+						tempDatasets.push(tempDataset);
+					}
+				});
+				widgets = {
+					...widgets, Producer_StaffMultiline_Ratios_Chart_1: 
+						{...widgets.Producer_StaffMultiline_Ratios_Chart_1, mainChart: {
+							...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart, TW: {
+								...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.TW, datasets: [
+									...tempDatasets
+								] 
+							}
+						}
+					}
+				};
+
+				let tempXAxes = [];
+				let tempLabels = [];
+				let temp = widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.options.scales.xAxes[0];
+				users.map((user) => {
+					if(user.belongTo === UID) 
+						tempLabels.push(user.data.displayName);
+				}); 
+				temp = { ...temp, labels: tempLabels };
+				tempXAxes.push(temp);			
+				widgets = {
+					...widgets, Producer_StaffMultiline_Ratios_Chart_1: {
+						...widgets.Producer_StaffMultiline_Ratios_Chart_1, mainChart: {
+							...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart, options: {
+								...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.options, scales: {
+									...widgets.Producer_StaffMultiline_Ratios_Chart_1.mainChart.options.scales, xAxes: [
+										...tempXAxes
+									]
+								} 
+							}	
+						}
+					}
+				};
+			} 
+
+			// Producer_StaffMultiline_Ratios_Chart_2
+			if(widgets.Producer_StaffMultiline_Ratios_Chart_2) {		
+				let tempDatasets = [];			
+				widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.TW.datasets.map((dataset) => {
+					let tempDataset = dataset;
+					let tempData = [];
+					users.map((user) => {
+						if(user.belongTo === UID) {													
+							tempData.push(dividing(
+									main[production][period][user.data.displayName][dataset.label]['Policies'] * 100,
+									(
+										main[production][period][user.data.displayName]['Auto']['Policies'] +
+										main[production][period][user.data.displayName]['Fire']['Policies'] +
+										main[production][period][user.data.displayName]['Life']['Policies'] +
+										main[production][period][user.data.displayName]['Health']['Policies'] +
+										main[production][period][user.data.displayName]['Bank']['Policies']
+									)
+								)
+							);
+						}							
+					});
+
+					tempDataset = {...tempDataset, data: tempData}
+					tempDatasets.push(tempDataset);
+				});
+				widgets = {
+					...widgets, Producer_StaffMultiline_Ratios_Chart_2: 
+						{...widgets.Producer_StaffMultiline_Ratios_Chart_2, mainChart: {
+							...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart, TW: {
+								...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.TW, datasets: [
+									...tempDatasets
+								] 
+							}
+						}
+					}
+				};
+
+				let tempXAxes = [];
+				let tempLabels = [];
+				let temp = widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.options.scales.xAxes[0];
+				users.map((user) => {
+					if(user.belongTo === UID) 
+						tempLabels.push(user.data.displayName);
+				}); 
+				temp = { ...temp, labels: tempLabels };
+				tempXAxes.push(temp);			
+				widgets = {
+					...widgets, Producer_StaffMultiline_Ratios_Chart_2: {
+						...widgets.Producer_StaffMultiline_Ratios_Chart_2, mainChart: {
+							...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart, options: {
+								...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.options, scales: {
+									...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.options.scales, xAxes: [
+										...tempXAxes
+									]
+								} 
+							}	
+						}
+					}
+				};
+			} 
+
+			//	Producer_StaffMultiline_Ratio_Table
+			if(widgets.Producer_StaffMultiline_Ratio_Table) {
+				let tableRows = [];
+				let tableContent = {};			
+				
+				users.map((user) => {
+					if(user.belongTo === UID) {
+						tableRows.push({ 
+							id: user.id, 
+							value: user.data.displayName, 
+							type: true, 
+							color: '' 
+						});
+						
+						tableContent[user.data.displayName] = {};
+						// by Auto									
+						tableContent[user.data.displayName][`Auto@Fire`] = dividing(
+							main[production][period][user.data.displayName]['Fire']["Policies"],
+							main[production][period][user.data.displayName]['Auto']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Auto@Life`] = dividing(
+							main[production][period][user.data.displayName]['Life']["Policies"],
+							main[production][period][user.data.displayName]['Auto']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Auto@Health`] = dividing(
+							main[production][period][user.data.displayName]['Health']["Policies"],
+							main[production][period][user.data.displayName]['Auto']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Auto@Bank`] = dividing(
+							main[production][period][user.data.displayName]['Bank']["Policies"],
+							main[production][period][user.data.displayName]['Auto']["Policies"]
+						);
+						
+						// by Fire
+						tableContent[user.data.displayName][`Fire@Auto`] = dividing(
+							main[production][period][user.data.displayName]['Auto']["Policies"],
+							main[production][period][user.data.displayName]['Fire']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Fire@Life`] = dividing(
+							main[production][period][user.data.displayName]['Life']["Policies"],
+							main[production][period][user.data.displayName]['Fire']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Fire@Health`] = dividing(
+							main[production][period][user.data.displayName]['Health']["Policies"],
+							main[production][period][user.data.displayName]['Fire']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Fire@Bank`] = dividing(
+							main[production][period][user.data.displayName]['Bank']["Policies"],
+							main[production][period][user.data.displayName]['Fire']["Policies"]
+						);
+
+						// by Life
+						tableContent[user.data.displayName][`Life@Auto`] = dividing(
+							main[production][period][user.data.displayName]['Auto']["Policies"],
+							main[production][period][user.data.displayName]['Life']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Life@Fire`] = dividing(
+							main[production][period][user.data.displayName]['Fire']["Policies"],
+							main[production][period][user.data.displayName]['Life']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Life@Health`] = dividing(
+							main[production][period][user.data.displayName]['Health']["Policies"],
+							main[production][period][user.data.displayName]['Life']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Life@Bank`] = dividing(
+							main[production][period][user.data.displayName]['Bank']["Policies"],
+							main[production][period][user.data.displayName]['Life']["Policies"]
+						);
+
+						// by Health
+						tableContent[user.data.displayName][`Health@Auto`] = dividing(
+							main[production][period][user.data.displayName]['Auto']["Policies"],
+							main[production][period][user.data.displayName]['Health']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Health@Fire`] = dividing(
+							main[production][period][user.data.displayName]['Fire']["Policies"],
+							main[production][period][user.data.displayName]['Health']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Health@Life`] = dividing(
+							main[production][period][user.data.displayName]['Life']["Policies"],
+							main[production][period][user.data.displayName]['Health']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Health@Bank`] = dividing(
+							main[production][period][user.data.displayName]['Bank']["Policies"],
+							main[production][period][user.data.displayName]['Health']["Policies"]
+						);
+
+						// by Bank
+						tableContent[user.data.displayName][`Bank@Auto`] = dividing(
+							main[production][period][user.data.displayName]['Auto']["Policies"],
+							main[production][period][user.data.displayName]['Bank']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Bank@Fire`] = dividing(
+							main[production][period][user.data.displayName]['Fire']["Policies"],
+							main[production][period][user.data.displayName]['Bank']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Bank@Life`] = dividing(
+							main[production][period][user.data.displayName]['Life']["Policies"],
+							main[production][period][user.data.displayName]['Bank']["Policies"]
+						);	
+						tableContent[user.data.displayName][`Bank@Health`] = dividing(
+							main[production][period][user.data.displayName]['Health']["Policies"],
+							main[production][period][user.data.displayName]['Bank']["Policies"]
+						);
+
+						// by Auto&Fire					
+						tableContent[user.data.displayName][`Auto&Fire@Life`] = dividing(
+							main[production][period][user.data.displayName]['Life']["Policies"],
+							(
+								main[production][period][user.data.displayName]['Auto']["Policies"] +
+								main[production][period][user.data.displayName]['Fire']["Policies"]
+							)
+						);	
+						tableContent[user.data.displayName][`Auto&Fire@Health`] = dividing(
+							main[production][period][user.data.displayName]['Health']["Policies"],
+							(
+								main[production][period][user.data.displayName]['Auto']["Policies"] +
+								main[production][period][user.data.displayName]['Fire']["Policies"]
+							)
+						);	
+						tableContent[user.data.displayName][`Auto&Fire@Bank`] = dividing(
+							main[production][period][user.data.displayName]['Bank']["Policies"],
+							(
+								main[production][period][user.data.displayName]['Auto']["Policies"] +
+								main[production][period][user.data.displayName]['Fire']["Policies"]
+							)
+						);
+						tableContent[user.data.displayName][`Total L/H/B`] = 
+							main[production][period][user.data.displayName]['Life']["Policies"] +						
+							main[production][period][user.data.displayName]['Health']["Policies"] +
+							main[production][period][user.data.displayName]['Bank']["Policies"];
+
+						options.product.data.map((policy) => {
+							tableContent[user.data.displayName][policy.value] = dividing(
+								main[production][period][user.data.displayName][policy.value]['Policies'] * 100,
 								(
 									main[production][period][user.data.displayName]['Auto']['Policies'] +
 									main[production][period][user.data.displayName]['Fire']['Policies'] +
@@ -293,216 +480,31 @@ function StaffMultiline(props) {
 									main[production][period][user.data.displayName]['Health']['Policies'] +
 									main[production][period][user.data.displayName]['Bank']['Policies']
 								)
-							)
-						);
-					}							
+							)							
+						})
+						
+					}
+					
 				});
-
-				tempDataset = {...tempDataset, data: tempData}
-				tempDatasets.push(tempDataset);
-			});
-			widgets = {
-				...widgets, Producer_StaffMultiline_Ratios_Chart_2: 
-					{...widgets.Producer_StaffMultiline_Ratios_Chart_2, mainChart: {
-						...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart, TW: {
-							...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.TW, datasets: [
-								...tempDatasets
-							] 
+				widgets = {
+					...widgets, Producer_StaffMultiline_Ratio_Table: {
+						...widgets.Producer_StaffMultiline_Ratio_Table, table: {
+							...widgets.Producer_StaffMultiline_Ratio_Table.table, rows:
+								tableRows
 						}
 					}
-				}
-			};
-
-			let tempXAxes = [];
-			let tempLabels = [];
-			let temp = widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.options.scales.xAxes[0];
-			users.map((user) => {
-				if(user.belongTo === UID) 
-					tempLabels.push(user.data.displayName);
-			}); 
-			temp = { ...temp, labels: tempLabels };
-			tempXAxes.push(temp);			
-			widgets = {
-				...widgets, Producer_StaffMultiline_Ratios_Chart_2: {
-					...widgets.Producer_StaffMultiline_Ratios_Chart_2, mainChart: {
-						...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart, options: {
-							...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.options, scales: {
-								...widgets.Producer_StaffMultiline_Ratios_Chart_2.mainChart.options.scales, xAxes: [
-									...tempXAxes
-								]
-							} 
-						}	
+				};
+				widgets = {
+					...widgets, Producer_StaffMultiline_Ratio_Table: {
+						...widgets.Producer_StaffMultiline_Ratio_Table, table: {
+							...widgets.Producer_StaffMultiline_Ratio_Table.table, tableContent:
+								tableContent
+						}
 					}
-				}
-			};
-		} 
-
-		//	Producer_StaffMultiline_Ratio_Table
-		if(widgets.Producer_StaffMultiline_Ratio_Table && Object.keys(main).length>0 && users.length>0) {
-			let tableRows = [];
-			let tableContent = {};			
-			
-			users.map((user) => {
-				if(user.belongTo === UID) {
-					tableRows.push({ 
-						id: user.id, 
-						value: user.data.displayName, 
-						type: true, 
-						color: '' 
-					});
-					
-					tableContent[user.data.displayName] = {};
-					// by Auto									
-					tableContent[user.data.displayName][`Auto@Fire`] = dividing(
-						main[production][period][user.data.displayName]['Fire']["Policies"],
-						main[production][period][user.data.displayName]['Auto']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Auto@Life`] = dividing(
-						main[production][period][user.data.displayName]['Life']["Policies"],
-						main[production][period][user.data.displayName]['Auto']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Auto@Health`] = dividing(
-						main[production][period][user.data.displayName]['Health']["Policies"],
-						main[production][period][user.data.displayName]['Auto']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Auto@Bank`] = dividing(
-						main[production][period][user.data.displayName]['Bank']["Policies"],
-						main[production][period][user.data.displayName]['Auto']["Policies"]
-					);
-					
-					// by Fire
-					tableContent[user.data.displayName][`Fire@Auto`] = dividing(
-						main[production][period][user.data.displayName]['Auto']["Policies"],
-						main[production][period][user.data.displayName]['Fire']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Fire@Life`] = dividing(
-						main[production][period][user.data.displayName]['Life']["Policies"],
-						main[production][period][user.data.displayName]['Fire']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Fire@Health`] = dividing(
-						main[production][period][user.data.displayName]['Health']["Policies"],
-						main[production][period][user.data.displayName]['Fire']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Fire@Bank`] = dividing(
-						main[production][period][user.data.displayName]['Bank']["Policies"],
-						main[production][period][user.data.displayName]['Fire']["Policies"]
-					);
-
-					// by Life
-					tableContent[user.data.displayName][`Life@Auto`] = dividing(
-						main[production][period][user.data.displayName]['Auto']["Policies"],
-						main[production][period][user.data.displayName]['Life']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Life@Fire`] = dividing(
-						main[production][period][user.data.displayName]['Fire']["Policies"],
-						main[production][period][user.data.displayName]['Life']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Life@Health`] = dividing(
-						main[production][period][user.data.displayName]['Health']["Policies"],
-						main[production][period][user.data.displayName]['Life']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Life@Bank`] = dividing(
-						main[production][period][user.data.displayName]['Bank']["Policies"],
-						main[production][period][user.data.displayName]['Life']["Policies"]
-					);
-
-					// by Health
-					tableContent[user.data.displayName][`Health@Auto`] = dividing(
-						main[production][period][user.data.displayName]['Auto']["Policies"],
-						main[production][period][user.data.displayName]['Health']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Health@Fire`] = dividing(
-						main[production][period][user.data.displayName]['Fire']["Policies"],
-						main[production][period][user.data.displayName]['Health']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Health@Life`] = dividing(
-						main[production][period][user.data.displayName]['Life']["Policies"],
-						main[production][period][user.data.displayName]['Health']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Health@Bank`] = dividing(
-						main[production][period][user.data.displayName]['Bank']["Policies"],
-						main[production][period][user.data.displayName]['Health']["Policies"]
-					);
-
-					// by Bank
-					tableContent[user.data.displayName][`Bank@Auto`] = dividing(
-						main[production][period][user.data.displayName]['Auto']["Policies"],
-						main[production][period][user.data.displayName]['Bank']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Bank@Fire`] = dividing(
-						main[production][period][user.data.displayName]['Fire']["Policies"],
-						main[production][period][user.data.displayName]['Bank']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Bank@Life`] = dividing(
-						main[production][period][user.data.displayName]['Life']["Policies"],
-						main[production][period][user.data.displayName]['Bank']["Policies"]
-					);	
-					tableContent[user.data.displayName][`Bank@Health`] = dividing(
-						main[production][period][user.data.displayName]['Health']["Policies"],
-						main[production][period][user.data.displayName]['Bank']["Policies"]
-					);
-
-					// by Auto&Fire					
-					tableContent[user.data.displayName][`Auto&Fire@Life`] = dividing(
-						main[production][period][user.data.displayName]['Life']["Policies"],
-						(
-							main[production][period][user.data.displayName]['Auto']["Policies"] +
-							main[production][period][user.data.displayName]['Fire']["Policies"]
-						)
-					);	
-					tableContent[user.data.displayName][`Auto&Fire@Health`] = dividing(
-						main[production][period][user.data.displayName]['Health']["Policies"],
-						(
-							main[production][period][user.data.displayName]['Auto']["Policies"] +
-							main[production][period][user.data.displayName]['Fire']["Policies"]
-						)
-					);	
-					tableContent[user.data.displayName][`Auto&Fire@Bank`] = dividing(
-						main[production][period][user.data.displayName]['Bank']["Policies"],
-						(
-							main[production][period][user.data.displayName]['Auto']["Policies"] +
-							main[production][period][user.data.displayName]['Fire']["Policies"]
-						)
-					);
-					tableContent[user.data.displayName][`Total L/H/B`] = 
-						main[production][period][user.data.displayName]['Life']["Policies"] +						
-						main[production][period][user.data.displayName]['Health']["Policies"] +
-						main[production][period][user.data.displayName]['Bank']["Policies"];
-
-					options.product.data.map((policy) => {
-						tableContent[user.data.displayName][policy.value] = dividing(
-							main[production][period][user.data.displayName][policy.value]['Policies'] * 100,
-							(
-								main[production][period][user.data.displayName]['Auto']['Policies'] +
-								main[production][period][user.data.displayName]['Fire']['Policies'] +
-								main[production][period][user.data.displayName]['Life']['Policies'] +
-								main[production][period][user.data.displayName]['Health']['Policies'] +
-								main[production][period][user.data.displayName]['Bank']['Policies']
-							)
-						)							
-					})
-					
-				}
-				
-			});
-			widgets = {
-				...widgets, Producer_StaffMultiline_Ratio_Table: {
-					...widgets.Producer_StaffMultiline_Ratio_Table, table: {
-						...widgets.Producer_StaffMultiline_Ratio_Table.table, rows:
-							tableRows
-					}
-				}
-			};
-			widgets = {
-				...widgets, Producer_StaffMultiline_Ratio_Table: {
-					...widgets.Producer_StaffMultiline_Ratio_Table, table: {
-						...widgets.Producer_StaffMultiline_Ratio_Table.table, tableContent:
-							tableContent
-					}
-				}
-			};			
+				};			
+			}
 		}
-
+		
 		console.log('-------------widgets', widgets)
 		setData({ widgets });
 	}, [widgets, main, period, production, report]);

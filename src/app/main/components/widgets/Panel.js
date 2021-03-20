@@ -9,6 +9,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
+import { formattedString } from '../../utils/Function'
+
 
 function Widget1(props) {
 	const { data } = props.data;
@@ -20,34 +22,47 @@ function Widget1(props) {
 					<span className="truncate">{props.data.title}</span>
 				</Typography>
 			</div>
-			<div className="h-full text-center"> 
+			<div className="h-full text-center">
 				<div className="h-full flex flex-wrap">
 					{data.map((item, index) => (
-						data.length===1 ?
-						(	<div className="w-full" key={index} >								
+						data.length === 1 ?
+							(<div className="w-full" key={index} >
 								<Typography className={`flex flex-col justify-center h-full text-48 leading-none  ${props.data.color}`}>
-									{item[Object.keys(item)[0]]} {'%'}
+									{formattedString(item[Object.keys(item)[0]])} {'%'}
 								</Typography>
 							</div>
-						) : 
-						(	<div className="w-1/2" key={index}>
+							) : data.length === 2 ? (<div className="w-1/2" key={index}>
 								<Typography
-									className={`leading-none border-b-1 ${length % (index + 1) !== 0 && `border-r-1`} ${
-										index === 0 && `border-r-1`
-									} py-5`}
+									className={`leading-none border-b-1 ${length % (index + 1) !== 0 && `border-r-1`} ${index === 0 && `border-r-1`
+										} py-5`}
 								>
 									{Object.keys(item)[0]}
 								</Typography>
 								<Typography
-									className={`text-48 leading-none ${props.data.color} ${
-										length % (index + 1) !== 0 && `border-r-1`
-									} ${index === 0 && `border-r-1`} border-b-1 py-5`}
+									className={`text-48 leading-none ${props.data.color} ${length % (index + 1) !== 0 && `border-r-1`
+										} ${index === 0 && `border-r-1`} border-b-1 py-5`}
 								>
 									{item[Object.keys(item)[0]]}
-									{props.data.title === 'Lapse Rate' && '%'}
+									{props.data.title === 'Lapse Rate' && ''}
 								</Typography>
 							</div>
-						)																			
+							) :
+								(<div className="w-1/2" key={index}>
+									<Typography
+										className={`leading-none border-b-1 ${length % (index + 1) !== 0 && `border-r-1`} ${index === 0 && `border-r-1`
+											} py-5`}
+									>
+										{Object.keys(item)[0]}
+									</Typography>
+									<Typography
+										className={`text-48 leading-none ${props.data.color} ${length % (index + 1) !== 0 && `border-r-1`
+											} ${index === 0 && `border-r-1`} border-b-1 py-5`}
+									>
+										{`${item[Object.keys(item)[0]]} %`}
+										
+									</Typography>
+								</div>
+								)
 					))}
 				</div>
 			</div>

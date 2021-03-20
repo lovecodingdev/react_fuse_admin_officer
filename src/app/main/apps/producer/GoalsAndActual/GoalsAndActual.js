@@ -52,212 +52,214 @@ function GoalsAndActual(props) {
 			const temp = getMain(entries, [], [], users, vision);										
 			setMain(temp);
 		}
-	}, [entries, [], [], users, vision]);
+	}, [entries, users, vision]);
 
 	useEffect(() => {	
-		// Producer_GoalsAndActual_AgencyGoals_Table
-		if(widgets.Producer_GoalsAndActual_AgencyGoals_Table && Object.keys(main).length>0 && users.length>0) {
-			let tableRows = [
-				{
-					id: 'total', 
-					value: 'Total', 
-					type: true, 
-					color: '', 
-					border: 'border-b-4' 
-				}
-			];
-			let tableContent = {};			
-			tableContent["Total"] = {
-				'Auto@Goals': 0,
-				'Auto@Actual': 0,
-				'Fire@Goals': 0,
-				'Fire@Actual': 0,
-				'Life@Goals': 0,
-				'Life@Actual': 0,
-				'Health@Goals': 0,
-				'Health@Actual': 0,
-				'Bank@Goals': 0,
-				'Bank@Actual': 0,
-				'Total@Goals': 0,
-				'Total@Actual': 0,
-			};
-			users.map((user) => {
-				if(user.belongTo === UID) {
-					tableRows.push({ 
-						id: user.id, 
-						value: user.data.displayName, 
+		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {
+			// Producer_GoalsAndActual_AgencyGoals_Table
+			if(widgets.Producer_GoalsAndActual_AgencyGoals_Table) {
+				let tableRows = [
+					{
+						id: 'total', 
+						value: 'Total', 
 						type: true, 
-						color: '' 
-					});
-					
-					let totalGoals = 0;
-					let totalActual = 0;					
-					tableContent[user.data.displayName] = {};
-					options.product.data.map((policy) => { // except for Total
-						tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.data.displayName][policy.value]["Goals"]
-						tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
-						totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
-						totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];												
-						tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
-						tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
-					});
-					tableContent[user.data.displayName]['Total@Goals'] = totalGoals;
-					tableContent[user.data.displayName]['Total@Actual'] = totalActual;														
-					tableContent['Total'][`Total@Goals`] += totalGoals;
-					tableContent['Total'][`Total@Actual`] += totalActual;
-				}				
-			});
-			widgets = {
-				...widgets, Producer_GoalsAndActual_AgencyGoals_Table: {
-					...widgets.Producer_GoalsAndActual_AgencyGoals_Table, table: {
-						...widgets.Producer_GoalsAndActual_AgencyGoals_Table.table, rows:
-							tableRows
+						color: '', 
+						border: 'border-b-4' 
 					}
-				}
-			};
-			widgets = {
-				...widgets, Producer_GoalsAndActual_AgencyGoals_Table: {
-					...widgets.Producer_GoalsAndActual_AgencyGoals_Table, table: {
-						...widgets.Producer_GoalsAndActual_AgencyGoals_Table.table, tableContent:
-							tableContent
-					}
-				}
-			};			
-		}
-
-		// Producer_GoalsAndActual_SalesGoals_Chart
-		if(widgets.Producer_GoalsAndActual_SalesGoals_Chart && Object.keys(main).length>0 && users.length>0) {	
-			let tempDatasets = [];
-			Object.keys(widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.TW.datasets).map((key, n) => {
-				let temp = widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.TW.datasets[key];
-				let tempData = [];
-				const tableContent = widgets.Producer_GoalsAndActual_AgencyGoals_Table.table.tableContent;
-				if(n === 0)
-					widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
-						tempData.push(tableContent['Total'][`${policy}@Goals`]);
-					})
-				else if(n === 1)
-					widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
-						tempData.push(tableContent['Total'][`${policy}@Actual`]);
-					})
-
-				temp = {...temp, data: tempData}
-				tempDatasets.push(temp);
-			}); 
-			widgets = {
-				...widgets, Producer_GoalsAndActual_SalesGoals_Chart: 
-					{...widgets.Producer_GoalsAndActual_SalesGoals_Chart, mainChart: {
-						...widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart, TW: {
-							...widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.TW, datasets: [
-								...tempDatasets
-							] 
+				];
+				let tableContent = {};			
+				tableContent["Total"] = {
+					'Auto@Goals': 0,
+					'Auto@Actual': 0,
+					'Fire@Goals': 0,
+					'Fire@Actual': 0,
+					'Life@Goals': 0,
+					'Life@Actual': 0,
+					'Health@Goals': 0,
+					'Health@Actual': 0,
+					'Bank@Goals': 0,
+					'Bank@Actual': 0,
+					'Total@Goals': 0,
+					'Total@Actual': 0,
+				};
+				users.map((user) => {
+					if(user.belongTo === UID) {
+						tableRows.push({ 
+							id: user.id, 
+							value: user.data.displayName, 
+							type: true, 
+							color: '' 
+						});
+						
+						let totalGoals = 0;
+						let totalActual = 0;					
+						tableContent[user.data.displayName] = {};
+						options.product.data.map((policy) => { // except for Total
+							tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.data.displayName][policy.value]["Goals"]
+							tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
+							totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
+							totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];												
+							tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
+							tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
+						});
+						tableContent[user.data.displayName]['Total@Goals'] = totalGoals;
+						tableContent[user.data.displayName]['Total@Actual'] = totalActual;														
+						tableContent['Total'][`Total@Goals`] += totalGoals;
+						tableContent['Total'][`Total@Actual`] += totalActual;
+					}				
+				});
+				widgets = {
+					...widgets, Producer_GoalsAndActual_AgencyGoals_Table: {
+						...widgets.Producer_GoalsAndActual_AgencyGoals_Table, table: {
+							...widgets.Producer_GoalsAndActual_AgencyGoals_Table.table, rows:
+								tableRows
 						}
 					}
-				}
-			};
-		} 
-
-		// Producer_GoalsAndActual_OtherActivities_Table
-		if(widgets.Producer_GoalsAndActual_OtherActivities_Table && Object.keys(main).length>0 && users.length>0) {
-			let tableRows = [
-				{
-					id: 'total', 
-					value: 'Total', 
-					type: true, 
-					color: '', 
-					border: 'border-b-4' 
-				}
-			];
-			let tableContent = {};			
-			tableContent["Total"] = {
-				'Auto@Goals': 0,
-				'Auto@Actual': 0,
-				'Fire@Goals': 0,
-				'Fire@Actual': 0,
-				'Life@Goals': 0,
-				'Life@Actual': 0,
-				'Health@Goals': 0,
-				'Health@Actual': 0,
-				'Bank@Goals': 0,
-				'Bank@Actual': 0,
-				'Total@Goals': 0,
-				'Total@Actual': 0,
-			};
-			users.map((user) => {
-				if(user.belongTo === UID) {
-					tableRows.push({ 
-						id: user.id, 
-						value: user.data.displayName, 
-						type: true, 
-						color: '' 
-					});
-					
-					let totalGoals = 0;
-					let totalActual = 0;					
-					tableContent[user.data.displayName] = {};
-					options.product.data.map((policy) => { // except for Total
-						tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.data.displayName][policy.value]["Goals"]
-						tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
-						totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
-						totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];												
-						tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
-						tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
-					});
-					tableContent[user.data.displayName]['Total@Goals'] = totalGoals;
-					tableContent[user.data.displayName]['Total@Actual'] = totalActual;										
-					tableContent['Total'][`Total@Goals`] += totalGoals;
-					tableContent['Total'][`Total@Actual`] += totalActual;
-				}				
-			});
-			widgets = {
-				...widgets, Producer_GoalsAndActual_OtherActivities_Table: {
-					...widgets.Producer_GoalsAndActual_OtherActivities_Table, table: {
-						...widgets.Producer_GoalsAndActual_OtherActivities_Table.table, rows:
-							tableRows
-					}
-				}
-			};
-			widgets = {
-				...widgets, Producer_GoalsAndActual_OtherActivities_Table: {
-					...widgets.Producer_GoalsAndActual_OtherActivities_Table, table: {
-						...widgets.Producer_GoalsAndActual_OtherActivities_Table.table, tableContent:
-							tableContent
-					}
-				}
-			};			
-		}
-
-		// Producer_GoalsAndActual_ActivityGoals_Chart
-		if(widgets.Producer_GoalsAndActual_ActivityGoals_Chart && Object.keys(main).length>0 && users.length>0) {	
-			let tempDatasets = [];
-			Object.keys(widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.TW.datasets).map((key, n) => {
-				let temp = widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.TW.datasets[key];
-				let tempData = [];
-				const tableContent = widgets.Producer_GoalsAndActual_OtherActivities_Table.table.tableContent;
-				if(n === 0)
-					widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
-						tempData.push(tableContent['Total'][`${policy}@Goals`]);
-					})
-				else if(n === 1)
-					widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
-						tempData.push(tableContent['Total'][`${policy}@Actual`]);
-					})
-
-				temp = {...temp, data: tempData}
-				tempDatasets.push(temp);
-			}); 
-			widgets = {
-				...widgets, Producer_GoalsAndActual_ActivityGoals_Chart: 
-					{...widgets.Producer_GoalsAndActual_ActivityGoals_Chart, mainChart: {
-						...widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart, TW: {
-							...widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.TW, datasets: [
-								...tempDatasets
-							] 
+				};
+				widgets = {
+					...widgets, Producer_GoalsAndActual_AgencyGoals_Table: {
+						...widgets.Producer_GoalsAndActual_AgencyGoals_Table, table: {
+							...widgets.Producer_GoalsAndActual_AgencyGoals_Table.table, tableContent:
+								tableContent
 						}
 					}
-				}
-			};
-		} 
+				};			
+			}
+
+			// Producer_GoalsAndActual_SalesGoals_Chart
+			if(widgets.Producer_GoalsAndActual_SalesGoals_Chart) {	
+				let tempDatasets = [];
+				Object.keys(widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.TW.datasets).map((key, n) => {
+					let temp = widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.TW.datasets[key];
+					let tempData = [];
+					const tableContent = widgets.Producer_GoalsAndActual_AgencyGoals_Table.table.tableContent;
+					if(n === 0)
+						widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
+							tempData.push(tableContent['Total'][`${policy}@Goals`]);
+						})
+					else if(n === 1)
+						widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
+							tempData.push(tableContent['Total'][`${policy}@Actual`]);
+						})
+
+					temp = {...temp, data: tempData}
+					tempDatasets.push(temp);
+				}); 
+				widgets = {
+					...widgets, Producer_GoalsAndActual_SalesGoals_Chart: 
+						{...widgets.Producer_GoalsAndActual_SalesGoals_Chart, mainChart: {
+							...widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart, TW: {
+								...widgets.Producer_GoalsAndActual_SalesGoals_Chart.mainChart.TW, datasets: [
+									...tempDatasets
+								] 
+							}
+						}
+					}
+				};
+			} 
+
+			// Producer_GoalsAndActual_OtherActivities_Table
+			if(widgets.Producer_GoalsAndActual_OtherActivities_Table) {
+				let tableRows = [
+					{
+						id: 'total', 
+						value: 'Total', 
+						type: true, 
+						color: '', 
+						border: 'border-b-4' 
+					}
+				];
+				let tableContent = {};			
+				tableContent["Total"] = {
+					'Auto@Goals': 0,
+					'Auto@Actual': 0,
+					'Fire@Goals': 0,
+					'Fire@Actual': 0,
+					'Life@Goals': 0,
+					'Life@Actual': 0,
+					'Health@Goals': 0,
+					'Health@Actual': 0,
+					'Bank@Goals': 0,
+					'Bank@Actual': 0,
+					'Total@Goals': 0,
+					'Total@Actual': 0,
+				};
+				users.map((user) => {
+					if(user.belongTo === UID) {
+						tableRows.push({ 
+							id: user.id, 
+							value: user.data.displayName, 
+							type: true, 
+							color: '' 
+						});
+						
+						let totalGoals = 0;
+						let totalActual = 0;					
+						tableContent[user.data.displayName] = {};
+						options.product.data.map((policy) => { // except for Total
+							tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.data.displayName][policy.value]["Goals"]
+							tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
+							totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
+							totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];												
+							tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
+							tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
+						});
+						tableContent[user.data.displayName]['Total@Goals'] = totalGoals;
+						tableContent[user.data.displayName]['Total@Actual'] = totalActual;										
+						tableContent['Total'][`Total@Goals`] += totalGoals;
+						tableContent['Total'][`Total@Actual`] += totalActual;
+					}				
+				});
+				widgets = {
+					...widgets, Producer_GoalsAndActual_OtherActivities_Table: {
+						...widgets.Producer_GoalsAndActual_OtherActivities_Table, table: {
+							...widgets.Producer_GoalsAndActual_OtherActivities_Table.table, rows:
+								tableRows
+						}
+					}
+				};
+				widgets = {
+					...widgets, Producer_GoalsAndActual_OtherActivities_Table: {
+						...widgets.Producer_GoalsAndActual_OtherActivities_Table, table: {
+							...widgets.Producer_GoalsAndActual_OtherActivities_Table.table, tableContent:
+								tableContent
+						}
+					}
+				};			
+			}
+
+			// Producer_GoalsAndActual_ActivityGoals_Chart
+			if(widgets.Producer_GoalsAndActual_ActivityGoals_Chart) {	
+				let tempDatasets = [];
+				Object.keys(widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.TW.datasets).map((key, n) => {
+					let temp = widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.TW.datasets[key];
+					let tempData = [];
+					const tableContent = widgets.Producer_GoalsAndActual_OtherActivities_Table.table.tableContent;
+					if(n === 0)
+						widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
+							tempData.push(tableContent['Total'][`${policy}@Goals`]);
+						})
+					else if(n === 1)
+						widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.options.scales.xAxes[0].labels.map((policy) => {
+							tempData.push(tableContent['Total'][`${policy}@Actual`]);
+						})
+
+					temp = {...temp, data: tempData}
+					tempDatasets.push(temp);
+				}); 
+				widgets = {
+					...widgets, Producer_GoalsAndActual_ActivityGoals_Chart: 
+						{...widgets.Producer_GoalsAndActual_ActivityGoals_Chart, mainChart: {
+							...widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart, TW: {
+								...widgets.Producer_GoalsAndActual_ActivityGoals_Chart.mainChart.TW, datasets: [
+									...tempDatasets
+								] 
+							}
+						}
+					}
+				};
+			} 
+		}
 
 		console.log('-----widgets', widgets)
 		setData({ widgets });
@@ -321,20 +323,21 @@ function GoalsAndActual(props) {
 			content={
 				<div className="w-full p-12">
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-2/3 p-12">
+						<div className="widget flex w-1/2 p-12">
 							<Table data={data.widgets.Producer_GoalsAndActual_AgencyGoals_Table} />
 						</div>
-						<div className="widget flex w-1/3 p-12">
-							<Chart data={data.widgets.Producer_GoalsAndActual_SalesGoals_Chart} />
-						</div>
+						<div className="widget flex w-1/2 p-12">
+							<Table data={data.widgets.Producer_GoalsAndActual_OtherActivities_Table} />
+						</div>						
 					</FuseAnimateGroup>
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-2/3 p-12">
-							<Table data={data.widgets.Producer_GoalsAndActual_OtherActivities_Table} />
+						<div className="widget flex w-1/2 p-12">
+							<Chart data={data.widgets.Producer_GoalsAndActual_SalesGoals_Chart} />
 						</div>
-						<div className="widget flex w-1/3 p-12">
+						<div className="widget flex w-1/2 p-12">
 							<Chart data={data.widgets.Producer_GoalsAndActual_ActivityGoals_Chart} />
 						</div>
+						
 					</FuseAnimateGroup>
 				</div>				
 			}

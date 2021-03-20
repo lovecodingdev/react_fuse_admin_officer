@@ -5,21 +5,40 @@ import { realDb } from '../../../../../@fake-db/db/firebase';
 export const getUsers = createAsyncThunk(
 	'producerApp/users/getUsers', 
 	() =>
-		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`users/`);
-			var users = [];
-			starCountRef.on('value', snapshot => {
-				const data = snapshot.val();
+	new Promise((resolve, reject) => {
+		var starCountRef = realDb.ref(`users/`);
+		var agencyRef = realDb.ref(`agency/`);
+		var adminRef = realDb.ref(`admin/`);
+		var users = [];
+		starCountRef.on('value', snapshot => {
+			const data = snapshot.val();
 
-				if (data) {
-					Object.keys(data).map(item => {
-						users.push(data[item]);
+			if (data) {
+				Object.keys(data).map(item => {
+					users.push(data[item]);
+				});
+			}
+
+			agencyRef.on('value', snap => {
+				const agencyData = snap.val()
+				if (agencyData) {
+					Object.keys(agencyData).map(item => {
+						users.push(agencyData[item]);
 					});
 				}
-				
-				resolve(users);
-			});
-		})
+
+				adminRef.on('value', adminSnap => {
+					const adminData = adminSnap.val()
+					if (adminData) {
+						Object.keys(adminData).map(item => {
+							users.push(adminData[item]);
+						});
+					}
+					resolve(users);
+				})
+			})
+		});
+	})
 );
 
 const usersAdapter = createEntityAdapter({});

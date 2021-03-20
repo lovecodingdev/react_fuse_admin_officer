@@ -153,7 +153,7 @@ export const entryNames = {
 // };
 
 // Getting  main data
-export const getMain = (entries, bonusPlans, marketings, users, vision) => {
+export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRate) => {
   let temp = {};	
   options.production.data.map((pro) => {  
     const production = pro.value;
@@ -170,6 +170,9 @@ export const getMain = (entries, bonusPlans, marketings, users, vision) => {
             "Premium": 0,
             "Policies": 0,
             "Averages": 0,
+            'household': 0,
+            'individual': 0,
+            'lapseRate': 0,
             "Goals": 0,
           };
 
@@ -189,6 +192,13 @@ export const getMain = (entries, bonusPlans, marketings, users, vision) => {
             temp[production][month.value][userName][policy][`${item.name}@Policies`] = 0;
             temp[production][month.value][userName][policy][`${item.name}@Averages`] = 0;
           });	
+
+           //adding lapseRate items
+          //  const lapse = lapseRate.length > 0 &&	lapseRate[0].hasOwnProperty(policy) ?	lapseRate[0][policy] : {};				
+          //  Object.keys(lapse).map((month) => {		
+          //    const item = lapse[month];
+          //    temp[production][month.value][userName][policy]['lapseRate'] = item.;            
+          //  });	
 
           // adding vision items
           if(vision.length > 0) {	
@@ -234,6 +244,7 @@ export const getMain = (entries, bonusPlans, marketings, users, vision) => {
               const bonus = item.dollarBonus==='' ? 0 : item.dollarBonus;
               temp[production][month][userName][policy][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
               temp[production][month][userName][policy][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
+              temp[production][month][userName][policy][item.policyHolderType] += 1;
               temp[production][month][userName][policy]["Bonuses"] += parseFloat(bonus);									
               temp[production][month][userName][policy]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;									
               temp[production][month][userName][policy]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	

@@ -63,7 +63,7 @@ function PoliciesAndBank(props) {
 	}, [entries, bonusPlans, marketings, users]);
 
 	useEffect(() => {	
-		if(Object.keys(widgets).length>0 && Object.keys(main).length>0) {	
+		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {
 			if(widgets.Producer_PoliciesAndBank_AutoAndFire_Table) {
 				let tableColumns = [{
 						id: 'avatar',

@@ -4,6 +4,7 @@ import './db/auth-db';
 import './db/calendar-db';
 import './db/chat-db';
 import './db/contacts-db';
+import './db/dashboard-db';
 import './db/e-commerce-db';
 import './db/fire-db';
 import './db/life-db';

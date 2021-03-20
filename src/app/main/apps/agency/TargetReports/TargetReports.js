@@ -44,7 +44,7 @@ function TargetReports(props) {
 	const [production, setProduction] = useState("Show Written Production");
 	const [userList, setUserList] = useState([])
 	const [tabValue, setTabValue] = useState(0);
-	const [title, setTitle] = useState('Product Line');
+	const [title, setTitle] = useState('Target Report');
 	
 	useEffect(() => {
 		dispatch(getUsers());
