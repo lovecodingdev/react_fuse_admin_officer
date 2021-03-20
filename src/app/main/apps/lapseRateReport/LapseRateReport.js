@@ -16,10 +16,10 @@ import reducer from './store';
 import { selectProjects, getProjects } from './store/lapseSlice';
 import { getAutoBonus, selectContacts } from './store/bonusPlanSlice';
 import { getWidgets, selectWidgets } from './store/widgetsSlice';
-import { rows, columns, levelColumns, firerows } from './tableDataTemplate';
+import { rows, columns, levelColumns, firerows, liferows, healthrows } from './tableDataTemplate';
 import Widget10 from './widgets/Widget10';
 import TargetTable from './widgets/TargetTable';
-import { saveLapseRate, saveFireLapseRate } from './store/lapseSlice';
+import { saveLapseRate, saveFireLapseRate, saveLifeLapseRate, saveHealthLapseRate } from './store/lapseSlice';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -59,7 +59,7 @@ function ProjectDashboardApp(props) {
 	const dispatch = useDispatch();
 	const widgets = useSelector(selectWidgets);
 	const projects = useSelector(selectProjects);
-	console.log(projects);
+
 	const contacts = useSelector(selectContacts);
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
@@ -71,6 +71,8 @@ function ProjectDashboardApp(props) {
 	const [state, setState] = useState({
 		autoRows: rows,
 		fireRows: firerows,
+		lifeRows: liferows,
+		healthRows: healthrows,
 		monthlyAgencyLapseAutoBonus: [],
 		monthlyAgencyLapseFireBonus: []
 	});
@@ -110,7 +112,31 @@ function ProjectDashboardApp(props) {
 				});
 			}
 
-			setState({ ...state, autoRows: rows, fireRows: firerows });
+			if (Object.keys(projects[0]).includes('Life')) {
+				Object.keys(data['Life']).map(month => {
+					Object.keys(data['Life'][month]).map(policy => {
+						console.log(policy);
+						if (month !== 'id') {
+							var value = data['Life'][month][policy].value;
+							liferows[month][policy].value = value;
+						}
+					});
+				});
+			}
+
+			if (Object.keys(projects[0]).includes('Health')) {
+				Object.keys(data['Health']).map(month => {
+					Object.keys(data['Health'][month]).map(policy => {
+						console.log(policy);
+						if (month !== 'id') {
+							var value = data['Health'][month][policy].value;
+							healthrows[month][policy].value = value;
+						}
+					});
+				});
+			}
+
+			setState({ ...state, autoRows: rows, fireRows: firerows, healthRows: healthrows });
 		}
 	}, [projects]);
 
@@ -151,73 +177,78 @@ function ProjectDashboardApp(props) {
 						(parseFloat(value) - parseFloat(state.autoRows[months[monthIndex - 1]].lapseRate.value || 0)) *
 							100
 					) / 100;
-				if (parseFloat(state.autoRows[months[monthIndex + 1]].lapseRate.value || 0) !== 0) {
-					nextMonthValue =
-						Math.round(
-							(parseFloat(state.autoRows[months[monthIndex + 1]].lapseRate.value || 0) -
-								parseFloat(value)) *
-								100
-						) / 100;
-				} else {
-					nextMonthValue = '-';
-				}
-			}
-			let temp = {
-				...state.autoRows,
-				[month]: {
-					...state.autoRows[month],
-					[field]: { ...state.autoRows[month][field], value: value },
-					level: { ...state.autoRows[month].level, value: 'none' },
-					previousMonth: { ...state.autoRows[month].previousMonth, value: previousMonthValue }
-				},
-				[months[monthIndex + 1]]: {
-					...state.autoRows[months[monthIndex + 1]],
-					previousMonth: {
-						...state.autoRows[months[monthIndex + 1]].previousMonth,
-						value: nextMonthValue
+				if (month !== 'December')
+					if (parseFloat(state.autoRows[months[monthIndex + 1]].lapseRate.value || 0) !== 0) {
+						nextMonthValue =
+							Math.round(
+								(parseFloat(state.autoRows[months[monthIndex + 1]].lapseRate.value || 0) -
+									parseFloat(value)) *
+									100
+							) / 100;
+					} else {
+						nextMonthValue = '-';
 					}
-				}
-			};
+			}
+			if (month !== 'December') {
+				let temp = {
+					...state.autoRows,
+					[month]: {
+						...state.autoRows[month],
+						[field]: { ...state.autoRows[month][field], value: value },
+						level: { ...state.autoRows[month].level, value: 'none' },
+						previousMonth: { ...state.autoRows[month].previousMonth, value: previousMonthValue }
+					},
+					[months[monthIndex + 1]]: {
+						...state.autoRows[months[monthIndex + 1]],
+						previousMonth: {
+							...state.autoRows[months[monthIndex + 1]].previousMonth,
+							value: nextMonthValue
+						}
+					}
+				};
 
-			if (contacts.length > 0) {
-				Object.keys(contacts[0]).map((item, index) => {
-					if (item.includes('monthlyAgencyLapseAutoBonus')) {
-						Object.keys(contacts[0].monthlyAgencyLapseAutoBonus).map(i => {
-							if (
-								parseFloat(contacts[0]['monthlyAgencyLapseAutoBonus'][i].percent)+1 > parseFloat(value) &&
-								parseFloat(contacts[0]['monthlyAgencyLapseAutoBonus'][i].percent)-1< parseFloat(value) 
-							) {
-								temp = {
-									...state.autoRows,
-									[month]: {
-										...state.autoRows[month],
-										level: {
-											...state.autoRows[month].level,
-											value: contacts[0]['monthlyAgencyLapseAutoBonus'][i].name
+				if (contacts.length > 0) {
+					Object.keys(contacts[0]).map((item, index) => {
+						if (item.includes('monthlyAgencyLapseAutoBonus')) {
+							Object.keys(contacts[0].monthlyAgencyLapseAutoBonus).map(i => {
+								if (
+									parseFloat(contacts[0]['monthlyAgencyLapseAutoBonus'][i].percent) + 1 >
+										parseFloat(value) &&
+									parseFloat(contacts[0]['monthlyAgencyLapseAutoBonus'][i].percent) - 1 <
+										parseFloat(value)
+								) {
+									temp = {
+										...state.autoRows,
+										[month]: {
+											...state.autoRows[month],
+											level: {
+												...state.autoRows[month].level,
+												value: contacts[0]['monthlyAgencyLapseAutoBonus'][i].name
+											},
+											[field]: { ...state.autoRows[month][field], value: value },
+											previousMonth: {
+												...state.autoRows[month].previousMonth,
+												value: previousMonthValue
+											}
 										},
-										[field]: { ...state.autoRows[month][field], value: value },
-										previousMonth: {
-											...state.autoRows[month].previousMonth,
-											value: previousMonthValue
+										[months[monthIndex + 1]]: {
+											...state.autoRows[months[monthIndex + 1]],
+											previousMonth: {
+												...state.autoRows[months[monthIndex + 1]].previousMonth,
+												value: nextMonthValue
+											}
 										}
-									},
-									[months[monthIndex + 1]]: {
-										...state.autoRows[months[monthIndex + 1]],
-										previousMonth: {
-											...state.autoRows[months[monthIndex + 1]].previousMonth,
-											value: nextMonthValue
-										}
-									}
-								};
-							}
-						});
-					}
-				});
+									};
+								}
+							});
+						}
+					});
+				}
+				console.log(temp);
+				dispatch(saveLapseRate(temp));
+				setState({ ...state, autoRows: temp });
 			}
-			console.log(temp);
-			dispatch(saveLapseRate(temp));
-			setState({ ...state, autoRows: temp });
-		} else {
+		} else if (title === 'Fire') {
 			let monthIndex = months.indexOf(month);
 			let previousMonthValue = '-';
 			let nextMonthValue = '-';
@@ -227,74 +258,235 @@ function ProjectDashboardApp(props) {
 						(parseFloat(value) - parseFloat(state.fireRows[months[monthIndex - 1]].lapseRate.value || 0)) *
 							100
 					) / 100;
-				if (parseFloat(state.fireRows[months[monthIndex + 1]].lapseRate.value || 0) !== 0) {
-					nextMonthValue =
-						Math.round(
-							(parseFloat(state.fireRows[months[monthIndex + 1]].lapseRate.value || 0) -
-								parseFloat(value)) *
-								100
-						) / 100;
-				} else {
-					nextMonthValue = '-';
-				}
-			}
-			let temp = {
-				...state.fireRows,
-				[month]: {
-					...state.fireRows[month],
-					[field]: { ...state.fireRows[month][field], value: value },
-					level: { ...state.fireRows[month].level, value: 'none' },
-					previousMonth: { ...state.fireRows[month].previousMonth, value: previousMonthValue }
-				},
-				[months[monthIndex + 1]]: {
-					...state.fireRows[months[monthIndex + 1]],
-					previousMonth: {
-						...state.fireRows[months[monthIndex + 1]].previousMonth,
-						value: nextMonthValue
+				if (month !== 'December')
+					if (parseFloat(state.fireRows[months[monthIndex + 1]].lapseRate.value || 0) !== 0) {
+						nextMonthValue =
+							Math.round(
+								(parseFloat(state.fireRows[months[monthIndex + 1]].lapseRate.value || 0) -
+									parseFloat(value)) *
+									100
+							) / 100;
+					} else {
+						nextMonthValue = '-';
 					}
-				}
-			};
-			if (contacts.length > 0) {
-				Object.keys(contacts[0]).map((item, index) => {
-					if (item.includes('monthlyAgencyLapseFireBonus')) {
-					
-						Object.keys(contacts[0].monthlyAgencyLapseFireBonus).map((i) => {
-							
-							if (
-								parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent)+1 > parseFloat(value) &&
-								parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent)-1< parseFloat(value) 
-							) {
-								
-								temp = {
-									...state.fireRows,
-									[month]: {
-										...state.fireRows[month],
-										level: {
-											...state.fireRows[month].level,
-											value: contacts[0]['monthlyAgencyLapseFireBonus'][i].name
+			}
+			if (month !== 'December') {
+				let temp = {
+					...state.fireRows,
+					[month]: {
+						...state.fireRows[month],
+						[field]: { ...state.fireRows[month][field], value: value },
+						level: { ...state.fireRows[month].level, value: 'none' },
+						previousMonth: { ...state.fireRows[month].previousMonth, value: previousMonthValue }
+					},
+					[months[monthIndex + 1]]: {
+						...state.fireRows[months[monthIndex + 1]],
+						previousMonth: {
+							...state.fireRows[months[monthIndex + 1]].previousMonth,
+							value: nextMonthValue
+						}
+					}
+				};
+
+				if (contacts.length > 0) {
+					Object.keys(contacts[0]).map((item, index) => {
+						if (item.includes('monthlyAgencyLapseFireBonus')) {
+							Object.keys(contacts[0].monthlyAgencyLapseFireBonus).map(i => {
+								if (
+									parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent) + 1 >
+										parseFloat(value) &&
+									parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent) - 1 <
+										parseFloat(value)
+								) {
+									temp = {
+										...state.fireRows,
+										[month]: {
+											...state.fireRows[month],
+											level: {
+												...state.fireRows[month].level,
+												value: contacts[0]['monthlyAgencyLapseFireBonus'][i].name
+											},
+											[field]: { ...state.fireRows[month][field], value: value },
+											previousMonth: {
+												...state.fireRows[month].previousMonth,
+												value: previousMonthValue
+											}
 										},
-										[field]: { ...state.fireRows[month][field], value: value },
-										previousMonth: {
-											...state.fireRows[month].previousMonth,
-											value: previousMonthValue
+										[months[monthIndex + 1]]: {
+											...state.fireRows[months[monthIndex + 1]],
+											previousMonth: {
+												...state.fireRows[months[monthIndex + 1]].previousMonth,
+												value: nextMonthValue
+											}
 										}
-									},
-									[months[monthIndex + 1]]: {
-										...state.fireRows[months[monthIndex + 1]],
-										previousMonth: {
-											...state.fireRows[months[monthIndex + 1]].previousMonth,
-											value: nextMonthValue
-										}
-									}
-								};								
-							}
-						
-						});
-					}
-				});
+									};
+								}
+							});
+						}
+					});
+				}
+
+				dispatch(saveFireLapseRate(temp));
+				setState({ ...state, fireRows: temp });
 			}
-			dispatch(saveFireLapseRate(temp));
-			setState({ ...state, fireRows: temp });
+		} else if (title === 'Life') {
+			let monthIndex = months.indexOf(month);
+			let previousMonthValue = '-';
+			let nextMonthValue = '-';
+			if (monthIndex !== 0) {
+				previousMonthValue =
+					Math.round(
+						(parseFloat(value) - parseFloat(state.lifeRows[months[monthIndex - 1]].lapseRate.value || 0)) *
+							100
+					) / 100;
+				if (month !== 'December')
+					if (parseFloat(state.lifeRows[months[monthIndex + 1]].lapseRate.value || 0) !== 0) {
+						nextMonthValue =
+							Math.round(
+								(parseFloat(state.lifeRows[months[monthIndex + 1]].lapseRate.value || 0) -
+									parseFloat(value)) *
+									100
+							) / 100;
+					} else {
+						nextMonthValue = '-';
+					}
+			}
+			if (month !== 'December') {
+				let temp = {
+					...state.lifeRows,
+					[month]: {
+						...state.lifeRows[month],
+						[field]: { ...state.lifeRows[month][field], value: value },
+						level: { ...state.lifeRows[month].level, value: 'none' },
+						previousMonth: { ...state.lifeRows[month].previousMonth, value: previousMonthValue }
+					},
+					[months[monthIndex + 1]]: {
+						...state.lifeRows[months[monthIndex + 1]],
+						previousMonth: {
+							...state.lifeRows[months[monthIndex + 1]].previousMonth,
+							value: nextMonthValue
+						}
+					}
+				};
+				if (contacts.length > 0) {
+					Object.keys(contacts[0]).map((item, index) => {
+						if (item.includes('monthlyAgencyLapseFireBonus')) {
+							Object.keys(contacts[0].monthlyAgencyLapseFireBonus).map(i => {
+								if (
+									parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent) + 1 >
+										parseFloat(value) &&
+									parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent) - 1 <
+										parseFloat(value)
+								) {
+									temp = {
+										...state.lifeRows,
+										[month]: {
+											...state.lifeRows[month],
+											level: {
+												...state.lifeRows[month].level,
+												value: contacts[0]['monthlyAgencyLapseFireBonus'][i].name
+											},
+											[field]: { ...state.lifeRows[month][field], value: value },
+											previousMonth: {
+												...state.lifeRows[month].previousMonth,
+												value: previousMonthValue
+											}
+										},
+										[months[monthIndex + 1]]: {
+											...state.lifeRows[months[monthIndex + 1]],
+											previousMonth: {
+												...state.lifeRows[months[monthIndex + 1]].previousMonth,
+												value: nextMonthValue
+											}
+										}
+									};
+								}
+							});
+						}
+					});
+				}
+				dispatch(saveLifeLapseRate(temp));
+				setState({ ...state, lifeRows: temp });
+			}
+		}else if (title === 'Health') {
+			let monthIndex = months.indexOf(month);
+			let previousMonthValue = '-';
+			let nextMonthValue = '-';
+			if (monthIndex !== 0) {
+				previousMonthValue =
+					Math.round(
+						(parseFloat(value) - parseFloat(state.healthRows[months[monthIndex - 1]].lapseRate.value || 0)) *
+							100
+					) / 100;
+				if (month !== 'December')
+					if (parseFloat(state.healthRows[months[monthIndex + 1]].lapseRate.value || 0) !== 0) {
+						nextMonthValue =
+							Math.round(
+								(parseFloat(state.healthRows[months[monthIndex + 1]].lapseRate.value || 0) -
+									parseFloat(value)) *
+									100
+							) / 100;
+					} else {
+						nextMonthValue = '-';
+					}
+			}
+			if (month !== 'December') {
+				let temp = {
+					...state.healthRows,
+					[month]: {
+						...state.healthRows[month],
+						[field]: { ...state.healthRows[month][field], value: value },
+						level: { ...state.healthRows[month].level, value: 'none' },
+						previousMonth: { ...state.healthRows[month].previousMonth, value: previousMonthValue }
+					},
+					[months[monthIndex + 1]]: {
+						...state.healthRows[months[monthIndex + 1]],
+						previousMonth: {
+							...state.healthRows[months[monthIndex + 1]].previousMonth,
+							value: nextMonthValue
+						}
+					}
+				};
+				if (contacts.length > 0) {
+					Object.keys(contacts[0]).map((item, index) => {
+						if (item.includes('monthlyAgencyLapseFireBonus')) {
+							Object.keys(contacts[0].monthlyAgencyLapseFireBonus).map(i => {
+								if (
+									parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent) + 1 >
+										parseFloat(value) &&
+									parseFloat(contacts[0]['monthlyAgencyLapseFireBonus'][i].percent) - 1 <
+										parseFloat(value)
+								) {
+									temp = {
+										...state.healthRows,
+										[month]: {
+											...state.healthRows[month],
+											level: {
+												...state.healthRows[month].level,
+												value: contacts[0]['monthlyAgencyLapseFireBonus'][i].name
+											},
+											[field]: { ...state.healthRows[month][field], value: value },
+											previousMonth: {
+												...state.healthRows[month].previousMonth,
+												value: previousMonthValue
+											}
+										},
+										[months[monthIndex + 1]]: {
+											...state.healthRows[months[monthIndex + 1]],
+											previousMonth: {
+												...state.healthRows[months[monthIndex + 1]].previousMonth,
+												value: nextMonthValue
+											}
+										}
+									};
+								}
+							});
+						}
+					});
+				}
+				dispatch(saveHealthLapseRate(temp));
+				setState({ ...state, healthRows: temp });
+			}
 		}
 	}
 	// return null;
@@ -331,7 +523,7 @@ function ProjectDashboardApp(props) {
 							}}
 						>
 							{console.log(state.autoRows)}
-							<div className="widget flex w-full p-12">
+							<div className="widget flex w-full p-12 flex-wrap">
 								<div className="widget flex w-1/2 p-12">
 									<Widget10
 										columns={columns}
@@ -345,6 +537,22 @@ function ProjectDashboardApp(props) {
 										columns={columns}
 										rows={state.fireRows}
 										title="Fire"
+										handleChangeValue={handleChangeValue}
+									/>
+								</div>
+								<div className="widget flex w-1/2 p-12">
+									<Widget10
+										columns={columns}
+										rows={state.lifeRows}
+										title="Life"
+										handleChangeValue={handleChangeValue}
+									/>
+								</div>
+								<div className="widget flex w-1/2 p-12">
+									<Widget10
+										columns={columns}
+										rows={state.healthRows}
+										title="Health"
 										handleChangeValue={handleChangeValue}
 									/>
 								</div>

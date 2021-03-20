@@ -13,7 +13,7 @@ export const getProjects = createAsyncThunk('lapseRate/projects/getProjects',
 		new Promise((resolve, reject) => {
 			var belongTo = localStorage.getItem('@BELONGTO')
 			var uid = localStorage.getItem('@UID')
-			var starCountRef = realDb.ref(`LapseRateReport/${belongTo}/${uid}/`);
+			var starCountRef = realDb.ref(`LapseRateReport/${belongTo}/`);
 			var entries = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
@@ -35,7 +35,7 @@ export const saveLapseRate = createAsyncThunk('lapseRate/projects/saveLapseBonus
 	var uid = localStorage.getItem('@UID')
 	const response = await axios.get('/api/lapse-rate/projects');
 	
-	realDb.ref(`LapseRateReport/${belongTo}/${uid}/Auto/`).set({...data, id:"auto"})
+	realDb.ref(`LapseRateReport/${belongTo}/Auto/`).set({...data, id:"auto"})
 	return response.data;
 });
 export const saveFireLapseRate = createAsyncThunk('lapseRate/projects/saveLapseBonus',async (data)=> {
@@ -43,7 +43,25 @@ export const saveFireLapseRate = createAsyncThunk('lapseRate/projects/saveLapseB
 	var uid = localStorage.getItem('@UID')
 	const response = await axios.get('/api/lapse-rate/projects');
 	
-	realDb.ref(`LapseRateReport/${belongTo}/${uid}/Fire/`).set({...data, id:"fire"})
+	realDb.ref(`LapseRateReport/${belongTo}/Fire/`).set({...data, id:"fire"})
+	return response.data;
+});
+
+export const saveLifeLapseRate = createAsyncThunk('lapseRate/projects/saveLapseBonus',async (data)=> {
+	var belongTo = localStorage.getItem('@BELONGTO')
+	var uid = localStorage.getItem('@UID')
+	const response = await axios.get('/api/lapse-rate/projects');
+	
+	realDb.ref(`LapseRateReport/${belongTo}/Life/`).set({...data, id:"life"})
+	return response.data;
+});
+
+export const saveHealthLapseRate = createAsyncThunk('lapseRate/projects/saveLapseBonus',async (data)=> {
+	var belongTo = localStorage.getItem('@BELONGTO')
+	var uid = localStorage.getItem('@UID')
+	const response = await axios.get('/api/lapse-rate/projects');
+	
+	realDb.ref(`LapseRateReport/${belongTo}/Health/`).set({...data, id:"health"})
 	return response.data;
 });
 

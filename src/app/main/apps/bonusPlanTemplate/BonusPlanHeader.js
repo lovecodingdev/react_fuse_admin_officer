@@ -14,6 +14,7 @@ import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import { getUserData } from './store/userSlice';
 import { addContact } from './store/bonusPlanSlice';
 import { showMessage } from 'app/store/fuse/messageSlice';
+import {useHistory} from 'react-router-dom'
 
 function ContactsHeader(props) {
 	const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function ContactsHeader(props) {
 	const user = useSelector(({bonusPlanTemplate})=> bonusPlanTemplate.user)
 	const data = useSelector(({bonusPlanTemplate})=> bonusPlanTemplate.autoBonus.data)
 	const [name, setName] = React.useState("")
+	const history = useHistory()
 	const [templateName, setTemplateName] = React.useState("")
 	React.useEffect(()=>{
 		dispatch(getUserData(props.name))
@@ -44,6 +46,7 @@ function ContactsHeader(props) {
 			dispatch(addContact({...data, name: templateName}))
 			dispatch(showMessage({ message: 'Successfully Saved!' }))
 			setTemplateName("")
+			history.goBack()
 		}
 	}
 
@@ -60,7 +63,21 @@ function ContactsHeader(props) {
 						<Icon>menu</Icon>
 					</IconButton>
 				</Hidden>
-
+				<div className="">
+				<FuseAnimate animation="transition.slideRightIn" delay={300}>
+							<Typography
+								className="normal-case flex items-center sm:mb-12"
+								component={Link}
+								role="button"
+								to="/apps/setup/bonus-plan/all"
+								color="inherit"
+							>
+								<Icon className="text-20">
+									{ 'arrow_back' }
+								</Icon>
+								<span className="mx-4">Bonus Plan</span>
+							</Typography>
+						</FuseAnimate>
 				<div className="flex items-center">
 					<FuseAnimate animation="transition.expandIn" delay={300}>
 						<Icon className="text-32">money</Icon>
@@ -70,6 +87,7 @@ function ContactsHeader(props) {
 						{`Bonus Plan Template`}
 						</Typography>
 					</FuseAnimate>
+				</div>
 				</div>
 			</div>
 			<div className="flex flex-1 items-center justify-center px-8 sm:px-12">
