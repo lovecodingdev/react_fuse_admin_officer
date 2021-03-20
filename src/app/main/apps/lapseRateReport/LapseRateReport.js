@@ -20,6 +20,7 @@ import { rows, columns, levelColumns, firerows, liferows, healthrows } from './t
 import Widget10 from './widgets/Widget10';
 import TargetTable from './widgets/TargetTable';
 import { saveLapseRate, saveFireLapseRate, saveLifeLapseRate, saveHealthLapseRate } from './store/lapseSlice';
+import { getUsers, selectUsers } from './store/userSlice';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -55,11 +56,25 @@ let months = [
 	'December'
 ];
 
+var userCount = 0;
+
 function ProjectDashboardApp(props) {
 	const dispatch = useDispatch();
 	const widgets = useSelector(selectWidgets);
 	const projects = useSelector(selectProjects);
+	const users = useSelector(selectUsers);
+	console.log('===================', users);
+	const belongTo = localStorage.getItem('@BELONGTO');
 
+	useEffect(() => {
+		if (users.length > 0) {
+			users.map(item => {
+				if (item.belongTo === belongTo) {
+					userCount++;
+				}
+			});
+		}
+	}, [users]);
 	const contacts = useSelector(selectContacts);
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
@@ -81,6 +96,7 @@ function ProjectDashboardApp(props) {
 		dispatch(getWidgets());
 		dispatch(getProjects());
 		dispatch(getAutoBonus());
+		dispatch(getUsers());
 	}, [dispatch]);
 
 	useEffect(() => {
@@ -225,6 +241,10 @@ function ProjectDashboardApp(props) {
 												...state.autoRows[month].level,
 												value: contacts[0]['monthlyAgencyLapseAutoBonus'][i].name
 											},
+											totalBonus: {
+												...state.autoRows[month].totalBonus,
+												value: contacts[0]['monthlyAgencyLapseAutoBonus'][i].dollar * userCount
+											},
 											[field]: { ...state.autoRows[month][field], value: value },
 											previousMonth: {
 												...state.autoRows[month].previousMonth,
@@ -306,6 +326,10 @@ function ProjectDashboardApp(props) {
 												...state.fireRows[month].level,
 												value: contacts[0]['monthlyAgencyLapseFireBonus'][i].name
 											},
+											totalBonus: {
+												...state.fireRows[month].totalBonus,
+												value: contacts[0]['monthlyAgencyLapseFireBonus'][i].dollar * userCount
+											},
 											[field]: { ...state.fireRows[month][field], value: value },
 											previousMonth: {
 												...state.fireRows[month].previousMonth,
@@ -386,6 +410,10 @@ function ProjectDashboardApp(props) {
 												...state.lifeRows[month].level,
 												value: contacts[0]['monthlyAgencyLapseFireBonus'][i].name
 											},
+											totalBonus: {
+												...state.lifeRows[month].totalBonus,
+												value: contacts[0]['monthlyAgencyLapseFireBonus'][i].dollar * userCount
+											},
 											[field]: { ...state.lifeRows[month][field], value: value },
 											previousMonth: {
 												...state.lifeRows[month].previousMonth,
@@ -408,14 +436,15 @@ function ProjectDashboardApp(props) {
 				dispatch(saveLifeLapseRate(temp));
 				setState({ ...state, lifeRows: temp });
 			}
-		}else if (title === 'Health') {
+		} else if (title === 'Health') {
 			let monthIndex = months.indexOf(month);
 			let previousMonthValue = '-';
 			let nextMonthValue = '-';
 			if (monthIndex !== 0) {
 				previousMonthValue =
 					Math.round(
-						(parseFloat(value) - parseFloat(state.healthRows[months[monthIndex - 1]].lapseRate.value || 0)) *
+						(parseFloat(value) -
+							parseFloat(state.healthRows[months[monthIndex - 1]].lapseRate.value || 0)) *
 							100
 					) / 100;
 				if (month !== 'December')
@@ -464,6 +493,10 @@ function ProjectDashboardApp(props) {
 											level: {
 												...state.healthRows[month].level,
 												value: contacts[0]['monthlyAgencyLapseFireBonus'][i].name
+											},
+											totalBonus: {
+												...state.healthRows[month].totalBonus,
+												value: contacts[0]['monthlyAgencyLapseFireBonus'][i].dollar * userCount
 											},
 											[field]: { ...state.healthRows[month][field], value: value },
 											previousMonth: {

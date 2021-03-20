@@ -6,22 +6,23 @@ const eCommerceDB = {
 	entrys: []
 };
 
-var belongTo = localStorage.getItem('@BELONGTO')
+var belongTo = localStorage.getItem('@BELONGTO');
 
-mock.onGet('/api/e-commerce-app/products').reply(() => new Promise((resolve, reject) => {
-	var starCountRef = realDb.ref(`Sales/Entries/`);
-	starCountRef.on('value', snapshot => {
-		const data = snapshot.val();
+mock.onGet('/api/e-commerce-app/products').reply(
+	() =>
+		new Promise((resolve, reject) => {
+			var starCountRef = realDb.ref(`Sales/Entries/`);
+			starCountRef.on('value', snapshot => {
+				const data = snapshot.val();
 
-
-		Object.keys(data).map(item => {
-			eCommerceDB.entrys.push(data[item])
-		});
-		console.log(eCommerceDB.entrys)
-		resolve(eCommerceDB.entrys);
-	})
-
-}));
+				Object.keys(data).map(item => {
+					eCommerceDB.entrys.push(data[item]);
+				});
+				console.log(eCommerceDB.entrys);
+				resolve(eCommerceDB.entrys);
+			});
+		})
+);
 
 mock.onPost('/api/e-commerce-app/remove-products').reply(request => {
 	const { productIds } = JSON.parse(request.data);
@@ -38,7 +39,7 @@ mock.onGet('/api/e-commerce-app/product').reply(request => {
 mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 	let data = JSON.parse(request.data);
 	let product = null;
-	let uid = localStorage.getItem('@UID')
+	let uid = localStorage.getItem('@UID');
 	eCommerceDB.entrys = eCommerceDB.entrys.map(_product => {
 		if (_product.id === data.id) {
 			product = data;
@@ -53,17 +54,22 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 	}
 	data.map(item => {
 		if (item.user) {
-
-			uid = item.user.uid
+			uid = item.user.uid;
 		}
-		data = { ...item, sellerId: item.uid }
-		var id = Date.now()
+		data = { ...item, sellerId: item.uid };
+		var id = Date.now();
 
-		realDb.ref(`Sales/${item.belongTo}/${item.policyType[0]}/${item.user === 'OfficeCount' ? `OfficeCount` : data.sellerId}/${id}`).set({
-			...data, id: id
-		});
-	})
-
+		realDb
+			.ref(
+				`Sales/${item.belongTo}/${item.policyType[0]}/${
+					item.user === 'OfficeCount' ? `OfficeCount` : item.user ? item.user.uid : data.sellerId
+				}/${id}`
+			)
+			.set({
+				...data,
+				id: id
+			});
+	});
 
 	return [200, product];
 });
@@ -71,7 +77,7 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 mock.onPost('/api/e-commerce-app/product/update').reply(async request => {
 	let data = JSON.parse(request.data);
 	let product = null;
-	let uid = localStorage.getItem('@UID')
+	let uid = localStorage.getItem('@UID');
 	eCommerceDB.entrys = eCommerceDB.entrys.map(_product => {
 		if (_product.id === data.id) {
 			product = data;
@@ -85,16 +91,16 @@ mock.onPost('/api/e-commerce-app/product/update').reply(async request => {
 		eCommerceDB.entrys = [...eCommerceDB.entrys, product];
 	}
 
-	data = { ...data[0], sellerId: uid }
+	data = { ...data[0], sellerId: uid };
 
 	if (data.user) {
-		uid = data.user.uid
+		uid = data.user.uid;
 	}
-	realDb.ref(`Sales/${belongTo}/${data.policyType}/${data.user === 'OfficeCount' ? `OfficeCount` : uid}/${data.id}`).set({
-		...data
-	});
-
-
+	realDb
+		.ref(`Sales/${belongTo}/${data.policyType}/${data.user === 'OfficeCount' ? `OfficeCount` : uid}/${data.id}`)
+		.set({
+			...data
+		});
 
 	return [200, product];
 });

@@ -57,7 +57,7 @@ const navigationConfig = [
 					},
 					{
 						id: 'marketing',
-						title: 'Marketing',
+						title: 'Marketing Source',
 						type: 'item',
 						url: '/apps/setup/marketing',
 						exact: true
