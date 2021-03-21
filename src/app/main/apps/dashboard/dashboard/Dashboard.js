@@ -82,8 +82,8 @@ function Dashboard(props) {
 
 				policies.map(policy => {
 					if(policy.value !== 'Total') {
-						users.map(user => {
-							if(user.belongTo === UID) { 
+						users.map(user => { 
+							if(user.belongTo === UID) {  
 								goals += main[production][period][user.data.displayName][policy.value]['Goals'];
 								actual += main[production][period][user.data.displayName][policy.value]['Policies'];
 								household += main[production][period][user.data.displayName][policy.value]['household'];
