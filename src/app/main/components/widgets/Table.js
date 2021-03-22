@@ -156,19 +156,21 @@ function Widget(props) {
 					<TableBody>						
 						{!props.sortable && !_.isEmpty(tableContent) && Object.keys(tableContent).map((rowKey, rowNum) => (
 							<TableRow className="h-32" key={rowNum}>								
-								<TableCell 
-									key={rowNum} 
-									component="th" 
-									scope="rowNum" 
-									align="center" //p-5
-									className={clsx(`
-										p-0 text-xs truncate border-r-1 
-										${rows.length>0 && rows[rowNum].color}
-										${rows.length>0 && rows[rowNum].border}
-									`)}
-								>
-									{rowKey}
-								</TableCell>
+								{!props.hideLeftHeader &&
+									<TableCell 
+										key={rowNum} 
+										component="th" 
+										scope="rowNum" 
+										align="center" //p-5
+										className={clsx(`
+											p-0 text-xs truncate border-r-1 
+											${rows.length>0 && rows[rowNum].color}
+											${rows.length>0 && rows[rowNum].border}
+										`)}
+									>
+										{rowKey}
+									</TableCell>
+								}
 								{Object.keys(tableContent[rowKey]).map((colKey, colNum) => (									
 									colKey!=="id" && colKey!=="type" && colKey!=="month" &&
 									<TableCell
