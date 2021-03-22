@@ -95,7 +95,7 @@ const navigationConfig = [
 					},
 					{
 						id: 'staff-sources',
-						title: 'Staff Sources',
+						title: 'Marketing Source Report',
 						type: 'item',
 						url: '/apps/producer/staff-sources',
 						exact: true

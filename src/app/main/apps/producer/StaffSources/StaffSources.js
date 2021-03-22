@@ -44,7 +44,7 @@ function StaffSources(props) {
 	const [user, setUser] = useState("");
 	const [userList, setUserList] = useState("");
 	const [tabValue, setTabValue] = useState(0);
-	const [title, setTitle] = useState('Stuff Sources');
+	const [title, setTitle] = useState('Marketing Source Report');
 	
 	useEffect(() => {
 		dispatch(getUsers());
