@@ -498,7 +498,9 @@ function Products() {
 											100
 									) / 100,
 								policyType: ['Entries'],
-								typeOfProduct: state.typeOfProduct
+								typeOfProduct: state.typeOfProduct,
+								policyPremium: state.policyPremium,
+								policyInformation: state.policyInformation
 							};
 							requestForm.push(form);
 						} else {
@@ -512,7 +514,9 @@ function Products() {
 											100
 									) / 100,
 								policyType: ['Entries'],
-								typeOfProduct: state.typeOfProduct
+								typeOfProduct: state.typeOfProduct,
+								policyPremium: state.policyPremium,
+								policyInformation: state.policyInformation
 							};
 							requestForm.push(form);
 						}
@@ -524,13 +528,15 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumFire) * parseInt(state.percentOfSaleCredit)) /
 											100) *
 											(parseInt(bonusLists['all'][state.typeOfProductFire]) / 100) *
 											100
 									) / 100,
 								policyType: ['FireEntries'],
-								typeOfProductFire: state.typeOfProductFire
+								typeOfProductFire: state.typeOfProductFire,
+								policyPremium: state.policyPremiumFire,
+								policyInformation: state.policyInformationFire
 							};
 							requestForm.push(form);
 						} else {
@@ -538,13 +544,15 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumFire) * parseInt(state.percentOfSaleCredit)) /
 											100) *
 											(parseInt(bonusLists[state.user.id][state.typeOfProductFire]) / 100) *
 											100
 									) / 100,
 								policyType: ['FireEntries'],
-								typeOfProductFire: state.typeOfProductFire
+								typeOfProductFire: state.typeOfProductFire,
+								policyPremium: state.policyPremiumFire,
+								policyInformation: state.policyInformationFire
 							};
 							requestForm.push(form);
 						}
@@ -556,13 +564,15 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumHealth) * parseInt(state.percentOfSaleCredit)) /
 											100) *
 											(parseInt(bonusLists['all'][state.typeOfProductHealth]) / 100) *
 											100
 									) / 100,
 								policyType: ['HealthEntries'],
-								typeOfProductHealth: state.typeOfProductHealth
+								typeOfProductHealth: state.typeOfProductHealth,
+								policyPremium: state.policyPremiumHealth,
+								policyInformation: state.policyInformationHealth
 							};
 							requestForm.push(form);
 						} else {
@@ -570,13 +580,15 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumHealth) * parseInt(state.percentOfSaleCredit)) /
 											100) *
 											(parseInt(bonusLists[state.user.id][state.typeOfProductHealth]) / 100) *
 											100
 									) / 100,
 								policyType: ['HealthEntries'],
-								typeOfProductHealth: state.typeOfProductHealth
+								typeOfProductHealth: state.typeOfProductHealth,
+								policyPremium: state.policyPremiumHealth,
+								policyInformation: state.policyInformationHealth
 							};
 							requestForm.push(form);
 						}
@@ -588,13 +600,15 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumLife) * parseInt(state.percentOfSaleCredit)) /
 											100) *
 											(parseInt(bonusLists['all'][state.typeOfProductLife]) / 100) *
 											100
 									) / 100,
 								policyType: ['LifeEntries'],
-								typeOfProductLife: state.typeOfProductLife
+								typeOfProductLife: state.typeOfProductLife,
+								policyPremium: state.policyPremiumLife,
+								policyInformation: state.policyInformationLife
 							};
 							requestForm.push(form);
 						} else {
@@ -602,13 +616,15 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumLife) * parseInt(state.percentOfSaleCredit)) /
 											100) *
 											(parseInt(bonusLists[state.user.id][state.typeOfProductLife]) / 100) *
 											100
 									) / 100,
 								policyType: ['LifeEntries'],
-								typeOfProductLife: state.typeOfProductLife
+								typeOfProductLife: state.typeOfProductLife,
+								policyPremium: state.policyPremiumLife,
+								policyInformation: state.policyInformationLife
 							};
 							requestForm.push(form);
 						}
@@ -624,7 +640,9 @@ function Products() {
 										100
 								) / 100,
 							policyType: ['Entries'],
-							typeOfProduct: state.typeOfProduct
+							typeOfProduct: state.typeOfProduct,
+							policyPremium: state.policyPremium,
+							policyInformation: state.policyInformation
 						};
 						requestForm.push(form);
 					}
@@ -633,12 +651,15 @@ function Products() {
 							...form,
 							dollarBonus:
 								Math.ceil(
-									((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
+									((parseFloat(state.policyPremiumFire) * parseInt(state.percentOfSaleCredit)) /
+										100) *
 										(parseInt(bonusLists['all'][state.typeOfProductFire]) / 100) *
 										100
 								) / 100,
 							policyType: ['FireEntries'],
-							typeOfProductFire: state.typeOfProductFire
+							typeOfProductFire: state.typeOfProductFire,
+							policyPremium: state.policyPremiumFire,
+							policyInformation: state.policyInformationFire
 						};
 						requestForm.push(form);
 					}
@@ -647,12 +668,15 @@ function Products() {
 							...form,
 							dollarBonus:
 								Math.ceil(
-									((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
+									((parseFloat(state.policyPremiumHealth) * parseInt(state.percentOfSaleCredit)) /
+										100) *
 										(parseInt(bonusLists['all'][state.typeOfProductHealth]) / 100) *
 										100
 								) / 100,
 							policyType: ['HealthEntries'],
-							typeOfProductHealth: state.typeOfProductHealth
+							typeOfProductHealth: state.typeOfProductHealth,
+							policyPremium: state.policyPremiumHealth,
+							policyInformation: state.policyInformationHealth
 						};
 						requestForm.push(form);
 					}
@@ -661,12 +685,15 @@ function Products() {
 							...form,
 							dollarBonus:
 								Math.ceil(
-									((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
+									((parseFloat(state.policyPremiumLife) * parseInt(state.percentOfSaleCredit)) /
+										100) *
 										(parseInt(bonusLists['all'][state.typeOfProductLife]) / 100) *
 										100
 								) / 100,
 							policyType: ['LifeEntries'],
-							typeOfProductLife: state.typeOfProductLife
+							typeOfProductLife: state.typeOfProductLife,
+							policyPremium: state.policyPremiumLife,
+							policyInformation: state.policyInformationLife
 						};
 						requestForm.push(form);
 					}
@@ -679,7 +706,9 @@ function Products() {
 								...form,
 								dollarBonus: '',
 								policyType: ['Entries'],
-								typeOfProduct: state.typeOfProduct
+								typeOfProduct: state.typeOfProduct,
+								policyPremium: state.policyPremium,
+								policyInformation: state.policyInformation
 							};
 							requestForm.push(form);
 						} else {
@@ -687,7 +716,9 @@ function Products() {
 								...form,
 								dollarBonus: '',
 								policyType: ['Entries'],
-								typeOfProduct: state.typeOfProduct
+								typeOfProduct: state.typeOfProduct,
+								policyPremium: state.policyPremium,
+								policyInformation: state.policyInformation
 							};
 							requestForm.push(form);
 						}
@@ -699,7 +730,9 @@ function Products() {
 								...form,
 								dollarBonus: '',
 								policyType: ['FireEntries'],
-								typeOfProductFire: state.typeOfProductFire
+								typeOfProductFire: state.typeOfProductFire,
+								policyPremium: state.policyPremiumFire,
+								policyInformation: state.policyInformationFire
 							};
 							requestForm.push(form);
 						} else {
@@ -707,7 +740,9 @@ function Products() {
 								...form,
 								dollarBonus: '',
 								policyType: ['FireEntries'],
-								typeOfProductFire: state.typeOfProductFire
+								typeOfProductFire: state.typeOfProductFire,
+								policyPremium: state.policyPremiumFire,
+								policyInformation: state.policyInformationFire
 							};
 							requestForm.push(form);
 						}
@@ -719,7 +754,9 @@ function Products() {
 								...form,
 								dollarBonus: '',
 								policyType: ['HealthEntries'],
-								typeOfProductHealth: state.typeOfProductHealth
+								typeOfProductHealth: state.typeOfProductHealth,
+								policyPremium: state.policyPremiumHealth,
+								policyInformation: state.policyInformationHealth
 							};
 							requestForm.push(form);
 						} else {
@@ -727,7 +764,9 @@ function Products() {
 								...form,
 								dollarBonus: '',
 								policyType: ['HealthEntries'],
-								typeOfProductHealth: state.typeOfProductHealth
+								typeOfProductHealth: state.typeOfProductHealth,
+								policyPremium: state.policyPremiumHealth,
+								policyInformation: state.policyInformationHealth
 							};
 							requestForm.push(form);
 						}
@@ -739,7 +778,9 @@ function Products() {
 								...form,
 								dollarBonus: '',
 								policyType: ['LifeEntries'],
-								typeOfProductLife: state.typeOfProductLife
+								typeOfProductLife: state.typeOfProductLife,
+								policyPremium: state.policyPremiumLife,
+								policyInformation: state.policyInformationLife
 							};
 							requestForm.push(form);
 						} else {
@@ -747,7 +788,9 @@ function Products() {
 								...form,
 								dollarBonus: '',
 								policyType: ['LifeEntries'],
-								typeOfProductLife: state.typeOfProductLife
+								typeOfProductLife: state.typeOfProductLife,
+								policyPremium: state.policyPremiumLife,
+								policyInformation: state.policyInformationLife
 							};
 							requestForm.push(form);
 						}
@@ -758,7 +801,9 @@ function Products() {
 							...form,
 							dollarBonus: '',
 							policyType: ['Entries'],
-							typeOfProduct: state.typeOfProduct
+							typeOfProduct: state.typeOfProduct,
+							policyPremium: state.policyPremium,
+							policyInformation: state.policyInformation
 						};
 						requestForm.push(form);
 					}
@@ -767,7 +812,9 @@ function Products() {
 							...form,
 							dollarBonus: '',
 							policyType: ['FireEntries'],
-							typeOfProductFire: state.typeOfProductFire
+							typeOfProductFire: state.typeOfProductFire,
+							policyPremium: state.policyPremiumFire,
+							policyInformation: state.policyInformationFire
 						};
 						requestForm.push(form);
 					}
@@ -776,7 +823,9 @@ function Products() {
 							...form,
 							dollarBonus: '',
 							policyType: ['HealthEntries'],
-							typeOfProductHealth: state.typeOfProductHealth
+							typeOfProductHealth: state.typeOfProductHealth,
+							policyPremium: state.policyPremiumHealth,
+							policyInformation: state.policyInformationHealth
 						};
 						requestForm.push(form);
 					}
@@ -785,7 +834,9 @@ function Products() {
 							...form,
 							dollarBonus: '',
 							policyType: ['LifeEntries'],
-							typeOfProductLife: state.typeOfProductLife
+							typeOfProductLife: state.typeOfProductLife,
+							policyPremium: state.policyPremiumLife,
+							policyInformation: state.policyInformationLife
 						};
 						requestForm.push(form);
 					}
@@ -899,7 +950,7 @@ function Products() {
 				<div className="w-full flex flex-col">
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<FuseScrollbars className="flex-grow overflow-x-auto">
-							<div className="min-w-xl p-96 h-full w-full flex flex-row justify-around flex-wrap">
+							<div className="min-w-xl p-136 h-full w-full flex flex-row justify-around flex-wrap">
 								{/* <div className="flex w-full justify-between items-center flex-wrap py-12"> */}
 
 								<SelectBox
@@ -1078,30 +1129,33 @@ function Products() {
 									}
 									label="Life"
 								/>
-								<FormattedInput
-									id="outlined-basic"
-									label="Policy Premium"
-									variant="outlined"
-									value={state.policyPremium}
-									validation="policyPremium"
-									type="percent"
-									willvalidation={true}
-									validate={state.policyPremiumValidation}
-									handleChangeValue={handleChangeValue}
-									size={400}
-								/>
-								<TextInput
-									id="outlined-basic"
-									label="Policy Information"
-									variant="outlined"
-									rows={7}
-									value={state.policyInformation}
-									validation="policyInformation"
-									onChange={handleChangeValue}
-									willvalidation={false}
-									validate={false}
-									size={400}
-								/>
+								{state.policyType.includes('Entries') && (
+									<FormattedInput
+										id="outlined-basic"
+										label="Auto Policy Premium"
+										variant="outlined"
+										value={state.policyPremium}
+										validation="policyPremium"
+										type="percent"
+										willvalidation={true}
+										validate={state.policyPremiumValidation}
+										handleChangeValue={handleChangeValue}
+										size={400}
+									/>
+								)}
+								{state.policyType.includes('Entries') && (
+									<TextInput
+										id="outlined-basic"
+										label="Policy Information"
+										variant="outlined"
+										value={state.policyInformation}
+										validation="policyInformation"
+										onChange={handleChangeValue}
+										willvalidation={false}
+										validate={false}
+										size={400}
+									/>
+								)}
 								{state.policyType.includes('Entries') && (
 									<SelectBox
 										id="outlined-basic"
@@ -1116,7 +1170,34 @@ function Products() {
 										size={250}
 									/>
 								)}
+								{state.policyType.includes('FireEntries') && (
+									<FormattedInput
+										id="outlined-basic"
+										label="Fire Policy Premium"
+										variant="outlined"
+										value={state.policyPremiumFire}
+										validation="policyPremiumFire"
+										type="percent"
+										willvalidation={true}
+										validate={state.policyPremiumValidation}
+										handleChangeValue={handleChangeValue}
+										size={400}
+									/>
+								)}
 
+								{state.policyType.includes('FireEntries') && (
+									<TextInput
+										id="outlined-basic"
+										label="Fire Policy Information"
+										variant="outlined"
+										value={state.policyInformationFire}
+										validation="policyInformationFire"
+										onChange={handleChangeValue}
+										willvalidation={false}
+										validate={false}
+										size={400}
+									/>
+								)}
 								{state.policyType.includes('FireEntries') && (
 									<SelectBox
 										id="outlined-basic"
@@ -1131,7 +1212,33 @@ function Products() {
 										size={250}
 									/>
 								)}
-
+								{state.policyType.includes('HealthEntries') && (
+									<FormattedInput
+										id="outlined-basic"
+										label="Health Policy Premium"
+										variant="outlined"
+										value={state.policyPremiumHealth}
+										validation="policyPremiumHealth"
+										type="percent"
+										willvalidation={true}
+										validate={state.policyPremiumValidation}
+										handleChangeValue={handleChangeValue}
+										size={400}
+									/>
+								)}
+								{state.policyType.includes('HealthEntries') && (
+									<TextInput
+										id="outlined-basic"
+										label="Health Policy Information"
+										variant="outlined"
+										value={state.policyInformationHealth}
+										validation="policyInformationHealth"
+										onChange={handleChangeValue}
+										willvalidation={false}
+										validate={false}
+										size={400}
+									/>
+								)}
 								{state.policyType.includes('HealthEntries') && (
 									<SelectBox
 										id="outlined-basic"
@@ -1144,6 +1251,35 @@ function Products() {
 										willvalidation={true}
 										validate={state.typeOfProductHealthValidation}
 										size={250}
+									/>
+								)}
+
+								{state.policyType.includes('LifeEntries') && (
+									<FormattedInput
+										id="outlined-basic"
+										label="Life Policy Premium"
+										variant="outlined"
+										value={state.policyPremiumLife}
+										validation="policyPremiumLife"
+										type="percent"
+										willvalidation={true}
+										validate={state.policyPremiumValidation}
+										handleChangeValue={handleChangeValue}
+										size={400}
+									/>
+								)}
+
+								{state.policyType.includes('LifeEntries') && (
+									<TextInput
+										id="outlined-basic"
+										label="Life Policy Information"
+										variant="outlined"
+										value={state.policyInformationLife}
+										validation="policyInformationLife"
+										onChange={handleChangeValue}
+										willvalidation={false}
+										validate={false}
+										size={400}
 									/>
 								)}
 
