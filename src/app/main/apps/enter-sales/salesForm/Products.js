@@ -220,7 +220,13 @@ function Products() {
 							productLists: tempBonus,
 							fireProductList: tempFireBonus,
 							healthProductList: tempHealthBonus,
-							lifeProductList: tempLifeBonus
+							lifeProductList: tempLifeBonus,
+							policyInformationLife: editData.policyInformation,
+							policyInformationFire: editData.policyInformation,
+							policyInformationHealth: editData.policyInformation,
+							policyPremiumFire: editData.policyPremium,
+							policyPremiumLife: editData.policyPremium,
+							policyPremiumHealth: editData.policyPremium
 						});
 					} else {
 						Object.keys(bonus[0][editData.user.uid]['autoBonus']).map(item => {
@@ -254,7 +260,13 @@ function Products() {
 							productLists: tempBonus,
 							fireProductList: tempFireBonus,
 							healthProductList: tempHealthBonus,
-							lifeProductList: tempLifeBonus
+							lifeProductList: tempLifeBonus,
+							policyInformationLife: editData.policyInformation,
+							policyInformationFire: editData.policyInformation,
+							policyInformationHealth: editData.policyInformation,
+							policyPremiumFire: editData.policyPremium,
+							policyPremiumLife: editData.policyPremium,
+							policyPremiumHealth: editData.policyPremium
 						});
 					}
 				} else {
@@ -289,7 +301,13 @@ function Products() {
 						productLists: tempBonus,
 						fireProductList: tempFireBonus,
 						healthProductList: tempHealthBonus,
-						lifeProductList: tempLifeBonus
+						lifeProductList: tempLifeBonus,
+						policyInformationLife: editData.policyInformation,
+						policyInformationFire: editData.policyInformation,
+						policyInformationHealth: editData.policyInformation,
+						policyPremiumFire: editData.policyPremium,
+						policyPremiumLife: editData.policyPremium,
+						policyPremiumHealth: editData.policyPremium
 					});
 				}
 			}
@@ -301,7 +319,13 @@ function Products() {
 				productLists: tempBonus,
 				fireProductList: tempFireBonus,
 				healthProductList: tempHealthBonus,
-				lifeProductList: tempLifeBonus
+				lifeProductList: tempLifeBonus,
+				policyInformationLife: editData.policyInformation,
+				policyInformationFire: editData.policyInformation,
+				policyInformationHealth: editData.policyInformation,
+				policyPremiumFire: editData.policyPremium,
+				policyPremiumLife: editData.policyPremium,
+				policyPremiumHealth: editData.policyPremium
 			});
 		} else {
 			if (bonus.length > 0) {
@@ -338,7 +362,13 @@ function Products() {
 				productLists: tempBonus,
 				fireProductList: tempFireBonus,
 				healthProductList: tempHealthBonus,
-				lifeProductList: tempLifeBonus
+				lifeProductList: tempLifeBonus,
+				policyInformationLife: editData.policyInformation,
+				policyInformationFire: editData.policyInformation,
+				policyInformationHealth: editData.policyInformation,
+				policyPremiumFire: editData.policyPremium,
+				policyPremiumLife: editData.policyPremium,
+				policyPremiumHealth: editData.policyPremium
 			});
 		}
 	}, [users, marketing, productType, editData, bonus]);
@@ -1175,7 +1205,9 @@ function Products() {
 										id="outlined-basic"
 										label="Fire Policy Premium"
 										variant="outlined"
-										value={state.policyPremiumFire}
+										value={
+											 state.policyPremiumFire
+										}
 										validation="policyPremiumFire"
 										type="percent"
 										willvalidation={true}
@@ -1190,7 +1222,9 @@ function Products() {
 										id="outlined-basic"
 										label="Fire Policy Information"
 										variant="outlined"
-										value={state.policyInformationFire}
+										value={
+											state.policyInformationFire
+										}
 										validation="policyInformationFire"
 										onChange={handleChangeValue}
 										willvalidation={false}
@@ -1217,7 +1251,9 @@ function Products() {
 										id="outlined-basic"
 										label="Health Policy Premium"
 										variant="outlined"
-										value={state.policyPremiumHealth}
+										value={
+											state.policyPremiumHealth
+										}
 										validation="policyPremiumHealth"
 										type="percent"
 										willvalidation={true}
@@ -1231,7 +1267,9 @@ function Products() {
 										id="outlined-basic"
 										label="Health Policy Information"
 										variant="outlined"
-										value={state.policyInformationHealth}
+										value={
+										state.policyInformationHealth
+										}
 										validation="policyInformationHealth"
 										onChange={handleChangeValue}
 										willvalidation={false}
@@ -1259,7 +1297,9 @@ function Products() {
 										id="outlined-basic"
 										label="Life Policy Premium"
 										variant="outlined"
-										value={state.policyPremiumLife}
+										value={
+											state.policyPremiumLife
+										}
 										validation="policyPremiumLife"
 										type="percent"
 										willvalidation={true}
@@ -1274,7 +1314,9 @@ function Products() {
 										id="outlined-basic"
 										label="Life Policy Information"
 										variant="outlined"
-										value={state.policyInformationLife}
+										value={
+											 state.policyInformationLife
+										}
 										validation="policyInformationLife"
 										onChange={handleChangeValue}
 										willvalidation={false}
@@ -1297,8 +1339,6 @@ function Products() {
 										size={250}
 									/>
 								)}
-
-								{/* </div> */}
 							</div>
 						</FuseScrollbars>
 					</MuiPickersUtilsProvider>
