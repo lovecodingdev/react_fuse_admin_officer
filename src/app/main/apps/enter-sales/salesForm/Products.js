@@ -979,8 +979,8 @@ function Products() {
 			content={
 				<div className="w-full flex flex-col">
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
-						<FuseScrollbars className="flex-grow overflow-x-auto">
-							<div className="min-w-xl p-136 h-full w-full flex flex-row justify-around flex-wrap">
+						<FuseScrollbars className="flex-grow overflow-x-auto flex justify-around">
+							<div className="min-w-xl p-136 h-full w-4xl flex flex-row justify-around flex-wrap">
 								{/* <div className="flex w-full justify-between items-center flex-wrap py-12"> */}
 
 								<SelectBox
