@@ -23,6 +23,8 @@ import SelectBox from '../../../components/SelectBox';
 import MultiSelectBox from '../../../components/MultiSelectBox';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -30,6 +32,10 @@ const useStyles = makeStyles(theme => ({
 			margin: theme.spacing(1),
 			width: '25ch'
 		}
+	},
+	checkBox: {
+		padding: '0',
+		height: '40px'
 	},
 	datePicker: {
 		width: 250,
@@ -347,16 +353,12 @@ function Products() {
 		var tempHealthBonus = [];
 		var tempLifeBonus = [];
 		console.log(data);
-		if (Object.keys(data)[0] === 'policyType') {
-			if (typeof data['policyType'] === 'object') {
-				setState({ ...state, ...data });
-			} else {
-				setState({
-					...state,
-					policyType: [data['policyType']],
-					policyTypeValidation: data['policyTypeValidation']
-				});
-			}
+		if (Object.keys(data)[0] === 'policyHolderType') {
+			setState({
+				...state,
+				...data,
+				policyType: [state.policyType[0]]
+			});
 		} else if (Object.keys(data)[0] === 'user') {
 			if (data.user === 'OfficeCount') {
 				Object.keys(bonus[0]['all']['autoBonus']).map(item => {
@@ -803,6 +805,41 @@ function Products() {
 		}
 	}
 
+	function handleChecked(e) {
+		var temp = [...state.policyType];
+		if (state.policyHolderType === 'individual') {
+			if (e.target.checked) {
+				var index = temp.indexOf(e.target.name);
+				if (index === -1) {
+					setState({
+						...state,
+						policyType: [e.target.name]
+					});
+				}
+			}
+		} else if (state.policyHolderType === 'household') {
+			if (e.target.checked) {
+				var index = temp.indexOf(e.target.name);
+				if (index === -1) {
+					temp.push(e.target.name);
+					setState({
+						...state,
+						policyType: [...temp]
+					});
+				}
+			} else {
+				var index = temp.indexOf(e.target.name);
+				if (index !== -1) {
+					temp.splice(index, 1);
+					setState({
+						...state,
+						policyType: [...temp]
+					});
+				}
+			}
+		}
+	}
+
 	return (
 		<FusePageCarded
 			classes={{
@@ -887,19 +924,6 @@ function Products() {
 									validate={false}
 									size={250}
 								/>
-								<TextInput
-									id="outlined-basic"
-									label="Policy Information"
-									variant="outlined"
-									rows={7}
-									value={state.policyInformation}
-									validation="policyInformation"
-									onChange={handleChangeValue}
-									willvalidation={false}
-									validate={false}
-									size={250}
-								/>
-
 								<KeyboardDatePicker
 									margin="normal"
 									id="date-picker-dialog"
@@ -939,6 +963,7 @@ function Products() {
 									validate={state.percentOfSaleCreditValidation}
 									size={250}
 								/>
+
 								{/* <SelectBox
 										id="outlined-basic"
 										label="Type of Product"
@@ -962,9 +987,19 @@ function Products() {
 									willvalidation={true}
 									validate={state.policyHolderTypeValidation}
 								/>
+								<SelectBox
+									id="outlined-basic"
+									label="Source of Business"
+									data={state.marketings}
+									variant="outlined"
+									value={state.sourceOfBusiness}
+									validation="sourceOfBusiness"
+									handleChangeValue={handleChangeValue}
+									willvalidation={false}
+								/>
 								{/* </div>
 								<div className="flex w-full justify-between items-center flex-wrap py-12"> */}
-								{(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
+								{/* {(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
 									<SelectBox
 										id="outlined-basic"
 										label="Policy Type"
@@ -990,7 +1025,83 @@ function Products() {
 										willvalidation={true}
 										validate={state.typeValidation}
 									/>
-								)}
+								)} */}
+
+								<FormControlLabel
+									className={classes.checkBox}
+									control={
+										<Checkbox
+											checked={state.policyType.includes('Entries')}
+											onChange={handleChecked}
+											name="Entries"
+											color="primary"
+										/>
+									}
+									label="Auto"
+								/>
+
+								<FormControlLabel
+									className={classes.checkBox}
+									control={
+										<Checkbox
+											checked={state.policyType.includes('FireEntries')}
+											onChange={handleChecked}
+											name="FireEntries"
+											color="primary"
+										/>
+									}
+									label="Fire"
+								/>
+
+								<FormControlLabel
+									className={classes.checkBox}
+									control={
+										<Checkbox
+											checked={state.policyType.includes('HealthEntries')}
+											onChange={handleChecked}
+											name="HealthEntries"
+											color="primary"
+										/>
+									}
+									label="Health"
+								/>
+
+								<FormControlLabel
+									className={classes.checkBox}
+									control={
+										<Checkbox
+											checked={state.policyType.includes('LifeEntries')}
+											onChange={handleChecked}
+											name="LifeEntries"
+											color="primary"
+										/>
+									}
+									label="Life"
+								/>
+								<FormattedInput
+									id="outlined-basic"
+									label="Policy Premium"
+									variant="outlined"
+									value={state.policyPremium}
+									validation="policyPremium"
+									type="percent"
+									willvalidation={true}
+									validate={state.policyPremiumValidation}
+									handleChangeValue={handleChangeValue}
+									size={400}
+								/>
+								<TextInput
+									id="outlined-basic"
+									label="Policy Information"
+									variant="outlined"
+									rows={7}
+									value={state.policyInformation}
+									validation="policyInformation"
+									onChange={handleChangeValue}
+									willvalidation={false}
+									validate={false}
+									size={400}
+								/>
 								{state.policyType.includes('Entries') && (
 									<SelectBox
 										id="outlined-basic"
@@ -1050,28 +1161,7 @@ function Products() {
 										size={250}
 									/>
 								)}
-								<FormattedInput
-									id="outlined-basic"
-									label="Policy Premium"
-									variant="outlined"
-									value={state.policyPremium}
-									validation="policyPremium"
-									type="percent"
-									willvalidation={true}
-									validate={state.policyPremiumValidation}
-									handleChangeValue={handleChangeValue}
-									size={250}
-								/>
-								<SelectBox
-									id="outlined-basic"
-									label="Source of Business"
-									data={state.marketings}
-									variant="outlined"
-									value={state.sourceOfBusiness}
-									validation="sourceOfBusiness"
-									handleChangeValue={handleChangeValue}
-									willvalidation={false}
-								/>
+
 								{/* </div> */}
 							</div>
 						</FuseScrollbars>
