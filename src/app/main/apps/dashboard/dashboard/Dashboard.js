@@ -42,17 +42,6 @@ const useStyles = makeStyles(theme => ({
 			maxHeight: '100%'
 		}
 	},
-	selectedProject: {
-		background: theme.palette.primary.main,
-		color: theme.palette.primary.contrastText,
-		borderRadius: '8px 0 0 0'
-	},
-	projectMenuButton: {
-		background: theme.palette.primary.main,
-		color: theme.palette.primary.contrastText,
-		borderRadius: '0 8px 0 0',
-		marginLeft: 1
-	}
 }));
 
 function Dashboard(props) {
@@ -61,7 +50,6 @@ function Dashboard(props) {
 	const pageLayout = useRef(null);
 	let widgets = useSelector(selectWidgets);
 	const users = useSelector(selectUsers);
-	// const marketings = useSelector(selectMarketings);
 	const bonusPlans = useSelector(selectBonusPlans);
 	const vision = useSelector(selectVision);
 	const lapseRate = useSelector(selectLapseRate);
@@ -79,7 +67,6 @@ function Dashboard(props) {
 	useEffect(() => {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
-		// dispatch(getMarketings());
 		dispatch(getEntries());	
 		dispatch(getVision());	
 		dispatch(getLapseRate());	
@@ -87,7 +74,7 @@ function Dashboard(props) {
 	}, [dispatch]);
 
 	useEffect(() => {		
-		if(users.length>0 && entries.length>0 && bonusPlans.length>0, lapseRate.length>0) {
+		if(users.length>0 && entries.length>0 && bonusPlans.length>0 && lapseRate.length>0) { 
 			const temp = getMain(entries, bonusPlans, [], users, vision, lapseRate);										
 			setMain(temp);
 		}
@@ -95,145 +82,48 @@ function Dashboard(props) {
 
 	useEffect(() => {	
 		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {
-			let indTableContent = {};	
-			let teamTableContent = {};	
-			if(widgets.Dashboard_GoalsAndActual_Table) {
-				let tableRows = [
-					{
-						id: 'total', 
-						value: 'Total', 
-						type: true, 
-						color: '', 
-						border: '' 
-					}
-				];						
-				indTableContent["Total"] = {
-					'Auto@Goal': 0,
-					'Auto@Actual': 0,
-					'Fire@Goal': 0,
-					'Fire@Actual': 0,
-					'Life@Goal': 0,
-					'Life@Actual': 0,
-					'Health@Goal': 0,
-					'Health@Actual': 0,				
-					'Total@Goal': 0,
-					'Total@Actual': 0,
-				};
-				teamTableContent["Total"] = {
-					'Auto@Goal': 0,
-					'Auto@Actual': 0,
-					'Fire@Goal': 0,
-					'Fire@Actual': 0,
-					'Life@Goal': 0,
-					'Life@Actual': 0,
-					'Health@Goal': 0,
-					'Health@Actual': 0,				
-					'Total@Goal': 0,
-					'Total@Actual': 0,
-				};
-				users.map((user) => {
-					if(user.id === UID) { 
-						// tableRows.push({ 
-						// 	id: user.id, 
-						// 	value: user.id, 
-						// 	type: true, 
-						// 	color: '' 
-						// });
-						
-						let totalGoals = 0;
-						let totalActual = 0;					
-						// indTableContent[user.id] = {};
-						options.product.data.map((policy) => { // except for Total
+			let IndGoalsAndActual = {};	
+			let teamGoalsAndActual = {};
+			let household = 0;
+			let individual = 0;	
+			if(widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel) {	
+				policies.map(policy => {					
+					if(policy.value !== 'Bank') {
+						teamGoalsAndActual[`${policy.value}@Goal`] = 0;
+						teamGoalsAndActual[`${policy.value}@Actual`] = 0;						
+					}										
+				});
+				users.map((user) => {				
+					if(user.belongTo === belongTo) { 	
+						IndGoalsAndActual[user.id] = { Goal: 0, Actual: 0};					
+						options.product.data.map((policy) => { 
 							if(policy.value !== 'Bank') {
-								// indTableContent[user.id][`${policy.value}@Goal`] = main[production][period][user.id][policy.value]["Goals"]
-								// indTableContent[user.id][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
-								totalGoals += main[production][period][user.id][policy.value]["Goals"];
-								totalActual += main[production][period][user.id][policy.value]["Policies"];											
-								indTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-								indTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
-							}
+								IndGoalsAndActual[user.id][`Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								IndGoalsAndActual[user.id][`Actual`] += main[production][period][user.id][policy.value]["Policies"];
+
+								teamGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];											
+								teamGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								teamGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+
+								household += main[production][period][user.id][policy.value]['household'];
+								individual += main[production][period][user.id][policy.value]['individual'];	
+							}													
 						});
-						// indTableContent[user.id]['Total@Goal'] = totalGoals;
-						// indTableContent[user.id]['Total@Actual'] = totalActual;														
-						indTableContent['Total'][`Total@Goal`] += totalGoals;
-						indTableContent['Total'][`Total@Actual`] += totalActual;
-					}	
-					if(user.belongTo === belongTo) { 
-						tableRows.push({ 
-							id: user.id, 
-							value: user.id, 
-							type: true, 
-							color: '' 
-						});
-						
-						let totalGoals = 0;					
-						let totalActual = 0;					
-						teamTableContent[user.data.displayName] = {};
-						options.product.data.map((policy) => { // except for Total
-							if(policy.value !== 'Bank') {
-								teamTableContent[user.data.displayName][`${policy.value}@Goal`] = main[production][period][user.id][policy.value]["Goals"]
-								teamTableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
-								totalGoals += main[production][period][user.id][policy.value]["Goals"];
-								totalActual += main[production][period][user.id][policy.value]["Policies"];											
-								teamTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-								teamTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
-							}
-						});
-						teamTableContent[user.data.displayName]['Total@Goal'] = totalGoals;
-						teamTableContent[user.data.displayName]['Total@Actual'] = totalActual;														
-						teamTableContent['Total'][`Total@Goal`] += totalGoals;
-						teamTableContent['Total'][`Total@Actual`] += totalActual;
 					}			
-				});
-			 
-				// widgets = {
-				// 	...widgets, Dashboard_GoalsAndActual_Table: {
-				// 		...widgets.Dashboard_GoalsAndActual_Table, table: {
-				// 			...widgets.Dashboard_GoalsAndActual_Table.table, rows:
-				// 				tableRows
-				// 		}
-				// 	}
-				// };
-				// widgets = {
-				// 	...widgets, Dashboard_GoalsAndActual_Table: {
-				// 		...widgets.Dashboard_GoalsAndActual_Table, table: {
-				// 			...widgets.Dashboard_GoalsAndActual_Table.table, tableContent:
-				// 				indTableContent
-				// 		}
-				// 	}
-				// };	
+				});										
 
+				// Team Goal vs Actual
 				policies.map(policy => {
 					if(policy.value !== 'Bank') {
 						let tempCardData = [];
 						let tempCard = {};
-						tempCard = widgets[`Dashboard_Multiline_GoalAndActual_${policy.value}_Panel`].cardData[0];
-						tempCard = { ...tempCard, count: indTableContent['Total'][`${policy.value}@Goal`] };
-						tempCardData.push(tempCard);
-						tempCard = widgets[`Dashboard_Multiline_GoalAndActual_${policy.value}_Panel`].cardData[1];
-						tempCard = { ...tempCard, count: indTableContent['Total'][`${policy.value}@Actual`] };
-						tempCardData.push(tempCard);
-
-						widgets = {
-							...widgets, [`Dashboard_Multiline_GoalAndActual_${policy.value}_Panel`]: {
-								...widgets[`Dashboard_Multiline_GoalAndActual_${policy.value}_Panel`], cardData: [
-									...tempCardData
-								]
-							}					
-						}
-					}					
-				});
-				policies.map(policy => {
-					if(policy.value !== 'Bank') {
-						let tempCardData = [];
-						let tempCard = {};
-						tempCard = widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`].cardData[0];
-						tempCard = { ...tempCard, count: teamTableContent['Total'][`${policy.value}@Goal`] };
-						tempCardData.push(tempCard);
-						tempCard = widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`].cardData[1];
-						tempCard = { ...tempCard, count: teamTableContent['Total'][`${policy.value}@Actual`] };
-						tempCardData.push(tempCard);
-
+						const cardData = widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`].cardData;
+						cardData.map(card => {
+							tempCard = card;
+							tempCard = { ...tempCard, count: teamGoalsAndActual[`${policy.value}@${card.label}`] };
+							tempCardData.push(tempCard);
+						});						
 						widgets = {
 							...widgets, [`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`]: {
 								...widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`], cardData: [
@@ -242,37 +132,31 @@ function Dashboard(props) {
 							}					
 						}
 					}					
-				});								
-			}
-			if(widgets.Dashboard_Multiline_Percentage_Panel && widgets.Dashboard_LapseRate_Panel) {			
-				let household = 0;
-				let individual = 0;
-				let auto = 0;
-				let fire = 0;
-				let life = 0;
-				let health = 0;
+				});	
 
+				// Lapse Rate
 				policies.map(policy => {
-					if(policy.value !== 'Total') {
-						users.map(user => {
-							if(user.belongTo === UID) { 							
-								household += main[production][period][user.id][policy.value]['household'];
-								individual += main[production][period][user.id][policy.value]['individual'];
-
-								if(lapseRate.length > 0) {
-									auto = main[production][period][user.id]['Auto']['lapseRate'];
-									fire = main[production][period][user.id]['Fire']['lapseRate'];
-									life = main[production][period][user.id]['Life']['lapseRate'];
-									health = main[production][period][user.id]['Health']['lapseRate'];
-								}
-							}
-						});
-					}
-				});
-
+					if(policy.value !== 'Bank' && policy.value !== 'Total') {
+						let tempCardData = [];
+						let tempCard = {};
+						const cardData = widgets[`Dashboard_LapseRate_${policy.value}_Panel`].cardData;
+						tempCard = cardData[0];
+						tempCard = { ...tempCard, count: main[production][period][UID][policy.value]['lapseRate'] };
+						tempCardData.push(tempCard);
+						widgets = {
+							...widgets, [`Dashboard_LapseRate_${policy.value}_Panel`]: {
+								...widgets[`Dashboard_LapseRate_${policy.value}_Panel`], cardData: [
+									...tempCardData
+								]
+							}					
+						}
+					}					
+				});	
+				
+				// Multiline Percentage
 				let tempData = [];
 				let cardData = widgets.Dashboard_Multiline_Percentage_Panel.cardData[0];
-				cardData = { ...cardData, count: dividing(household*100, household+individual) };
+				cardData = { ...cardData, count: dividing(household*100, household+individual) }; 
 				tempData.push(cardData);
 				widgets = {
 					...widgets, Dashboard_Multiline_Percentage_Panel: {
@@ -280,30 +164,9 @@ function Dashboard(props) {
 							[ ...tempData ]
 					}
 				}
-
-				tempData = [];
-				cardData = widgets.Dashboard_LapseRate_Panel.cardData[0];
-				cardData = { ...cardData, count: auto };
-				tempData.push(cardData);
-				cardData = widgets.Dashboard_LapseRate_Panel.cardData[1];
-				cardData = { ...cardData, count: fire };
-				tempData.push(cardData);
-				cardData = widgets.Dashboard_LapseRate_Panel.cardData[2];
-				cardData = { ...cardData, count: life };
-				tempData.push(cardData);
-				cardData = widgets.Dashboard_LapseRate_Panel.cardData[3];
-				cardData = { ...cardData, count: health };
-				tempData.push(cardData);			
-
-				widgets = {
-					...widgets, Dashboard_LapseRate_Panel: {
-						...widgets.Dashboard_LapseRate_Panel, cardData: 
-							[ ...tempData ]
-					}
-				}
 			}
+
 			if(widgets.Dashboard_Chart) {
-				const tableContent = teamTableContent;
 				let goal = widgets.Dashboard_Chart.mainChart.TW.datasets[0];
 				let actual = widgets.Dashboard_Chart.mainChart.TW.datasets[1];
 				
@@ -311,21 +174,11 @@ function Dashboard(props) {
 				let tempActual = [];
 				let tempDatasets = [];
 				let tempLabels = [];
-				Object.keys(tableContent).map(userName => {
-					if(userName !== 'Total') {
-						tempLabels.push(userName);
-						tempGoal.push(
-							parseFloat(tableContent[userName][`Auto@Goal`]) +
-							parseFloat(tableContent[userName][`Fire@Goal`]) +
-							parseFloat(tableContent[userName][`Life@Goal`]) +
-							parseFloat(tableContent[userName][`Health@Goal`])
-						);
-						tempActual.push(
-							parseFloat(tableContent[userName][`Auto@Actual`]) +
-							parseFloat(tableContent[userName][`Fire@Actual`]) +
-							parseFloat(tableContent[userName][`Life@Actual`]) +
-							parseFloat(tableContent[userName][`Health@Actual`])
-						);						
+				users.map(user => {
+					if(user.belongTo === belongTo) {
+						tempGoal.push(IndGoalsAndActual[user.id]['Goal']);
+						tempActual.push(IndGoalsAndActual[user.id]['Actual']);
+						tempLabels.push(user.data.displayName);						
 					}					
 				});
 				goal = { ...goal, data: tempGoal };
@@ -376,7 +229,7 @@ function Dashboard(props) {
 		setTabValue(value);
 	}
 	
-	if (loading) {
+	if (loading) {   
 		return <FuseLoading />;
 	}
 
@@ -419,56 +272,40 @@ function Dashboard(props) {
 				</div>
 			}
 			content={
-				<div className="w-full p-12">
-					{/* <FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-1/2 p-12">								
-							<Table data={data.widgets.Dashboard_GoalsAndActual_Table} hideLeftHeader />
-						</div>
-					</FuseAnimateGroup>	 */}
-					{/* <FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-1/5 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel} type='Two Number' />						
-						</div>
-						<div className="widget flex w-1/5 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_Multiline_GoalAndActual_Fire_Panel} type='Two Number' />		
-						</div>	
-						<div className="widget flex w-1/5 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_Multiline_GoalAndActual_Life_Panel} type='Two Number' />						
-						</div>
-						<div className="widget flex w-1/5 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_Multiline_GoalAndActual_Health_Panel} type='Two Number' />		
-						</div>	
-						<div className="widget flex w-1/5 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_Multiline_GoalAndActual_Total_Panel} type='Two Number' />						
-						</div>									
-					</FuseAnimateGroup>	 */}
+				<div className="w-full p-12">									
+					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
+					{
+						policies.map(policy => {
+							if(policy.value !== 'Bank') {
+								return(
+									<div className="widget flex w-1/5 p-12">							
+										<NumberPanel data={data.widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`]} type='Two Number' />						
+									</div>
+								)
+							}
+							
+						})
+					}								
+					</FuseAnimateGroup>	
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-1/5 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_Multiline_Team_GoalAndActual_Auto_Panel} type='Two Number' />						
-						</div>
-						<div className="widget flex w-1/5 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_Multiline_Team_GoalAndActual_Fire_Panel} type='Two Number' />		
-						</div>	
-						<div className="widget flex w-1/5 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_Multiline_Team_GoalAndActual_Life_Panel} type='Two Number' />						
-						</div>
-						<div className="widget flex w-1/5 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_Multiline_Team_GoalAndActual_Health_Panel} type='Two Number' />		
-						</div>	
-						<div className="widget flex w-1/5 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_Multiline_Team_GoalAndActual_Total_Panel} type='Two Number' />						
-						</div>									
-					</FuseAnimateGroup>	
-					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-1/3 p-12">							
 							<NumberPanel data={data.widgets.Dashboard_Multiline_Percentage_Panel} type='One Number' />						
 						</div>
-						<div className="widget flex w-2/3 p-12">							
-							<NumberPanel data={data.widgets.Dashboard_LapseRate_Panel} type='Four Number' />		
-						</div>				
+						{
+							policies.map(policy => {
+								if(policy.value!=='Bank' && policy.value!=='Total') {
+									return(
+										<div className="widget flex w-1/5 p-12">							
+											<NumberPanel data={data.widgets[`Dashboard_LapseRate_${policy.value}_Panel`]} type='One Number' />						
+										</div>
+									)
+								}
+								
+							})
+						}									
 					</FuseAnimateGroup>										
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-1/2 p-12">	
+						<div className="widget flex w-3/5 p-12">	
 							<HorizontalBarChart data={data.widgets.Dashboard_Chart} />						
 						</div>	
 					</FuseAnimateGroup>					

@@ -16,12 +16,7 @@ export function Card(props) {
 		<div className="flex items-center justify-between px-8 pt-8">
 			<Typography className="text-15 flex w-full" color="textPrimary">
 				<span className="truncate">{props.title}</span>									
-			</Typography>	
-			{/* {props.icon &&
-				<IconButton aria-label="more">
-					<Icon>more_vert</Icon>
-				</IconButton>
-			}						 */}
+			</Typography>				
 		</div>
 		<div className="text-center pt-12 pb-28">
 			<Typography className={`text-${props.fontSize} leading-none ${props.color}`}>
@@ -30,13 +25,7 @@ export function Card(props) {
 			<Typography className="text-16" color="textSecondary">
 				{props.label}
 			</Typography>
-		</div>	
-		{/* <div className="flex items-center px-16 h-52 border-t-1">
-			<Typography className="text-15 flex w-full" color="textSecondary">
-				<span className="truncate">{props.description}</span>
-				<b className="px-8">{''}</b>
-			</Typography>
-		</div>						 */}
+		</div>			
 	</div>
 	);
 }
@@ -44,11 +33,10 @@ export function Card(props) {
 function Widget1(props) { 
 	return (
 		<Paper className="w-full rounded-8 shadow">
-			<div className="px-4 pt-4">
-				<Typography className="text-15 flex w-full" color="textPrimary">
-					<span className="truncate">{props.data.title}</span>									
-				</Typography>	
+			<div className="flex items-center justify-between px-16 py-16 border-b-1">
+				<Typography className="text-16">{props.data.title}</Typography>				
 			</div>
+			
 			{props.type==='One Number' &&
 				<Card {...props.data.cardData[0]} />
 			}	
@@ -57,27 +45,15 @@ function Widget1(props) {
 					<Card {...props.data.cardData[0]} />
 					<Card {...props.data.cardData[1]} />
 				</div>
-			}			
-			{props.type==='Four Number' &&
-				<div className="flex, flex-column justify-around">
-					<div className="flex flex-row justify-around">
-						<Card {...props.data.cardData[0]} />
-						<Card {...props.data.cardData[1]} />
-					</div>
-					<div className="flex flex-row justify-around">
-						<Card {...props.data.cardData[2]} />
-						<Card {...props.data.cardData[3]} />
-					</div>
-				</div>
-			}
-			{props.type==='Two Number' && 
+			}						
+			{/* {props.type==='Two Number' &&  */}
 				<div className="flex items-center px-16 h-52 border-t-1">
 					<Typography className="text-15 flex w-full" color="textSecondary">
 						<span className="truncate">{props.data.subTitle}</span>
 						<b className="px-8">{''}</b>
 					</Typography>
 				</div>
-			}	
+			{/* }	 */}
 		</Paper>
 	);
 }

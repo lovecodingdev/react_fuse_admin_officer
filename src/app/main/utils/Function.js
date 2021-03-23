@@ -246,7 +246,14 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
               const bonus = item.dollarBonus==='' ? 0 : item.dollarBonus;
               temp[production][month][userId][policy][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
               temp[production][month][userId][policy][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
-              temp[production][month][userId][policy][item.policyHolderType] += 1;
+              ////////////// Remove after
+              if(item.policyHolderType === '') {
+                temp[production][month][userId][policy]['individual'] += 1;
+              } else {
+                temp[production][month][userId][policy][item.policyHolderType] += 1
+              }
+              /////////////////////
+              // temp[production][month][userId][policy][item.policyHolderType] += 1;
               temp[production][month][userId][policy]["Bonuses"] += parseFloat(bonus);									
               temp[production][month][userId][policy]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;									
               temp[production][month][userId][policy]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
