@@ -131,6 +131,7 @@ function Products() {
 		policyPremiumValidation: false,
 		userValidation: false,
 		marketings: [],
+		policyHolderType:'individual',
 		usersList: [],
 		productLists: [],
 		fireProductList: [],
