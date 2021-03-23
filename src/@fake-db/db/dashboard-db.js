@@ -384,6 +384,11 @@ const activityAppDB = {
 					]
 				},
 				options: {
+					onClick: function(e){
+						console.log(e)
+					},
+					
+					
 					responsive: true,
 					maintainAspectRatio: false,
 					legend: {

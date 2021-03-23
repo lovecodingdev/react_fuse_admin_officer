@@ -168,24 +168,24 @@ function Dashboard(props) {
 						
 						let totalGoals = 0;					
 						let totalActual = 0;					
-						teamTableContent[user.id] = {};
+						teamTableContent[user.data.displayName] = {};
 						options.product.data.map((policy) => { // except for Total
 							if(policy.value !== 'Bank') {
-								teamTableContent[user.id][`${policy.value}@Goal`] = main[production][period][user.id][policy.value]["Goals"]
-								teamTableContent[user.id][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
+								teamTableContent[user.data.displayName][`${policy.value}@Goal`] = main[production][period][user.id][policy.value]["Goals"]
+								teamTableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
 								totalGoals += main[production][period][user.id][policy.value]["Goals"];
 								totalActual += main[production][period][user.id][policy.value]["Policies"];											
 								teamTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
 								teamTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
 							}
 						});
-						teamTableContent[user.id]['Total@Goal'] = totalGoals;
-						teamTableContent[user.id]['Total@Actual'] = totalActual;														
+						teamTableContent[user.data.displayName]['Total@Goal'] = totalGoals;
+						teamTableContent[user.data.displayName]['Total@Actual'] = totalActual;														
 						teamTableContent['Total'][`Total@Goal`] += totalGoals;
 						teamTableContent['Total'][`Total@Actual`] += totalActual;
 					}			
 				});
-			
+			 
 				// widgets = {
 				// 	...widgets, Dashboard_GoalsAndActual_Table: {
 				// 		...widgets.Dashboard_GoalsAndActual_Table, table: {
