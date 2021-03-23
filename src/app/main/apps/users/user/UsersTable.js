@@ -179,8 +179,8 @@ function ProductsTable(props) {
 		props.history.push(`/apps/setup/bonus-plan/${uid}`);
 	}
 
-	function goReport() {
-		props.history.push('/apps/production/sales-results');
+	function goReport(uid) {
+		props.history.push(`/apps/producer-detail/${uid}`);
 	}
 
 	if (loading) {
@@ -291,7 +291,7 @@ function ProductsTable(props) {
 												component="th"
 												scope="row"
 												align="center"
-												onClick={() => n.data && goReport()}
+												onClick={() => n.data && goReport(n.uid)}
 											>
 												{n.active && 'Producer File'}
 											</TableCell>
