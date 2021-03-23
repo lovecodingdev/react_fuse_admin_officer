@@ -86,7 +86,7 @@ function GoalsAndActual(props) {
 					if(user.belongTo === UID) {
 						tableRows.push({ 
 							id: user.id, 
-							value: user.data.displayName, 
+							value: user.id, 
 							type: true, 
 							color: '' 
 						});
@@ -95,8 +95,8 @@ function GoalsAndActual(props) {
 						let totalActual = 0;					
 						tableContent[user.data.displayName] = {};
 						options.product.data.map((policy) => { // except for Total
-							tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.data.displayName][policy.value]["Goals"]
-							tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
+							tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.id][policy.value]["Goals"]
+							tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
 							totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
 							totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];												
 							tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
@@ -188,7 +188,7 @@ function GoalsAndActual(props) {
 					if(user.belongTo === UID) {
 						tableRows.push({ 
 							id: user.id, 
-							value: user.data.displayName, 
+							value: user.id, 
 							type: true, 
 							color: '' 
 						});
@@ -197,8 +197,8 @@ function GoalsAndActual(props) {
 						let totalActual = 0;					
 						tableContent[user.data.displayName] = {};
 						options.product.data.map((policy) => { // except for Total
-							tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.data.displayName][policy.value]["Goals"]
-							tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
+							tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.id][policy.value]["Goals"]
+							tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
 							totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
 							totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];												
 							tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]

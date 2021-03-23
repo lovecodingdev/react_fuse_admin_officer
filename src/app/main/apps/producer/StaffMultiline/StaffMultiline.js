@@ -72,7 +72,7 @@ function StaffMultiline(props) {
 					if(user.belongTo === UID) {
 						tableRows.push({ 
 							id: user.id, 
-							value: user.data.displayName, 
+							value: user.id, 
 							type: true, 
 							color: '' 
 						});
@@ -83,10 +83,10 @@ function StaffMultiline(props) {
 						let totalAutoBonus = 0;
 						tableContent[user.data.displayName] = {};
 						policies.map((policy) => {
-							tableContent[user.data.displayName][`${policy.value}@Policies`] = main[production][period][user.data.displayName][policy.value]["Policies"];						
-							tableContent[user.data.displayName][`${policy.value}@Annual Premium`] = main[production][period][user.data.displayName][policy.value]["Premium"];
-							tableContent[user.data.displayName][`${policy.value}@Average Premium`] = main[production][period][user.data.displayName][policy.value]["Averages"];
-							tableContent[user.data.displayName][`${policy.value}@Auto Bonus`] = main[production][period][user.data.displayName][policy.value]["Bonuses"];
+							tableContent[user.data.displayName][`${policy.value}@Policies`] = main[production][period][user.id][policy.value]["Policies"];						
+							tableContent[user.data.displayName][`${policy.value}@Annual Premium`] = main[production][period][user.id][policy.value]["Premium"];
+							tableContent[user.data.displayName][`${policy.value}@Average Premium`] = main[production][period][user.id][policy.value]["Averages"];
+							tableContent[user.data.displayName][`${policy.value}@Auto Bonus`] = main[production][period][user.id][policy.value]["Bonuses"];
 							totalPolicies += tableContent[user.data.displayName][`${policy.value}@Policies`];
 							totalAnnualPremium += tableContent[user.data.displayName][`${policy.value}@Annual Premium`];
 							totalAveragePremium += tableContent[user.data.displayName][`${policy.value}@Average Premium`];
@@ -133,7 +133,7 @@ function StaffMultiline(props) {
 					let tempData = [];
 					users.map((user) => {
 						if(user.belongTo === UID) {
-							tempData.push(main[production][period][user.data.displayName][dataset.label][report]);
+							tempData.push(main[production][period][user.id][dataset.label][report]);
 						}							
 					});
 
@@ -184,7 +184,7 @@ function StaffMultiline(props) {
 				users.map((user) => {
 					if(user.belongTo === UID) {
 						widgets.StaffMultiline_Summary_Producer_Chart.mainChart.options.scales.yAxes[0].labels.map((policy) => {						
-								sumPolicies[policy] += main[production][period][user.data.displayName][policy][report]											
+								sumPolicies[policy] += main[production][period][user.id][policy][report]											
 						});					
 					}
 				});
@@ -192,7 +192,7 @@ function StaffMultiline(props) {
 					if(user.belongTo === UID) {
 						let tempData = [];
 						widgets.StaffMultiline_Summary_Producer_Chart.mainChart.options.scales.yAxes[0].labels.map((policy) => {						
-								tempData.push(main[production][period][user.data.displayName][policy][report] * 100 / sumPolicies[policy]);												
+								tempData.push(main[production][period][user.id][policy][report] * 100 / sumPolicies[policy]);												
 						});
 						tempDatasets.push({
 							barPercentage: 0.5,
@@ -227,10 +227,10 @@ function StaffMultiline(props) {
 						users.map((user) => {
 							if(user.belongTo === UID) {							
 								tempData.push(dividing(
-										main[production][period][user.data.displayName][dataset.label]['Policies'],
+										main[production][period][user.id][dataset.label]['Policies'],
 										(
-											main[production][period][user.data.displayName]['Auto']['Policies'] +
-											main[production][period][user.data.displayName]['Fire']['Policies']
+											main[production][period][user.id]['Auto']['Policies'] +
+											main[production][period][user.id]['Fire']['Policies']
 										)
 									)
 								);
@@ -286,13 +286,13 @@ function StaffMultiline(props) {
 					users.map((user) => {
 						if(user.belongTo === UID) {													
 							tempData.push(dividing(
-									main[production][period][user.data.displayName][dataset.label]['Policies'] * 100,
+									main[production][period][user.id][dataset.label]['Policies'] * 100,
 									(
-										main[production][period][user.data.displayName]['Auto']['Policies'] +
-										main[production][period][user.data.displayName]['Fire']['Policies'] +
-										main[production][period][user.data.displayName]['Life']['Policies'] +
-										main[production][period][user.data.displayName]['Health']['Policies'] +
-										main[production][period][user.data.displayName]['Bank']['Policies']
+										main[production][period][user.id]['Auto']['Policies'] +
+										main[production][period][user.id]['Fire']['Policies'] +
+										main[production][period][user.id]['Life']['Policies'] +
+										main[production][period][user.id]['Health']['Policies'] +
+										main[production][period][user.id]['Bank']['Policies']
 									)
 								)
 							);
@@ -355,130 +355,130 @@ function StaffMultiline(props) {
 						tableContent[user.data.displayName] = {};
 						// by Auto									
 						tableContent[user.data.displayName][`Auto@Fire`] = dividing(
-							main[production][period][user.data.displayName]['Fire']["Policies"],
-							main[production][period][user.data.displayName]['Auto']["Policies"]
+							main[production][period][user.id]['Fire']["Policies"],
+							main[production][period][user.id]['Auto']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Auto@Life`] = dividing(
-							main[production][period][user.data.displayName]['Life']["Policies"],
-							main[production][period][user.data.displayName]['Auto']["Policies"]
+							main[production][period][user.id]['Life']["Policies"],
+							main[production][period][user.id]['Auto']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Auto@Health`] = dividing(
-							main[production][period][user.data.displayName]['Health']["Policies"],
-							main[production][period][user.data.displayName]['Auto']["Policies"]
+							main[production][period][user.id]['Health']["Policies"],
+							main[production][period][user.id]['Auto']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Auto@Bank`] = dividing(
-							main[production][period][user.data.displayName]['Bank']["Policies"],
-							main[production][period][user.data.displayName]['Auto']["Policies"]
+							main[production][period][user.id]['Bank']["Policies"],
+							main[production][period][user.id]['Auto']["Policies"]
 						);
 						
 						// by Fire
 						tableContent[user.data.displayName][`Fire@Auto`] = dividing(
-							main[production][period][user.data.displayName]['Auto']["Policies"],
-							main[production][period][user.data.displayName]['Fire']["Policies"]
+							main[production][period][user.id]['Auto']["Policies"],
+							main[production][period][user.id]['Fire']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Fire@Life`] = dividing(
-							main[production][period][user.data.displayName]['Life']["Policies"],
-							main[production][period][user.data.displayName]['Fire']["Policies"]
+							main[production][period][user.id]['Life']["Policies"],
+							main[production][period][user.id]['Fire']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Fire@Health`] = dividing(
-							main[production][period][user.data.displayName]['Health']["Policies"],
-							main[production][period][user.data.displayName]['Fire']["Policies"]
+							main[production][period][user.id]['Health']["Policies"],
+							main[production][period][user.id]['Fire']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Fire@Bank`] = dividing(
-							main[production][period][user.data.displayName]['Bank']["Policies"],
-							main[production][period][user.data.displayName]['Fire']["Policies"]
+							main[production][period][user.id]['Bank']["Policies"],
+							main[production][period][user.id]['Fire']["Policies"]
 						);
 
 						// by Life
 						tableContent[user.data.displayName][`Life@Auto`] = dividing(
-							main[production][period][user.data.displayName]['Auto']["Policies"],
-							main[production][period][user.data.displayName]['Life']["Policies"]
+							main[production][period][user.id]['Auto']["Policies"],
+							main[production][period][user.id]['Life']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Life@Fire`] = dividing(
-							main[production][period][user.data.displayName]['Fire']["Policies"],
-							main[production][period][user.data.displayName]['Life']["Policies"]
+							main[production][period][user.id]['Fire']["Policies"],
+							main[production][period][user.id]['Life']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Life@Health`] = dividing(
-							main[production][period][user.data.displayName]['Health']["Policies"],
-							main[production][period][user.data.displayName]['Life']["Policies"]
+							main[production][period][user.id]['Health']["Policies"],
+							main[production][period][user.id]['Life']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Life@Bank`] = dividing(
-							main[production][period][user.data.displayName]['Bank']["Policies"],
-							main[production][period][user.data.displayName]['Life']["Policies"]
+							main[production][period][user.id]['Bank']["Policies"],
+							main[production][period][user.id]['Life']["Policies"]
 						);
 
 						// by Health
 						tableContent[user.data.displayName][`Health@Auto`] = dividing(
-							main[production][period][user.data.displayName]['Auto']["Policies"],
-							main[production][period][user.data.displayName]['Health']["Policies"]
+							main[production][period][user.id]['Auto']["Policies"],
+							main[production][period][user.id]['Health']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Health@Fire`] = dividing(
-							main[production][period][user.data.displayName]['Fire']["Policies"],
-							main[production][period][user.data.displayName]['Health']["Policies"]
+							main[production][period][user.id]['Fire']["Policies"],
+							main[production][period][user.id]['Health']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Health@Life`] = dividing(
-							main[production][period][user.data.displayName]['Life']["Policies"],
-							main[production][period][user.data.displayName]['Health']["Policies"]
+							main[production][period][user.id]['Life']["Policies"],
+							main[production][period][user.id]['Health']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Health@Bank`] = dividing(
-							main[production][period][user.data.displayName]['Bank']["Policies"],
-							main[production][period][user.data.displayName]['Health']["Policies"]
+							main[production][period][user.id]['Bank']["Policies"],
+							main[production][period][user.id]['Health']["Policies"]
 						);
 
 						// by Bank
 						tableContent[user.data.displayName][`Bank@Auto`] = dividing(
-							main[production][period][user.data.displayName]['Auto']["Policies"],
-							main[production][period][user.data.displayName]['Bank']["Policies"]
+							main[production][period][user.id]['Auto']["Policies"],
+							main[production][period][user.id]['Bank']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Bank@Fire`] = dividing(
-							main[production][period][user.data.displayName]['Fire']["Policies"],
-							main[production][period][user.data.displayName]['Bank']["Policies"]
+							main[production][period][user.id]['Fire']["Policies"],
+							main[production][period][user.id]['Bank']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Bank@Life`] = dividing(
-							main[production][period][user.data.displayName]['Life']["Policies"],
-							main[production][period][user.data.displayName]['Bank']["Policies"]
+							main[production][period][user.id]['Life']["Policies"],
+							main[production][period][user.id]['Bank']["Policies"]
 						);	
 						tableContent[user.data.displayName][`Bank@Health`] = dividing(
-							main[production][period][user.data.displayName]['Health']["Policies"],
-							main[production][period][user.data.displayName]['Bank']["Policies"]
+							main[production][period][user.id]['Health']["Policies"],
+							main[production][period][user.id]['Bank']["Policies"]
 						);
 
 						// by Auto&Fire					
 						tableContent[user.data.displayName][`Auto&Fire@Life`] = dividing(
-							main[production][period][user.data.displayName]['Life']["Policies"],
+							main[production][period][user.id]['Life']["Policies"],
 							(
-								main[production][period][user.data.displayName]['Auto']["Policies"] +
-								main[production][period][user.data.displayName]['Fire']["Policies"]
+								main[production][period][user.id]['Auto']["Policies"] +
+								main[production][period][user.id]['Fire']["Policies"]
 							)
 						);	
 						tableContent[user.data.displayName][`Auto&Fire@Health`] = dividing(
-							main[production][period][user.data.displayName]['Health']["Policies"],
+							main[production][period][user.id]['Health']["Policies"],
 							(
-								main[production][period][user.data.displayName]['Auto']["Policies"] +
-								main[production][period][user.data.displayName]['Fire']["Policies"]
+								main[production][period][user.id]['Auto']["Policies"] +
+								main[production][period][user.id]['Fire']["Policies"]
 							)
 						);	
 						tableContent[user.data.displayName][`Auto&Fire@Bank`] = dividing(
-							main[production][period][user.data.displayName]['Bank']["Policies"],
+							main[production][period][user.id]['Bank']["Policies"],
 							(
-								main[production][period][user.data.displayName]['Auto']["Policies"] +
-								main[production][period][user.data.displayName]['Fire']["Policies"]
+								main[production][period][user.id]['Auto']["Policies"] +
+								main[production][period][user.id]['Fire']["Policies"]
 							)
 						);
 						tableContent[user.data.displayName][`Total L/H/B`] = 
-							main[production][period][user.data.displayName]['Life']["Policies"] +						
-							main[production][period][user.data.displayName]['Health']["Policies"] +
-							main[production][period][user.data.displayName]['Bank']["Policies"];
+							main[production][period][user.id]['Life']["Policies"] +						
+							main[production][period][user.id]['Health']["Policies"] +
+							main[production][period][user.id]['Bank']["Policies"];
 
 						options.product.data.map((policy) => {
 							tableContent[user.data.displayName][policy.value] = dividing(
-								main[production][period][user.data.displayName][policy.value]['Policies'] * 100,
+								main[production][period][user.id][policy.value]['Policies'] * 100,
 								(
-									main[production][period][user.data.displayName]['Auto']['Policies'] +
-									main[production][period][user.data.displayName]['Fire']['Policies'] +
-									main[production][period][user.data.displayName]['Life']['Policies'] +
-									main[production][period][user.data.displayName]['Health']['Policies'] +
-									main[production][period][user.data.displayName]['Bank']['Policies']
+									main[production][period][user.id]['Auto']['Policies'] +
+									main[production][period][user.id]['Fire']['Policies'] +
+									main[production][period][user.id]['Life']['Policies'] +
+									main[production][period][user.id]['Health']['Policies'] +
+									main[production][period][user.id]['Bank']['Policies']
 								)
 							)							
 						})

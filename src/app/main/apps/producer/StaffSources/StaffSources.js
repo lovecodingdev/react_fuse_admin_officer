@@ -58,7 +58,7 @@ function StaffSources(props) {
 		if (users.length > 0) {
 			users.map(user => {
 				if(user.belongTo === UID)
-					temp.push({ item: user.data.displayName, value: user.data.displayName });
+					temp.push({ item: user.data.displayName, value: user.id });
 			});
 			setUserList(temp);
 		}
@@ -109,7 +109,7 @@ function StaffSources(props) {
 						if(user.belongTo === UID) {
 							tableRows.push({ 
 								id: user.id, 
-								value: user.data.displayName, 
+								value: user.id, 
 								type: true, 
 								color: '' 
 							});
@@ -119,7 +119,7 @@ function StaffSources(props) {
 							Object.keys(marketings).map((key) => {		
 								const marketing = marketings[key];
 								tableContent[user.data.displayName][marketing.marketingName] = 
-									main[production][period][user.data.displayName][policy.value][marketing.marketingName];												
+									main[production][period][user.id][policy.value][marketing.marketingName];												
 								total += tableContent[user.data.displayName][marketing.marketingName];
 								if(!tableContent['Total'].hasOwnProperty(marketing.marketingName)) {
 									tableContent['Total'][marketing.marketingName] = 0;

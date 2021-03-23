@@ -161,11 +161,12 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
     monthsAndQuarters.map((month) => {				
       temp[production][month.value] = {};
       users.map((user) => {
-        const userName = user.data.displayName;
-        temp[production][month.value][userName] = {};
+        const userId = user.id;
+        // const userId = user.data.displayName;
+        temp[production][month.value][userId] = {};
         policies.map((pol) => {
           const policy = pol.value;
-          temp[production][month.value][userName][policy] = {
+          temp[production][month.value][userId][policy] = {
             "Bonuses": 0,
             "Premium": 0,
             "Policies": 0,
@@ -179,18 +180,18 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
           // adding marketing items
           Object.keys(marketings).map((key) => {
             const marketing = marketings[key];
-            temp[production][month.value][userName][policy][marketing.marketingName] = 0;			
+            temp[production][month.value][userId][policy][marketing.marketingName] = 0;			
           }); 
           
           //adding bonusPlan items
           const bonusPlan = bonusPlans.length > 0 &&	bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy].db) ?	bonusPlans[0][bonusPlanDbNames[policy].db] : {};				
           Object.keys(bonusPlan).map((key) => {		
           	const item = bonusPlan[key];
-          	temp[production][month.value][userName][policy][item.name] = 0;
-            temp[production][month.value][userName][policy][`${item.name}@Bonuses`] = 0;
-            temp[production][month.value][userName][policy][`${item.name}@Premium`] = 0;
-            temp[production][month.value][userName][policy][`${item.name}@Policies`] = 0;
-            temp[production][month.value][userName][policy][`${item.name}@Averages`] = 0;
+          	temp[production][month.value][userId][policy][item.name] = 0;
+            temp[production][month.value][userId][policy][`${item.name}@Bonuses`] = 0;
+            temp[production][month.value][userId][policy][`${item.name}@Premium`] = 0;
+            temp[production][month.value][userId][policy][`${item.name}@Policies`] = 0;
+            temp[production][month.value][userId][policy][`${item.name}@Averages`] = 0;
           });	
 
           //  adding lapseRate items
@@ -198,7 +199,7 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
           lapseRate[0].hasOwnProperty(policy) && 
           lapseRate[0][policy].hasOwnProperty(month.value) ? 
           lapseRate[0][policy][month.value]['previousMonth']['value'] : 0;				
-          temp[production][month.value][userName][policy]['lapseRate'] = lapse;            
+          temp[production][month.value][userId][policy]['lapseRate'] = lapse;            
 
           // adding vision items
           if(vision.length > 0) {	
@@ -218,7 +219,7 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
                 trimedMonth = "Total";									  
             }		
             if(vision[0].hasOwnProperty(user.id)) {
-              temp[production][month.value][userName][policy]["Goals"] = 
+              temp[production][month.value][userId][policy]["Goals"] = 
                 vision[0][user.id]['Goals'][trimedMonth][visionNames[policy]];
             }            
           }
@@ -228,7 +229,8 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
 
     if(entries.length > 0) {
       users.map((user) => {
-        const userName = user.data.displayName;
+        const userId = user.id;
+        // const userId = user.data.displayName;
         Object.keys(entries[0]).map((entry) => {
           const policy = entryNames[entry];
           if(entries[0][entry].hasOwnProperty(user.id)) {
@@ -242,17 +244,17 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
               const month = production==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value;
               const semiAnnual = policy==='Auto' ? 2 : 1;
               const bonus = item.dollarBonus==='' ? 0 : item.dollarBonus;
-              temp[production][month][userName][policy][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
-              temp[production][month][userName][policy][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
-              temp[production][month][userName][policy][item.policyHolderType] += 1;
-              temp[production][month][userName][policy]["Bonuses"] += parseFloat(bonus);									
-              temp[production][month][userName][policy]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;									
-              temp[production][month][userName][policy]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
-              temp[production][month][userName][policy]["Averages"] = dividing(temp[production][month][userName][policy]["Premium"], temp[production][month][userName][policy]["Policies"])              
-              temp[production][month][userName][policy][`${item.typeOfProduct}@Bonuses`] += parseFloat(bonus);
-              temp[production][month][userName][policy][`${item.typeOfProduct}@Premium`] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;
-              temp[production][month][userName][policy][`${item.typeOfProduct}@Policies`] += parseFloat(item.percentOfSaleCredit / 100);	              
-              temp[production][month][userName][policy][`${item.typeOfProduct}@Averages`] = dividing(temp[production][month][userName][policy][`${item.typeOfProduct}@Premium`], temp[production][month][userName][policy][`${item.typeOfProduct}@Policies`])              
+              temp[production][month][userId][policy][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
+              temp[production][month][userId][policy][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
+              temp[production][month][userId][policy][item.policyHolderType] += 1;
+              temp[production][month][userId][policy]["Bonuses"] += parseFloat(bonus);									
+              temp[production][month][userId][policy]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;									
+              temp[production][month][userId][policy]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
+              temp[production][month][userId][policy]["Averages"] = dividing(temp[production][month][userId][policy]["Premium"], temp[production][month][userId][policy]["Policies"])              
+              temp[production][month][userId][policy][`${item.typeOfProduct}@Bonuses`] += parseFloat(bonus);
+              temp[production][month][userId][policy][`${item.typeOfProduct}@Premium`] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;
+              temp[production][month][userId][policy][`${item.typeOfProduct}@Policies`] += parseFloat(item.percentOfSaleCredit / 100);	              
+              temp[production][month][userId][policy][`${item.typeOfProduct}@Averages`] = dividing(temp[production][month][userId][policy][`${item.typeOfProduct}@Premium`], temp[production][month][userId][policy][`${item.typeOfProduct}@Policies`])              
             });
           }
         });	

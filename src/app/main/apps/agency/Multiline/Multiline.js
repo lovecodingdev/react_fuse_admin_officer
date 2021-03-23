@@ -74,15 +74,15 @@ function Multiline(props) {
 						tableContent[policy.value] = { 'Sales Goal': 0, 'Actual Sales': 0, 'Total Premium / Dollars': 0, 'Average Premium / Dollars': 0 };
 						users.map(user => {
 							if(user.belongTo === UID) {
-								tableContent[policy.value]['Sales Goal'] += main[production][period][user.data.displayName][policy.value]['Goals'];	
-								tableContent[policy.value]['Actual Sales'] += main[production][period][user.data.displayName][policy.value]['Policies'];										
-								tableContent[policy.value]['Total Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Premium'];										
-								tableContent[policy.value]['Average Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Averages'];	
-								console.log(period, user.data.displayName, policy.value, main[production][period][user.data.displayName][policy.value]['Averages'])
-								tableContent['Total']['Sales Goal'] += main[production][period][user.data.displayName][policy.value]['Goals'];	
-								tableContent['Total']['Actual Sales'] += main[production][period][user.data.displayName][policy.value]['Policies'];										
-								tableContent['Total']['Total Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Premium'];										
-								tableContent['Total']['Average Premium / Dollars'] += main[production][period][user.data.displayName][policy.value]['Averages'];	
+								tableContent[policy.value]['Sales Goal'] += main[production][period][user.id][policy.value]['Goals'];	
+								tableContent[policy.value]['Actual Sales'] += main[production][period][user.id][policy.value]['Policies'];										
+								tableContent[policy.value]['Total Premium / Dollars'] += main[production][period][user.id][policy.value]['Premium'];										
+								tableContent[policy.value]['Average Premium / Dollars'] += main[production][period][user.id][policy.value]['Averages'];	
+								console.log(period, user.data.displayName, policy.value, main[production][period][user.id][policy.value]['Averages'])
+								tableContent['Total']['Sales Goal'] += main[production][period][user.id][policy.value]['Goals'];	
+								tableContent['Total']['Actual Sales'] += main[production][period][user.id][policy.value]['Policies'];										
+								tableContent['Total']['Total Premium / Dollars'] += main[production][period][user.id][policy.value]['Premium'];										
+								tableContent['Total']['Average Premium / Dollars'] += main[production][period][user.id][policy.value]['Averages'];	
 							}			
 						});
 					}
@@ -171,8 +171,8 @@ function Multiline(props) {
 							tableContent[policy.value][marketing.marketingName] = 0;
 							users.map(user => {
 								if(user.belongTo === UID) {
-									tableContent[policy.value][marketing.marketingName] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];										
-									tableContent['Total'][marketing.marketingName] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];										
+									tableContent[policy.value][marketing.marketingName] += main[production][period][user.id][policy.value][marketing.marketingName];										
+									tableContent['Total'][marketing.marketingName] += main[production][period][user.id][policy.value][marketing.marketingName];										
 								}			
 							});
 						});						

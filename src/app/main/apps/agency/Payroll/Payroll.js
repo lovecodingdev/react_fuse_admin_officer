@@ -96,7 +96,7 @@ function Payroll(props) {
 									tableContent['Total'][header.value] = 0;
 								}
 								if(col < 9) {
-									value = main[production][period][user.data.displayName][header.value.split(' ')[0]][header.value.split(' ')[1]];
+									value = main[production][period][user.id][header.value.split(' ')[0]][header.value.split(' ')[1]];
 								} 
 								
 								// getting IndividualTargetBonuses & Team Target Bonuses
@@ -106,11 +106,11 @@ function Payroll(props) {
 										let teamTargetBonus = 0;
 										policies.map(policy => {
 											if(policy.value !== 'Total') {
-												const policyCount = main[production][period][user.data.displayName][policy.value]['Policies'];
+												const policyCount = main[production][period][user.id][policy.value]['Policies'];
 												indTargetBonuses += parseFloat(
 													(
-														main[production][period][user.data.displayName]['Auto']['Premium'] / 2 +
-														main[production][period][user.data.displayName]['Fire']['Premium']
+														main[production][period][user.id]['Auto']['Premium'] / 2 +
+														main[production][period][user.id]['Fire']['Premium']
 													) * getLevel(policyCount, policy.value, bonusPlans).amount / 100	
 												);
 												teamTargetBonus += parseFloat(getLevel(policyCount, `Team${policy.value}`, bonusPlans).amount);
@@ -189,7 +189,7 @@ function Payroll(props) {
 								}
 								months.map(month => {
 									if(col < 9) {
-										value += parseFloat(main[production][month.value][user.data.displayName][header.value.split(' ')[0]][header.value.split(' ')[1]]);										
+										value += parseFloat(main[production][month.value][user.id][header.value.split(' ')[0]][header.value.split(' ')[1]]);										
 									} 
 									
 									// getting IndividualTargetBonuses & Team Target Bonuses
@@ -199,11 +199,11 @@ function Payroll(props) {
 											let teamTargetBonus = 0;
 											policies.map(policy => {
 												if(policy.value !== 'Total') {
-													const policyCount = main[production][month.value][user.data.displayName][policy.value]['Policies'];
+													const policyCount = main[production][month.value][user.id][policy.value]['Policies'];
 													indTargetBonuses += parseFloat(
 														(
-															main[production][month.value][user.data.displayName]['Auto']['Premium'] / 2 +
-															main[production][month.value][user.data.displayName]['Fire']['Premium']
+															main[production][month.value][user.id]['Auto']['Premium'] / 2 +
+															main[production][month.value][user.id]['Fire']['Premium']
 														) * getLevel(policyCount, policy.value, bonusPlans).amount / 100	
 													);
 													teamTargetBonus += parseFloat(getLevel(policyCount, `Team${policy.value}`, bonusPlans).amount);
@@ -283,7 +283,7 @@ function Payroll(props) {
 							users.map(user => {
 								if(user.belongTo === UID) {
 									if(col < 9) {
-										value += parseFloat(main[production][month.value][user.data.displayName][header.value.split(' ')[0]][header.value.split(' ')[1]]);										
+										value += parseFloat(main[production][month.value][user.id][header.value.split(' ')[0]][header.value.split(' ')[1]]);										
 									} 
 									
 									// getting IndividualTargetBonuses & Team Target Bonuses
@@ -293,11 +293,11 @@ function Payroll(props) {
 											let teamTargetBonus = 0;
 											policies.map(policy => {
 												if(policy.value !== 'Total') {
-													const policyCount = main[production][month.value][user.data.displayName][policy.value]['Policies'];
+													const policyCount = main[production][month.value][user.id][policy.value]['Policies'];
 													indTargetBonuses += parseFloat(
 														(
-															main[production][month.value][user.data.displayName]['Auto']['Premium'] / 2 +
-															main[production][month.value][user.data.displayName]['Fire']['Premium']
+															main[production][month.value][user.id]['Auto']['Premium'] / 2 +
+															main[production][month.value][user.id]['Fire']['Premium']
 														) * getLevel(policyCount, policy.value, bonusPlans).amount / 100	
 													);
 													teamTargetBonus += parseFloat(getLevel(policyCount, `Team${policy.value}`, bonusPlans).amount);

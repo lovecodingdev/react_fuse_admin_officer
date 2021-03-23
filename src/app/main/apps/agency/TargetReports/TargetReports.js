@@ -60,7 +60,7 @@ function TargetReports(props) {
 		if (users.length > 0) {
 			users.map(user => {
 				if(user.belongTo === UID)
-					temp.push({ item: user.data.displayName, value: user.data.displayName });
+					temp.push({ item: user.data.displayName, value: user.id });
 			});
 			setUserList(temp);
 		}

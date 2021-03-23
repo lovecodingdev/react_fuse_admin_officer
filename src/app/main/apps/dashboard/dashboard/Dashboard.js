@@ -135,73 +135,73 @@ function Dashboard(props) {
 					if(user.id === UID) { 
 						// tableRows.push({ 
 						// 	id: user.id, 
-						// 	value: user.data.displayName, 
+						// 	value: user.id, 
 						// 	type: true, 
 						// 	color: '' 
 						// });
 						
 						let totalGoals = 0;
 						let totalActual = 0;					
-						// indTableContent[user.data.displayName] = {};
+						// indTableContent[user.id] = {};
 						options.product.data.map((policy) => { // except for Total
 							if(policy.value !== 'Bank') {
-								// indTableContent[user.data.displayName][`${policy.value}@Goal`] = main[production][period][user.data.displayName][policy.value]["Goals"]
-								// indTableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
-								totalGoals += main[production][period][user.data.displayName][policy.value]["Goals"];
-								totalActual += main[production][period][user.data.displayName][policy.value]["Policies"];											
-								indTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.data.displayName][policy.value]["Goals"];
-								indTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.data.displayName][policy.value]["Policies"];
+								// indTableContent[user.id][`${policy.value}@Goal`] = main[production][period][user.id][policy.value]["Goals"]
+								// indTableContent[user.id][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
+								totalGoals += main[production][period][user.id][policy.value]["Goals"];
+								totalActual += main[production][period][user.id][policy.value]["Policies"];											
+								indTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								indTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
 							}
 						});
-						// indTableContent[user.data.displayName]['Total@Goal'] = totalGoals;
-						// indTableContent[user.data.displayName]['Total@Actual'] = totalActual;														
+						// indTableContent[user.id]['Total@Goal'] = totalGoals;
+						// indTableContent[user.id]['Total@Actual'] = totalActual;														
 						indTableContent['Total'][`Total@Goal`] += totalGoals;
 						indTableContent['Total'][`Total@Actual`] += totalActual;
 					}	
 					if(user.belongTo === belongTo) { 
 						tableRows.push({ 
 							id: user.id, 
-							value: user.data.displayName, 
+							value: user.id, 
 							type: true, 
 							color: '' 
 						});
 						
 						let totalGoals = 0;					
 						let totalActual = 0;					
-						teamTableContent[user.data.displayName] = {};
+						teamTableContent[user.id] = {};
 						options.product.data.map((policy) => { // except for Total
 							if(policy.value !== 'Bank') {
-								teamTableContent[user.data.displayName][`${policy.value}@Goal`] = main[production][period][user.data.displayName][policy.value]["Goals"]
-								teamTableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
-								totalGoals += main[production][period][user.data.displayName][policy.value]["Goals"];
-								totalActual += main[production][period][user.data.displayName][policy.value]["Policies"];											
-								teamTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.data.displayName][policy.value]["Goals"];
-								teamTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.data.displayName][policy.value]["Policies"];
+								teamTableContent[user.id][`${policy.value}@Goal`] = main[production][period][user.id][policy.value]["Goals"]
+								teamTableContent[user.id][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
+								totalGoals += main[production][period][user.id][policy.value]["Goals"];
+								totalActual += main[production][period][user.id][policy.value]["Policies"];											
+								teamTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								teamTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
 							}
 						});
-						teamTableContent[user.data.displayName]['Total@Goal'] = totalGoals;
-						teamTableContent[user.data.displayName]['Total@Actual'] = totalActual;														
+						teamTableContent[user.id]['Total@Goal'] = totalGoals;
+						teamTableContent[user.id]['Total@Actual'] = totalActual;														
 						teamTableContent['Total'][`Total@Goal`] += totalGoals;
 						teamTableContent['Total'][`Total@Actual`] += totalActual;
 					}			
 				});
 			
-				widgets = {
-					...widgets, Dashboard_GoalsAndActual_Table: {
-						...widgets.Dashboard_GoalsAndActual_Table, table: {
-							...widgets.Dashboard_GoalsAndActual_Table.table, rows:
-								tableRows
-						}
-					}
-				};
-				widgets = {
-					...widgets, Dashboard_GoalsAndActual_Table: {
-						...widgets.Dashboard_GoalsAndActual_Table, table: {
-							...widgets.Dashboard_GoalsAndActual_Table.table, tableContent:
-								indTableContent
-						}
-					}
-				};	
+				// widgets = {
+				// 	...widgets, Dashboard_GoalsAndActual_Table: {
+				// 		...widgets.Dashboard_GoalsAndActual_Table, table: {
+				// 			...widgets.Dashboard_GoalsAndActual_Table.table, rows:
+				// 				tableRows
+				// 		}
+				// 	}
+				// };
+				// widgets = {
+				// 	...widgets, Dashboard_GoalsAndActual_Table: {
+				// 		...widgets.Dashboard_GoalsAndActual_Table, table: {
+				// 			...widgets.Dashboard_GoalsAndActual_Table.table, tableContent:
+				// 				indTableContent
+				// 		}
+				// 	}
+				// };	
 
 				policies.map(policy => {
 					if(policy.value !== 'Bank') {
@@ -255,15 +255,15 @@ function Dashboard(props) {
 				policies.map(policy => {
 					if(policy.value !== 'Total') {
 						users.map(user => {
-							if(user.id === UID) { 							
-								household += main[production][period][user.data.displayName][policy.value]['household'];
-								individual += main[production][period][user.data.displayName][policy.value]['individual'];
+							if(user.belongTo === UID) { 							
+								household += main[production][period][user.id][policy.value]['household'];
+								individual += main[production][period][user.id][policy.value]['individual'];
 
 								if(lapseRate.length > 0) {
-									auto = main[production][period][user.data.displayName]['Auto']['lapseRate'];
-									fire = main[production][period][user.data.displayName]['Fire']['lapseRate'];
-									life = main[production][period][user.data.displayName]['Life']['lapseRate'];
-									health = main[production][period][user.data.displayName]['Health']['lapseRate'];
+									auto = main[production][period][user.id]['Auto']['lapseRate'];
+									fire = main[production][period][user.id]['Fire']['lapseRate'];
+									life = main[production][period][user.id]['Life']['lapseRate'];
+									health = main[production][period][user.id]['Health']['lapseRate'];
 								}
 							}
 						});

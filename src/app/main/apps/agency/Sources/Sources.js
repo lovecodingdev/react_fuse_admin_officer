@@ -85,7 +85,7 @@ function Sources(props) {
 					months.map(month => {					
 						users.map(user => {
 							if(user.belongTo === UID) {
-								tableContent[marketing.marketingName]['Products'] += main[production][month.value][user.data.displayName][product][marketing.marketingName];								
+								tableContent[marketing.marketingName]['Products'] += main[production][month.value][user.id][product][marketing.marketingName];								
 							}
 						});
 					});
@@ -207,9 +207,9 @@ function Sources(props) {
 					policies.map(policy => {					
 						users.map(user => {
 							if(user.belongTo === UID) {
-								tableContent[marketing.marketingName][policy.value] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];								
-								tableContent['Total'][policy.value] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];
-								tableContent[marketing.marketingName]['Total'] += main[production][period][user.data.displayName][policy.value][marketing.marketingName];									
+								tableContent[marketing.marketingName][policy.value] += main[production][period][user.id][policy.value][marketing.marketingName];								
+								tableContent['Total'][policy.value] += main[production][period][user.id][policy.value][marketing.marketingName];
+								tableContent[marketing.marketingName]['Total'] += main[production][period][user.id][policy.value][marketing.marketingName];									
 							}
 						});
 					});	

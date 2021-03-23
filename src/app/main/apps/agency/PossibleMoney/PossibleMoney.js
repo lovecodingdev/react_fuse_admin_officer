@@ -61,7 +61,7 @@ function PossibleMoney(props) {
 		if (users.length > 0) {
 			users.map(user1 => {
 				if(user1.belongTo === UID) {
-					temp.push({ item: user1.data.displayName, value: user1.data.displayName });
+					temp.push({ item: user1.data.displayName, value: user1.id });
 				}					
 			}); 
 			setUserList(temp);
@@ -135,13 +135,13 @@ function PossibleMoney(props) {
 						} else {
 							users.map(user1 => { 	
 								if(user1.belongTo === UID) {
-									policySum += main[production][period][user1.data.displayName][policy.value]['Policies'];
-									premiumSum += main[production][period][user1.data.displayName][policy.value]['Premium'];
+									policySum += main[production][period][user1.id][policy.value]['Policies'];
+									premiumSum += main[production][period][user1.id][policy.value]['Premium'];
 									avgPremium = dividing(premiumSum, policySum); 
-									const policyCount = main[production][period][user1.data.displayName][policy.value]['Policies'];
+									const policyCount = main[production][period][user1.id][policy.value]['Policies'];
 									bonusSum += parseFloat(getLevel(policyCount, `Team${policy.value}`, bonusPlans).amount);
 									if(bonus === 'Include Initial Bonus in Calculation') {
-										bonusSum += parseFloat(main[production][period][user1.data.displayName][policy.value]['Bonuses']);
+										bonusSum += parseFloat(main[production][period][user1.id][policy.value]['Bonuses']);
 									}	
 								}														
 							});	
@@ -278,7 +278,7 @@ function PossibleMoney(props) {
 							if(bonus === 'Include Initial Bonus in Calculation') {
 								users.map(user1 => {
 									if(user1.belongTo === UID) {
-										nextBonus += parseFloat(main[production][period][user1.data.displayName][policy.value]['Bonuses']);
+										nextBonus += parseFloat(main[production][period][user1.id][policy.value]['Bonuses']);
 									}									
 								});								
 							}
@@ -405,7 +405,7 @@ function PossibleMoney(props) {
 							if(bonus === 'Include Initial Bonus in Calculation') {
 								users.map(user1 => {
 									if(user1.belongTo === UID) {
-										maxBonus += parseFloat(main[production][period][user1.data.displayName][policy.value]['Bonuses']);
+										maxBonus += parseFloat(main[production][period][user1.id][policy.value]['Bonuses']);
 									}									
 								});								
 							}

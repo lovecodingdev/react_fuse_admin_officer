@@ -117,14 +117,14 @@ function PoliciesAndBank(props) {
 				users.map((user) => {
 					if(user.belongTo === UID) {
 						tableRows.push({
-							id: user.data.displayName,
-							value: user.data.displayName,
+							id: user.id,
+							value: user.id,
 						})
 						tableContent[user.data.displayName] = {};
 						tableHeaders.map((header) => {
 							if(header.value.substring(header.value.indexOf('@')+1) != 'Total') {
 								tableContent[user.data.displayName][header.value] = 
-									main[production][period][user.data.displayName][header.value.split('@')[0]][`${header.value.split('@')[1]}@${report}`]
+									main[production][period][user.id][header.value.split('@')[0]][`${header.value.split('@')[1]}@${report}`]
 									
 								// Total per Policy	
 								if(!tableContent[user.data.displayName].hasOwnProperty(`${header.value.split('@')[0]}@Total`)) {
