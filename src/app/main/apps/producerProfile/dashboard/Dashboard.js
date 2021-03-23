@@ -148,12 +148,12 @@ function Dashboard(props) {
 						// indTableContent[user.data.displayName] = {};
 						options.product.data.map((policy) => { // except for Total
 							if(policy.value !== 'Bank') {
-								// indTableContent[user.data.displayName][`${policy.value}@Goal`] = main[production][period][user.data.displayName][policy.value]["Goals"]
-								// indTableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
-								totalGoals += main[production][period][user.data.displayName][policy.value]["Goals"];
-								totalActual += main[production][period][user.data.displayName][policy.value]["Policies"];											
-								indTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.data.displayName][policy.value]["Goals"];
-								indTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.data.displayName][policy.value]["Policies"];
+								// indTableContent[user.data.displayName][`${policy.value}@Goal`] = main[production][period][user.id][policy.value]["Goals"]
+								// indTableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
+								totalGoals += main[production][period][user.id][policy.value]["Goals"];
+								totalActual += main[production][period][user.id][policy.value]["Policies"];											
+								indTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								indTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
 							}
 						});
 						// indTableContent[user.data.displayName]['Total@Goal'] = totalGoals;
@@ -174,12 +174,12 @@ function Dashboard(props) {
 						// teamTableContent[user.data.displayName] = {};
 						options.product.data.map((policy) => { // except for Total
 							if(policy.value !== 'Bank') {
-								// teamTableContent[user.data.displayName][`${policy.value}@Goal`] = main[production][period][user.data.displayName][policy.value]["Goals"]
-								// teamTableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.data.displayName][policy.value]["Policies"]
-								totalGoals += main[production][period][user.data.displayName][policy.value]["Goals"];
-								totalActual += main[production][period][user.data.displayName][policy.value]["Policies"];											
-								teamTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.data.displayName][policy.value]["Goals"];
-								teamTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.data.displayName][policy.value]["Policies"];
+								// teamTableContent[user.data.displayName][`${policy.value}@Goal`] = main[production][period][user.id][policy.value]["Goals"]
+								// teamTableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
+								totalGoals += main[production][period][user.id][policy.value]["Goals"];
+								totalActual += main[production][period][user.id][policy.value]["Policies"];											
+								teamTableContent['Total'][`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								teamTableContent['Total'][`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
 							}
 						});
 						// teamTableContent[user.data.displayName]['Total@Goal'] = totalGoals;
@@ -259,14 +259,14 @@ function Dashboard(props) {
 					if(policy.value !== 'Total') {
 						users.map(user => {
 							if(user.id === UID) { 							
-								household += main[production][period][user.data.displayName][policy.value]['household'];
-								individual += main[production][period][user.data.displayName][policy.value]['individual'];
+								household += main[production][period][user.id][policy.value]['household'];
+								individual += main[production][period][user.id][policy.value]['individual'];
 
 								if(lapseRate.length > 0) {
-									auto = main[production][period][user.data.displayName]['Auto']['lapseRate'];
-									fire = main[production][period][user.data.displayName]['Fire']['lapseRate'];
-									life = main[production][period][user.data.displayName]['Life']['lapseRate'];
-									health = main[production][period][user.data.displayName]['Health']['lapseRate'];
+									auto = main[production][period][user.id]['Auto']['lapseRate'];
+									fire = main[production][period][user.id]['Fire']['lapseRate'];
+									life = main[production][period][user.id]['Life']['lapseRate'];
+									health = main[production][period][user.id]['Health']['lapseRate'];
 								}
 							}
 						});
