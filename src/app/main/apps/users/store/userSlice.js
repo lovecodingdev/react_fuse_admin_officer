@@ -16,44 +16,54 @@ export const getUsers = createAsyncThunk(
 			var starCountRef = realDb.ref(`users/`);
 			var agencyCountRef = realDb.ref(`agency/`);
 			var invitationCountRef = realDb.ref(`Invitation/${belongTo}/`);
+			var bonusRef = realDb.ref(`BonusPlan/${belongTo}/`);
 			var users = [];
-			starCountRef.on('value', snapshot => {
-				const data = snapshot.val();
-
-				if (data) {
-					Object.keys(data).map(item => {
-						if (belongTo === data[item].belongTo) users.push(data[item]);
-					});
-				}
-
-				agencyCountRef.on('value', snap => {
-					const agencyData = snap.val();
-					if (agencyData) {
-						Object.keys(agencyData).map(item => {
-							if (belongTo === agencyData[item].belongTo) users.push(agencyData[item]);
+			bonusRef.on('value', snapData=>{
+				const snapshotData = snapData.val()
+				starCountRef.on('value', snapshot => {
+					const data = snapshot.val();
+	
+					if (data) {
+						Object.keys(data).map(item => {
+							if (belongTo === data[item].belongTo) users.push({...data[item], bonusPlan: snapshotData[item].name});
 						});
 					}
-					invitationCountRef.on('value', snaps => {
-						const invitationData = snaps.val();
-
-						if (invitationData) {
-							Object.keys(invitationData).map(item => {
-								users.push(invitationData[item]);
+	
+					agencyCountRef.on('value', snap => {
+						const agencyData = snap.val();
+						if (agencyData) {
+							Object.keys(agencyData).map(item => {
+								if (belongTo === agencyData[item].belongTo) users.push({...agencyData[item], bonusPlan: snapshotData[item].name});
 							});
 						}
-
-						resolve(users);
+						invitationCountRef.on('value', snaps => {
+							const invitationData = snaps.val();
+	
+							if (invitationData) {
+								Object.keys(invitationData).map(item => {
+									users.push(invitationData[item]);
+								});
+							}
+	
+							resolve(users);
+						});
 					});
 				});
-			});
+			})
+			
 		})
 );
 
-export const saveProduct = createAsyncThunk('users/users/saveUser', async (product, { dispatch, getState }) => {
-	const response = await axios.post('/api/users/save', product);
-	const data = await response.data;
+export const saveUser = createAsyncThunk('users/users/saveUser', async (product, { dispatch, getState }) => {
+	// const response = await axios.post('/api/users/save', product);
+	// const data = await response.data;
+	console.log(product)
+	var belongTo = localStorage.getItem('@BELONGTO');
+	realDb.ref(`BonusPlan/${belongTo}/${product.uid}/`).set({
+		name:product.template
+	})
 	dispatch(getUsers());
-	return data;
+	return product;
 });
 
 export const removeProducts = createAsyncThunk('users/users/removeUser', async (productIds, { dispatch, getState }) => {

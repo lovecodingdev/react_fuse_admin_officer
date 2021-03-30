@@ -21,9 +21,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import SelectBox from '../../../components/SelectBox';
+import { getTemplateData } from '../store/bonusPlanSlice';
 import DateFnsUtils from '@date-io/date-fns';
-import { openUserProfileDialog, deleteUser } from '../store/userSlice';
+import { openUserProfileDialog, deleteUser, saveUser } from '../store/userSlice';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { bonusPlanTemplate } from 'app/services/jsons';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -45,11 +47,13 @@ function ProductsTable(props) {
 	const dispatch = useDispatch();
 	const products = useSelector(selectUsers);
 	const searchText = useSelector(({ users }) => users.users.searchText);
+	const bonusPlanTemplates = useSelector(({ users }) => users.templates);
+	console.log(bonusPlanTemplates);
 	const isAdmin = useSelector(({ auth }) => auth.user.role[0]);
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(products);
-	console.log(products, isAdmin);
+
 
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -58,7 +62,8 @@ function ProductsTable(props) {
 		id: null
 	});
 	const [state, setState] = React.useState({
-		includeTeamBonus: ''
+		includeTeamBonus: '',
+		templates: []
 	});
 	const [open, setOpen] = React.useState(false);
 
@@ -79,7 +84,20 @@ function ProductsTable(props) {
 
 	useEffect(() => {
 		dispatch(getUsers()).then(() => setLoading(false));
+		dispatch(getTemplateData());
 	}, [dispatch]);
+
+	useEffect(() => {
+		var tempLists = [];
+		
+		if (bonusPlanTemplates.length > 0) {
+			console.log(bonusPlanTemplates)
+			Object.keys(bonusPlanTemplates[0]).map(item => {
+				tempLists.push({ item: item, value: item });
+			});
+			setState({ ...state, templates: tempLists });
+		}
+	}, [bonusPlanTemplates]);
 
 	useEffect(() => {
 		if (searchText.length !== 0) {
@@ -183,6 +201,11 @@ function ProductsTable(props) {
 		props.history.push(`/apps/producer-detail/${uid}`);
 	}
 
+	function handleBonusChangeValue(data, uid) {
+		console.log(data, uid)
+		dispatch(saveUser({...data, uid}))
+	}
+
 	if (loading) {
 		return <FuseLoading />;
 	}
@@ -268,6 +291,7 @@ function ProductsTable(props) {
 													<SelectBox
 														data={teamBonusList}
 														willvalidation={false}
+														value={n.bonusPlan==='Team Bonus Plan Template'?true: false}
 														validation="includeTeamBonus"
 														handleChangeValue={handleChangeValue}
 														// value={state.includeTeamBonus}
@@ -280,20 +304,34 @@ function ProductsTable(props) {
 												component="th"
 												scope="row"
 												align="center"
-												onClick={() => n.data && goBonusPlan(n.uid)}
+												// onClick={() => n.data && goBonusPlan(n.uid)}
 											>
 												{/* <span>$</span> */}
-												{n.active && 'Bonus Setup'}
+												
+												<SelectBox
+													id="outlined-basic"
+													label="Select Template"
+													data={state.templates}
+													variant="outlined"
+													value={n.bonusPlan}
+													validation="template"
+													handleChangeValue={(value)=>handleBonusChangeValue(value, n.uid)}
+													// willvalidation={false}
+													// validate={state.userValidation}
+												/>
 											</TableCell>
 
-											<TableCell
-												className="p-2 md:p-2"
-												component="th"
-												scope="row"
-												align="center"
-												onClick={() => n.data && goReport(n.uid)}
-											>
-												{n.active && 'Producer File'}
+											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
+												{n.active && (
+													<Button
+														className="whitespace-nowrap normal-case"
+														variant="contained"
+														color="secondary"
+														onClick={() => n.data && goReport(n.uid)}
+													>
+														<span className="hidden sm:flex">Producer File</span>
+													</Button>
+												)}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.active ? n.data.email : n.email}
