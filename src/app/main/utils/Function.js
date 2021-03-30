@@ -218,16 +218,16 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
               const month = production==='Show Written Production' ? months[writtenMonth].value : months[issuedMonth].value;
               const semiAnnual = policy==='Auto' ? 2 : 1;
               const bonus = item.dollarBonus==='' ? 0 : item.dollarBonus;              
-              temp[production][month][userId][policy][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
-              temp[production][month][userId][policy][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);              
+              temp[production][month][userId][policy][item.typeOfProduct] += parseFloat(item.creditPercent / 100);
+              temp[production][month][userId][policy][item.sourceOfBusiness] += parseFloat(item.creditPercent / 100);              
               temp[production][month][userId][policy][item.policyHolderType] += 1;
               temp[production][month][userId][policy]['Bonuses'] += parseFloat(bonus);									
-              temp[production][month][userId][policy]['Premium'] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;									
-              temp[production][month][userId][policy]['Policies'] += parseFloat(item.percentOfSaleCredit / 100);	
+              temp[production][month][userId][policy]['Premium'] += parseFloat(item.policyPremium) * parseFloat(item.creditPercent) * semiAnnual / 100;									
+              temp[production][month][userId][policy]['Policies'] += parseFloat(item.creditPercent / 100);	
               temp[production][month][userId][policy]['Averages'] = dividing(temp[production][month][userId][policy]['Premium'], temp[production][month][userId][policy]['Policies'])              
               temp[production][month][userId][policy][`${item.typeOfProduct}@Bonuses`] += parseFloat(bonus);
-              temp[production][month][userId][policy][`${item.typeOfProduct}@Premium`] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;
-              temp[production][month][userId][policy][`${item.typeOfProduct}@Policies`] += parseFloat(item.percentOfSaleCredit / 100);	              
+              temp[production][month][userId][policy][`${item.typeOfProduct}@Premium`] += parseFloat(item.policyPremium) * parseFloat(item.creditPercent) * semiAnnual / 100;
+              temp[production][month][userId][policy][`${item.typeOfProduct}@Policies`] += parseFloat(item.creditPercent / 100);	              
               temp[production][month][userId][policy][`${item.typeOfProduct}@Averages`] = dividing(temp[production][month][userId][policy][`${item.typeOfProduct}@Premium`], temp[production][month][userId][policy][`${item.typeOfProduct}@Policies`])              
 
               for(let i = 0; i < 4; i ++) {
