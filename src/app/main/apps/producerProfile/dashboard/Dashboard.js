@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from "react-router-dom";
 import moment from 'moment';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
@@ -17,11 +18,19 @@ import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
 import reducer from '../store';
+import {
+	MuiPickersUtilsProvider,
+	KeyboardTimePicker,
+	KeyboardDatePicker,
+  } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import Table from '../../../components/widgets/Table';
 import Panel from '../../../components/widgets/Panel';
 import DashboardPanel from '../../../components/widgets/DashboardPanel';
 import Card from '../../../components/widgets/Panel';
 import BarChart from '../../../components/widgets/BarChart';
+import HorizontalBarChart from '../../../components/widgets/HorizontalBarChart';
 import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
@@ -37,7 +46,7 @@ import { Options as options, policies } from '../../../utils/Globals';
 import { dividing, getMain } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
-const UID = localStorage.getItem('@UID');
+// const UID = localStorage.getItem('@UID');
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -51,6 +60,8 @@ function Dashboard(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles(props);
 	const pageLayout = useRef(null);
+	const param = useParams(); 
+	const UID = param.id;
 	let widgets = useSelector(selectWidgets);
 	const users = useSelector(selectUsers);
 	const bonusPlans = useSelector(selectBonusPlans);
@@ -65,22 +76,24 @@ function Dashboard(props) {
 	const [report, setReport] = useState("Policies");
 	const [userList, setUserList] = useState("");
 	const [tabValue, setTabValue] = useState(0);
+	const [date, setDate] = useState(moment());
 	const [title, setTitle] = useState('Welcome');
 	
 	useEffect(() => {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
-		dispatch(getEntries());	
+		dispatch(getEntries(moment(date).format('yyyy')));	
 		dispatch(getVision());	
 		dispatch(getLapseRate());	
 		dispatch(getWidgets()).then(() => setLoading(false));
-	}, [dispatch]);
+	}, [dispatch, date]);
 
-	useEffect(() => {		
-		if(users.length>0 && entries.length>0 && bonusPlans.length>0 && lapseRate.length>0) { 
-			const temp = getMain(entries, bonusPlans, [], users, vision, lapseRate);										
-			setMain(temp);
+	useEffect(() => {	
+		let temp = [];	
+		if(users.length>0 && entries.length>0 && bonusPlans.length>0) { 
+			temp = getMain(entries, bonusPlans, [], users, vision, lapseRate);													
 		}
+		setMain(temp);
 	}, [entries, bonusPlans, users, vision, lapseRate]);
 
 	useEffect(() => {	
@@ -328,12 +341,12 @@ function Dashboard(props) {
 		setData({ widgets });
 	}, [widgets, main, period]);
 
-	function handleChangeTab(event, value) {
-		setTabValue(value);
-	}
-	
 	function handleChangePeriod(event) { 
 		setPeriod(event.target.value);
+	}
+
+	function handleChangeYear(date) {  
+		setDate(date);
 	}
 	
 	if (loading) {   
@@ -361,7 +374,27 @@ function Dashboard(props) {
 				content: classes.content
 			}}
 			header={
-				<SimpleHeader title={title}>
+				<Header title={title}>
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<MuiPickersUtilsProvider utils={DateFnsUtils}>
+								<KeyboardDatePicker
+									disableToolbar
+									variant="inline"
+									format="yyyy"
+									margin="normal"
+									id="date-picker-inline"
+									label="From Date"
+									value={date}
+									onChange={handleChangeYear}
+									KeyboardButtonProps={{
+										'aria-label': 'change date',
+									}}
+									views={['year']}
+								/>	
+							</MuiPickersUtilsProvider>	
+						</FuseAnimate>
+					</div>
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
@@ -371,8 +404,8 @@ function Dashboard(props) {
 								data={options.period.data}
 							/>
 						</FuseAnimate>
-					</div>										
-				</SimpleHeader>			
+					</div>									
+				</Header>			
 			}
 			content={
 				<div className="w-full p-12">					
@@ -414,4 +447,4 @@ function Dashboard(props) {
 	);
 }
 
-export default withReducer('dashboardApp', reducer)(Dashboard);
+export default withReducer('producrProfile', reducer)(Dashboard);

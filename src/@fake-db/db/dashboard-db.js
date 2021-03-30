@@ -13,14 +13,14 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: 'Goal',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 			]
 		},
@@ -34,14 +34,14 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: 'Goal',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 52,
+					fontSize: 72,
 				}
 			]
 		},
@@ -55,14 +55,14 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: 'Goal',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 				{
 					title: ' ',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 52,
+					fontSize: 72,
 				}
 			]
 		},
@@ -76,14 +76,14 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: 'Goal',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 52,
+					fontSize: 72,
 				}
 			]
 		},
@@ -97,14 +97,14 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: 'Goal',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 52,
+					fontSize: 72,
 				}
 			]
 		},
@@ -118,14 +118,14 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: 'Goal',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 			]
 		},
@@ -139,14 +139,14 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: 'Goal',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 52,
+					fontSize: 72,
 				}
 			]
 		},
@@ -160,14 +160,14 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: 'Goal',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 				{
 					title: ' ',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 52,
+					fontSize: 72,
 				}
 			]
 		},
@@ -181,14 +181,14 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: 'Goal',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 52,
+					fontSize: 72,
 				}
 			]
 		},
@@ -202,14 +202,14 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: 'Goal',					
-					fontSize: 52,
+					fontSize: 72,
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 52,
+					fontSize: 72,
 				}
 			]
 		},
@@ -222,7 +222,7 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: '',					
-					fontSize: 52,
+					fontSize: 72,
 				}
 			]
 		},
@@ -236,7 +236,7 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: '',					
-					fontSize: 52,
+					fontSize: 72,
 				},				
 			]
 		},
@@ -250,7 +250,7 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: '',					
-					fontSize: 52,
+					fontSize: 72,
 				},				
 			]
 		},
@@ -264,7 +264,7 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: '',					
-					fontSize: 52,
+					fontSize: 72,
 				},				
 			]
 		},
@@ -278,7 +278,7 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: '',					
-					fontSize: 52,
+					fontSize: 72,
 				},				
 			]
 		},			
@@ -422,7 +422,7 @@ const activityAppDB = {
 	],
 };
 
-mock.onGet('/api/dashboard-app/widgets').reply(() => {
+mock.onGet('/api/dashboard-app/widgets').reply(() => { console.log('--------------ssssssssssssssssssssssssssssssssssssssss')
 	return [200, activityAppDB.widgets];
 });
 
