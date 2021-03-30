@@ -41,6 +41,7 @@ function Multiline(props) {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [main, setMain] = useState({});
+	const [year, setYear] = useState(moment().format('yyyy'));
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [production, setProduction] = useState("Show Written Production");
 	const [product, setProduct] = useState("Auto");
@@ -51,7 +52,7 @@ function Multiline(props) {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
 		dispatch(getMarketings());
-		dispatch(getEntries());	
+		dispatch(getEntries(year));	
 		dispatch(getVision());	
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FusePageSimple from '@fuse/core/FusePageSimple';
@@ -41,6 +42,7 @@ function TargetReports(props) {
 	const [data, setData] = useState({ widgets });
 	const [main, setMain] = useState({});
 	const [user, setUser] = useState('');
+	const [year, setYear] = useState(moment().format('yyyy'));
 	const [production, setProduction] = useState("Show Written Production");
 	const [userList, setUserList] = useState([])
 	const [tabValue, setTabValue] = useState(0);
@@ -50,7 +52,7 @@ function TargetReports(props) {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
 		dispatch(getMarketings());
-		dispatch(getEntries());	
+		dispatch(getEntries(year));	
 		dispatch(getVision());	
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);

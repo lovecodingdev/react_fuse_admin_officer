@@ -46,13 +46,14 @@ function PossibleMoney(props) {
 	const [bonus, setBonus] = useState('Include Initial Bonus in Calculation');
 	const [user, setUser] = useState("");
 	const [userList, setUserList] = useState("");
+	const [year, setYear] = useState(moment().format('yyyy'));
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [title, setTitle] = useState('Possible Money');
 
 	useEffect(() => {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
-		dispatch(getEntries());
+		dispatch(getEntries(year));
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 

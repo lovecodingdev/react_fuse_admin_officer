@@ -45,6 +45,7 @@ function Payroll(props) {
 	const [bonus, setBonus] = useState('Include Initial Bonus in Calculation');
 	const [user, setUser] = useState("");
 	const [userList, setUserList] = useState("");
+	const [year, setYear] = useState(moment().format('yyyy'));
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Payroll');
@@ -52,7 +53,7 @@ function Payroll(props) {
 	useEffect(() => {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
-		dispatch(getEntries());
+		dispatch(getEntries(year));
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);	
 

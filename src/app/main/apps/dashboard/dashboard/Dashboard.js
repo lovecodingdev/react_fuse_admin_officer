@@ -15,6 +15,12 @@ import Hidden from '@material-ui/core/Hidden';
 import Icon from '@material-ui/core/Icon';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
+import {
+	MuiPickersUtilsProvider,
+	KeyboardTimePicker,
+	KeyboardDatePicker,
+  } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import _ from '@lodash';
 import reducer from '../store';
 import Table from '../../../components/widgets/Table';
@@ -60,6 +66,7 @@ function Dashboard(props) {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [main, setMain] = useState({});
+	const [date, setDate] = useState(moment());
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [production, setProduction] = useState("Show Written Production");
 	const [report, setReport] = useState("Policies");
@@ -70,11 +77,11 @@ function Dashboard(props) {
 	useEffect(() => {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
-		dispatch(getEntries());	
+		dispatch(getEntries(moment(date).format('yyyy')));	
 		dispatch(getVision());	
 		dispatch(getLapseRate());	
 		dispatch(getWidgets()).then(() => setLoading(false));
-	}, [dispatch]);
+	}, [dispatch, date]);
 
 	useEffect(() => {		
 		if(users.length>0 && entries.length>0 && bonusPlans.length>0 && lapseRate.length>0) { 
@@ -335,6 +342,10 @@ function Dashboard(props) {
 	function handleChangePeriod(event) { 
 		setPeriod(event.target.value);
 	}
+
+	function handleChangeYear(date) {  
+		setDate(date);
+	}
 	
 	if (loading) {   
 		return <FuseLoading />;
@@ -361,7 +372,27 @@ function Dashboard(props) {
 				content: classes.content
 			}}
 			header={
-				<SimpleHeader title={title}>
+				<Header title={title}>
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<MuiPickersUtilsProvider utils={DateFnsUtils}>
+								<KeyboardDatePicker
+									disableToolbar
+									variant="inline"
+									format="yyyy"
+									margin="normal"
+									id="date-picker-inline"
+									label="From Date"
+									value={date}
+									onChange={handleChangeYear}
+									KeyboardButtonProps={{
+										'aria-label': 'change date',
+									}}
+									views={['year']}
+								/>	
+							</MuiPickersUtilsProvider>	
+						</FuseAnimate>
+					</div>
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
@@ -371,8 +402,8 @@ function Dashboard(props) {
 								data={options.period.data}
 							/>
 						</FuseAnimate>
-					</div>										
-				</SimpleHeader>			
+					</div>									
+				</Header>			
 			}
 			content={
 				<div className="w-full p-12">					

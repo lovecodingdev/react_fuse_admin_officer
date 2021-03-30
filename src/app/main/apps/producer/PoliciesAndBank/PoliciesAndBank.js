@@ -40,6 +40,7 @@ function PoliciesAndBank(props) {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [main, setMain] = useState({});
+	const [year, setYear] = useState(moment().format('yyyy'));
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [production, setProduction] = useState("Show Written Production");
 	const [report, setReport] = useState("Policies");
@@ -51,7 +52,7 @@ function PoliciesAndBank(props) {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
 		dispatch(getMarketings());
-		dispatch(getEntries());	
+		dispatch(getEntries(year));	
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
