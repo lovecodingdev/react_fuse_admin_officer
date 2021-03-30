@@ -9,15 +9,24 @@ export const getBonus = createAsyncThunk(
 	() =>
 		new Promise((resolve, reject) => {
 			var starCountRef = realDb.ref(`BonusPlan/${belongTo}`);
+			var bonusPlanTemplateRef = realDb.ref(`BonusPlanTemplate/${belongTo}`);
 			var uid = localStorage.getItem('@UID');
 			var bonus = [];
 			starCountRef.on('value', snapshot => {
-				const data = snapshot.val();
-				if(data){
-					bonus.push(data)
-				}			
+				var data = snapshot.val();
+				var temp = {...data}
+				bonusPlanTemplateRef.on('value', snap=>{
+					var snapData = snap.val()
+					console.log(data)
+					Object.keys(data).map(item=>{
+						temp = {...temp, [item]:snapData[data[item].name]}
+					})
+					console.log(temp)
+					bonus.push(temp)
+					resolve(bonus);
+				})
 
-				resolve(bonus);
+				
 			});
 		})
 );

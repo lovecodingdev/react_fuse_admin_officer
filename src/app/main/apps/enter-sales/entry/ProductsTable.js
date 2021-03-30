@@ -170,6 +170,9 @@ function ProductsTable(props) {
 				typeOfProductFire: item.typeOfProductFire,
 				typeOfProductHealth: item.typeOfProductHealth,
 				typeOfProductLife: item.typeOfProductLife,
+				creditPercent: item.creditPercent,
+				creditType: item.creditType,
+				creditUser: item.creditUser,
 				user:item.user
 			})
 		);
@@ -281,7 +284,7 @@ function ProductsTable(props) {
 												{moment(n.datePolicyIsIssued).format('MM/DD/YYYY')}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.percentOfSaleCredit}%
+												{n.creditPercent}%
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 											{n.policyType[0] === 'Entries' && n.typeOfProduct}

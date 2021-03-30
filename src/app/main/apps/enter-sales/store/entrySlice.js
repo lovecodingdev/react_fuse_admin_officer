@@ -9,7 +9,8 @@ export const getEntries = createAsyncThunk(
 	() =>
 		new Promise((resolve, reject) => {
 			var belongTo = localStorage.getItem('@BELONGTO');
-			var starCountRef = realDb.ref(`Sales/${belongTo}/`);
+			var year = new Date().getFullYear()
+			var starCountRef = realDb.ref(`Sales/${year}/${belongTo}`);
 			// var uid = localStorage.getItem('@UID');
 			
 			var entries = [];

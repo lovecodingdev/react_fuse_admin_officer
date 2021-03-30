@@ -14,6 +14,7 @@ function FirebaseRegisterTab(props) {
 	const routeParams = useParams();
 	console.log(routeParams.id)
 	console.log(routeParams.belongTo)
+	console.log(routeParams.email)
 	const belongTo = routeParams.belongTo
 	const dispatch = useDispatch();
 	const register = useSelector(({ auth }) => auth.register);
@@ -97,6 +98,8 @@ function FirebaseRegisterTab(props) {
 					validationErrors={{
 						isEmail: 'Please enter a valid email'
 					}}
+					disabled={routeParams.email!=='0'?true:false}
+					value={routeParams.email!=='0'?routeParams.email:''}
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">

@@ -50,7 +50,7 @@ export const registerWithFirebase = model => async dispatch => {
 					}
 
 					realDb.ref(`BonusPlan/${belongTo}/${response.user.uid}/`).set({
-						...bonusPlanTemplate
+						name:'Team Bonus Plan Template'
 					});
 
 					var inviteUserRef = realDb.ref(
@@ -78,7 +78,10 @@ export const registerWithFirebase = model => async dispatch => {
 				realDb.ref(`teams/${response.user.uid}/`).set({
 					...data
 				});
-				realDb.ref(`BonusPlan/${response.user.uid}/all/`).set({
+				realDb.ref(`BonusPlan/${response.user.uid}/${response.user.uid}`).set({
+					name:'Team Bonus Plan Template'
+				});
+				realDb.ref(`BonusPlanTemplate/${response.user.uid}/Team Bonus Plan Template/`).set({
 					...bonusPlanTemplate
 				});
 				dispatch(

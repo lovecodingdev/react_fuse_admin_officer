@@ -52,7 +52,13 @@ const productLists = [
 
 const policyholderTypeLists = [
 	{ item: 'Household', value: 'household' },
-	{ item: 'Individual', value: 'individual' }
+	{ item: 'Individual', value: 'individual' },
+	{ item: 'Multiline Policy', value: 'multiline_policy' }
+];
+
+const creditLists = [
+	{ item: 'Solo Credit', value: 'solo_credit' },
+	{ item: 'Split Credit', value: 'split_credit' }
 ];
 
 const typeList = [
@@ -131,12 +137,25 @@ function Products() {
 		policyPremiumValidation: false,
 		userValidation: false,
 		marketings: [],
-		policyHolderType:'individual',
+		policyHolderType: 'individual',
 		usersList: [],
+		tempUserList:[],
 		productLists: [],
 		fireProductList: [],
 		healthProductList: [],
-		lifeProductList: []
+		lifeProductList: [],
+		creditTypeAuto: 'solo_credit',
+		creditTypeFire: 'solo_credit',
+		creditTypeHealth: 'solo_credit',
+		creditTypeLife: 'solo_credit',
+		creditPercentAuto: '',
+		creditPercentFire: '',
+		creditPercentHealth: '',
+		creditPercentFire: '',
+		creditUserAuto: '',
+		creditUserFire: '',
+		creditUserHealth: '',
+		creditUserLife: ''
 	});
 
 	useEffect(() => {
@@ -159,7 +178,10 @@ function Products() {
 	}, [products, searchText]);
 
 	useEffect(() => {
+		let belongTo = localStorage.getItem('@BELONGTO');
+		let uid = localStorage.getItem('@UID');
 		var temp = [];
+		var tempUsers = [];
 		var tempMarketing = [];
 		var tempProductList = [];
 		var tempBonus = [];
@@ -182,6 +204,8 @@ function Products() {
 		if (users.length > 0) {
 			users.map(item => {
 				temp.push({ item: item.data.displayName, value: item });
+				tempUsers.push({ item: item.data.displayName, value: item.id });
+
 			});
 			temp.push({ item: 'Office Count', value: 'OfficeCount' });
 		}
@@ -190,29 +214,29 @@ function Products() {
 			if (bonus.length > 0) {
 				if (editData.user) {
 					if (editData.user === 'OfficeCount') {
-						Object.keys(bonus[0]['all']['autoBonus']).map(item => {
+						Object.keys(bonus[0][uid]['autoBonus']).map(item => {
 							tempBonus.push({
-								item: bonus[0]['all']['autoBonus'][item].name,
-								value: bonus[0]['all']['autoBonus'][item].name
+								item: bonus[0][uid]['autoBonus'][item].name,
+								value: bonus[0][uid]['autoBonus'][item].name
 							});
 						});
-						Object.keys(bonus[0]['all']['fireBonus']).map(item => {
+						Object.keys(bonus[0][uid]['fireBonus']).map(item => {
 							tempFireBonus.push({
-								item: bonus[0]['all']['fireBonus'][item].name,
-								value: bonus[0]['all']['fireBonus'][item].name
+								item: bonus[0][uid]['fireBonus'][item].name,
+								value: bonus[0][uid]['fireBonus'][item].name
 							});
 						});
-						Object.keys(bonus[0]['all']['healthBonus']).map(item => {
+						Object.keys(bonus[0][uid]['healthBonus']).map(item => {
 							tempHealthBonus.push({
-								item: bonus[0]['all']['healthBonus'][item].name,
-								value: bonus[0]['all']['healthBonus'][item].name
+								item: bonus[0][uid]['healthBonus'][item].name,
+								value: bonus[0][uid]['healthBonus'][item].name
 							});
 						});
 
-						Object.keys(bonus[0]['all']['lifeBonus']).map(item => {
+						Object.keys(bonus[0][uid]['lifeBonus']).map(item => {
 							tempLifeBonus.push({
-								item: bonus[0]['all']['lifeBonus'][item].name,
-								value: bonus[0]['all']['lifeBonus'][item].name
+								item: bonus[0][uid]['lifeBonus'][item].name,
+								value: bonus[0][uid]['lifeBonus'][item].name
 							});
 						});
 						setState({
@@ -227,7 +251,19 @@ function Products() {
 							policyInformationHealth: editData.policyInformation,
 							policyPremiumFire: editData.policyPremium,
 							policyPremiumLife: editData.policyPremium,
-							policyPremiumHealth: editData.policyPremium
+							policyPremiumHealth: editData.policyPremium,
+							creditTypeAuto: editData.creditType,
+							creditTypeFire: editData.creditType,
+							creditTypeHealth: editData.creditType,
+							creditTypeLife: editData.creditType,
+							creditPercentAuto: editData.creditPercent,
+							creditPercentFire: editData.creditPercent,
+							creditPercentHealth: editData.creditPercent,
+							creditPercentLife: editData.creditPercent,
+							creditUserAuto: editData.creditUser,
+							creditUserFire: editData.creditUser,
+							creditUserHealth: editData.creditUser,
+							creditUserLife: editData.creditUser
 						});
 					} else {
 						Object.keys(bonus[0][editData.user.uid]['autoBonus']).map(item => {
@@ -267,33 +303,45 @@ function Products() {
 							policyInformationHealth: editData.policyInformation,
 							policyPremiumFire: editData.policyPremium,
 							policyPremiumLife: editData.policyPremium,
-							policyPremiumHealth: editData.policyPremium
+							policyPremiumHealth: editData.policyPremium,
+							creditTypeAuto: editData.creditType,
+							creditTypeFire: editData.creditType,
+							creditTypeHealth: editData.creditType,
+							creditTypeLife: editData.creditType,
+							creditPercentAuto: editData.creditPercent,
+							creditPercentFire: editData.creditPercent,
+							creditPercentHealth: editData.creditPercent,
+							creditPercentLife: editData.creditPercent,
+							creditUserAuto: editData.creditUser,
+							creditUserFire: editData.creditUser,
+							creditUserHealth: editData.creditUser,
+							creditUserLife: editData.creditUser
 						});
 					}
 				} else {
-					Object.keys(bonus[0]['all']['autoBonus']).map(item => {
+					Object.keys(bonus[0][uid]['autoBonus']).map(item => {
 						tempBonus.push({
-							item: bonus[0]['all']['autoBonus'][item].name,
-							value: bonus[0]['all']['autoBonus'][item].name
+							item: bonus[0][uid]['autoBonus'][item].name,
+							value: bonus[0][uid]['autoBonus'][item].name
 						});
 					});
-					Object.keys(bonus[0]['all']['fireBonus']).map(item => {
+					Object.keys(bonus[0][uid]['fireBonus']).map(item => {
 						tempFireBonus.push({
-							item: bonus[0]['all']['fireBonus'][item].name,
-							value: bonus[0]['all']['fireBonus'][item].name
+							item: bonus[0][uid]['fireBonus'][item].name,
+							value: bonus[0][uid]['fireBonus'][item].name
 						});
 					});
-					Object.keys(bonus[0]['all']['healthBonus']).map(item => {
+					Object.keys(bonus[0][uid]['healthBonus']).map(item => {
 						tempHealthBonus.push({
-							item: bonus[0]['all']['healthBonus'][item].name,
-							value: bonus[0]['all']['healthBonus'][item].name
+							item: bonus[0][uid]['healthBonus'][item].name,
+							value: bonus[0][uid]['healthBonus'][item].name
 						});
 					});
 
-					Object.keys(bonus[0]['all']['lifeBonus']).map(item => {
+					Object.keys(bonus[0][uid]['lifeBonus']).map(item => {
 						tempLifeBonus.push({
-							item: bonus[0]['all']['lifeBonus'][item].name,
-							value: bonus[0]['all']['lifeBonus'][item].name
+							item: bonus[0][uid]['lifeBonus'][item].name,
+							value: bonus[0][uid]['lifeBonus'][item].name
 						});
 					});
 					setState({
@@ -308,7 +356,19 @@ function Products() {
 						policyInformationHealth: editData.policyInformation,
 						policyPremiumFire: editData.policyPremium,
 						policyPremiumLife: editData.policyPremium,
-						policyPremiumHealth: editData.policyPremium
+						policyPremiumHealth: editData.policyPremium,
+						creditTypeAuto: editData.creditType,
+						creditTypeFire: editData.creditType,
+						creditTypeHealth: editData.creditType,
+						creditTypeLife: editData.creditType,
+						creditPercentAuto: editData.creditPercent,
+						creditPercentFire: editData.creditPercent,
+						creditPercentHealth: editData.creditPercent,
+						creditPercentLife: editData.creditPercent,
+						creditUserAuto: editData.creditUser,
+						creditUserFire: editData.creditUser,
+						creditUserHealth: editData.creditUser,
+						creditUserLife: editData.creditUser
 					});
 				}
 			}
@@ -316,6 +376,7 @@ function Products() {
 				...state,
 				...editData,
 				usersList: temp,
+				tempUserList:tempUsers,
 				marketings: tempMarketing,
 				productLists: tempBonus,
 				fireProductList: tempFireBonus,
@@ -326,39 +387,52 @@ function Products() {
 				policyInformationHealth: editData.policyInformation,
 				policyPremiumFire: editData.policyPremium,
 				policyPremiumLife: editData.policyPremium,
-				policyPremiumHealth: editData.policyPremium
+				policyPremiumHealth: editData.policyPremium,
+				creditTypeAuto: editData.creditType,
+				creditTypeFire: editData.creditType,
+				creditTypeHealth: editData.creditType,
+				creditTypeLife: editData.creditType,
+				creditPercentAuto: editData.creditPercent,
+				creditPercentFire: editData.creditPercent,
+				creditPercentHealth: editData.creditPercent,
+				creditPercentLife: editData.creditPercent,
+				creditUserAuto: editData.creditUser,
+				creditUserFire: editData.creditUser,
+				creditUserHealth: editData.creditUser,
+				creditUserLife: editData.creditUser
 			});
 		} else {
 			if (bonus.length > 0) {
-				Object.keys(bonus[0]['all']['autoBonus']).map(item => {
+				Object.keys(bonus[0][uid]['autoBonus']).map(item => {
 					tempBonus.push({
-						item: bonus[0]['all']['autoBonus'][item].name,
-						value: bonus[0]['all']['autoBonus'][item].name
+						item: bonus[0][uid]['autoBonus'][item].name,
+						value: bonus[0][uid]['autoBonus'][item].name
 					});
 				});
-				Object.keys(bonus[0]['all']['fireBonus']).map(item => {
+				Object.keys(bonus[0][uid]['fireBonus']).map(item => {
 					tempFireBonus.push({
-						item: bonus[0]['all']['fireBonus'][item].name,
-						value: bonus[0]['all']['fireBonus'][item].name
+						item: bonus[0][uid]['fireBonus'][item].name,
+						value: bonus[0][uid]['fireBonus'][item].name
 					});
 				});
-				Object.keys(bonus[0]['all']['healthBonus']).map(item => {
+				Object.keys(bonus[0][uid]['healthBonus']).map(item => {
 					tempHealthBonus.push({
-						item: bonus[0]['all']['healthBonus'][item].name,
-						value: bonus[0]['all']['healthBonus'][item].name
+						item: bonus[0][uid]['healthBonus'][item].name,
+						value: bonus[0][uid]['healthBonus'][item].name
 					});
 				});
 
-				Object.keys(bonus[0]['all']['lifeBonus']).map(item => {
+				Object.keys(bonus[0][uid]['lifeBonus']).map(item => {
 					tempLifeBonus.push({
-						item: bonus[0]['all']['lifeBonus'][item].name,
-						value: bonus[0]['all']['lifeBonus'][item].name
+						item: bonus[0][uid]['lifeBonus'][item].name,
+						value: bonus[0][uid]['lifeBonus'][item].name
 					});
 				});
 			}
 			setState({
 				...state,
 				usersList: temp,
+				tempUserList: tempUsers,
 				marketings: tempMarketing,
 				productLists: tempBonus,
 				fireProductList: tempFireBonus,
@@ -369,7 +443,19 @@ function Products() {
 				policyInformationHealth: editData.policyInformation,
 				policyPremiumFire: editData.policyPremium,
 				policyPremiumLife: editData.policyPremium,
-				policyPremiumHealth: editData.policyPremium
+				policyPremiumHealth: editData.policyPremium,
+				creditTypeAuto: editData.creditType,
+				creditTypeFire: editData.creditType,
+				creditTypeHealth: editData.creditType,
+				creditTypeLife: editData.creditType,
+				creditPercentAuto: editData.creditPercent,
+				creditPercentFire: editData.creditPercent,
+				creditPercentHealth: editData.creditPercent,
+				creditPercentLife: editData.creditPercent,
+				creditUserAuto: editData.creditUser,
+				creditUserFire: editData.creditUser,
+				creditUserHealth: editData.creditUser,
+				creditUserLife: editData.creditUser
 			});
 		}
 	}, [users, marketing, productType, editData, bonus]);
@@ -379,6 +465,8 @@ function Products() {
 	}
 
 	function handleChangeValue(data) {
+		let belongTo = localStorage.getItem('@BELONGTO');
+		let uid = localStorage.getItem('@UID');
 		var tempBonus = [];
 		var tempFireBonus = [];
 		var tempHealthBonus = [];
@@ -392,29 +480,29 @@ function Products() {
 			});
 		} else if (Object.keys(data)[0] === 'user') {
 			if (data.user === 'OfficeCount') {
-				Object.keys(bonus[0]['all']['autoBonus']).map(item => {
+				Object.keys(bonus[0][uid]['autoBonus']).map(item => {
 					tempBonus.push({
-						item: bonus[0]['all']['autoBonus'][item].name,
-						value: bonus[0]['all']['autoBonus'][item].name
+						item: bonus[0][uid]['autoBonus'][item].name,
+						value: bonus[0][uid]['autoBonus'][item].name
 					});
 				});
-				Object.keys(bonus[0]['all']['fireBonus']).map(item => {
+				Object.keys(bonus[0][uid]['fireBonus']).map(item => {
 					tempFireBonus.push({
-						item: bonus[0]['all']['fireBonus'][item].name,
-						value: bonus[0]['all']['fireBonus'][item].name
+						item: bonus[0][uid]['fireBonus'][item].name,
+						value: bonus[0][uid]['fireBonus'][item].name
 					});
 				});
-				Object.keys(bonus[0]['all']['healthBonus']).map(item => {
+				Object.keys(bonus[0][uid]['healthBonus']).map(item => {
 					tempHealthBonus.push({
-						item: bonus[0]['all']['healthBonus'][item].name,
-						value: bonus[0]['all']['healthBonus'][item].name
+						item: bonus[0][uid]['healthBonus'][item].name,
+						value: bonus[0][uid]['healthBonus'][item].name
 					});
 				});
 
-				Object.keys(bonus[0]['all']['lifeBonus']).map(item => {
+				Object.keys(bonus[0][uid]['lifeBonus']).map(item => {
 					tempLifeBonus.push({
-						item: bonus[0]['all']['lifeBonus'][item].name,
-						value: bonus[0]['all']['lifeBonus'][item].name
+						item: bonus[0][uid]['lifeBonus'][item].name,
+						value: bonus[0][uid]['lifeBonus'][item].name
 					});
 				});
 				setState({
@@ -467,11 +555,11 @@ function Products() {
 
 	function checkValidation() {
 		if (
-			!state.percentOfSaleCreditValidation &&
+			// !state.percentOfSaleCreditValidation &&
 			// !state.typeOfProductValidation &&
 			!state.policyPremiumValidation &&
 			!state.policyHolderTypeValidation &&
-			state.percentOfSaleCredit &&
+			// state.percentOfSaleCredit &&
 			// state.typeOfProduct &&
 			state.policyHolderType &&
 			state.policyType.length > 0
@@ -480,7 +568,7 @@ function Products() {
 		} else {
 			setState({
 				...state,
-				percentOfSaleCreditValidation: state.percentOfSaleCredit ? false : true,
+				// percentOfSaleCreditValidation: state.percentOfSaleCredit ? false : true,
 				typeOfProductValidation: state.typeOfProduct ? false : true,
 				policyPremiumValidation: state.policyPremium ? false : true,
 				policyHolderTypeValidation: state.policyHolderType ? false : true,
@@ -504,7 +592,7 @@ function Products() {
 				user: state.user,
 				datePolicyIsWritten: state.datePolicyIsWritten ? state.datePolicyIsWritten : '',
 				datePolicyIsIssued: state.datePolicyIsIssued ? state.datePolicyIsIssued : '',
-				percentOfSaleCredit: parseFloat(state.percentOfSaleCredit),
+				// percentOfSaleCredit: parseFloat(state.percentOfSaleCredit),
 				typeOfProduct: state.typeOfProduct,
 				policyPremium: parseFloat(state.policyPremium),
 				sourceOfBusiness: state.sourceOfBusiness,
@@ -523,15 +611,21 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremium) *
+											parseInt(
+												state.creditTypeAuto === 'solo_credit' ? 100 : state.creditPercentAuto
+											)) /
 											100) *
-											(parseInt(bonusLists['all'][state.typeOfProduct]) / 100) *
+											(parseInt(bonusLists[uid][state.typeOfProduct]) / 100) *
 											100
 									) / 100,
 								policyType: ['Entries'],
 								typeOfProduct: state.typeOfProduct,
 								policyPremium: state.policyPremium,
-								policyInformation: state.policyInformation
+								policyInformation: state.policyInformation,
+								creditPercent: state.creditTypeAuto === 'solo_credit' ? 100 : state.creditPercentAuto,
+								creditUser: state.creditUserAuto,
+								creditType: state.creditTypeAuto
 							};
 							requestForm.push(form);
 						} else {
@@ -539,7 +633,10 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremium) *
+											parseInt(
+												state.creditTypeAuto === 'solo_credit' ? 100 : state.creditPercentAuto
+											)) /
 											100) *
 											(parseInt(bonusLists[state.user.id][state.typeOfProduct]) / 100) *
 											100
@@ -547,7 +644,10 @@ function Products() {
 								policyType: ['Entries'],
 								typeOfProduct: state.typeOfProduct,
 								policyPremium: state.policyPremium,
-								policyInformation: state.policyInformation
+								policyInformation: state.policyInformation,
+								creditPercent: state.creditTypeAuto === 'solo_credit' ? 100 : state.creditPercentAuto,
+								creditUser: state.creditUserAuto,
+								creditType: state.creditTypeAuto
 							};
 							requestForm.push(form);
 						}
@@ -559,15 +659,21 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremiumFire) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumFire) *
+											parseInt(
+												state.creditTypeFire === 'solo_credit' ? 100 : state.creditPercentFire
+											)) /
 											100) *
-											(parseInt(bonusLists['all'][state.typeOfProductFire]) / 100) *
+											(parseInt(bonusLists[uid][state.typeOfProductFire]) / 100) *
 											100
 									) / 100,
 								policyType: ['FireEntries'],
 								typeOfProductFire: state.typeOfProductFire,
 								policyPremium: state.policyPremiumFire,
-								policyInformation: state.policyInformationFire
+								policyInformation: state.policyInformationFire,
+								creditPercent: state.creditTypeFire === 'solo_credit' ? 100 : state.creditPercentFire,
+								creditUser: state.creditUserFire,
+								creditType: state.creditTypeFire
 							};
 							requestForm.push(form);
 						} else {
@@ -575,7 +681,10 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremiumFire) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumFire) *
+											parseInt(
+												state.creditTypeFire === 'solo_credit' ? 100 : state.creditPercentFire
+											)) /
 											100) *
 											(parseInt(bonusLists[state.user.id][state.typeOfProductFire]) / 100) *
 											100
@@ -583,7 +692,10 @@ function Products() {
 								policyType: ['FireEntries'],
 								typeOfProductFire: state.typeOfProductFire,
 								policyPremium: state.policyPremiumFire,
-								policyInformation: state.policyInformationFire
+								policyInformation: state.policyInformationFire,
+								creditPercent: state.creditTypeFire === 'solo_credit' ? 100 : state.creditPercentFire,
+								creditUser: state.creditUserFire,
+								creditType: state.creditTypeFire
 							};
 							requestForm.push(form);
 						}
@@ -595,15 +707,24 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremiumHealth) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumHealth) *
+											parseInt(
+												state.creditTypeHealth === 'solo_credit'
+													? 100
+													: state.creditPercentHealth
+											)) /
 											100) *
-											(parseInt(bonusLists['all'][state.typeOfProductHealth]) / 100) *
+											(parseInt(bonusLists[uid][state.typeOfProductHealth]) / 100) *
 											100
 									) / 100,
 								policyType: ['HealthEntries'],
 								typeOfProductHealth: state.typeOfProductHealth,
 								policyPremium: state.policyPremiumHealth,
-								policyInformation: state.policyInformationHealth
+								policyInformation: state.policyInformationHealth,
+								creditPercent:
+									state.creditTypeHealth === 'solo_credit' ? 100 : state.creditPercentHealth,
+								creditUser: state.creditUserHealth,
+								creditType: state.creditTypeHealth
 							};
 							requestForm.push(form);
 						} else {
@@ -611,7 +732,12 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremiumHealth) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumHealth) *
+											parseInt(
+												state.creditTypeHealth === 'solo_credit'
+													? 100
+													: state.creditPercentHealth
+											)) /
 											100) *
 											(parseInt(bonusLists[state.user.id][state.typeOfProductHealth]) / 100) *
 											100
@@ -619,7 +745,11 @@ function Products() {
 								policyType: ['HealthEntries'],
 								typeOfProductHealth: state.typeOfProductHealth,
 								policyPremium: state.policyPremiumHealth,
-								policyInformation: state.policyInformationHealth
+								policyInformation: state.policyInformationHealth,
+								creditPercent:
+									state.creditTypeHealth === 'solo_credit' ? 100 : state.creditPercentHealth,
+								creditUser: state.creditUserHealth,
+								creditType: state.creditTypeHealth
 							};
 							requestForm.push(form);
 						}
@@ -631,15 +761,21 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremiumLife) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumLife) *
+											parseInt(
+												state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife
+											)) /
 											100) *
-											(parseInt(bonusLists['all'][state.typeOfProductLife]) / 100) *
+											(parseInt(bonusLists[uid][state.typeOfProductLife]) / 100) *
 											100
 									) / 100,
 								policyType: ['LifeEntries'],
 								typeOfProductLife: state.typeOfProductLife,
 								policyPremium: state.policyPremiumLife,
-								policyInformation: state.policyInformationLife
+								policyInformation: state.policyInformationLife,
+								creditPercent: state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife,
+								creditUser: state.creditUserLife,
+								creditType: state.creditTypeLife
 							};
 							requestForm.push(form);
 						} else {
@@ -647,7 +783,10 @@ function Products() {
 								...form,
 								dollarBonus:
 									Math.ceil(
-										((parseFloat(state.policyPremiumLife) * parseInt(state.percentOfSaleCredit)) /
+										((parseFloat(state.policyPremiumLife) *
+											parseInt(
+												state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife
+											)) /
 											100) *
 											(parseInt(bonusLists[state.user.id][state.typeOfProductLife]) / 100) *
 											100
@@ -655,7 +794,10 @@ function Products() {
 								policyType: ['LifeEntries'],
 								typeOfProductLife: state.typeOfProductLife,
 								policyPremium: state.policyPremiumLife,
-								policyInformation: state.policyInformationLife
+								policyInformation: state.policyInformationLife,
+								creditPercent: state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife,
+								creditUser: state.creditUserLife,
+								creditType: state.creditTypeLife
 							};
 							requestForm.push(form);
 						}
@@ -666,14 +808,21 @@ function Products() {
 							...form,
 							dollarBonus:
 								Math.ceil(
-									((parseFloat(state.policyPremium) * parseInt(state.percentOfSaleCredit)) / 100) *
-										(parseInt(bonusLists['all'][state.typeOfProduct]) / 100) *
+									((parseFloat(state.policyPremium) *
+										parseInt(
+											state.creditTypeAuto === 'solo_credit' ? 100 : state.creditPercentAuto
+										)) /
+										100) *
+										(parseInt(bonusLists[uid][state.typeOfProduct]) / 100) *
 										100
 								) / 100,
 							policyType: ['Entries'],
 							typeOfProduct: state.typeOfProduct,
 							policyPremium: state.policyPremium,
-							policyInformation: state.policyInformation
+							policyInformation: state.policyInformation,
+							creditPercent: state.creditTypeAuto === 'solo_credit' ? 100 : state.creditPercentAuto,
+							creditUser: state.creditUserAuto,
+							creditType: state.creditTypeAuto
 						};
 						requestForm.push(form);
 					}
@@ -682,15 +831,21 @@ function Products() {
 							...form,
 							dollarBonus:
 								Math.ceil(
-									((parseFloat(state.policyPremiumFire) * parseInt(state.percentOfSaleCredit)) /
+									((parseFloat(state.policyPremiumFire) *
+										parseInt(
+											state.creditTypeFire === 'solo_credit' ? 100 : state.creditPercentFire
+										)) /
 										100) *
-										(parseInt(bonusLists['all'][state.typeOfProductFire]) / 100) *
+										(parseInt(bonusLists[uid][state.typeOfProductFire]) / 100) *
 										100
 								) / 100,
 							policyType: ['FireEntries'],
 							typeOfProductFire: state.typeOfProductFire,
 							policyPremium: state.policyPremiumFire,
-							policyInformation: state.policyInformationFire
+							policyInformation: state.policyInformationFire,
+							creditPercent: state.creditTypeFire === 'solo_credit' ? 100 : state.creditPercentFire,
+							creditUser: state.creditUserFire,
+							creditType: state.creditTypeFire
 						};
 						requestForm.push(form);
 					}
@@ -699,15 +854,21 @@ function Products() {
 							...form,
 							dollarBonus:
 								Math.ceil(
-									((parseFloat(state.policyPremiumHealth) * parseInt(state.percentOfSaleCredit)) /
+									((parseFloat(state.policyPremiumHealth) *
+										parseInt(
+											state.creditTypeHealth === 'solo_credit' ? 100 : state.creditPercentHealth
+										)) /
 										100) *
-										(parseInt(bonusLists['all'][state.typeOfProductHealth]) / 100) *
+										(parseInt(bonusLists[uid][state.typeOfProductHealth]) / 100) *
 										100
 								) / 100,
 							policyType: ['HealthEntries'],
 							typeOfProductHealth: state.typeOfProductHealth,
 							policyPremium: state.policyPremiumHealth,
-							policyInformation: state.policyInformationHealth
+							policyInformation: state.policyInformationHealth,
+							creditPercent: state.creditTypeHealth === 'solo_credit' ? 100 : state.creditPercentHealth,
+							creditUser: state.creditUserHealth,
+							creditType: state.creditTypeHealth
 						};
 						requestForm.push(form);
 					}
@@ -716,15 +877,21 @@ function Products() {
 							...form,
 							dollarBonus:
 								Math.ceil(
-									((parseFloat(state.policyPremiumLife) * parseInt(state.percentOfSaleCredit)) /
+									((parseFloat(state.policyPremiumLife) *
+										parseInt(
+											state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife
+										)) /
 										100) *
-										(parseInt(bonusLists['all'][state.typeOfProductLife]) / 100) *
+										(parseInt(bonusLists[uid][state.typeOfProductLife]) / 100) *
 										100
 								) / 100,
 							policyType: ['LifeEntries'],
 							typeOfProductLife: state.typeOfProductLife,
 							policyPremium: state.policyPremiumLife,
-							policyInformation: state.policyInformationLife
+							policyInformation: state.policyInformationLife,
+							creditPercent: state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife,
+							creditUser: state.creditUserLife,
+							creditType: state.creditTypeLife
 						};
 						requestForm.push(form);
 					}
@@ -739,7 +906,10 @@ function Products() {
 								policyType: ['Entries'],
 								typeOfProduct: state.typeOfProduct,
 								policyPremium: state.policyPremium,
-								policyInformation: state.policyInformation
+								policyInformation: state.policyInformation,
+								creditPercent: state.creditTypeAuto === 'solo_credit' ? 100 : state.creditPercentAuto,
+								creditUser: state.creditUserAuto,
+								creditType: state.creditTypeAuto
 							};
 							requestForm.push(form);
 						} else {
@@ -749,7 +919,10 @@ function Products() {
 								policyType: ['Entries'],
 								typeOfProduct: state.typeOfProduct,
 								policyPremium: state.policyPremium,
-								policyInformation: state.policyInformation
+								policyInformation: state.policyInformation,
+								creditPercent: state.creditTypeAuto === 'solo_credit' ? 100 : state.creditPercentAuto,
+								creditUser: state.creditUserAuto,
+								creditType: state.creditTypeAuto
 							};
 							requestForm.push(form);
 						}
@@ -763,7 +936,10 @@ function Products() {
 								policyType: ['FireEntries'],
 								typeOfProductFire: state.typeOfProductFire,
 								policyPremium: state.policyPremiumFire,
-								policyInformation: state.policyInformationFire
+								policyInformation: state.policyInformationFire,
+								creditPercent: state.creditTypeFire === 'solo_credit' ? 100 : state.creditPercentFire,
+								creditUser: state.creditUserFire,
+								creditType: state.creditTypeFire
 							};
 							requestForm.push(form);
 						} else {
@@ -773,7 +949,10 @@ function Products() {
 								policyType: ['FireEntries'],
 								typeOfProductFire: state.typeOfProductFire,
 								policyPremium: state.policyPremiumFire,
-								policyInformation: state.policyInformationFire
+								policyInformation: state.policyInformationFire,
+								creditPercent: state.creditTypeFire === 'solo_credit' ? 100 : state.creditPercentFire,
+								creditUser: state.creditUserFire,
+								creditType: state.creditTypeFire
 							};
 							requestForm.push(form);
 						}
@@ -787,7 +966,11 @@ function Products() {
 								policyType: ['HealthEntries'],
 								typeOfProductHealth: state.typeOfProductHealth,
 								policyPremium: state.policyPremiumHealth,
-								policyInformation: state.policyInformationHealth
+								policyInformation: state.policyInformationHealth,
+								creditPercent:
+									state.creditTypeHealth === 'solo_credit' ? 100 : state.creditPercentHealth,
+								creditUser: state.creditUserHealth,
+								creditType: state.creditTypeHealth
 							};
 							requestForm.push(form);
 						} else {
@@ -797,7 +980,11 @@ function Products() {
 								policyType: ['HealthEntries'],
 								typeOfProductHealth: state.typeOfProductHealth,
 								policyPremium: state.policyPremiumHealth,
-								policyInformation: state.policyInformationHealth
+								policyInformation: state.policyInformationHealth,
+								creditPercent:
+									state.creditTypeHealth === 'solo_credit' ? 100 : state.creditPercentHealth,
+								creditUser: state.creditUserHealth,
+								creditType: state.creditTypeHealth
 							};
 							requestForm.push(form);
 						}
@@ -811,7 +998,10 @@ function Products() {
 								policyType: ['LifeEntries'],
 								typeOfProductLife: state.typeOfProductLife,
 								policyPremium: state.policyPremiumLife,
-								policyInformation: state.policyInformationLife
+								policyInformation: state.policyInformationLife,
+								creditPercent: state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife,
+								creditUser: state.creditUserLife,
+								creditType: state.creditTypeLife
 							};
 							requestForm.push(form);
 						} else {
@@ -821,7 +1011,10 @@ function Products() {
 								policyType: ['LifeEntries'],
 								typeOfProductLife: state.typeOfProductLife,
 								policyPremium: state.policyPremiumLife,
-								policyInformation: state.policyInformationLife
+								policyInformation: state.policyInformationLife,
+								creditPercent: state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife,
+								creditUser: state.creditUserLife,
+								creditType: state.creditTypeLife
 							};
 							requestForm.push(form);
 						}
@@ -834,7 +1027,10 @@ function Products() {
 							policyType: ['Entries'],
 							typeOfProduct: state.typeOfProduct,
 							policyPremium: state.policyPremium,
-							policyInformation: state.policyInformation
+							policyInformation: state.policyInformation,
+							creditPercent: state.creditTypeAuto === 'solo_credit' ? 100 : state.creditPercentAuto,
+							creditUser: state.creditUserAuto,
+							creditType: state.creditTypeAuto
 						};
 						requestForm.push(form);
 					}
@@ -845,7 +1041,10 @@ function Products() {
 							policyType: ['FireEntries'],
 							typeOfProductFire: state.typeOfProductFire,
 							policyPremium: state.policyPremiumFire,
-							policyInformation: state.policyInformationFire
+							policyInformation: state.policyInformationFire,
+							creditPercent: state.creditTypeFire === 'solo_credit' ? 100 : state.creditPercentFire,
+							creditUser: state.creditUserFire,
+							creditType: state.creditTypeFire
 						};
 						requestForm.push(form);
 					}
@@ -856,7 +1055,10 @@ function Products() {
 							policyType: ['HealthEntries'],
 							typeOfProductHealth: state.typeOfProductHealth,
 							policyPremium: state.policyPremiumHealth,
-							policyInformation: state.policyInformationHealth
+							policyInformation: state.policyInformationHealth,
+							creditPercent: state.creditTypeHealth === 'solo_credit' ? 100 : state.creditPercentHealth,
+							creditUser: state.creditUserHealth,
+							creditType: state.creditTypeHealth
 						};
 						requestForm.push(form);
 					}
@@ -867,12 +1069,16 @@ function Products() {
 							policyType: ['LifeEntries'],
 							typeOfProductLife: state.typeOfProductLife,
 							policyPremium: state.policyPremiumLife,
-							policyInformation: state.policyInformationLife
+							policyInformation: state.policyInformationLife,
+							creditPercent: state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife,
+							creditUser: state.creditUserLife,
+							creditType: state.creditTypeLife
 						};
 						requestForm.push(form);
 					}
 				}
 			}
+			console.log(requestForm);
 			if (uid && belongTo) {
 				if (routeParams.id === 'edit' && editData) {
 					dispatch(updateProduct(requestForm)).then(() => {
@@ -899,7 +1105,7 @@ function Products() {
 					});
 				}
 			}
-		} else if (state.policyHolderType === 'household') {
+		} else if (state.policyHolderType === 'household' || state.policyHolderType === 'multiline_policy') {
 			if (e.target.checked) {
 				var index = temp.indexOf(e.target.name);
 				if (index === -1) {
@@ -981,364 +1187,452 @@ function Products() {
 				<div className="w-full flex flex-col">
 					<MuiPickersUtilsProvider utils={DateFnsUtils}>
 						<FuseScrollbars className="flex-grow overflow-x-auto flex justify-around">
-							<div className="min-w-xl p-136 h-full w-4xl flex flex-row justify-around flex-wrap">
+							<div className="min-w-xl p-96 h-full w-5xl flex flex-row justify-around flex-wrap">
 								{/* <div className="flex w-full justify-between items-center flex-wrap py-12"> */}
-
-								<SelectBox
-									id="outlined-basic"
-									label="User Lists"
-									data={state.usersList}
-									variant="outlined"
-									value={state.user}
-									validation="user"
-									handleChangeValue={handleChangeValue}
-									willvalidation={false}
-									validate={state.userValidation}
-								/>
-								<TextInput
-									id="outlined-basic"
-									label="Policy Holder Name"
-									variant="outlined"
-									value={state.policyHolderName}
-									validation="policyHolderName"
-									onChange={handleChangeValue}
-									willvalidation={false}
-									validate={false}
-									size={250}
-								/>
-								<KeyboardDatePicker
-									margin="normal"
-									id="date-picker-dialog"
-									format="MM/dd/yyyy"
-									className={classes.datePicker}
-									label="Date Policy Is Written"
-									value={state.datePolicyIsWritten}
-									onChange={date => handleDateChange(date, 'datePolicyIsWritten')}
-									KeyboardButtonProps={{
-										'aria-label': 'change date'
-									}}
-								/>
-								{/* </div>
+								<div className="min-w-xl w-full flex flex-row justify-around flex-wrap">
+									<SelectBox
+										id="outlined-basic"
+										label="User Lists"
+										data={state.usersList}
+										variant="outlined"
+										value={state.user}
+										validation="user"
+										handleChangeValue={handleChangeValue}
+										willvalidation={false}
+										validate={state.userValidation}
+									/>
+									<TextInput
+										id="outlined-basic"
+										label="Policy Holder Name"
+										variant="outlined"
+										value={state.policyHolderName}
+										validation="policyHolderName"
+										onChange={handleChangeValue}
+										willvalidation={false}
+										validate={false}
+										size={250}
+									/>
+									<KeyboardDatePicker
+										margin="normal"
+										id="date-picker-dialog"
+										format="MM/dd/yyyy"
+										className={classes.datePicker}
+										label="Date Policy Is Written"
+										value={state.datePolicyIsWritten}
+										onChange={date => handleDateChange(date, 'datePolicyIsWritten')}
+										KeyboardButtonProps={{
+											'aria-label': 'change date'
+										}}
+									/>
+									{/* </div>
 
 								<div className="flex w-full justify-between items-center flex-wrap py-12"> */}
-								<KeyboardDatePicker
-									margin="normal"
-									id="date-picker-dialog"
-									format="MM/dd/yyyy"
-									className={classes.datePicker}
-									label="Date Policy Is Issued"
-									value={state.datePolicyIsIssued}
-									onChange={date => handleDateChange(date, 'datePolicyIsIssued')}
-									KeyboardButtonProps={{
-										'aria-label': 'change date'
-									}}
-								/>
-								<TextInput
-									id="outlined-basic"
-									label="Percent of Sale Credit"
-									variant="outlined"
-									value={state.percentOfSaleCredit}
-									validation="percentOfSaleCredit"
-									type="percent"
-									onChange={handleChangeValue}
-									willvalidation={true}
-									validate={state.percentOfSaleCreditValidation}
-									size={250}
-								/>
-
-								{/* <SelectBox
-										id="outlined-basic"
-										label="Type of Product"
-										data={state.productLists}
-										variant="outlined"
-										value={state.typeOfProduct}
-										validation="typeOfProduct"
-										handleChangeValue={handleChangeValue}
-										willvalidation={true}
-										validate={state.typeOfProductValidation}
-										size={250}
-									/> */}
-								<SelectBox
-									id="outlined-basic"
-									label="Type of Placeholder"
-									data={policyholderTypeLists}
-									variant="outlined"
-									value={state.policyHolderType}
-									validation="policyHolderType"
-									handleChangeValue={handleChangeValue}
-									willvalidation={true}
-									validate={state.policyHolderTypeValidation}
-								/>
-								<SelectBox
-									id="outlined-basic"
-									label="Source of Business"
-									data={state.marketings}
-									variant="outlined"
-									value={state.sourceOfBusiness}
-									validation="sourceOfBusiness"
-									handleChangeValue={handleChangeValue}
-									willvalidation={false}
-								/>
-								{/* </div>
-								<div className="flex w-full justify-between items-center flex-wrap py-12"> */}
-								{/* {(state.policyHolderType === 'individual' || state.policyHolderType === '') && (
+									<KeyboardDatePicker
+										margin="normal"
+										id="date-picker-dialog"
+										format="MM/dd/yyyy"
+										className={classes.datePicker}
+										label="Date Policy Is Issued"
+										value={state.datePolicyIsIssued}
+										onChange={date => handleDateChange(date, 'datePolicyIsIssued')}
+										KeyboardButtonProps={{
+											'aria-label': 'change date'
+										}}
+									/>
+								</div>
+								<div className="min-w-xl w-full flex flex-row justify-around flex-wrap">
 									<SelectBox
 										id="outlined-basic"
-										label="Policy Type"
-										data={typeList}
+										label="Type of Placeholder"
+										data={policyholderTypeLists}
 										variant="outlined"
-										value={state.policyType[0]}
-										validation="policyType"
+										value={state.policyHolderType}
+										validation="policyHolderType"
 										handleChangeValue={handleChangeValue}
 										willvalidation={true}
-										validate={state.typeValidation}
+										validate={state.policyHolderTypeValidation}
 									/>
-									// </TableCell>
-								)}
-								{state.policyHolderType === 'household' && (
-									<MultiSelectBox
+									<SelectBox
 										id="outlined-basic"
-										label="Policy Type"
-										data={typeList}
+										label="Source of Business"
+										data={state.marketings}
 										variant="outlined"
-										value={state.policyType}
-										validation="policyType"
+										value={state.sourceOfBusiness}
+										validation="sourceOfBusiness"
 										handleChangeValue={handleChangeValue}
-										willvalidation={true}
-										validate={state.typeValidation}
-									/>
-								)} */}
-
-								<FormControlLabel
-									className={classes.checkBox}
-									control={
-										<Checkbox
-											checked={state.policyType.includes('Entries')}
-											onChange={handleChecked}
-											name="Entries"
-											color="primary"
-										/>
-									}
-									label="Auto"
-								/>
-
-								<FormControlLabel
-									className={classes.checkBox}
-									control={
-										<Checkbox
-											checked={state.policyType.includes('FireEntries')}
-											onChange={handleChecked}
-											name="FireEntries"
-											color="primary"
-										/>
-									}
-									label="Fire"
-								/>
-
-								<FormControlLabel
-									className={classes.checkBox}
-									control={
-										<Checkbox
-											checked={state.policyType.includes('HealthEntries')}
-											onChange={handleChecked}
-											name="HealthEntries"
-											color="primary"
-										/>
-									}
-									label="Health"
-								/>
-
-								<FormControlLabel
-									className={classes.checkBox}
-									control={
-										<Checkbox
-											checked={state.policyType.includes('LifeEntries')}
-											onChange={handleChecked}
-											name="LifeEntries"
-											color="primary"
-										/>
-									}
-									label="Life"
-								/>
-								{state.policyType.includes('Entries') && (
-									<FormattedInput
-										id="outlined-basic"
-										label="Auto Policy Premium"
-										variant="outlined"
-										value={state.policyPremium}
-										validation="policyPremium"
-										type="percent"
-										willvalidation={true}
-										validate={state.policyPremiumValidation}
-										handleChangeValue={handleChangeValue}
-										size={400}
-									/>
-								)}
-								{state.policyType.includes('Entries') && (
-									<TextInput
-										id="outlined-basic"
-										label="Policy Information"
-										variant="outlined"
-										value={state.policyInformation}
-										validation="policyInformation"
-										onChange={handleChangeValue}
 										willvalidation={false}
-										validate={false}
-										size={400}
 									/>
-								)}
+
+									<FormControlLabel
+										className={classes.checkBox}
+										control={
+											<Checkbox
+												checked={state.policyType.includes('Entries')}
+												onChange={handleChecked}
+												name="Entries"
+												color="primary"
+											/>
+										}
+										label="Auto"
+									/>
+
+									<FormControlLabel
+										className={classes.checkBox}
+										control={
+											<Checkbox
+												checked={state.policyType.includes('FireEntries')}
+												onChange={handleChecked}
+												name="FireEntries"
+												color="primary"
+											/>
+										}
+										label="Fire"
+									/>
+
+									<FormControlLabel
+										className={classes.checkBox}
+										control={
+											<Checkbox
+												checked={state.policyType.includes('HealthEntries')}
+												onChange={handleChecked}
+												name="HealthEntries"
+												color="primary"
+											/>
+										}
+										label="Health"
+									/>
+
+									<FormControlLabel
+										className={classes.checkBox}
+										control={
+											<Checkbox
+												checked={state.policyType.includes('LifeEntries')}
+												onChange={handleChecked}
+												name="LifeEntries"
+												color="primary"
+											/>
+										}
+										label="Life"
+									/>
+								</div>
 								{state.policyType.includes('Entries') && (
-									<SelectBox
-										id="outlined-basic"
-										label="Product Type of Auto Entries"
-										data={state.productLists}
-										variant="outlined"
-										value={state.typeOfProduct}
-										validation="typeOfProduct"
-										handleChangeValue={handleChangeValue}
-										willvalidation={true}
-										validate={state.typeOfProductValidation}
-										size={250}
-									/>
+									<div className="min-w-xl w-full flex flex-row justify-around flex-wrap">
+										<SelectBox
+											id="outlined-basic"
+											label="Credit Type"
+											data={creditLists}
+											variant="outlined"
+											value={state.creditTypeAuto}
+											validation="creditTypeAuto"
+											handleChangeValue={handleChangeValue}
+											willvalidation={false}
+											size={150}
+										/>
+										<FormattedInput
+											id="outlined-basic"
+											label="Auto Premium"
+											variant="outlined"
+											value={state.policyPremium}
+											validation="policyPremium"
+											type="percent"
+											willvalidation={true}
+											validate={state.policyPremiumValidation}
+											handleChangeValue={handleChangeValue}
+											size={150}
+										/>
+
+										<TextInput
+											id="outlined-basic"
+											label="Policy Information"
+											variant="outlined"
+											value={state.policyInformation}
+											validation="policyInformation"
+											onChange={handleChangeValue}
+											willvalidation={false}
+											validate={false}
+											size={350}
+										/>
+
+										<SelectBox
+											id="outlined-basic"
+											label="Product Type of Auto"
+											data={state.productLists}
+											variant="outlined"
+											value={state.typeOfProduct}
+											validation="typeOfProduct"
+											handleChangeValue={handleChangeValue}
+											willvalidation={true}
+											validate={state.typeOfProductValidation}
+											size={150}
+										/>
+										{state.creditTypeAuto === 'split_credit' && (
+											<>
+												<SelectBox
+													id="outlined-basic"
+													label="Credit User"
+													data={state.tempUserList}
+													variant="outlined"
+													value={state.creditUserAuto}
+													validation="creditUserAuto"
+													handleChangeValue={handleChangeValue}
+													willvalidation={false}
+													validate={state.creditUserAutoValidation}
+												/>
+												<TextInput
+													id="outlined-basic"
+													label="Sale Credit"
+													variant="outlined"
+													value={state.creditPercentAuto}
+													validation="creditPercentAuto"
+													type="percent"
+													onChange={handleChangeValue}
+													willvalidation={true}
+													validate={state.creditPercentAutoValidation}
+													size={150}
+												/>
+											</>
+										)}
+									</div>
 								)}
 								{state.policyType.includes('FireEntries') && (
-									<FormattedInput
-										id="outlined-basic"
-										label="Fire Policy Premium"
-										variant="outlined"
-										value={
-											 state.policyPremiumFire
-										}
-										validation="policyPremiumFire"
-										type="percent"
-										willvalidation={true}
-										validate={state.policyPremiumValidation}
-										handleChangeValue={handleChangeValue}
-										size={400}
-									/>
+									<div className="min-w-xl w-full flex flex-row justify-around flex-wrap">
+										<SelectBox
+											id="outlined-basic"
+											label="Credit Type"
+											data={creditLists}
+											variant="outlined"
+											value={state.creditTypeFire}
+											validation="creditTypeFire"
+											handleChangeValue={handleChangeValue}
+											willvalidation={false}
+											size={150}
+										/>
+										<FormattedInput
+											id="outlined-basic"
+											label="Fire Policy Premium"
+											variant="outlined"
+											value={state.policyPremiumFire}
+											validation="policyPremiumFire"
+											type="percent"
+											willvalidation={true}
+											validate={state.policyPremiumValidation}
+											handleChangeValue={handleChangeValue}
+											size={150}
+										/>
+
+										<TextInput
+											id="outlined-basic"
+											label="Policy Information"
+											variant="outlined"
+											value={state.policyInformationFire}
+											validation="policyInformationFire"
+											onChange={handleChangeValue}
+											willvalidation={false}
+											validate={false}
+											size={350}
+										/>
+
+										<SelectBox
+											id="outlined-basic"
+											label="Product Type of Fire"
+											data={state.fireProductList}
+											variant="outlined"
+											value={state.typeOfProductFire}
+											validation="typeOfProductFire"
+											handleChangeValue={handleChangeValue}
+											willvalidation={true}
+											validate={state.typeOfProductFireValidation}
+											size={250}
+										/>
+
+										{state.creditTypeFire === 'split_credit' && (
+											<>
+												<SelectBox
+													id="outlined-basic"
+													label="Credit User"
+													data={state.tempUserList}
+													variant="outlined"
+													value={state.creditUserFire}
+													validation="creditUserFire"
+													handleChangeValue={handleChangeValue}
+													willvalidation={false}
+													validate={state.creditUserFireValidation}
+												/>
+												<TextInput
+													id="outlined-basic"
+													label="Sale Credit"
+													variant="outlined"
+													value={state.creditPercentFire}
+													validation="creditPercentFire"
+													type="percent"
+													onChange={handleChangeValue}
+													willvalidation={true}
+													validate={state.creditPercentFireValidation}
+													size={150}
+												/>
+											</>
+										)}
+									</div>
 								)}
 
-								{state.policyType.includes('FireEntries') && (
-									<TextInput
-										id="outlined-basic"
-										label="Fire Policy Information"
-										variant="outlined"
-										value={
-											state.policyInformationFire
-										}
-										validation="policyInformationFire"
-										onChange={handleChangeValue}
-										willvalidation={false}
-										validate={false}
-										size={400}
-									/>
-								)}
-								{state.policyType.includes('FireEntries') && (
-									<SelectBox
-										id="outlined-basic"
-										label="Product Type of Fire Entries"
-										data={state.fireProductList}
-										variant="outlined"
-										value={state.typeOfProductFire}
-										validation="typeOfProductFire"
-										handleChangeValue={handleChangeValue}
-										willvalidation={true}
-										validate={state.typeOfProductFireValidation}
-										size={250}
-									/>
-								)}
 								{state.policyType.includes('HealthEntries') && (
-									<FormattedInput
-										id="outlined-basic"
-										label="Health Policy Premium"
-										variant="outlined"
-										value={
-											state.policyPremiumHealth
-										}
-										validation="policyPremiumHealth"
-										type="percent"
-										willvalidation={true}
-										validate={state.policyPremiumValidation}
-										handleChangeValue={handleChangeValue}
-										size={400}
-									/>
-								)}
-								{state.policyType.includes('HealthEntries') && (
-									<TextInput
-										id="outlined-basic"
-										label="Health Policy Information"
-										variant="outlined"
-										value={
-										state.policyInformationHealth
-										}
-										validation="policyInformationHealth"
-										onChange={handleChangeValue}
-										willvalidation={false}
-										validate={false}
-										size={400}
-									/>
-								)}
-								{state.policyType.includes('HealthEntries') && (
-									<SelectBox
-										id="outlined-basic"
-										label="Product Type of Health Entries"
-										data={state.healthProductList}
-										variant="outlined"
-										value={state.typeOfProductHealth}
-										validation="typeOfProductHealth"
-										handleChangeValue={handleChangeValue}
-										willvalidation={true}
-										validate={state.typeOfProductHealthValidation}
-										size={250}
-									/>
-								)}
+									<div className="min-w-xl w-full flex flex-row justify-around flex-wrap">
+										<SelectBox
+											id="outlined-basic"
+											label="Credit Type"
+											data={creditLists}
+											variant="outlined"
+											value={state.creditTypeHealth}
+											validation="creditTypeHealth"
+											handleChangeValue={handleChangeValue}
+											willvalidation={false}
+											size={150}
+										/>
+										<FormattedInput
+											id="outlined-basic"
+											label="Health Premium"
+											variant="outlined"
+											value={state.policyPremiumHealth}
+											validation="policyPremiumHealth"
+											type="percent"
+											willvalidation={true}
+											validate={state.policyPremiumValidation}
+											handleChangeValue={handleChangeValue}
+											size={150}
+										/>
 
-								{state.policyType.includes('LifeEntries') && (
-									<FormattedInput
-										id="outlined-basic"
-										label="Life Policy Premium"
-										variant="outlined"
-										value={
-											state.policyPremiumLife
-										}
-										validation="policyPremiumLife"
-										type="percent"
-										willvalidation={true}
-										validate={state.policyPremiumValidation}
-										handleChangeValue={handleChangeValue}
-										size={400}
-									/>
-								)}
+										<TextInput
+											id="outlined-basic"
+											label="Policy Information"
+											variant="outlined"
+											value={state.policyInformationHealth}
+											validation="policyInformationHealth"
+											onChange={handleChangeValue}
+											willvalidation={false}
+											validate={false}
+											size={350}
+										/>
 
-								{state.policyType.includes('LifeEntries') && (
-									<TextInput
-										id="outlined-basic"
-										label="Life Policy Information"
-										variant="outlined"
-										value={
-											 state.policyInformationLife
-										}
-										validation="policyInformationLife"
-										onChange={handleChangeValue}
-										willvalidation={false}
-										validate={false}
-										size={400}
-									/>
+										<SelectBox
+											id="outlined-basic"
+											label="Product Type of Health"
+											data={state.healthProductList}
+											variant="outlined"
+											value={state.typeOfProductHealth}
+											validation="typeOfProductHealth"
+											handleChangeValue={handleChangeValue}
+											willvalidation={true}
+											validate={state.typeOfProductHealthValidation}
+											size={250}
+										/>
+										{state.creditTypeHealth === 'split_credit' && (
+											<>
+												<SelectBox
+													id="outlined-basic"
+													label="Credit User"
+													data={state.tempUserList}
+													variant="outlined"
+													value={state.creditUserHealth}
+													validation="creditUserHealth"
+													handleChangeValue={handleChangeValue}
+													willvalidation={false}
+													validate={state.creditUserHealthValidation}
+												/>
+												<TextInput
+													id="outlined-basic"
+													label="Sale Credit"
+													variant="outlined"
+													value={state.creditPercentHealth}
+													validation="creditPercentHealth"
+													type="percent"
+													onChange={handleChangeValue}
+													willvalidation={true}
+													validate={state.creditPercentHealthValidation}
+													size={150}
+												/>
+											</>
+										)}
+									</div>
 								)}
-
 								{state.policyType.includes('LifeEntries') && (
-									<SelectBox
-										id="outlined-basic"
-										label="Product Type of Life Entries"
-										data={state.lifeProductList}
-										variant="outlined"
-										value={state.typeOfProductLife}
-										validation="typeOfProductLife"
-										handleChangeValue={handleChangeValue}
-										willvalidation={true}
-										validate={state.typeOfProductLifeValidation}
-										size={250}
-									/>
+									<div className="min-w-xl w-full flex flex-row justify-around flex-wrap">
+										<SelectBox
+											id="outlined-basic"
+											label="Credit Type"
+											data={creditLists}
+											variant="outlined"
+											value={state.creditTypeLife}
+											validation="creditTypeLife"
+											handleChangeValue={handleChangeValue}
+											willvalidation={false}
+											size={150}
+										/>
+										<FormattedInput
+											id="outlined-basic"
+											label="Life Premium"
+											variant="outlined"
+											value={state.policyPremiumLife}
+											validation="policyPremiumLife"
+											type="percent"
+											willvalidation={true}
+											validate={state.policyPremiumValidation}
+											handleChangeValue={handleChangeValue}
+											size={150}
+										/>
+
+										<TextInput
+											id="outlined-basic"
+											label="Policy Information"
+											variant="outlined"
+											value={state.policyInformationLife}
+											validation="policyInformationLife"
+											onChange={handleChangeValue}
+											willvalidation={false}
+											validate={false}
+											size={350}
+										/>
+
+										<SelectBox
+											id="outlined-basic"
+											label="Product Type of Life"
+											data={state.lifeProductList}
+											variant="outlined"
+											value={state.typeOfProductLife}
+											validation="typeOfProductLife"
+											handleChangeValue={handleChangeValue}
+											willvalidation={true}
+											validate={state.typeOfProductLifeValidation}
+											size={250}
+										/>
+
+										{state.creditTypeLife === 'split_credit' && (
+											<>
+												<SelectBox
+													id="outlined-basic"
+													label="Credit User"
+													data={state.tempUserList}
+													variant="outlined"
+													value={state.creditUserLife}
+													validation="creditUserLife"
+													handleChangeValue={handleChangeValue}
+													willvalidation={false}
+													validate={state.creditUserLifeValidation}
+												/>
+												<TextInput
+													id="outlined-basic"
+													label="Sale Credit"
+													variant="outlined"
+													value={state.creditPercentLife}
+													validation="creditPercentLife"
+													type="percent"
+													onChange={handleChangeValue}
+													willvalidation={true}
+													validate={state.creditPercentLifeValidation}
+													size={150}
+												/>
+											</>
+										)}
+									</div>
 								)}
 							</div>
 						</FuseScrollbars>

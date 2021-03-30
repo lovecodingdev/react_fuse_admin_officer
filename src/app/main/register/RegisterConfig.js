@@ -25,8 +25,12 @@ const RegisterConfig = {
 	},
 	auth: authRoles.onlyGuest,
 	routes: [
+		// {
+		// 	path: '/register/:belongTo/:id',
+		// 	component: Register
+		// },
 		{
-			path: '/register/:belongTo/:id',
+			path: '/register/:belongTo/:id/:email',
 			component: Register
 		}
 	]

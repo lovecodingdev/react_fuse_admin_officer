@@ -9,7 +9,7 @@ import Select from '@material-ui/core/Select';
 const useStyles = makeStyles(theme => ({
 	formControl: {
 		minWidth: 120,
-		width:250
+		width:200
 	},
 	selectEmpty: {
 		marginTop: theme.spacing(2)
@@ -41,8 +41,8 @@ export default function SimpleSelect(props) {
 				value={value}
 				onChange={handleChange}
 				label={props.label}
-				InputProps={props.size&&{
-					style:{width:props.size},
+				InputProps={size&&{
+					style:{width:size},
 					
 				}}
 			>

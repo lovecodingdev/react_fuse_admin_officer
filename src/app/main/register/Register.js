@@ -66,7 +66,6 @@ function Register() {
 
 	async function setMembership() {
 		const response = await axios.post(firebaseFunctionGetProductsEndpoint);
-		console.log(response.data);
 		if (response.data) {
 			setCount(response.data.data);
 		}

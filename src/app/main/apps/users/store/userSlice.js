@@ -102,7 +102,7 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 				deployOfficerEndpoint +
 				'/register/' +
 				contact.belongTo +
-				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l</a></div>`
+				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l/`+contact.email+`</a></div>`
 		};
 	} else {
 		var form = {
@@ -118,7 +118,7 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 				deployProducerEndpoint +
 				'/register/' +
 				contact.belongTo +
-				`</a></div>`
+				`/`+contact.email+`</a></div>`
 		};
 	}
 
