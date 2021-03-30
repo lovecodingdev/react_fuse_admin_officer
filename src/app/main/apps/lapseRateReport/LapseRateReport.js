@@ -573,7 +573,7 @@ function ProjectDashboardApp(props) {
 										handleChangeValue={handleChangeValue}
 									/>
 								</div>
-								<div className="widget flex w-1/2 p-12">
+								{/* <div className="widget flex w-1/2 p-12">
 									<Widget10
 										columns={columns}
 										rows={state.lifeRows}
@@ -588,7 +588,7 @@ function ProjectDashboardApp(props) {
 										title="Health"
 										handleChangeValue={handleChangeValue}
 									/>
-								</div>
+								</div> */}
 							</div>
 
 							<div className="widget flex w-full p-12">

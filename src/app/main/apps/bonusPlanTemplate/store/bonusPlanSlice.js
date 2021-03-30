@@ -182,8 +182,9 @@ const contactsSlice = createSlice({
 		},
 		tempData: {},
 		addTempData: {},
-		removeTempData:{},
-		data:{}
+		removeTempData: {},
+		data: {},
+		template: {}
 	}),
 	reducers: {
 		setContactsSearchText: {
@@ -355,6 +356,11 @@ const contactsSlice = createSlice({
 			state.data = {
 				...action.payload
 			}
+		},
+		setTemplate: (state, action) => {
+			state.template = {
+				...action.payload
+			};
 		}
 	},
 	extraReducers: {
@@ -391,7 +397,8 @@ export const {
 	setTempData,
 	setAddTempData,
 	setRemoveTempData,
-	setData
+	setData,
+	setTemplate
 } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

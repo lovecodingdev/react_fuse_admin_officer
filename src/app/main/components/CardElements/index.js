@@ -162,7 +162,7 @@ const CheckoutForm = (props) => {
 				Thanks for trying Stripe Elements. No money was charged, but we generated a PaymentMethod:{' '}
 				{paymentMethod.id}
 			</div>
-			<ResetButton onClick={reset} />
+			{/* <ResetButton onClick={reset} /> */}
 		</div>
 	) : (
 		<form className="Form" onSubmit={handleSubmit}>
@@ -214,7 +214,7 @@ const CheckoutForm = (props) => {
 			</fieldset>
 			{error && <ErrorMessage>{error.message}</ErrorMessage>}
 			<SubmitButton processing={processing} error={error} disabled={!stripe}>
-				Pay
+				Pay and Register
 			</SubmitButton>
 		</form>
 	);

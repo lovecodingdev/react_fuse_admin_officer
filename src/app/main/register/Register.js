@@ -80,47 +80,93 @@ function Register() {
 		>
 			<FuseAnimate animation="transition.expandIn">
 				<div className="flex w-full max-w-400 md:max-w-3xl rounded-12 shadow-2xl overflow-hidden">
-					<Card
-						className={clsx(
-							classes.leftSection,
-							'flex flex-col w-full max-w-sm items-center justify-center shadow-0'
-						)}
-						square
-					>
-						<CardContent className="flex flex-col items-center justify-center w-full py-96 max-w-320">
-							<FuseAnimate delay={300}>
-								<div className="flex items-center justif-center mb-32">
-									<img className="logo-icon w-48" src="assets/images/logos/fuse.svg" alt="logo" />
-									<div className="border-l-1 mr-4 w-1 h-40" />
-									<div>
-										<Typography className="text-24 font-800 logo-text" color="inherit">
-											EASY
-										</Typography>
-										<Typography
-											className="text-16 tracking-widest -mt-8 font-700"
-											color="textSecondary"
-										>
-											BONUS SYSTEM
-										</Typography>
+					{state.subscriptionStatus && routeParams.id.length === 32 && (
+						<Card
+							className={clsx(
+								classes.leftSection,
+								'flex flex-col w-full max-w-sm items-center justify-center shadow-0'
+							)}
+							square
+						>
+							<CardContent className="flex flex-col items-center justify-center w-full py-96 max-w-320">
+								<FuseAnimate delay={300}>
+									<div className="flex items-center justif-center mb-32">
+										<img className="logo-icon w-48" src="assets/images/logos/fuse.svg" alt="logo" />
+										<div className="border-l-1 mr-4 w-1 h-40" />
+										<div>
+											<Typography className="text-24 font-800 logo-text" color="inherit">
+												EASY
+											</Typography>
+											<Typography
+												className="text-16 tracking-widest -mt-8 font-700"
+												color="textSecondary"
+											>
+												BONUS SYSTEM
+											</Typography>
+										</div>
 									</div>
+								</FuseAnimate>
+
+								{selectedTab === 1 && <FirebaseRegisterTab state={state.subscriptionStatus} />}
+							</CardContent>
+
+							<div className="flex flex-col items-center justify-center pb-32">
+								<div>
+									<span className="font-medium mr-8">Already have an account?</span>
+									<Link className="font-medium" to="/login">
+										Login
+									</Link>
 								</div>
-							</FuseAnimate>
-
-							{selectedTab === 1 && <FirebaseRegisterTab state={state.subscriptionStatus} />}
-						</CardContent>
-
-						<div className="flex flex-col items-center justify-center pb-32">
-							<div>
-								<span className="font-medium mr-8">Already have an account?</span>
-								<Link className="font-medium" to="/login">
-									Login
+								<Link className="font-medium mt-8" to="/">
+									Back to Dashboard
 								</Link>
 							</div>
-							<Link className="font-medium mt-8" to="/">
-								Back to Dashboard
-							</Link>
-						</div>
-					</Card>
+						</Card>
+					)}
+
+					{!state.subscriptionStatus && routeParams.id.length === 150 && (
+						<Card
+							className={clsx(
+								classes.leftSection,
+								'flex flex-col w-full max-w-sm items-center justify-center shadow-0'
+							)}
+							square
+						>
+							<CardContent className="flex flex-col items-center justify-center w-full py-96 max-w-320">
+								<FuseAnimate delay={300}>
+									<div className="flex items-center justif-center mb-32">
+										<img className="logo-icon w-48" src="assets/images/logos/fuse.svg" alt="logo" />
+										<div className="border-l-1 mr-4 w-1 h-40" />
+										<div>
+											<Typography className="text-24 font-800 logo-text" color="inherit">
+												EASY
+											</Typography>
+											<Typography
+												className="text-16 tracking-widest -mt-8 font-700"
+												color="textSecondary"
+											>
+												BONUS SYSTEM
+											</Typography>
+										</div>
+									</div>
+								</FuseAnimate>
+
+								{selectedTab === 1 && <FirebaseRegisterTab state={true} />}
+							</CardContent>
+
+							<div className="flex flex-col items-center justify-center pb-32">
+								<div>
+									<span className="font-medium mr-8">Already have an account?</span>
+									<Link className="font-medium" to="/login">
+										Login
+									</Link>
+								</div>
+								<Link className="font-medium mt-8" to="/">
+									Back to Dashboard
+								</Link>
+							</div>
+						</Card>
+					)}
 
 					<div
 						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-64')}
@@ -143,15 +189,11 @@ function Register() {
 								</FuseAnimate>
 							)}
 							{routeParams.id.length === 32 && state.showPaymentForm && (
-								
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
-									
-										<Elements stripe={stripePromise}>
-											<CardElements setPaymentState={setPaymentState} token={state.token} />
-										</Elements>
-								
+									<Elements stripe={stripePromise}>
+										<CardElements setPaymentState={setPaymentState} token={state.token} />
+									</Elements>
 								</FuseAnimate>
-						
 							)}
 							{routeParams.id.length !== 32 && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>

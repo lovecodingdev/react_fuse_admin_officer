@@ -9,12 +9,14 @@ import { Link } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import { getTemplateData } from './store/bonusPlanTemplateSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import { getUserData } from './store/userSlice';
-import { addContact } from './store/bonusPlanSlice';
+import { addContact, setTemplate } from './store/bonusPlanSlice';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import {useHistory} from 'react-router-dom'
+import SelectBox from '../../components/SelectBox';
 
 function ContactsHeader(props) {
 	const dispatch = useDispatch();
@@ -22,11 +24,25 @@ function ContactsHeader(props) {
 	const mainTheme = useSelector(selectMainTheme);
 	const user = useSelector(({bonusPlanTemplate})=> bonusPlanTemplate.user)
 	const data = useSelector(({bonusPlanTemplate})=> bonusPlanTemplate.autoBonus.data)
+	const bonusPlanTemplates = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.templates);
 	const [name, setName] = React.useState("")
 	const history = useHistory()
 	const [templateName, setTemplateName] = React.useState("")
+	const [state, setState] = React.useState({
+		templates: []
+	});
+	React.useEffect(() => {
+		var tempLists = [];
+		if (bonusPlanTemplates.length > 0) {
+			Object.keys(bonusPlanTemplates[0]).map(item => {
+				tempLists.push({ item: item, value: item });
+			});
+			setState({ ...state, templates: tempLists });
+		}
+	}, [bonusPlanTemplates]);
 	React.useEffect(()=>{
 		dispatch(getUserData(props.name))
+		dispatch(getTemplateData());
 	},[])
 
 	React.useEffect(()=>{
@@ -46,9 +62,14 @@ function ContactsHeader(props) {
 			dispatch(addContact({...data, name: templateName}))
 			dispatch(showMessage({ message: 'Successfully Saved!' }))
 			setTemplateName("")
-			history.goBack()
+			// history.goBack()
 		}
 	}
+
+	const handleChangeValue = data => {
+		dispatch(setTemplate(bonusPlanTemplates[0][data.template]));
+		setTemplateName(data.template);
+	};
 
 	return (
 		<div className="flex flex-1 items-center justify-between p-4 sm:p-24">
@@ -64,7 +85,7 @@ function ContactsHeader(props) {
 					</IconButton>
 				</Hidden>
 				<div className="">
-				<FuseAnimate animation="transition.slideRightIn" delay={300}>
+				{/* <FuseAnimate animation="transition.slideRightIn" delay={300}>
 							<Typography
 								className="normal-case flex items-center sm:mb-12"
 								component={Link}
@@ -77,7 +98,7 @@ function ContactsHeader(props) {
 								</Icon>
 								<span className="mx-4">Bonus Plan</span>
 							</Typography>
-						</FuseAnimate>
+						</FuseAnimate> */}
 				<div className="flex items-center">
 					<FuseAnimate animation="transition.expandIn" delay={300}>
 						<Icon className="text-32">money</Icon>
@@ -94,7 +115,17 @@ function ContactsHeader(props) {
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Paper className="flex p-4 items-center w-full max-w-512 h-48 px-8 py-4 rounded-8 shadow">
-
+						<SelectBox
+								id="outlined-basic"
+								label="Select Template"
+								data={state.templates}
+								variant="outlined"
+								// value={state.user}
+								validation="template"
+								handleChangeValue={handleChangeValue}
+								// willvalidation={false}
+								// validate={state.userValidation}
+							/>
 							<Input
 								placeholder="New Bonus Plan Template Name"
 								className="flex flex-1 px-16"
@@ -118,7 +149,7 @@ function ContactsHeader(props) {
 					color="secondary"
 					onClick={addNewTemplate}
 				>
-					<span className="hidden sm:flex">Save New Bonus Plan Template</span>
+					<span className="hidden sm:flex">Save Bonus Plan Template</span>
 					
 				</Button>
 			</FuseAnimate>

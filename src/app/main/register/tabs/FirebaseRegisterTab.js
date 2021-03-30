@@ -12,9 +12,7 @@ import { showMessage } from 'app/store/fuse/messageSlice';
 
 function FirebaseRegisterTab(props) {
 	const routeParams = useParams();
-	console.log(routeParams.id)
-	console.log(routeParams.belongTo)
-	console.log(routeParams.email)
+
 	const belongTo = routeParams.belongTo
 	const dispatch = useDispatch();
 	const register = useSelector(({ auth }) => auth.register);
@@ -165,7 +163,7 @@ function FirebaseRegisterTab(props) {
 					aria-label="REGISTER WITH FIREBASE"
 					disabled={!isFormValid}
 				>
-					Register with Firebase
+					Register
 				</Button>
 			</Formsy>
 		</div>

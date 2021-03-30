@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 
 function ContactsList(props) {
 	const dispatch = useDispatch();
-	// const contacts = useSelector(selectContacts);
+	const template = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.template);
 	const tempData = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.tempData);
 	const data = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.data);
 	const addTempData = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.addTempData);
@@ -50,6 +50,12 @@ function ContactsList(props) {
 			});
 		}
 	}, [tempData]);
+
+	useEffect(()=>{
+		if(Object.keys(template).length>0){
+			setContact(template)
+		}
+	},[template])
 
 	useEffect(() => {
 		if (addTempData) {

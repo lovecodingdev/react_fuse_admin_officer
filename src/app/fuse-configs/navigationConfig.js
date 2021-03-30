@@ -32,13 +32,13 @@ const navigationConfig = [
 				translate: 'Set Up',
 				type: 'collapse',
 				icon: 'settings',
-				url: '/apps/setup/bonus-plan/all',
+				url: '/apps/setup/bonus-plan-template/all',
 				children: [
 					{
 						id: 'goals-actual',
 						title: 'Bonus Plan',
 						type: 'item',
-						url: '/apps/setup/bonus-plan/all',
+						url: '/apps/setup/bonus-plan-template/all',
 						exact: true
 					},
 					// {
