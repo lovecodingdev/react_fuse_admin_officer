@@ -18,9 +18,11 @@ import { loadStripe } from '@stripe/stripe-js';
 import { firebaseFunctionGetProductsEndpoint } from 'app/fuse-configs/endpointConfig';
 import axios from 'axios';
 
-const stripePromise = loadStripe(
-	'pk_test_51IFn0pAfN4Ms4oOXNtWGRfBvhbBdJ0zIV4bCiefjGeRgt8eMDfq7Cm4jovgdj5BfdQm2qbV6oL7jzgcQ13jQ70l800ocRcNzky'
-);
+const publicKeyTest =
+	'pk_test_51IFn0pAfN4Ms4oOXNtWGRfBvhbBdJ0zIV4bCiefjGeRgt8eMDfq7Cm4jovgdj5BfdQm2qbV6oL7jzgcQ13jQ70l800ocRcNzky';
+const publicKeyProduction =
+	'pk_live_51IFn0pAfN4Ms4oOXN3BfEGMoy6hhPMMhQ40T3Cn2gvUCDM8WohYEulmi9fNxjsU5Q428UhiuaVOaK9xI1TGnE9Zw00fx2e7IOG';
+const stripePromise = loadStripe(publicKeyTest);
 const useStyles = makeStyles(theme => ({
 	root: {
 		background: `linear-gradient(to left, ${theme.palette.primary.dark} 0%, ${darken(
@@ -67,6 +69,7 @@ function Register() {
 	async function setMembership() {
 		const response = await axios.post(firebaseFunctionGetProductsEndpoint);
 		if (response.data) {
+			console.log(response.data);
 			setCount(response.data.data);
 		}
 	}
@@ -169,7 +172,7 @@ function Register() {
 					)}
 
 					<div
-						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-64')}
+						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-32')}
 					>
 						<div className="max-w-640">
 							{routeParams.id.length === 32 && !state.showPaymentForm && (
@@ -181,6 +184,7 @@ function Register() {
 													<SubscriptionCard
 														setBuy={handleTabChange}
 														price={item.amount / 100}
+														interval={item.interval_count + ' ' + item.interval}
 														token={item.id}
 													/>
 												);

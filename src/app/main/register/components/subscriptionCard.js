@@ -40,7 +40,7 @@ export default function SimpleCard(props) {
 					<div className="flex items-end">
 						<Typography className="text-72 mx-4 font-light leading-none">{props.price}</Typography>
 						<Typography variant="subtitle1" color="textSecondary">
-							/ month
+							/ {props.interval}
 						</Typography>
 					</div>
 				</div>
