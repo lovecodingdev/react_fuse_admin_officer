@@ -37,13 +37,22 @@ export const { selectAll: selectEntries, selectById: selectEntryById } = entries
 
 const entriesSlice = createSlice({
 	name: 'activityApp/entries',
-	initialState: entriesAdapter.getInitialState({}),
-	reducers: {},
+	initialState: entriesAdapter.getInitialState({
+		searchText: ''
+	}),
+	reducers: {
+		setSearchText: {
+			reducer: (state, action) => {
+				state.searchText = action.payload;
+			},
+			prepare: event => ({ payload: event.target.value || '' })
+		},
+	},
 	extraReducers: {
 		[getEntries.fulfilled]: entriesAdapter.setAll
 	}
 });
 
-export const {} = entriesSlice.actions;
+export const { setSearchText } = entriesSlice.actions;
 
 export default entriesSlice.reducer;

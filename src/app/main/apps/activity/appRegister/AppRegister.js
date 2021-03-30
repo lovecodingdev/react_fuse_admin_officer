@@ -1,28 +1,36 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import moment from 'moment';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FusePageSimple from '@fuse/core/FusePageSimple';
 import FusePageCarded from '@fuse/core/FusePageCarded';
+import { ThemeProvider } from '@material-ui/core/styles';
+import DateFnsUtils from '@date-io/date-fns';
+import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import Tab from '@material-ui/core/Tab';
 import Tabs from '@material-ui/core/Tabs';
+import Paper from '@material-ui/core/Paper';
+import Icon from '@material-ui/core/Icon';
+import Input from '@material-ui/core/Input';
 import Typography from '@material-ui/core/Typography';
 import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
+import {
+	MuiPickersUtilsProvider,
+	KeyboardTimePicker,
+	KeyboardDatePicker,
+  } from '@material-ui/pickers';
 import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
 import reducer from '../store';
 import Table from '../../../components/widgets/Table';
-import SpecialTable from '../../../components/widgets/SpecialTable';
 import Chart from '../../../components/widgets/BarChart';
 import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
-import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
-import { getEntries, selectEntries } from '../store/entriesSlice';
+import { getWidgets, selectWidgets } from '../store/widgetsSlice';
+import { getEntries, selectEntries, setSearchText } from '../store/entriesSlice';
 import { formattedDate } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
@@ -30,12 +38,19 @@ const UID = localStorage.getItem('@UID');
 
 function AppRegister(props) {
 	const dispatch = useDispatch();
+	const searchText = useSelector(({ activityApp }) => activityApp.entries.searchText);
+	const mainTheme = useSelector(selectMainTheme);
 	let widgets = useSelector(selectWidgets);
 	const users = useSelector(selectUsers);
 	const entries = useSelector(selectEntries);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({});
-	const [main, setMain] = useState({});
+	const [main, setMain] = useState([]);
+	const date = new Date();
+	const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+	const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+	const [selectedFromDate, setSelectedFromDate] = useState(firstDay); 
+	const [selectedToDate, setSelectedToDate] = useState(lastDay); 
 	const [title, setTitle] = useState('PRODUCER APPS REPORT');
 
 	useEffect(() => {
@@ -64,22 +79,25 @@ function AppRegister(props) {
 						if(entries[0][entryName].hasOwnProperty(user.id)) { 
 							Object.keys(entries[0][entryName][user.id]).map((key, rowNum) => {
 								const item = entries[0][entryName][user.id][key];
-								const issuedMonth = item.datePolicyIsIssued==='' ? '' : (new Date(item.datePolicyIsIssued)).getMonth() + 1;
-								const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth() + 1; 
-								temp[i] = {};
-								// temp[i]["No"] = rowNum + 1;
-								temp[i]["Client Name"] = item.policyHolderName;
-								temp[i]["Policy(Tracking) Number or Description"] = item.policyInformation;
-								temp[i]["Date Product Is Written"] = formattedDate(new Date(item.datePolicyIsWritten));
-								temp[i]["Date Product Is Issued"] = formattedDate(new Date(item.datePolicyIsIssued));
-								temp[i]["Product Line"] = entryNames[entryName];
-								temp[i]["Product Type"] = item["typeOfProduct"];
-								temp[i]["Source of Business"] = item["sourceOfBusiness"];
-								temp[i]["Product Dollars"] = item["policyPremium"];
-								temp[i]["Bonus"] = item["dollarBonus"];
-								temp[i]["Month Written"] = writtenMonth;
-								temp[i]["Month Issued"] = issuedMonth;
-								i ++;													
+								const writtenDate = new Date(item.datePolicyIsWritten);
+								if(writtenDate>=selectedFromDate && writtenDate<=selectedToDate) {	
+									const issuedMonth = item.datePolicyIsIssued==='' ? '' : (new Date(item.datePolicyIsIssued)).getMonth() + 1;
+									const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth() + 1; 
+									temp[i] = {};
+									// temp[i]["No"] = rowNum + 1;
+									temp[i]["Client Name"] = item.policyHolderName;
+									temp[i]["Policy(Tracking) Number or Description"] = item.policyInformation;
+									temp[i]["Date Product Is Written"] = formattedDate(new Date(item.datePolicyIsWritten));
+									temp[i]["Date Product Is Issued"] = formattedDate(new Date(item.datePolicyIsIssued));
+									temp[i]["Product Line"] = entryNames[entryName];
+									temp[i]["Product Type"] = item["typeOfProduct"];
+									temp[i]["Source of Business"] = item["sourceOfBusiness"];
+									temp[i]["Product Dollars"] = item["policyPremium"];
+									temp[i]["Bonus"] = item["dollarBonus"];
+									temp[i]["Month Written"] = writtenMonth;
+									temp[i]["Month Issued"] = issuedMonth;
+									i ++;							
+								}						
 							});
 						}
 					}
@@ -87,9 +105,13 @@ function AppRegister(props) {
 			});		
 		}
 
-		console.log('--------------------temp=', temp)
-		setMain(temp)
-	}, [entries, users]);
+		console.log('--------------------temp=', temp);
+		if (searchText.length!==0) {
+			setMain(_.filter(temp, item => item['Client Name'].toLowerCase().includes(searchText.toLowerCase())));
+		} else {
+			setMain(temp);
+		}
+	}, [entries, searchText, selectedFromDate, selectedToDate]);
 
 	useEffect(() => {	
 		if(widgets.Activity_AppRegister_Table && main.length>0) {
@@ -127,6 +149,14 @@ function AppRegister(props) {
 		setData({ widgets });
 	}, [widgets, main]);
 
+	const handleFromDateChange = (date) => {
+		setSelectedFromDate(date);
+	};
+
+	const handleToDateChange = (date) => {
+		setSelectedToDate(date);
+	};
+
 	if (loading) {
 		return <FuseLoading />;
 	}
@@ -151,7 +181,58 @@ function AppRegister(props) {
 				header: 'min-h-72 h-72 sm:h-136 sm:min-h-136'
 			}}
 			header={
-				<Header title={title} />				
+				<Header title={title}>
+					{/* <div className="flex flex-1 items-center justify-center px-12"> */}
+					
+					<MuiPickersUtilsProvider utils={DateFnsUtils}>
+						<KeyboardDatePicker
+							disableToolbar
+							variant="inline"
+							format="MM/dd/yyyy"
+							margin="normal"
+							id="date-picker-inline"
+							label="From Date"
+							value={selectedFromDate}
+							onChange={handleFromDateChange}
+							KeyboardButtonProps={{
+								'aria-label': 'change date',
+							}}
+						/>						
+						<KeyboardDatePicker
+							disableToolbar
+							variant="inline"
+							format="MM/dd/yyyy"
+							margin="normal"
+							id="date-picker-inline"
+							label="To Date"
+							value={selectedToDate}
+							onChange={handleToDateChange}
+							KeyboardButtonProps={{
+								'aria-label': 'change date',
+							}}
+						/>
+					</MuiPickersUtilsProvider>
+					
+					<ThemeProvider theme={mainTheme}>
+						<FuseAnimate animation="transition.slideDownIn" delay={300}>
+							<Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8 shadow">
+								<Icon color="action">search</Icon>
+								<Input
+									placeholder="Search"
+									className="flex flex-1 mx-8"
+									disableUnderline
+									fullWidth
+									value={searchText}
+									inputProps={{
+										'aria-label': 'Search'
+									}}
+									onChange={ev => dispatch(setSearchText(ev))}
+								/>
+							</Paper>
+						</FuseAnimate>
+					</ThemeProvider>												
+					{/* </div> */}
+				</Header>				
 			}
 			content={
 				<div className="w-full p-12">

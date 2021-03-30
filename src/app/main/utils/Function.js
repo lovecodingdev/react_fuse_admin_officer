@@ -45,38 +45,38 @@ export const IsNumeric = (input) => {
 
 export const getLevel =(policyCount, policyName, bonusPlans) => { 
   // console.log(policyCount, policyName, bonusPlans)
-  let dbName = "";
-  if(policyName==="Auto")
-    dbName = "individualAutoTargetBonus";
-  if(policyName==="TeamAuto") 
-    dbName = "teamAutoTargetBonus";
-  if(policyName==="Fire")
-    dbName = "individualFireTargetBonus";
-  if(policyName==="TeamFire")
-    dbName = "teamFireTargetBonus";
-  if(policyName==="Life")
-    dbName = "individualLifeTargetBonus";
-  if(policyName==="TeamLife") 
-    dbName = "teamLifeTargetBonus";
-  if(policyName==="Health")
-    dbName = "individualHealthTargetBonus";
-  if(policyName==="TeamHealth")
-    dbName = "teamHealthTargetBonus";
-  if(policyName==="Bank")
-    dbName = "individualBankTargetBonus";
-  if(policyName==="TeamBank")
-    dbName = "teamBankTargetBonus";
-  if(policyName==="Other")
-    dbName = "otherActivityBonus";	
+  let dbName = '';
+  if(policyName==='Auto')
+    dbName = 'individualAutoTargetBonus';
+  if(policyName==='TeamAuto') 
+    dbName = 'teamAutoTargetBonus';
+  if(policyName==='Fire')
+    dbName = 'individualFireTargetBonus';
+  if(policyName==='TeamFire')
+    dbName = 'teamFireTargetBonus';
+  if(policyName==='Life')
+    dbName = 'individualLifeTargetBonus';
+  if(policyName==='TeamLife') 
+    dbName = 'teamLifeTargetBonus';
+  if(policyName==='Health')
+    dbName = 'individualHealthTargetBonus';
+  if(policyName==='TeamHealth')
+    dbName = 'teamHealthTargetBonus';
+  if(policyName==='Bank')
+    dbName = 'individualBankTargetBonus';
+  if(policyName==='TeamBank')
+    dbName = 'teamBankTargetBonus';
+  if(policyName==='Other')
+    dbName = 'otherActivityBonus';	
 
   let level = { 
-    level: "", 
+    level: '', 
     policies: 0, 
     amount: 0, 
-    nextLevel: "", 
+    nextLevel: '', 
     nextPolicies: 0, 
     nextAmount: 0, 
-    maxLevel: "", 
+    maxLevel: '', 
     maxPolicies: 0, 
     maxAmount: 0 
   };
@@ -86,7 +86,7 @@ export const getLevel =(policyCount, policyName, bonusPlans) => {
       const item = bonusPlans[0][dbName][key];     
       if(policyCount > 0) {
         if(n===0) {
-          level.level = "None Reached";
+          level.level = 'None Reached';
         }
         if(policyCount >= item.policies) { 
           level.level = item.level; 
@@ -126,31 +126,22 @@ export const getOtherActivityBonus = (name, bonusPlans) => {
 }
 
 export const visionNames = {
-  "Auto": "autoPolicies",
-  "Fire": "firePolicies",
-  "Life": "lifePolicies",
-  "Health": "healthPolicies",
-  "Bank": "bankProducts",
-  "Totals": "totalProducts",
+  'Auto': 'autoPolicies',
+  'Fire': 'firePolicies',
+  'Life': 'lifePolicies',
+  'Health': 'healthPolicies',
+  'Bank': 'bankProducts',
+  'Totals': 'totalProducts',
 };
 
 export const entryNames = {
-  "Entries": "Auto", 
-  "FireEntries": "Fire", 
-  "LifeEntries": "Life", 
-  "HealthEntries": "Health", 
-  "BankEntries": "Bank", 
-  "OtherEntries": "Other"
+  'Entries': 'Auto', 
+  'FireEntries': 'Fire', 
+  'LifeEntries': 'Life', 
+  'HealthEntries': 'Health', 
+  'BankEntries': 'Bank', 
+  'OtherEntries': 'Other'
 };
-
-// export const quarters = {
-//   "Quarter 1 Totals": "Quarter1",
-//   "Quarter 2 Totals": "Quarter2",
-//   "Quarter 3 Totals": "Quarter3",
-//   "Quarter 4 Totals": "Quarter4",	
-//   "Annual Totals": "Total",
-//   "Projected for Year": "Total",	
-// };
 
 // Getting  main data
 export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRate) => {
@@ -162,19 +153,18 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
       temp[production][month.value] = {};
       users.map((user) => {
         const userId = user.id;
-        // const userId = user.data.displayName;
         temp[production][month.value][userId] = {};
         policies.map((pol) => {
           const policy = pol.value;
           temp[production][month.value][userId][policy] = {
-            "Bonuses": 0,
-            "Premium": 0,
-            "Policies": 0,
-            "Averages": 0,
+            'Bonuses': 0,
+            'Premium': 0,
+            'Policies': 0,
+            'Averages': 0,
             'household': 0,
             'individual': 0,
             'lapseRate': 0,
-            "Goals": 0,
+            'Goals': 0,
           };
 
           // adding marketing items
@@ -199,28 +189,13 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
           lapseRate[0].hasOwnProperty(policy) && 
           lapseRate[0][policy].hasOwnProperty(month.value) ? 
           lapseRate[0][policy][month.value]['previousMonth']['value'] : 0;				
-          temp[production][month.value][userId][policy]['lapseRate'] = lapse;            
-
+          temp[production][month.value][userId][policy]['lapseRate'] = lapse;      
+          
           // adding vision items
-          if(vision.length > 0) {	
-            let trimedMonth = month.value;
-            switch(month.value) {
-              case "Quarter 1 Totals":
-                trimedMonth = "Quarter1";
-              case "Quarter 2 Totals":
-                trimedMonth = "Quarter2";
-              case "Quarter 3 Totals":
-                trimedMonth = "Quarter3";
-              case "Quarter 4 Totals":
-                trimedMonth = "Quarter4";	
-              case "Annual Totals":
-                trimedMonth = "Total";
-              case "Projected for Year":
-                trimedMonth = "Total";									  
-            }		
-            if(vision[0].hasOwnProperty(user.id)) {
-              temp[production][month.value][userId][policy]["Goals"] = 
-                vision[0][user.id]['Goals'][trimedMonth][visionNames[policy]];
+          if(vision.length > 0) {	           	
+            if(vision[0].hasOwnProperty(userId)) {
+              temp[production][month.value][userId][policy]['Goals'] = 
+                vision[0][userId]['Goals'][month.visionValue][visionNames[policy]];                 
             }            
           }
         });          
@@ -230,38 +205,95 @@ export const getMain = (entries, bonusPlans, marketings, users, vision, lapseRat
     if(entries.length > 0) {
       users.map((user) => {
         const userId = user.id;
-        // const userId = user.data.displayName;
         Object.keys(entries[0]).map((entry) => {
           const policy = entryNames[entry];
-          if(entries[0][entry].hasOwnProperty(user.id)) {
-            Object.keys(entries[0][entry][user.id]).map((key) => {
-              const item = entries[0][entry][user.id][key];              
+          if(entries[0][entry].hasOwnProperty(userId)) {
+            Object.keys(entries[0][entry][userId]).map((key) => {
+              const item = entries[0][entry][userId][key];              
               const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth(); 
               const issuedMonth = item.datePolicyIsIssued==='' ? '' : (new Date(item.datePolicyIsIssued)).getMonth();               
               if(production==='Show Issued Production' && issuedMonth === '') {                
                 return;
               }            
-              const month = production==="Show Written Production" ? months[writtenMonth].value : months[issuedMonth].value;
+              const month = production==='Show Written Production' ? months[writtenMonth].value : months[issuedMonth].value;
               const semiAnnual = policy==='Auto' ? 2 : 1;
-              const bonus = item.dollarBonus==='' ? 0 : item.dollarBonus;
+              const bonus = item.dollarBonus==='' ? 0 : item.dollarBonus;              
               temp[production][month][userId][policy][item.typeOfProduct] += parseFloat(item.percentOfSaleCredit / 100);
-              temp[production][month][userId][policy][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);
-              ////////////// Remove after
-              if(item.policyHolderType === '') {
-                temp[production][month][userId][policy]['individual'] += 1;
-              } else {
-                temp[production][month][userId][policy][item.policyHolderType] += 1
-              }
-              /////////////////////
-              // temp[production][month][userId][policy][item.policyHolderType] += 1;
-              temp[production][month][userId][policy]["Bonuses"] += parseFloat(bonus);									
-              temp[production][month][userId][policy]["Premium"] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;									
-              temp[production][month][userId][policy]["Policies"] += parseFloat(item.percentOfSaleCredit / 100);	
-              temp[production][month][userId][policy]["Averages"] = dividing(temp[production][month][userId][policy]["Premium"], temp[production][month][userId][policy]["Policies"])              
+              temp[production][month][userId][policy][item.sourceOfBusiness] += parseFloat(item.percentOfSaleCredit / 100);              
+              temp[production][month][userId][policy][item.policyHolderType] += 1;
+              temp[production][month][userId][policy]['Bonuses'] += parseFloat(bonus);									
+              temp[production][month][userId][policy]['Premium'] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;									
+              temp[production][month][userId][policy]['Policies'] += parseFloat(item.percentOfSaleCredit / 100);	
+              temp[production][month][userId][policy]['Averages'] = dividing(temp[production][month][userId][policy]['Premium'], temp[production][month][userId][policy]['Policies'])              
               temp[production][month][userId][policy][`${item.typeOfProduct}@Bonuses`] += parseFloat(bonus);
               temp[production][month][userId][policy][`${item.typeOfProduct}@Premium`] += parseFloat(item.policyPremium) * parseFloat(item.percentOfSaleCredit) * semiAnnual / 100;
               temp[production][month][userId][policy][`${item.typeOfProduct}@Policies`] += parseFloat(item.percentOfSaleCredit / 100);	              
               temp[production][month][userId][policy][`${item.typeOfProduct}@Averages`] = dividing(temp[production][month][userId][policy][`${item.typeOfProduct}@Premium`], temp[production][month][userId][policy][`${item.typeOfProduct}@Policies`])              
+
+              for(let i = 0; i < 4; i ++) {
+                temp[production][`Quarter ${i+1} Totals`][userId][policy][item.typeOfProduct] = 
+                  temp[production][months[i*3].value][userId][policy][item.typeOfProduct] +
+                  temp[production][months[i*3+1].value][userId][policy][item.typeOfProduct] +
+                  temp[production][months[i*3+2].value][userId][policy][item.typeOfProduct];
+                temp[production][`Quarter ${i+1} Totals`][userId][policy][item.sourceOfBusiness] = 
+                  temp[production][months[i*3].value][userId][policy][item.sourceOfBusiness] +
+                  temp[production][months[i*3+1].value][userId][policy][item.sourceOfBusiness] +
+                  temp[production][months[i*3+2].value][userId][policy][item.sourceOfBusiness];
+                temp[production][`Quarter ${i+1} Totals`][userId][policy][item.policyHolderType] = 
+                  temp[production][months[i*3].value][userId][policy][item.policyHolderType] +
+                  temp[production][months[i*3+1].value][userId][policy][item.policyHolderType] +
+                  temp[production][months[i*3+2].value][userId][policy][item.policyHolderType];
+                temp[production][`Quarter ${i+1} Totals`][userId][policy]['Bonuses'] = 
+                  temp[production][months[i*3].value][userId][policy]['Bonuses'] +
+                  temp[production][months[i*3+1].value][userId][policy]['Bonuses'] +
+                  temp[production][months[i*3+2].value][userId][policy]['Bonuses'];
+                temp[production][`Quarter ${i+1} Totals`][userId][policy]['Premium'] = 
+                  temp[production][months[i*3].value][userId][policy]['Premium'] +
+                  temp[production][months[i*3+1].value][userId][policy]['Premium'] +
+                  temp[production][months[i*3+2].value][userId][policy]['Premium'];
+                temp[production][`Quarter ${i+1} Totals`][userId][policy]['Policies'] = 
+                  temp[production][months[i*3].value][userId][policy]['Policies'] +
+                  temp[production][months[i*3+1].value][userId][policy]['Policies'] +
+                  temp[production][months[i*3+2].value][userId][policy]['Policies'];
+                temp[production][`Quarter ${i+1} Totals`][userId][policy]['Averages'] = dividing(
+                  temp[production][`Quarter ${i+1} Totals`][userId][policy]['Premium'], 
+                  temp[production][`Quarter ${i+1} Totals`][userId][policy]['Policies']
+                );
+              } 
+              temp[production][`Annual Totals`][userId][policy][item.typeOfProduct] =   
+                temp[production][`Quarter 1 Totals`][userId][policy][item.typeOfProduct] +
+                temp[production][`Quarter 2 Totals`][userId][policy][item.typeOfProduct] +
+                temp[production][`Quarter 3 Totals`][userId][policy][item.typeOfProduct] +
+                temp[production][`Quarter 4 Totals`][userId][policy][item.typeOfProduct];  
+              temp[production][`Annual Totals`][userId][policy][item.sourceOfBusiness] =   
+                temp[production][`Quarter 1 Totals`][userId][policy][item.sourceOfBusiness] +
+                temp[production][`Quarter 2 Totals`][userId][policy][item.sourceOfBusiness] +
+                temp[production][`Quarter 3 Totals`][userId][policy][item.sourceOfBusiness] +
+                temp[production][`Quarter 4 Totals`][userId][policy][item.sourceOfBusiness];  
+              temp[production][`Annual Totals`][userId][policy][item.policyHolderType] =   
+                temp[production][`Quarter 1 Totals`][userId][policy][item.policyHolderType] +
+                temp[production][`Quarter 2 Totals`][userId][policy][item.policyHolderType] +
+                temp[production][`Quarter 3 Totals`][userId][policy][item.policyHolderType] +
+                temp[production][`Quarter 4 Totals`][userId][policy][item.policyHolderType];  
+              temp[production][`Annual Totals`][userId][policy]['Bonuses'] =  
+                temp[production][`Quarter 1 Totals`][userId][policy]['Bonuses'] +
+                temp[production][`Quarter 2 Totals`][userId][policy]['Bonuses'] +
+                temp[production][`Quarter 3 Totals`][userId][policy]['Bonuses'] +
+                temp[production][`Quarter 4 Totals`][userId][policy]['Bonuses'];
+              temp[production][`Annual Totals`][userId][policy]['Premium'] =  
+                temp[production][`Quarter 1 Totals`][userId][policy]['Premium'] +
+                temp[production][`Quarter 2 Totals`][userId][policy]['Premium'] +
+                temp[production][`Quarter 3 Totals`][userId][policy]['Premium'] +
+                temp[production][`Quarter 4 Totals`][userId][policy]['Premium'];
+              temp[production][`Annual Totals`][userId][policy]['Policies'] =  
+                temp[production][`Quarter 1 Totals`][userId][policy]['Policies'] +
+                temp[production][`Quarter 2 Totals`][userId][policy]['Policies'] +
+                temp[production][`Quarter 3 Totals`][userId][policy]['Policies'] +
+                temp[production][`Quarter 4 Totals`][userId][policy]['Policies'];
+              temp[production][`Annual Totals`][userId][policy]['Averages'] = dividing(
+                temp[production][`Annual Totals`][userId][policy]['Premium'],
+                temp[production][`Annual Totals`][userId][policy]['Policies']
+              ); 
             });
           }
         });	

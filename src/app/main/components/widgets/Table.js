@@ -31,11 +31,11 @@ function Widget(props) {
 	const headers = props.data.table.headers;
 	const rows = props.data.table.rows;
 	const columns = props.data.table.columns;
-	const sortableTableContent = [];
+	const sortTableContent = [];
 
 	if(props.sortable) {
 		rows.map((row, rowNum) => {
-			sortableTableContent.push({ ...tableContent[row.value] });
+			sortTableContent.push({ ...tableContent[row.value] });
 		}); 
 	}
 
@@ -224,7 +224,7 @@ function Widget(props) {
 				
 						{props.sortable && 
 						_.orderBy(
-							sortableTableContent,
+							sortTableContent,
 							[
 								o => {
 									switch (order.id) {
@@ -285,7 +285,7 @@ function Widget(props) {
 				<TablePagination
 					className="flex-shrink-0 border-t-1"
 					component="div"
-					count={sortableTableContent.length}
+					count={sortTableContent.length}
 					rowsPerPage={rowsPerPage}
 					page={page}
 					backIconButtonProps={{
