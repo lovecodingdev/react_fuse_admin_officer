@@ -6,10 +6,9 @@ var belongTo = localStorage.getItem('@BELONGTO')
 
 export const getEntries = createAsyncThunk(
 	'activityApp/entries/getEntries',
-	() =>
+	(year) =>
 		new Promise((resolve, reject) => {
-			// var starCountRef = realDb.ref(`Sales/${belongTo}/Entries/${localStorage.getItem('@UID')}`);
-			var starCountRef = realDb.ref(`Sales/${belongTo}/`);
+			var starCountRef = realDb.ref(`Sales/${year}/${belongTo}/`);
 			var entries = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();

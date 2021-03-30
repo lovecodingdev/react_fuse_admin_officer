@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import moment from 'moment';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FusePageSimple from '@fuse/core/FusePageSimple';
@@ -31,10 +32,10 @@ import Header from '../../../components/widgets/Header';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { getEntries, selectEntries, setSearchText } from '../store/entriesSlice';
+import { Options as options, months1 } from '../../../utils/Globals';
 import { formattedDate } from '../../../utils/Function';
 
-const belongTo = localStorage.getItem('@BELONGTO');
-const UID = localStorage.getItem('@UID');
+const UID = localStorage.getItem("@UID");
 
 function AppRegister(props) {
 	const dispatch = useDispatch();
@@ -46,23 +47,19 @@ function AppRegister(props) {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({});
 	const [main, setMain] = useState([]);
-	const date = new Date();
-	const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
-	const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-	const [selectedFromDate, setSelectedFromDate] = useState(firstDay); 
-	const [selectedToDate, setSelectedToDate] = useState(lastDay); 
+	const [date, setDate] = useState(moment());
+	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [title, setTitle] = useState('PRODUCER APPS REPORT');
 
-	useEffect(() => {
-		dispatch(getUsers());
-		dispatch(getEntries());
+	useEffect(() => { 
+		dispatch(getEntries(moment(date).format('yyyy')));
 		dispatch(getWidgets()).then(() => setLoading(false));
-	}, [dispatch]);
+	}, [dispatch, date]);
 
 	useEffect(() => {		
 		// creating temp
 		let temp = [];		
-		if(entries.length>0 && users.length>0) {
+		if(entries.length > 0) {
 			const entryNames = {
 				"Entries": "Auto", 
 				"FireEntries": "Fire", 
@@ -79,25 +76,21 @@ function AppRegister(props) {
 						if(entries[0][entryName].hasOwnProperty(user.id)) { 
 							Object.keys(entries[0][entryName][user.id]).map((key, rowNum) => {
 								const item = entries[0][entryName][user.id][key];
-								const writtenDate = new Date(item.datePolicyIsWritten);
-								if(writtenDate>=selectedFromDate && writtenDate<=selectedToDate) {	
-									const issuedMonth = item.datePolicyIsIssued==='' ? '' : (new Date(item.datePolicyIsIssued)).getMonth() + 1;
-									const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth() + 1; 
-									temp[i] = {};
-									// temp[i]["No"] = rowNum + 1;
-									temp[i]["Client Name"] = item.policyHolderName;
-									temp[i]["Policy(Tracking) Number or Description"] = item.policyInformation;
-									temp[i]["Date Product Is Written"] = formattedDate(new Date(item.datePolicyIsWritten));
-									temp[i]["Date Product Is Issued"] = formattedDate(new Date(item.datePolicyIsIssued));
-									temp[i]["Product Line"] = entryNames[entryName];
-									temp[i]["Product Type"] = item["typeOfProduct"];
-									temp[i]["Source of Business"] = item["sourceOfBusiness"];
-									temp[i]["Product Dollars"] = item["policyPremium"];
-									temp[i]["Bonus"] = item["dollarBonus"];
-									temp[i]["Month Written"] = writtenMonth;
-									temp[i]["Month Issued"] = issuedMonth;
-									i ++;							
-								}						
+								const issuedMonth = item.datePolicyIsIssued==='' ? '' : (new Date(item.datePolicyIsIssued)).getMonth() + 1;
+								const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth() + 1; 
+								temp[i] = {};
+								temp[i]["Client Name"] = item.policyHolderName;
+								temp[i]["Policy(Tracking) Number or Description"] = item.policyInformation;
+								temp[i]["Date Product Is Written"] = formattedDate(new Date(item.datePolicyIsWritten));
+								temp[i]["Date Product Is Issued"] = formattedDate(new Date(item.datePolicyIsIssued));
+								temp[i]["Product Line"] = entryNames[entryName];
+								temp[i]["Product Type"] = item["typeOfProduct"];
+								temp[i]["Source of Business"] = item["sourceOfBusiness"];
+								temp[i]["Product Dollars"] = item["policyPremium"];
+								temp[i]["Bonus"] = item["dollarBonus"];
+								temp[i]["Month Written"] = writtenMonth;
+								temp[i]["Month Issued"] = issuedMonth;
+								i ++;							
 							});
 						}
 					}
@@ -105,57 +98,72 @@ function AppRegister(props) {
 			});		
 		}
 
-		console.log('--------------------temp=', temp);
+		console.log('--------------------temp=', temp, );
+		
+		if(period === 'Quarter 1 Totals') {
+			temp = _.filter(temp, item => item['Month Written']===1 || item['Month Written']===2 || item['Month Written']===3);
+		} else if(period === 'Quarter 2 Totals') {
+			temp = _.filter(temp, item => item['Month Written']===4 || item['Month Written']===5 || item['Month Written']===6);
+		} else if(period === 'Quarter 3 Totals') {
+			temp = _.filter(temp, item => item['Month Written']===7 || item['Month Written']===8 || item['Month Written']===9);
+		} else if(period === 'Quarter 4 Totals') {
+			temp = _.filter(temp, item => item['Month Written']===10 || item['Month Written']===11 || item['Month Written']===12);
+		} else if(months1.includes(period)) {
+			temp = _.filter(temp, item => item['Month Written']-1===months1.indexOf(period));
+		}
+
 		if (searchText.length!==0) {
 			setMain(_.filter(temp, item => item['Client Name'].toLowerCase().includes(searchText.toLowerCase())));
 		} else {
 			setMain(temp);
 		}
-	}, [entries, searchText, selectedFromDate, selectedToDate]);
+	}, [entries, searchText, period]);
 
-	useEffect(() => {	
-		if(widgets.Activity_AppRegister_Table && main.length>0) {
-			let rows = [];
-			main.map((item, n) => {
-				rows.push(
-					{ id: n+1, value: n+1, color: "" },
-				);				
-				Object.keys(item).map((key) => {
-					widgets = {
-						...widgets, Activity_AppRegister_Table: {
-							...widgets.Activity_AppRegister_Table, table: {
-								...widgets.Activity_AppRegister_Table.table, tableContent: {
-									...widgets.Activity_AppRegister_Table.table.tableContent, [n+1]: {
-										...widgets.Activity_AppRegister_Table.table.tableContent[n+1], [key]:
-											item[key]
+	useEffect(() => {
+		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {	
+			if(widgets.Activity_AppRegister_Table) {
+				let rows = [];
+				main.map((item, n) => {
+					rows.push(
+						{ id: n+1, value: n+1, color: "" },
+					);				
+					Object.keys(item).map((key) => {
+						widgets = {
+							...widgets, Activity_AppRegister_Table: {
+								...widgets.Activity_AppRegister_Table, table: {
+									...widgets.Activity_AppRegister_Table.table, tableContent: {
+										...widgets.Activity_AppRegister_Table.table.tableContent, [n+1]: {
+											...widgets.Activity_AppRegister_Table.table.tableContent[n+1], [key]:
+												item[key]
+										}
 									}
 								}
 							}
 						}
+					});
+				});	
+				widgets = {
+					...widgets, Activity_AppRegister_Table: {
+						...widgets.Activity_AppRegister_Table, table: {
+							...widgets.Activity_AppRegister_Table.table, rows: 
+								rows							
+						}
 					}
-				});
-			});	
-			widgets = {
-				...widgets, Activity_AppRegister_Table: {
-					...widgets.Activity_AppRegister_Table, table: {
-						...widgets.Activity_AppRegister_Table.table, rows: 
-							rows							
-					}
-				}
-			}			
+				}			
+			}
 		}
 
 		console.log('-----Widgets=', widgets)
 		setData({ widgets });
 	}, [widgets, main]);
 
-	const handleFromDateChange = (date) => {
-		setSelectedFromDate(date);
-	};
+	function handleChangePeriod(event) { 
+		setPeriod(event.target.value);
+	}
 
-	const handleToDateChange = (date) => {
-		setSelectedToDate(date);
-	};
+	function handleChangeYear(date) {  
+		setDate(date);
+	}
 
 	if (loading) {
 		return <FuseLoading />;
@@ -182,56 +190,56 @@ function AppRegister(props) {
 			}}
 			header={
 				<Header title={title}>
-					{/* <div className="flex flex-1 items-center justify-center px-12"> */}
-					
-					<MuiPickersUtilsProvider utils={DateFnsUtils}>
-						<KeyboardDatePicker
-							disableToolbar
-							variant="inline"
-							format="MM/dd/yyyy"
-							margin="normal"
-							id="date-picker-inline"
-							label="From Date"
-							value={selectedFromDate}
-							onChange={handleFromDateChange}
-							KeyboardButtonProps={{
-								'aria-label': 'change date',
-							}}
-						/>						
-						<KeyboardDatePicker
-							disableToolbar
-							variant="inline"
-							format="MM/dd/yyyy"
-							margin="normal"
-							id="date-picker-inline"
-							label="To Date"
-							value={selectedToDate}
-							onChange={handleToDateChange}
-							KeyboardButtonProps={{
-								'aria-label': 'change date',
-							}}
-						/>
-					</MuiPickersUtilsProvider>
-					
-					<ThemeProvider theme={mainTheme}>
-						<FuseAnimate animation="transition.slideDownIn" delay={300}>
-							<Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8 shadow">
-								<Icon color="action">search</Icon>
-								<Input
-									placeholder="Search"
-									className="flex flex-1 mx-8"
-									disableUnderline
-									fullWidth
-									value={searchText}
-									inputProps={{
-										'aria-label': 'Search'
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<MuiPickersUtilsProvider utils={DateFnsUtils}>
+								<KeyboardDatePicker
+									disableToolbar
+									variant="inline"
+									format="yyyy"
+									margin="normal"
+									id="date-picker-inline"
+									label="From Date"
+									value={date}
+									onChange={handleChangeYear}
+									KeyboardButtonProps={{
+										'aria-label': 'change date',
 									}}
-									onChange={ev => dispatch(setSearchText(ev))}
-								/>
-							</Paper>
+									views={['year']}
+								/>	
+							</MuiPickersUtilsProvider>	
 						</FuseAnimate>
-					</ThemeProvider>												
-					{/* </div> */}
+					</div>
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
+								value={period}
+								onChange={ev => handleChangePeriod(ev)}
+								label="Report Period"
+								data={options.period.data}
+							/>
+						</FuseAnimate>
+					</div>								
+					<div className="flex flex-1 items-center justify-center px-12">
+						<ThemeProvider theme={mainTheme}>
+							<FuseAnimate animation="transition.slideDownIn" delay={300}>
+								<Paper className="flex items-center w-full max-w-512 px-8 py-4 rounded-8 shadow">
+									<Icon color="action">search</Icon>
+									<Input
+										placeholder="Search"
+										className="flex flex-1 mx-8"
+										disableUnderline
+										fullWidth
+										value={searchText}
+										inputProps={{
+											'aria-label': 'Search'
+										}}
+										onChange={ev => dispatch(setSearchText(ev))}
+									/>
+								</Paper>
+							</FuseAnimate>
+						</ThemeProvider>												
+					</div>
 				</Header>				
 			}
 			content={
