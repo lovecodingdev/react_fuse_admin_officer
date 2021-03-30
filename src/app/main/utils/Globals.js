@@ -18,7 +18,7 @@ export const Options = {
             { item: 'November', value: 'November' },
             { item: 'December', value: 'December' },            
             { item: '4th Quarter', value: 'Quarter 4 Totals' },
-            { item: 'Year', value: 'Annual Totals' }, 
+            { item: 'Year', value: 'Annual Totals' },
         ],
     },
     production: {
@@ -28,7 +28,7 @@ export const Options = {
             { item: 'Show Issued Production', value: 'Show Issued Production' },	
         ],
     },
-   
+    
     product: {
         id: "Product",
         data: [
@@ -95,24 +95,24 @@ export const months = [
 ];
 
 export const monthsAndQuarters = [
-    { id: "January", value: "January" },
-    { id: "February", value: "February" },
-    { id: "March", value: "March" },
-    { id: "April", value: "April" },
-    { id: "May", value: "May" },
-    { id: "June", value: "June" },
-    { id: "July", value: "July" },
-    { id: "August", value: "August" },
-    { id: "September", value: "September" },
-    { id: "October", value: "October" },
-    { id: "November", value: "November" },
-    { id: "December", value: "December" },
-    { id: "Quarter 1 Totals", value: "Quarter 1 Totals", border: "border-t-4" },
-    { id: "Quarter 2 Totals", value: "Quarter 2 Totals" },
-    { id: "Quarter 3 Totals", value: "Quarter 3 Totals" },
-    { id: "Quarter 4 Totals", value: "Quarter 4 Totals" },
-    { id: "Annual Totals", value: "Annual Totals", border: "border-t-4" },
-    { id: "Projected for Year", value: "Projected for Year", border: "border-t-4" },
+    { id: "January", value: "January", visionValue: "January" },
+    { id: "February", value: "February", visionValue: "February" },
+    { id: "March", value: "March", visionValue: "March" },
+    { id: "April", value: "April", visionValue: "April" },
+    { id: "May", value: "May", visionValue: "May" },
+    { id: "June", value: "June", visionValue: "June" },
+    { id: "July", value: "July", visionValue: "July" },
+    { id: "August", value: "August", visionValue: "August" },
+    { id: "September", value: "September", visionValue: "September" },
+    { id: "October", value: "October", visionValue: "October" },
+    { id: "November", value: "November", visionValue: "November" },
+    { id: "December", value: "December", visionValue: "December" },
+    { id: "Quarter 1 Totals", value: "Quarter 1 Totals", visionValue: "Quarter1", border: "border-t-4" },
+    { id: "Quarter 2 Totals", value: "Quarter 2 Totals", visionValue: "Quarter2" },
+    { id: "Quarter 3 Totals", value: "Quarter 3 Totals", visionValue: "Quarter3" },
+    { id: "Quarter 4 Totals", value: "Quarter 4 Totals", visionValue: "Quarter4" },
+    { id: "Annual Totals", value: "Annual Totals", visionValue: "Total", border: "border-t-4" },
+    // { id: "Projected for Year", value: "Projected for Year", visionValue: "Total", border: "border-t-4" },
 ];
 
 export const months1 = [
@@ -315,7 +315,7 @@ export const toUntrimed = {
     "holiday": 'Holiday',
     "totalHrs": 'Total Hrs',
     "notes": 'Notes',
-};
+}
 
 export const colors = [
     { backgroundColor: '#42BFF7', hoverBackgroundColor: '#87CDF7' },
