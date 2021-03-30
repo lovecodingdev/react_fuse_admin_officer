@@ -174,7 +174,7 @@ function Dashboard(props) {
 
 				// Lapse Rate
 				policies.map(policy => {
-					if(policy.value !== 'Bank' && policy.value !== 'Total') {
+					if(policy.value === 'Auto' || policy.value === 'Health') {
 						let tempCardData = [];
 						let tempCard = {};
 						const cardData = widgets[`Dashboard_LapseRate_${policy.value}_Panel`].cardData;
@@ -418,16 +418,16 @@ function Dashboard(props) {
 						</div>
 					</FuseAnimateGroup>	
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-1/5 p-12">							
+						<div className="widget flex w-2/4 p-12">							
 							<Card data={data.widgets.Dashboard_Multiline_Percentage_Panel} type='One Number' />						
 						</div>
-						<fieldset className='"widget flex w-4/5 rounded-8 border-1'>
+						<fieldset className='"widget flex w-2/4 rounded-8 border-1'>
     						<legend>Lapse Rate</legend>
 						{
 							policies.map(policy => {
-								if(policy.value!=='Bank' && policy.value!=='Total') {
+								if(policy.value==='Auto' || policy.value==='Health') {
 									return(
-										<div className="widget flex w-1/4 p-12">							
+										<div className="widget flex w-1/2 p-12">							
 											<Card data={data.widgets[`Dashboard_LapseRate_${policy.value}_Panel`]} type='One Number' />						
 										</div>
 									)
