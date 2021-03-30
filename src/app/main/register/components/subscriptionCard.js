@@ -64,7 +64,7 @@ export default function SimpleCard(props) {
 					className="w-128"
 					onClick={() => props.setBuy(props.token)}
 				>
-					BUY NOW
+					Pay and Register
 				</Button>
 			</div>
 		</Card>
