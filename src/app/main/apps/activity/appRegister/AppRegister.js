@@ -98,6 +98,7 @@ function AppRegister(props) {
 				});
 			});							
 		}
+		
 		console.log('--------------------temp=', temp, );
 
 		if(period === 'Quarter 1 Totals') {

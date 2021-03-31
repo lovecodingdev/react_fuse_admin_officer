@@ -1098,13 +1098,13 @@ const producerAppDB = {
 						id: 'auto',
 						title: 'AUTO',
 						color: '',
-						colSpan: 4
+						colSpan: 5
 					},
 					{
 						id: 'fire',
 						title: 'FIRE',
 						color: '',
-						colSpan: 4
+						colSpan: 5
 					},
 					{
 						id: 'life',
@@ -1118,12 +1118,12 @@ const producerAppDB = {
 						color: '',
 						colSpan: 4
 					},					
-					{
-						id: 'bank',
-						title: 'BANK',
-						color: '',
-						colSpan: 4
-					},
+					// {
+					// 	id: 'bank',
+					// 	title: 'BANK',
+					// 	color: '',
+					// 	colSpan: 4
+					// },
 					{
 						id: 'total',
 						title: 'TOTAL',
@@ -1143,10 +1143,12 @@ const producerAppDB = {
 					{ id: 2, value: 'Auto@Annual Premium', type: true, color: '' },
 					{ id: 3, value: 'Auto@Average Premium', type: true, color: '' },
 					{ id: 4, value: 'Auto@Auto Bonus', type: true, color: '' },
+					{ id: 44, value: 'Auto@Multiline Percentage', type: true, color: '' },
 					{ id: 5, value: 'Fire@Policies', type: true, color: '' },
 					{ id: 6, value: 'Fire@Annual Premium', type: true, color: '' },
 					{ id: 7, value: 'Fire@Average Premium', type: true, color: '' },
 					{ id: 8, value: 'Fire@Auto Bonus', type: true, color: '' },
+					{ id: 88, value: 'Fire@Multiline Percentage', type: true, color: '' },
 					{ id: 9, value: 'Life@Policies', type: true, color: '' },
 					{ id: 10, value: 'Life@Annual Premium', type: true, color: '' },
 					{ id: 11, value: 'Life@Average Premium', type: true, color: '' },
@@ -1155,10 +1157,10 @@ const producerAppDB = {
 					{ id: 14, value: 'Health@Annual Premium', type: true, color: '' },
 					{ id: 15, value: 'Health@Average Premium', type: true, color: '' },
 					{ id: 16, value: 'Health@Auto Bonus', type: true, color: '' },
-					{ id: 17, value: 'Bank@Policies', type: true, color: '' },
-					{ id: 18, value: 'Bank@Annual Premium', type: true, color: '' },
-					{ id: 19, value: 'Bank@Average Premium', type: true, color: '' },
-					{ id: 20, value: 'Bank@Auto Bonus', type: true, color: '' },
+					// { id: 17, value: 'Bank@Policies', type: true, color: '' },
+					// { id: 18, value: 'Bank@Annual Premium', type: true, color: '' },
+					// { id: 19, value: 'Bank@Average Premium', type: true, color: '' },
+					// { id: 20, value: 'Bank@Auto Bonus', type: true, color: '' },
 					{ id: 21, value: 'Total@Policies', type: true, color: '' },
 					{ id: 22, value: 'Total@Annual Premium', type: true, color: '' },
 					{ id: 23, value: 'Total@Average Premium', type: true, color: '' },
