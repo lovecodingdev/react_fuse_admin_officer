@@ -96,29 +96,27 @@ function AppRegister(props) {
 						}
 					}
 				});
-			});	
-			
-			console.log('--------------------temp=', temp, );
+			});							
+		}
+		console.log('--------------------temp=', temp, );
 
-			if(period === 'Quarter 1 Totals') {
-				temp = _.filter(temp, item => item['Month Written']===1 || item['Month Written']===2 || item['Month Written']===3);
-			} else if(period === 'Quarter 2 Totals') {
-				temp = _.filter(temp, item => item['Month Written']===4 || item['Month Written']===5 || item['Month Written']===6);
-			} else if(period === 'Quarter 3 Totals') {
-				temp = _.filter(temp, item => item['Month Written']===7 || item['Month Written']===8 || item['Month Written']===9);
-			} else if(period === 'Quarter 4 Totals') {
-				temp = _.filter(temp, item => item['Month Written']===10 || item['Month Written']===11 || item['Month Written']===12);
-			} else if(months1.includes(period)) {
-				temp = _.filter(temp, item => item['Month Written']-1===months1.indexOf(period));
-			}
-
-			if (searchText.length!==0) {
-				setMain(_.filter(temp, item => item['Client Name'].toLowerCase().includes(searchText.toLowerCase())));
-			} else {
-				setMain(temp);
-			}
+		if(period === 'Quarter 1 Totals') {
+			temp = _.filter(temp, item => item['Month Written']===1 || item['Month Written']===2 || item['Month Written']===3);
+		} else if(period === 'Quarter 2 Totals') {
+			temp = _.filter(temp, item => item['Month Written']===4 || item['Month Written']===5 || item['Month Written']===6);
+		} else if(period === 'Quarter 3 Totals') {
+			temp = _.filter(temp, item => item['Month Written']===7 || item['Month Written']===8 || item['Month Written']===9);
+		} else if(period === 'Quarter 4 Totals') {
+			temp = _.filter(temp, item => item['Month Written']===10 || item['Month Written']===11 || item['Month Written']===12);
+		} else if(months1.includes(period)) {
+			temp = _.filter(temp, item => item['Month Written']-1===months1.indexOf(period));
 		}
 
+		if (searchText.length!==0) {
+			setMain(_.filter(temp, item => item['Client Name'].toLowerCase().includes(searchText.toLowerCase())));
+		} else {
+			setMain(temp);
+		}
 		
 	}, [entries, users, searchText, period]);
 
