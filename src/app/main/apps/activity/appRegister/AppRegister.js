@@ -29,8 +29,8 @@ import Chart from '../../../components/widgets/BarChart';
 import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
-import { getUsers, selectUsers } from '../store/usersSlice';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
+import { getUsers, selectUsers } from '../store/usersSlice';
 import { getEntries, selectEntries, setSearchText } from '../store/entriesSlice';
 import { Options as options, months1 } from '../../../utils/Globals';
 import { formattedDate } from '../../../utils/Function';
@@ -52,6 +52,7 @@ function AppRegister(props) {
 	const [title, setTitle] = useState('PRODUCER APPS REPORT');
 
 	useEffect(() => { 
+		dispatch(getUsers());
 		dispatch(getEntries(moment(date).format('yyyy')));
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch, date]);
@@ -59,7 +60,7 @@ function AppRegister(props) {
 	useEffect(() => {		
 		// creating temp
 		let temp = [];		
-		if(entries.length > 0) {
+		if(entries.length>0 && users.length>0) {
 			const entryNames = {
 				"Entries": "Auto", 
 				"FireEntries": "Fire", 
@@ -71,16 +72,16 @@ function AppRegister(props) {
 
 			let i = 0;
 			Object.keys(entries[0]).map((entryName) => {
-				users.map(user => {	
+				users.map(user => { 
 					if(user.belongTo === UID) {
-						if(entries[0][entryName].hasOwnProperty(user.id)) { 
+						if(entries[0][entryName].hasOwnProperty(user.id)) {
 							Object.keys(entries[0][entryName][user.id]).map((key, rowNum) => {
-								const item = entries[0][entryName][user.id][key];
+								const item = entries[0][entryName][user.id][key];						
 								const issuedMonth = item.datePolicyIsIssued==='' ? '' : (new Date(item.datePolicyIsIssued)).getMonth() + 1;
-								const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth() + 1; 
+								const writtenMonth = (new Date(item.datePolicyIsWritten)).getMonth() + 1; 										
 								temp[i] = {};
 								temp[i]["Client Name"] = item.policyHolderName;
-								temp[i]["Policy(Tracking) Number or Description"] = item.policyInformation;
+								temp[i]["Policy(Tracking) Number or Description"] = item.policyInformation;					
 								temp[i]["Date Product Is Written"] = formattedDate(new Date(item.datePolicyIsWritten));
 								temp[i]["Date Product Is Issued"] = formattedDate(new Date(item.datePolicyIsIssued));
 								temp[i]["Product Line"] = entryNames[entryName];
@@ -90,34 +91,36 @@ function AppRegister(props) {
 								temp[i]["Bonus"] = item["dollarBonus"];
 								temp[i]["Month Written"] = writtenMonth;
 								temp[i]["Month Issued"] = issuedMonth;
-								i ++;							
+								i ++;																						
 							});
 						}
 					}
 				});
-			});		
+			});	
+			
+			console.log('--------------------temp=', temp, );
+
+			if(period === 'Quarter 1 Totals') {
+				temp = _.filter(temp, item => item['Month Written']===1 || item['Month Written']===2 || item['Month Written']===3);
+			} else if(period === 'Quarter 2 Totals') {
+				temp = _.filter(temp, item => item['Month Written']===4 || item['Month Written']===5 || item['Month Written']===6);
+			} else if(period === 'Quarter 3 Totals') {
+				temp = _.filter(temp, item => item['Month Written']===7 || item['Month Written']===8 || item['Month Written']===9);
+			} else if(period === 'Quarter 4 Totals') {
+				temp = _.filter(temp, item => item['Month Written']===10 || item['Month Written']===11 || item['Month Written']===12);
+			} else if(months1.includes(period)) {
+				temp = _.filter(temp, item => item['Month Written']-1===months1.indexOf(period));
+			}
+
+			if (searchText.length!==0) {
+				setMain(_.filter(temp, item => item['Client Name'].toLowerCase().includes(searchText.toLowerCase())));
+			} else {
+				setMain(temp);
+			}
 		}
 
-		console.log('--------------------temp=', temp, );
 		
-		if(period === 'Quarter 1 Totals') {
-			temp = _.filter(temp, item => item['Month Written']===1 || item['Month Written']===2 || item['Month Written']===3);
-		} else if(period === 'Quarter 2 Totals') {
-			temp = _.filter(temp, item => item['Month Written']===4 || item['Month Written']===5 || item['Month Written']===6);
-		} else if(period === 'Quarter 3 Totals') {
-			temp = _.filter(temp, item => item['Month Written']===7 || item['Month Written']===8 || item['Month Written']===9);
-		} else if(period === 'Quarter 4 Totals') {
-			temp = _.filter(temp, item => item['Month Written']===10 || item['Month Written']===11 || item['Month Written']===12);
-		} else if(months1.includes(period)) {
-			temp = _.filter(temp, item => item['Month Written']-1===months1.indexOf(period));
-		}
-
-		if (searchText.length!==0) {
-			setMain(_.filter(temp, item => item['Client Name'].toLowerCase().includes(searchText.toLowerCase())));
-		} else {
-			setMain(temp);
-		}
-	}, [entries, searchText, period]);
+	}, [entries, users, searchText, period]);
 
 	useEffect(() => {
 		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {	
