@@ -90,7 +90,7 @@ function Dashboard(props) {
 
 	useEffect(() => {	
 		let temp = [];	
-		if(users.length>0 && entries.length>0 && bonusPlans.length>0) { 
+		if(users.length>0 && bonusPlans.length>0) { 
 			temp = getMain(entries, bonusPlans, [], users, vision, lapseRate);															
 		}
 		setMain(temp);	
