@@ -361,6 +361,7 @@ const contactsSlice = createSlice({
 			state.template = {
 				...action.payload
 			};
+			
 		}
 	},
 	extraReducers: {

@@ -17,6 +17,7 @@ import { addContact, setTemplate } from './store/bonusPlanSlice';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import { useHistory } from 'react-router-dom';
 import SelectBox from '../../components/SelectBox';
+import { getAutoBonus } from './store/bonusPlanSlice';
 
 function ContactsHeader(props) {
 	const dispatch = useDispatch();
@@ -56,11 +57,13 @@ function ContactsHeader(props) {
 
 	const addNewTemplate = () => {
 		if (!templateName) {
-			dispatch(showMessage({ message: 'Please Enter Bonus Plan Template Name!' }));
+			dispatch(showMessage({ message: 'Please Select Plan Template to Update!' }));
 		} else {
+			console.log(data)
 			dispatch(addContact({ ...data, name: templateName }));
+			dispatch(getTemplateData());
 			dispatch(showMessage({ message: 'Successfully Saved!' }));
-			setTemplateName('');
+			// setTemplateName('');
 			// history.goBack()
 		}
 	};
@@ -70,7 +73,8 @@ function ContactsHeader(props) {
 	};
 
 	const handleChangeValue = data => {
-		dispatch(setTemplate(bonusPlanTemplates[0][data.template]));
+		dispatch(setTemplate(bonusPlanTemplates[0][data.template]))
+		
 		setTemplateName(data.template);
 	};
 

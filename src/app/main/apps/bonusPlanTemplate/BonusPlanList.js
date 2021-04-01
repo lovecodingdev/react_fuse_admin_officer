@@ -39,8 +39,11 @@ function ContactsList(props) {
 	const removeTempData = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.removeTempData);
 	const [contacts, setContact] = useState(bonusPlanTemplate);
 
+	
+
 	useEffect(() => {
 		if (tempData) {
+			console.log('------------------------------', tempData)
 			setContact({
 				...contacts,
 				[tempData.planType]: {
