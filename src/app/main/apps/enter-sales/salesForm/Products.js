@@ -53,7 +53,7 @@ const productLists = [
 const policyholderTypeLists = [
 	{ item: 'Household', value: 'household' },
 	{ item: 'Individual', value: 'individual' },
-	{ item: 'Multiline Policy', value: 'multiline_policy' }
+	// { item: 'Multiline Policy', value: 'multiline_policy' }
 ];
 
 const creditLists = [
@@ -444,10 +444,7 @@ function Products() {
 				policyPremiumFire: editData.policyPremium,
 				policyPremiumLife: editData.policyPremium,
 				policyPremiumHealth: editData.policyPremium,
-				creditTypeAuto: editData.creditType,
-				creditTypeFire: editData.creditType,
-				creditTypeHealth: editData.creditType,
-				creditTypeLife: editData.creditType,
+				
 				creditPercentAuto: editData.creditPercent,
 				creditPercentFire: editData.creditPercent,
 				creditPercentHealth: editData.creditPercent,

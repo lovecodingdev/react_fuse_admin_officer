@@ -54,7 +54,6 @@ function ProductsTable(props) {
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(products);
 
-
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
@@ -89,9 +88,9 @@ function ProductsTable(props) {
 
 	useEffect(() => {
 		var tempLists = [];
-		
+
 		if (bonusPlanTemplates.length > 0) {
-			console.log(bonusPlanTemplates)
+			console.log(bonusPlanTemplates);
 			Object.keys(bonusPlanTemplates[0]).map(item => {
 				tempLists.push({ item: item, value: item });
 			});
@@ -201,10 +200,14 @@ function ProductsTable(props) {
 		props.history.push(`/apps/producer-detail/${uid}`);
 	}
 
-	function handleBonusChangeValue(data, uid) {
-		console.log(data, uid)
-		dispatch(saveUser({...data, uid}))
+	function handleBonusChangeValue(data, uid, teamBonus) {
+		
+		dispatch(saveUser({ ...data, uid, teamBonus }));
 	}
+
+	// function handleChangeTeamBonusValue(data) {
+	// 	dispatch(saveTeamBonus({...data, uid, teamBonus}))
+	// }
 
 	if (loading) {
 		return <FuseLoading />;
@@ -263,6 +266,7 @@ function ProductsTable(props) {
 											key={index}
 											selected={isSelected}
 										>
+											{console.log(n)}
 											<TableCell className="w-40 md:w-64 text-center" padding="none">
 												<Checkbox
 													checked={isSelected}
@@ -291,9 +295,15 @@ function ProductsTable(props) {
 													<SelectBox
 														data={teamBonusList}
 														willvalidation={false}
-														value={n.bonusPlan==='Team Bonus Plan Template'?true: false}
+														value={n.teamBonus}
 														validation="includeTeamBonus"
-														handleChangeValue={handleChangeValue}
+														handleChangeValue={value =>
+															handleBonusChangeValue(
+																{ template: n.bonusPlan },
+																n.uid,
+																value.includeTeamBonus
+															)
+														}
 														// value={state.includeTeamBonus}
 													/>
 												)}
@@ -307,7 +317,7 @@ function ProductsTable(props) {
 												// onClick={() => n.data && goBonusPlan(n.uid)}
 											>
 												{/* <span>$</span> */}
-												
+
 												<SelectBox
 													id="outlined-basic"
 													label="Select Template"
@@ -315,7 +325,9 @@ function ProductsTable(props) {
 													variant="outlined"
 													value={n.bonusPlan}
 													validation="template"
-													handleChangeValue={(value)=>handleBonusChangeValue(value, n.uid)}
+													handleChangeValue={value =>
+														handleBonusChangeValue(value, n.uid, n.teamBonus)
+													}
 													// willvalidation={false}
 													// validate={state.userValidation}
 												/>
