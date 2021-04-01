@@ -24,6 +24,7 @@ import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
 import { policies, Options as options } from '../../../utils/Globals';
 import { getMain } from '../../../utils/Function';
+
 const belongTo = localStorage.getItem('@BELONGTO')
 const UID = localStorage.getItem('@UID')
 
