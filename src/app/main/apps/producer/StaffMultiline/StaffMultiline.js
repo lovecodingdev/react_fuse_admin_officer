@@ -84,10 +84,17 @@ function StaffMultiline(props) {
 						let totalAutoBonus = 0;
 						tableContent[user.data.displayName] = {};
 						policies.map((policy) => {
+							if(policy.value==='Bank')
+								return;
 							tableContent[user.data.displayName][`${policy.value}@Policies`] = main[production][period][user.id][policy.value]["Policies"];						
 							tableContent[user.data.displayName][`${policy.value}@Annual Premium`] = main[production][period][user.id][policy.value]["Premium"];
 							tableContent[user.data.displayName][`${policy.value}@Average Premium`] = main[production][period][user.id][policy.value]["Averages"];
 							tableContent[user.data.displayName][`${policy.value}@Auto Bonus`] = main[production][period][user.id][policy.value]["Bonuses"];
+							if(policy.value==='Auto' || policy.value==='Fire')
+								tableContent[user.data.displayName][`${policy.value}@Multiline Percentage`] = dividing(
+									main[production][period][user.id][policy.value]["household"] * 100,
+									main[production][period][user.id][policy.value]["household"] + main[production][period][user.id][policy.value]["individual"]
+								);
 							totalPolicies += tableContent[user.data.displayName][`${policy.value}@Policies`];
 							totalAnnualPremium += tableContent[user.data.displayName][`${policy.value}@Annual Premium`];
 							totalAveragePremium += tableContent[user.data.displayName][`${policy.value}@Average Premium`];
@@ -100,8 +107,8 @@ function StaffMultiline(props) {
 						tableContent[user.data.displayName]["Multiline Ratio"] = dividing(
 							(
 								tableContent[user.data.displayName]['Life@Policies'] +
-								tableContent[user.data.displayName]['Health@Policies'] +
-								tableContent[user.data.displayName]['Bank@Policies']
+								tableContent[user.data.displayName]['Health@Policies']
+								// tableContent[user.data.displayName]['Bank@Policies']
 							) * 100,
 							tableContent[user.data.displayName]['Auto@Policies'] +
 							tableContent[user.data.displayName]['Fire@Policies']
