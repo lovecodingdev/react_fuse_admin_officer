@@ -36,7 +36,7 @@ export const Options = {
             { item: 'Fire', value: 'Fire' },
             { item: 'Life', value: 'Life' },			
             { item: 'Health', value: 'Health' },			
-            { item: 'Bank', value: 'Bank' },
+            // { item: 'Bank', value: 'Bank' },
             { item: 'Total', value: 'Total' },			
         ],
     },
