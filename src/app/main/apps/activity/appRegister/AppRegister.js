@@ -48,6 +48,7 @@ function AppRegister(props) {
 	const [data, setData] = useState({});
 	const [main, setMain] = useState([]);
 	const [date, setDate] = useState(moment());
+	const [product, setProduct] = useState('Total');
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [title, setTitle] = useState('PRODUCER APPS REPORT');
 
@@ -113,13 +114,17 @@ function AppRegister(props) {
 			temp = _.filter(temp, item => item['Month Written']-1===months1.indexOf(period));
 		}
 
+		if(product !== 'Total') {
+			temp = _.filter(temp, item => item['Product Line'].toLowerCase().includes(product.toLowerCase()));
+		}
+
 		if (searchText.length!==0) {
 			setMain(_.filter(temp, item => item['Client Name'].toLowerCase().includes(searchText.toLowerCase())));
 		} else {
 			setMain(temp);
 		}
 		
-	}, [entries, users, searchText, period]);
+	}, [entries, users, searchText, period, product]);
 
 	useEffect(() => {
 		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {	
@@ -161,6 +166,10 @@ function AppRegister(props) {
 
 	function handleChangePeriod(event) { 
 		setPeriod(event.target.value);
+	}
+
+	function handleChangeProduct(event) { 
+		setProduct(event.target.value);
 	}
 
 	function handleChangeYear(date) {  
@@ -221,7 +230,17 @@ function AppRegister(props) {
 								data={options.period.data}
 							/>
 						</FuseAnimate>
-					</div>								
+					</div>	
+					<div className="flex flex-1 items-center justify-center px-12">
+						<FuseAnimate animation="transition.slideUpIn" delay={300}>
+							<SelectBox
+								value={product}
+								onChange={ev => handleChangeProduct(ev)}
+								label="Product Line"
+								data={options.product.data}
+							/>
+						</FuseAnimate>
+					</div>							
 					<div className="flex flex-1 items-center justify-center px-12">
 						<ThemeProvider theme={mainTheme}>
 							<FuseAnimate animation="transition.slideDownIn" delay={300}>

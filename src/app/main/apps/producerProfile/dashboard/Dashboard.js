@@ -27,7 +27,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import Table from '../../../components/widgets/Table';
 import Panel from '../../../components/widgets/Panel';
-import DashboardPanel from '../../../components/widgets/DashboardPanel';
+import DashboardPanel from '../../../components/widgets/DashboardPanel~';
 import Card from '../../../components/widgets/Panel';
 import BarChart from '../../../components/widgets/BarChart';
 import HorizontalBarChart from '../../../components/widgets/HorizontalBarChart';
@@ -91,9 +91,10 @@ function Dashboard(props) {
 	useEffect(() => {	
 		let temp = [];	
 		if(users.length>0 && entries.length>0 && bonusPlans.length>0) { 
-			temp = getMain(entries, bonusPlans, [], users, vision, lapseRate);													
+			temp = getMain(entries, bonusPlans, [], users, vision, lapseRate);															
 		}
-		setMain(temp);
+		setMain(temp);	
+		
 	}, [entries, bonusPlans, users, vision, lapseRate]);
 
 	useEffect(() => {	
@@ -114,24 +115,20 @@ function Dashboard(props) {
 					individual += main[production][period][UID][policy.value]['individual'];			
 				});
 				users.map((user) => {
-					if(user.id === UID) { 					
-						options.product.data.map((policy) => { 
-							if(policy.value !== 'Bank') {
-								indGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-								indGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];											
-								indGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-								indGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
-							}
+					if(user.id === UID) { 		
+						policies.slice(0, 4).map((policy) => { 
+							indGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+							indGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];											
+							indGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+							indGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
 						});						
 					}	
 					if(user.belongTo === belongTo) { 						
-						options.product.data.map((policy) => { 
-							if(policy.value !== 'Bank') {
-								teamGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-								teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];											
-								teamGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-								teamGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
-							}							
+						policies.slice(0, 4).map((policy) => { 
+							teamGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+							teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];											
+							teamGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+							teamGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
 						});
 					}			
 				});		
@@ -180,12 +177,12 @@ function Dashboard(props) {
 
 				// Lapse Rate
 				policies.map(policy => {
-					if(policy.value === 'Auto' || policy.value === 'Fire') {
+					if(policy.value==='Auto' || policy.value==='Health') {
 						let tempCardData = [];
 						let tempCard = {};
 						const cardData = widgets[`Dashboard_LapseRate_${policy.value}_Panel`].cardData;
 						tempCard = cardData[0];
-						tempCard = { ...tempCard, count: main[production][period][UID][policy.value]['lapseRate'] };
+						tempCard = { ...tempCard, count: `${main[production][period][UID][policy.value]['lapseRate']}` };
 						tempCardData.push(tempCard);
 						widgets = {
 							...widgets, [`Dashboard_LapseRate_${policy.value}_Panel`]: {
@@ -200,7 +197,7 @@ function Dashboard(props) {
 				// Multiline Percentage
 				let tempData = [];
 				let cardData = widgets.Dashboard_Multiline_Percentage_Panel.cardData[0];
-				cardData = { ...cardData, count: dividing(household*100, household+individual) }; 
+				cardData = { ...cardData, count: `${dividing(household*100, household+individual)} %` }; 
 				tempData.push(cardData);
 				widgets = {
 					...widgets, Dashboard_Multiline_Percentage_Panel: {
@@ -408,37 +405,78 @@ function Dashboard(props) {
 				</Header>			
 			}
 			content={
-				<div className="w-full p-12">					
+				<div className="w-full p-12">		
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-full p-12">
-							<DashboardPanel widget={data.widgets.Dashboard_Personal_GoalVsActual_Chart} />
-						</div>
+							<fieldset className='"widget flex w-full rounded-8 border-1'>
+								<legend>Personal Product Goal Vs Actual</legend>															
+									{
+										policies.map(policy => {
+											if(policy.value!=='Bank') {
+												return(
+													<div className="widget flex w-1/5 p-12">							
+														<Panel data={data.widgets[`Dashboard_Multiline_GoalAndActual_${policy.value}_Panel`]} type='Two Number' />						
+													</div>
+												)
+											}
+											
+										})
+									}
+							</fieldset>	
+						</div>									
 					</FuseAnimateGroup>	
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-full p-12">
-							<DashboardPanel widget={data.widgets.Dashboard_Team_GoalVsActual_Chart} />
-						</div>
-					</FuseAnimateGroup>	
+							<fieldset className='"widget flex w-full rounded-8 border-1'>
+								<legend>Team Product Goal Vs Actual</legend>															
+									{
+										policies.map(policy => {
+											if(policy.value!=='Bank') {
+												return(
+													<div className="widget flex w-1/5 p-12">							
+														<Panel data={data.widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`]} type='Two Number' />						
+													</div>
+												)
+											}
+											
+										})
+									}
+							</fieldset>	
+						</div>									
+					</FuseAnimateGroup>							
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-2/4 p-12">							
-							<Card data={data.widgets.Dashboard_Multiline_Percentage_Panel} type='One Number' />						
-						</div>
-						<fieldset className='"widget flex w-2/4 rounded-8 border-1'>
-    						<legend>Lapse Rate</legend>
-						{
-							policies.map(policy => {
-								if(policy.value==='Auto' || policy.value==='Health') {
-									return(
-										<div className="widget flex w-1/2 p-12">							
-											<Card data={data.widgets[`Dashboard_LapseRate_${policy.value}_Panel`]} type='One Number' />						
-										</div>
-									)
+						<div className="widget flex w-full p-12">
+							<fieldset className='"widget flex w-2/4 mr-12 rounded-8 border-1'>
+								<legend>Multiline Percentage</legend>
+								<div className="widget flex w-full p-12">							
+									<Panel data={data.widgets.Dashboard_Multiline_Percentage_Panel} type='One Number' />						
+								</div>
+							</fieldset>		
+							<fieldset className='"widget flex w-2/4 ml-12 rounded-8 border-1'>
+								<legend>Lapse Rate</legend>
+								{
+									policies.map(policy => {
+										if(policy.value==='Auto' || policy.value==='Health') {
+											return(
+												<div className="widget flex w-full p-12">							
+													<Panel data={data.widgets[`Dashboard_LapseRate_${policy.value}_Panel`]} type='One Number' />						
+												</div>
+											)
+										}
+										
+									})
 								}
-								
-							})
-						}
-						</fieldset>									
-					</FuseAnimateGroup>																		
+							</fieldset>	
+						</div>								
+					</FuseAnimateGroup>		
+					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>						
+						<div className="widget flex w-1/2 p-12">
+							<BarChart data={data.widgets.Dashboard_Personal_GoalVsActual_Chart} />
+						</div>						
+						<div className="widget flex w-1/2 p-12">
+							<BarChart data={data.widgets.Dashboard_Team_GoalVsActual_Chart} />
+						</div>
+					</FuseAnimateGroup>																
 				</div>
 				
 			}

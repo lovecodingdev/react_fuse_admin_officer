@@ -22,7 +22,7 @@ import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
-import { Options as options } from '../../../utils/Globals';
+import { policies, Options as options } from '../../../utils/Globals';
 import { getMain } from '../../../utils/Function';
 const belongTo = localStorage.getItem('@BELONGTO')
 const UID = localStorage.getItem('@UID')
@@ -95,7 +95,7 @@ function GoalsAndActual(props) {
 						let totalGoals = 0;
 						let totalActual = 0;					
 						tableContent[user.data.displayName] = {};
-						options.product.data.map((policy) => { // except for Total
+						policies.slice(0, 5).map((policy) => { // except for Total
 							tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.id][policy.value]["Goals"]
 							tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
 							totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
@@ -197,7 +197,7 @@ function GoalsAndActual(props) {
 						let totalGoals = 0;
 						let totalActual = 0;					
 						tableContent[user.data.displayName] = {};
-						options.product.data.map((policy) => { // except for Total
+						policies.slice(0, 5).map((policy) => { // except for Total
 							tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.id][policy.value]["Goals"]
 							tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
 							totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];

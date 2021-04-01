@@ -13,18 +13,22 @@ import React from 'react';
 export function Card(props) {
 	return(
 	<div>
-		<div className="flex items-center justify-between px-8 pt-8">
-			<Typography className="text-15 flex w-full" color="textPrimary">
-				<span className="truncate">{props.title}</span>									
-			</Typography>				
-		</div>
+		{props.title!=='' &&
+			<div className="flex items-center justify-between px-8 pt-8">
+				<Typography className="text-15 flex w-full" color="textPrimary">
+					<span className="truncate">{props.title}</span>									
+				</Typography>				
+			</div>
+		}
 		<div className="text-center pt-12 pb-28">
 			<Typography className={`text-${props.fontSize} leading-none ${props.color}`}>
 				{props.count}
 			</Typography>
-			<Typography className="text-16" color="textSecondary">
-				{props.label}
-			</Typography>
+			{props.label!=='' &&
+				<Typography className="text-16" color="textSecondary">
+					{props.label}
+				</Typography>
+			}
 		</div>			
 	</div>
 	);
@@ -32,10 +36,12 @@ export function Card(props) {
 
 function Widget1(props) { 
 	return (
-		<Paper className="w-full rounded-8 shadow">
-			<div className="flex items-center justify-between px-16 py-16">
-				<Typography className="text-16">{props.data.title}</Typography>				
-			</div>
+		<Paper className="flex flex-col justify-center w-full rounded-8 shadow">
+			{props.data.title!=='' &&
+				<div className="flex items-center justify-between px-16 py-16">
+					<Typography className="text-16">{props.data.title}</Typography>				
+				</div>
+			}
 			
 			{props.type==='One Number' &&
 				<Card {...props.data.cardData[0]} />
@@ -46,14 +52,14 @@ function Widget1(props) {
 					<Card {...props.data.cardData[1]} />
 				</div>
 			}						
-			{/* {props.subTitle!=='' && 
+			{props.data.subTitle!=='' && 
 				<div className="flex items-center px-16 h-52 border-t-1">
 					<Typography className="text-15 flex w-full" color="textSecondary">
 						<span className="truncate">{props.data.subTitle}</span>
 						<b className="px-8">{''}</b>
 					</Typography>
 				</div>
-			} */}
+			}
 		</Paper>
 	);
 }

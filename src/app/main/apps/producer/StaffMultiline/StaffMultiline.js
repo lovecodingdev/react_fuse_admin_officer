@@ -478,7 +478,7 @@ function StaffMultiline(props) {
 							main[production][period][user.id]['Health']["Policies"] +
 							main[production][period][user.id]['Bank']["Policies"];
 
-						options.product.data.map((policy) => {
+							policies.slice(0, 5).map((policy) => {
 							tableContent[user.data.displayName][policy.value] = dividing(
 								main[production][period][user.id][policy.value]['Policies'] * 100,
 								(

@@ -174,7 +174,7 @@ function StaffSources(props) {
 					tableContent[row] = {};
 					Object.keys(widgets.Producer_StaffSources_Total_Table.table.tableContent[row]).map(col => {
 						tableContent[row][col] = 0;
-						options.product.data.map(policy => {
+						policies.slice(0, 5).map(policy => {
 							tableContent[row][col] += widgets[`Producer_StaffSources_${policy.value}_Table`].table.tableContent[row][col];
 						})
 					});
@@ -270,7 +270,7 @@ function StaffSources(props) {
 
 					tableContent[marketing.marketingName] = {};
 					tableContent[marketing.marketingName]['Total'] = 0;
-					options.product.data.map(policy => {
+					policies.slice(0, 5).map(policy => {
 						tableContent[marketing.marketingName][policy.value] = 0;						
 						months.map(month => {					
 							tableContent[marketing.marketingName][policy.value] += main[production][month.value][user][policy.value][marketing.marketingName];							
@@ -360,7 +360,7 @@ function StaffSources(props) {
 				let tempHoverBackgroundColor = [];
 				const tableContent = widgets.Producer_StaffSources_ViewGrid_Table.table.tableContent;
 
-				options.product.data.map((policy, n) => {					
+				policies.slice(0, 5).map((policy, n) => {					
 					const value = dividing(
 						tableContent['Total'][policy.value] *100, tableContent['Total']['Total']
 					);

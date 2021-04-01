@@ -6,7 +6,7 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_GoalAndActual_Auto_Panel',
 			title: 'Auto',
-			subTitle: 'Auto',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -27,7 +27,7 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_GoalAndActual_Fire_Panel',
 			title: 'Fire',
-			subTitle: 'Fire',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -48,7 +48,7 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_GoalAndActual_Life_Panel',
 			title: 'Life',
-			subTitle: 'Life',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -58,7 +58,7 @@ const activityAppDB = {
 					fontSize: 72,
 				},
 				{
-					title: ' ',
+					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
@@ -69,7 +69,7 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_GoalAndActual_Health_Panel',
 			title: 'Health',
-			subTitle: 'Health',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -90,7 +90,7 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_GoalAndActual_Total_Panel',
 			title: 'Total',
-			subTitle: 'Total',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -111,7 +111,7 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_Team_GoalAndActual_Auto_Panel',
 			title: 'Auto',
-			subTitle: 'Auto',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -132,7 +132,7 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_Team_GoalAndActual_Fire_Panel',
 			title: 'Fire',
-			subTitle: 'Fire',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -153,7 +153,7 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_Team_GoalAndActual_Life_Panel',
 			title: 'Life',
-			subTitle: 'Life',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -163,7 +163,7 @@ const activityAppDB = {
 					fontSize: 72,
 				},
 				{
-					title: ' ',
+					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
@@ -174,7 +174,7 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_Team_GoalAndActual_Health_Panel',
 			title: 'Health',
-			subTitle: 'Health',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -195,7 +195,7 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_Team_GoalAndActual_Total_Panel',
 			title: 'Total',
-			subTitle: 'Total',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -215,7 +215,8 @@ const activityAppDB = {
 		},
 		{
 			id: 'Dashboard_Multiline_Percentage_Panel',
-			title: 'Multiline Percentage',
+			title: '',
+			subTitle: '',
 			cardData: [
 				{
 					title: '',
@@ -290,7 +291,7 @@ const activityAppDB = {
 					labels: [],
 					datasets: [
 						{
-							type: 'bar', 
+							// type: 'bar', 
 							barPercentage: 0.5,
 							label: 'Goal',
 							data: [],
@@ -299,7 +300,7 @@ const activityAppDB = {
 							categoryPercentage: 1,
 						},
 						{
-							type: 'bar',
+							// type: 'bar',
 							barPercentage: 0.5,
 							label: 'Actual',
 							data: [],
@@ -322,17 +323,6 @@ const activityAppDB = {
 					scales: {
 						xAxes: [
 							{
-								
-								stacked: false,
-								display: true,
-								gridLines: {
-									display: true
-								},
-								labels: [],
-							}
-						],
-						yAxes: [
-							{
 								stacked: false,
 								type: 'linear',
 								display: true,
@@ -342,7 +332,17 @@ const activityAppDB = {
 								},
 								labels: {
 									show: true
-								}
+								}								
+							}
+						],
+						yAxes: [
+							{
+								stacked: false,
+								display: true,
+								gridLines: {
+									display: true
+								},
+								labels: [],
 							}
 						]
 					}
@@ -422,7 +422,7 @@ const activityAppDB = {
 	],
 };
 
-mock.onGet('/api/dashboard-app/widgets').reply(() => { console.log('--------------ssssssssssssssssssssssssssssssssssssssss')
+mock.onGet('/api/dashboard-app/widgets').reply(() => {
 	return [200, activityAppDB.widgets];
 });
 

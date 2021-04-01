@@ -25,7 +25,7 @@ import _ from '@lodash';
 import reducer from '../store';
 import Table from '../../../components/widgets/Table';
 import Panel from '../../../components/widgets/Panel';
-import DashboardPanel from '../../../components/widgets/DashboardPanel';
+import DashboardPanel from '../../../components/widgets/DashboardPanel~';
 import Card from '../../../components/widgets/Panel';
 import BarChart from '../../../components/widgets/BarChart';
 import PieChart from '../../../components/widgets/PieChart';
@@ -41,6 +41,7 @@ import { getVision, selectVision } from '../store/visionSlice';
 import { getLapseRate, selectLapseRate } from '../store/lapseRateSlice';
 import { Options as options, policies } from '../../../utils/Globals';
 import { dividing, getMain } from '../../../utils/Function';
+import HorizontalBarChart from 'app/main/components/widgets/HorizontalBarChart';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -98,29 +99,21 @@ function Dashboard(props) {
 			let individual = 0;	
 			if(widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel) {	
 				policies.map(policy => {					
-					if(policy.value !== 'Bank') {
-						indGoalsAndActual[`${policy.value}@Goal`] = 0;
-						indGoalsAndActual[`${policy.value}@Actual`] = 0;
+					if(policy.value !== 'Bank') {						
 						teamGoalsAndActual[`${policy.value}@Goal`] = 0;
 						teamGoalsAndActual[`${policy.value}@Actual`] = 0;						
 					}	
 					household += main[production][period][UID][policy.value]['household'];
 					individual += main[production][period][UID][policy.value]['individual'];			
 				});
-				users.map((user) => {
-					// if(user.id === UID) { 					
-					// 	options.product.data.map((policy) => { 
-					// 		if(policy.value !== 'Bank') {
-					// 			indGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-					// 			indGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];											
-					// 			indGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-					// 			indGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
-					// 		}
-					// 	});						
-					// }	
-					if(user.belongTo === UID) { 						
-						options.product.data.map((policy) => { 
-							if(policy.value !== 'Bank') {
+				users.map((user) => {					
+					if(user.belongTo === UID) { 
+						indGoalsAndActual[user.id] = { 'Total@Goal': 0, 'Total@Actual': 0 };						
+						policies.map((policy) => { 							
+							if(policy.value!=='Bank' && policy.value!=='Total') {
+								indGoalsAndActual[user.id][`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								indGoalsAndActual[user.id][`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];																			
+
 								teamGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
 								teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];											
 								teamGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
@@ -194,7 +187,7 @@ function Dashboard(props) {
 				// Multiline Percentage
 				let tempData = [];
 				let cardData = widgets.Dashboard_Multiline_Percentage_Panel.cardData[0];
-				cardData = { ...cardData, count: dividing(household*100, household+individual) }; 
+				cardData = { ...cardData, count: `${dividing(household*100, household+individual)} %` }; 
 				tempData.push(cardData);
 				widgets = {
 					...widgets, Dashboard_Multiline_Percentage_Panel: {
@@ -204,68 +197,70 @@ function Dashboard(props) {
 				}
 			}
 
-			// if(widgets.Dashboard_Personal_GoalVsActual_Chart) { 
-			// 	let goal = widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW.datasets[0];
-			// 	let actual = widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW.datasets[1];
+			if(widgets.Dashboard_Personal_GoalVsActual_Chart) { 
+				let goal = widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW.datasets[0];
+				let actual = widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW.datasets[1];
 				
-			// 	let tempGoal = [];
-			// 	let tempActual = [];
-			// 	let tempDatasets = [];
-			// 	policies.map(policy => {
-			// 		if(policy.value !== 'Bank' && policy.value !== 'Total') {
-			// 			tempGoal.push(indGoalsAndActual[`${policy.value}@Goal`]);
-			// 			tempActual.push(indGoalsAndActual[`${policy.value}@Actual`]);						
-			// 		}					
-			// 	});
-			// 	goal = { ...goal, data: tempGoal };
-			// 	actual = { ...actual, data: tempActual };
-			// 	tempDatasets.push(goal);
-			// 	tempDatasets.push(actual);
+				let tempGoal = [];
+				let tempActual = [];
+				let tempDatasets = [];
+				let tempLabels = [];
+				users.map(user => {
+					if(user.belongTo === UID) {
+						tempGoal.push(indGoalsAndActual[user.id][`Total@Goal`]);
+						tempActual.push(indGoalsAndActual[user.id][`Total@Actual`]);
+						tempLabels.push(user.data.displayName);					
+					}					
+				});
+				goal = { ...goal, data: tempGoal };
+				actual = { ...actual, data: tempActual };
+				tempDatasets.push(goal);
+				tempDatasets.push(actual);
 
-			// 	widgets = {
-			// 		...widgets, Dashboard_Personal_GoalVsActual_Chart: {
-			// 			...widgets.Dashboard_Personal_GoalVsActual_Chart, mainChart: {
-			// 				...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart, TW: {
-			// 					...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW, datasets: [
-			// 						...tempDatasets
-			// 					]
-			// 				}
-			// 			}
-			// 		}
-			// 	}
+				widgets = {
+					...widgets, Dashboard_Personal_GoalVsActual_Chart: {
+						...widgets.Dashboard_Personal_GoalVsActual_Chart, mainChart: {
+							...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart, TW: {
+								...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW, datasets: [
+									...tempDatasets
+								]
+							}
+						}
+					}
+				}
 
-			// 	widgets = {
-			// 		...widgets, Dashboard_Personal_GoalVsActual_Chart: {
-			// 			...widgets.Dashboard_Personal_GoalVsActual_Chart, mainChart: {
-			// 				...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart, options: {
-			// 					...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.options, scales: {
-			// 						...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.options.scales, xAxes: [
-			// 							{
-			// 								stacked: false,
-			// 								display: true,
-			// 								gridLines: {
-			// 									display: true
-			// 								},
-			// 								labels: ['Auto', 'Fire', 'Life', 'Health'],
-			// 							}
-			// 						]
-			// 					}																	
-			// 				}
-			// 			}
-			// 		}
-			// 	}
-			// 	widgets = {
-			// 		...widgets, Dashboard_Personal_GoalVsActual_Chart: {
-			// 			...widgets.Dashboard_Personal_GoalVsActual_Chart, data: {
-			// 				Auto: widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel,
-			// 				Fire: widgets.Dashboard_Multiline_GoalAndActual_Fire_Panel,
-			// 				Life: widgets.Dashboard_Multiline_GoalAndActual_Life_Panel,
-			// 				Health: widgets.Dashboard_Multiline_GoalAndActual_Health_Panel,
-			// 				Total: widgets.Dashboard_Multiline_GoalAndActual_Total_Panel,
-			// 			}
-			// 		}
-			// 	}
-			// }
+				widgets = {
+					...widgets, Dashboard_Personal_GoalVsActual_Chart: {
+						...widgets.Dashboard_Personal_GoalVsActual_Chart, mainChart: {
+							...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart, options: {
+								...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.options, scales: {
+									...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.options.scales, yAxes: [
+										{
+											stacked: false,
+											display: true,
+											gridLines: {
+												display: true
+											},
+											labels: [ ...tempLabels ],
+										}
+									]
+								}																	
+							}
+						}
+					}
+				}
+				widgets = {
+					...widgets, Dashboard_Personal_GoalVsActual_Chart: {
+						...widgets.Dashboard_Personal_GoalVsActual_Chart, data: {
+							Auto: widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel,
+							Fire: widgets.Dashboard_Multiline_GoalAndActual_Fire_Panel,
+							Life: widgets.Dashboard_Multiline_GoalAndActual_Life_Panel,
+							Health: widgets.Dashboard_Multiline_GoalAndActual_Health_Panel,
+							Total: widgets.Dashboard_Multiline_GoalAndActual_Total_Panel,
+						}
+					}
+				}
+			}
 
 			if(widgets.Dashboard_Team_GoalVsActual_Chart) { 
 				let goal = widgets.Dashboard_Team_GoalVsActual_Chart.mainChart.TW.datasets[0];
@@ -407,35 +402,54 @@ function Dashboard(props) {
 			}
 			content={
 				<div className="w-full p-12">					
-					{/* <FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
-						<div className="widget flex w-full p-12">
-							<DashboardPanel widget={data.widgets.Dashboard_Personal_GoalVsActual_Chart} />
-						</div>
-					</FuseAnimateGroup>	 */}
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-full p-12">
-							<DashboardPanel widget={data.widgets.Dashboard_Team_GoalVsActual_Chart} />
-						</div>
+							<fieldset className='"widget flex w-full rounded-8 border-1'>
+								<legend>Team Product Goal Vs Actual</legend>															
+									{
+										policies.map(policy => {
+											if(policy.value!=='Bank') {
+												return(
+													<div className="widget flex w-1/5 p-12">							
+														<Panel data={data.widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`]} type='Two Number' />						
+													</div>
+												)
+											}
+											
+										})
+									}
+							</fieldset>	
+						</div>									
+					</FuseAnimateGroup>	
+					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
+						<div className="widget flex w-full p-12">
+							<fieldset className='"widget flex w-2/4 mr-12 rounded-8 border-1'>
+								<legend>Multiline Percentage</legend>
+								<div className="widget flex w-full p-12">							
+									<Panel data={data.widgets.Dashboard_Multiline_Percentage_Panel} type='One Number' />						
+								</div>
+							</fieldset>		
+							<fieldset className='"widget flex w-2/4 ml-12 rounded-8 border-1'>
+								<legend>Lapse Rate</legend>
+								{
+									policies.map(policy => {
+										if(policy.value==='Auto' || policy.value==='Health') {
+											return(
+												<div className="widget flex w-full p-12">							
+													<Panel data={data.widgets[`Dashboard_LapseRate_${policy.value}_Panel`]} type='One Number' />						
+												</div>
+											)
+										}
+										
+									})
+								}
+							</fieldset>	
+						</div>								
 					</FuseAnimateGroup>	
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-2/4 p-12">							
-							<Card data={data.widgets.Dashboard_Multiline_Percentage_Panel} type='One Number' />						
-						</div>
-						<fieldset className='"widget flex w-2/4 rounded-8 border-1'>
-    						<legend>Lapse Rate</legend>
-						{
-							policies.map(policy => {
-								if(policy.value==='Auto' || policy.value==='Health') {
-									return(
-										<div className="widget flex w-1/2 p-12">							
-											<Card data={data.widgets[`Dashboard_LapseRate_${policy.value}_Panel`]} type='One Number' />						
-										</div>
-									)
-								}
-								
-							})
-						}
-						</fieldset>									
+							<HorizontalBarChart data={data.widgets.Dashboard_Personal_GoalVsActual_Chart} type='One Number' />						
+						</div>														
 					</FuseAnimateGroup>																		
 				</div>
 				

@@ -31,12 +31,13 @@ export const Options = {
     
     product: {
         id: "Product",
-        data: [
+        data: [           
             { item: 'Auto', value: 'Auto' },
             { item: 'Fire', value: 'Fire' },
             { item: 'Life', value: 'Life' },			
             { item: 'Health', value: 'Health' },			
-            { item: 'Bank', value: 'Bank' },			
+            { item: 'Bank', value: 'Bank' },
+            { item: 'Total', value: 'Total' },			
         ],
     },
     report: {
