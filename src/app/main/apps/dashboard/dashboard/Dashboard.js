@@ -84,11 +84,13 @@ function Dashboard(props) {
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch, date]);
 
-	useEffect(() => {		
+	useEffect(() => {	
+		let temp = [];		
 		if(users.length>0 && bonusPlans.length>0) { 
-			const temp = getMain(entries, bonusPlans, [], users, vision, lapseRate);										
-			setMain(temp);
+			temp = getMain(entries, bonusPlans, [], users, vision, lapseRate);													
 		}
+		setMain(temp);
+		
 	}, [entries, bonusPlans, users, vision, lapseRate]);
 
 	useEffect(() => {	
