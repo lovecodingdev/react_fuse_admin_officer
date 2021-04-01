@@ -18,50 +18,66 @@ export const getUsers = createAsyncThunk(
 			var invitationCountRef = realDb.ref(`Invitation/${belongTo}/`);
 			var bonusRef = realDb.ref(`BonusPlan/${belongTo}/`);
 			var users = [];
-			bonusRef.on('value', snapData=>{
-				const snapshotData = snapData.val()
+			bonusRef.on('value', snapData => {
+				const snapshotData = snapData.val();
 				starCountRef.on('value', snapshot => {
 					const data = snapshot.val();
-	
+
 					if (data) {
 						Object.keys(data).map(item => {
-							if (belongTo === data[item].belongTo) users.push({...data[item], bonusPlan: snapshotData[item].name});
+							if (belongTo === data[item].belongTo)
+								users.push({
+									...data[item],
+									bonusPlan: snapshotData[item].name,
+									teamBonus: snapshotData[item].teamBonus
+								});
 						});
 					}
-	
+
 					agencyCountRef.on('value', snap => {
 						const agencyData = snap.val();
 						if (agencyData) {
 							Object.keys(agencyData).map(item => {
-								if (belongTo === agencyData[item].belongTo) users.push({...agencyData[item], bonusPlan: snapshotData[item].name});
+								if (belongTo === agencyData[item].belongTo)
+									users.push({
+										...agencyData[item],
+										bonusPlan: snapshotData[item].name,
+										teamBonus: snapshotData[item].teamBonus
+									});
 							});
 						}
 						invitationCountRef.on('value', snaps => {
 							const invitationData = snaps.val();
-	
+
 							if (invitationData) {
 								Object.keys(invitationData).map(item => {
 									users.push(invitationData[item]);
 								});
 							}
-	
+
 							resolve(users);
 						});
 					});
 				});
-			})
-			
+			});
 		})
 );
 
 export const saveUser = createAsyncThunk('users/users/saveUser', async (product, { dispatch, getState }) => {
 	// const response = await axios.post('/api/users/save', product);
 	// const data = await response.data;
-	console.log(product)
+	
 	var belongTo = localStorage.getItem('@BELONGTO');
-	realDb.ref(`BonusPlan/${belongTo}/${product.uid}/`).set({
-		name:product.template
+	console.log(product)
+	console.log({
+		name: product.template,
+		teamBonus: product.teamBonus
 	})
+	console.log(`BonusPlan/${belongTo}/${product.uid}/`);
+	realDb.ref(`BonusPlan/${belongTo}/${product.uid}/`).set({
+		name: product.template,
+		teamBonus: product.teamBonus
+	});
 	dispatch(getUsers());
 	return product;
 });
@@ -88,8 +104,8 @@ export const deleteUser = createAsyncThunk('users/users/deleteUser', async (UID,
 	const response = await axios.post(firebaseFunctionDeleteUserEndpoint, form);
 	var agencyDelRef = realDb.ref(`agency/${UID}`);
 	var userDelRef = realDb.ref(`users/${UID}`);
-	agencyDelRef.remove()
-	userDelRef.remove()
+	agencyDelRef.remove();
+	userDelRef.remove();
 	console.log(response, UID);
 
 	dispatch(getUsers());
@@ -112,7 +128,9 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 				deployOfficerEndpoint +
 				'/register/' +
 				contact.belongTo +
-				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l/`+contact.email+`</a></div>`
+				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l/` +
+				contact.email +
+				`</a></div>`
 		};
 	} else {
 		var form = {
@@ -128,7 +146,9 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 				deployProducerEndpoint +
 				'/register/' +
 				contact.belongTo +
-				`/`+contact.email+`</a></div>`
+				`/` +
+				contact.email +
+				`</a></div>`
 		};
 	}
 
@@ -145,7 +165,7 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 	const belongTo = localStorage.getItem('@BELONGTO');
 	realDb.ref(`Invitation/${belongTo}/${contact.email.replace('.', '').replace('.', '').replace('.', '')}/`).set({
 		email: contact.email,
-		data:{displayName:''},
+		data: { displayName: '' },
 		id: contact.email.replace('.', '').replace('.', '').replace('.', '')
 	});
 

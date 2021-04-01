@@ -3,30 +3,30 @@ import axios from 'axios';
 
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
-var belongTo = localStorage.getItem('@BELONGTO')
+
 
 export const getAutoBonus = createAsyncThunk(
 	'lapseRate/autoBonus/getContacts',
 
 	() =>
 		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`BonusPlan/${belongTo}/all`);
-			var autoBonus = [];
-			starCountRef.on('value', snapshot => {
-				const data = snapshot.val();
-
-				if (data) {
-					Object.keys(data).map(item => {
-						autoBonus.push(data[item]);
-					});
-				}
-
-				if (data) {
-					resolve([data]);
-				} else {
-					resolve([]);
-				}
-			});
+			var belongTo = localStorage.getItem('@BELONGTO')
+			var starCountRef = realDb.ref(`BonusPlan/${belongTo}/${belongTo}`);
+			var bonusRef = realDb.ref(`BonusPlanTemplate/${belongTo}/`);
+			bonusRef.on('value', snap=>{
+				var snapData = snap.val()
+				starCountRef.on('value', snapshot => {
+					const data = snapshot.val();	
+					
+	
+					if (snapData) {
+						resolve([snapData[data.name]]);
+					} else {
+						resolve([]);
+					}
+				});
+			})
+			
 		})
 );
 

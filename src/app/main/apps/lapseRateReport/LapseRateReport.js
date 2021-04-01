@@ -21,6 +21,9 @@ import Widget10 from './widgets/Widget10';
 import TargetTable from './widgets/TargetTable';
 import { saveLapseRate, saveFireLapseRate, saveLifeLapseRate, saveHealthLapseRate } from './store/lapseSlice';
 import { getUsers, selectUsers } from './store/userSlice';
+import moment from 'moment';
+import DateFnsUtils from '@date-io/date-fns';
+import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
 
 const useStyles = makeStyles(theme => ({
 	content: {
@@ -63,8 +66,8 @@ function ProjectDashboardApp(props) {
 	const widgets = useSelector(selectWidgets);
 	const projects = useSelector(selectProjects);
 	const users = useSelector(selectUsers);
-	console.log('===================', users);
 	const belongTo = localStorage.getItem('@BELONGTO');
+	const [date, setDate] = useState(moment());
 
 	useEffect(() => {
 		if (users.length > 0) {
@@ -84,8 +87,8 @@ function ProjectDashboardApp(props) {
 		menuEl: null
 	});
 	const [state, setState] = useState({
-		autoRows: rows,
-		fireRows: firerows,
+		autoRows: { ...rows },
+		fireRows: { ...firerows },
 		lifeRows: liferows,
 		healthRows: healthrows,
 		monthlyAgencyLapseAutoBonus: [],
@@ -94,23 +97,23 @@ function ProjectDashboardApp(props) {
 
 	useEffect(() => {
 		dispatch(getWidgets());
-		dispatch(getProjects());
+		dispatch(getProjects(moment(date).format('yyyy')));
 		dispatch(getAutoBonus());
 		dispatch(getUsers());
-	}, [dispatch]);
+	}, [dispatch, date]);
 
 	useEffect(() => {
 		if (projects.length > 0) {
 			console.log(projects[0]);
 			var data = { ...projects[0] };
-
+			var tempRows = { ...rows };
+			var tempFireRows = { ...firerows };
 			if (Object.keys(projects[0]).includes('Auto')) {
 				Object.keys(data['Auto']).map(month => {
 					Object.keys(data['Auto'][month]).map(policy => {
-						console.log(policy);
 						if (month !== 'id') {
 							var value = data['Auto'][month][policy].value;
-							rows[month][policy].value = value;
+							tempRows[month][policy].value = value;
 						}
 					});
 				});
@@ -119,10 +122,9 @@ function ProjectDashboardApp(props) {
 			if (Object.keys(projects[0]).includes('Fire')) {
 				Object.keys(data['Fire']).map(month => {
 					Object.keys(data['Fire'][month]).map(policy => {
-						console.log(policy);
 						if (month !== 'id') {
 							var value = data['Fire'][month][policy].value;
-							firerows[month][policy].value = value;
+							tempFireRows[month][policy].value = value;
 						}
 					});
 				});
@@ -131,7 +133,6 @@ function ProjectDashboardApp(props) {
 			if (Object.keys(projects[0]).includes('Life')) {
 				Object.keys(data['Life']).map(month => {
 					Object.keys(data['Life'][month]).map(policy => {
-						console.log(policy);
 						if (month !== 'id') {
 							var value = data['Life'][month][policy].value;
 							liferows[month][policy].value = value;
@@ -151,8 +152,29 @@ function ProjectDashboardApp(props) {
 					});
 				});
 			}
+			setState({ ...state, autoRows: tempRows, fireRows: tempFireRows, healthRows: healthrows });
+		} else {
+			var data = { ...rows };
+			var tempRows = { ...rows };
+			var tempFireRows = { ...firerows };
 
-			setState({ ...state, autoRows: rows, fireRows: firerows, healthRows: healthrows });
+			Object.keys(data).map(month => {
+				Object.keys(data[month]).map(policy => {
+					if (month !== 'id' && policy !== 'month') {
+						tempRows[month][policy].value = '';
+					}
+				});
+			});
+
+			Object.keys(data).map(month => {
+				Object.keys(data[month]).map(policy => {
+					if (month !== 'id' && policy !== 'month') {
+						tempFireRows[month][policy].value = '';
+					}
+				});
+			});
+
+			setState({ ...state, autoRows: tempRows, fireRows: tempFireRows, healthRows: healthrows });
 		}
 	}, [projects]);
 
@@ -264,8 +286,8 @@ function ProjectDashboardApp(props) {
 						}
 					});
 				}
-				console.log(temp);
-				dispatch(saveLapseRate(temp));
+				console.log(temp, moment(date).format('yyyy'));
+				dispatch(saveLapseRate({ ...temp, year: moment(date).format('yyyy') }));
 				setState({ ...state, autoRows: temp });
 			}
 		} else if (title === 'Fire') {
@@ -350,7 +372,7 @@ function ProjectDashboardApp(props) {
 					});
 				}
 
-				dispatch(saveFireLapseRate(temp));
+				dispatch(saveFireLapseRate({ ...temp, year: moment(date).format('yyyy') }));
 				setState({ ...state, fireRows: temp });
 			}
 		} else if (title === 'Life') {
@@ -433,7 +455,7 @@ function ProjectDashboardApp(props) {
 						}
 					});
 				}
-				dispatch(saveLifeLapseRate(temp));
+				dispatch(saveLifeLapseRate({ ...temp, year: moment(date).format('yyyy') }));
 				setState({ ...state, lifeRows: temp });
 			}
 		} else if (title === 'Health') {
@@ -522,6 +544,11 @@ function ProjectDashboardApp(props) {
 			}
 		}
 	}
+
+	function handleChangeYear(date) {
+		console.log(date);
+		setDate(date);
+	}
 	// return null;
 	if (_.isEmpty(widgets)) {
 		return null;
@@ -543,6 +570,24 @@ function ProjectDashboardApp(props) {
 						<Typography className="hidden sm:flex mx-0 sm:mx-12" variant="h6">
 							Lapse Rate Report
 						</Typography>
+					</FuseAnimate>
+					<FuseAnimate animation="transition.slideUpIn" delay={300}>
+						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+							<KeyboardDatePicker
+								disableToolbar
+								variant="inline"
+								format="yyyy"
+								margin="normal"
+								id="date-picker-inline"
+								label="Year"
+								value={date}
+								onChange={handleChangeYear}
+								KeyboardButtonProps={{
+									'aria-label': 'change date'
+								}}
+								views={['year']}
+							/>
+						</MuiPickersUtilsProvider>
 					</FuseAnimate>
 				</div>
 			}

@@ -9,11 +9,11 @@ export const getProjects = createAsyncThunk('lapseRate/projects/getProjects',
 // 	const response = await axios.get('/api/lapse-rate/projects');
 // 	return response.data;
 // }
-() =>
+(year) =>
 		new Promise((resolve, reject) => {
 			var belongTo = localStorage.getItem('@BELONGTO')
 			var uid = localStorage.getItem('@UID')
-			var starCountRef = realDb.ref(`LapseRateReport/${belongTo}/`);
+			var starCountRef = realDb.ref(`LapseRateReport/${belongTo}/${year}`);
 			var entries = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
@@ -32,18 +32,22 @@ export const getProjects = createAsyncThunk('lapseRate/projects/getProjects',
 
 export const saveLapseRate = createAsyncThunk('lapseRate/projects/saveLapseBonus',async (data)=> {
 	var belongTo = localStorage.getItem('@BELONGTO')
+	var year = data.year
+	delete data['year']
 	var uid = localStorage.getItem('@UID')
 	const response = await axios.get('/api/lapse-rate/projects');
 	
-	realDb.ref(`LapseRateReport/${belongTo}/Auto/`).set({...data, id:"auto"})
+	realDb.ref(`LapseRateReport/${belongTo}/${year}/Auto/`).set({...data, id:"auto"})
 	return response.data;
 });
 export const saveFireLapseRate = createAsyncThunk('lapseRate/projects/saveLapseBonus',async (data)=> {
 	var belongTo = localStorage.getItem('@BELONGTO')
 	var uid = localStorage.getItem('@UID')
+	var year = data.year
+	delete data['year']
 	const response = await axios.get('/api/lapse-rate/projects');
 	
-	realDb.ref(`LapseRateReport/${belongTo}/Fire/`).set({...data, id:"fire"})
+	realDb.ref(`LapseRateReport/${belongTo}/${year}/Fire/`).set({...data, id:"fire"})
 	return response.data;
 });
 
