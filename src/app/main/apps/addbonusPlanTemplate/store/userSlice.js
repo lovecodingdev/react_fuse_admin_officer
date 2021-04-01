@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {realDb} from '../../../../../@fake-db/db/firebase'
 
-export const getUserData = createAsyncThunk('bonusPlanTemplate/user/getUserData', (uid, { getState }) =>
+export const getUserData = createAsyncThunk('addbonusPlanTemplate/user/getUserData', (uid, { getState }) =>
 	
 new Promise((resolve, reject) => {
 
@@ -35,7 +35,7 @@ new Promise((resolve, reject) => {
 }));
 
 const userSlice = createSlice({
-	name: 'bonusPlanTemplate/user',
+	name: 'addbonusPlanTemplate/user',
 	initialState: {},
 	reducers: {},
 	extraReducers: {

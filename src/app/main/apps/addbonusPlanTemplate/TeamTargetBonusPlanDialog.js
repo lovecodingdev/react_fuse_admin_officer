@@ -32,7 +32,7 @@ const defaultFormState = {
 
 function ContactDialog(props) {
 	const dispatch = useDispatch();
-	const contactDialog = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.teamTargetBonusDialog);
+	const contactDialog = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.autoBonus.teamTargetBonusDialog);
 	console.log(contactDialog);
 	const { form, handleChange, setForm } = useForm(defaultFormState);
 

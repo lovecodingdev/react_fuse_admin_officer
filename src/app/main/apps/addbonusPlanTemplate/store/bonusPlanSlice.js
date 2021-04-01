@@ -4,7 +4,7 @@ import { getUserData } from './userSlice';
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
 export const getAutoBonus = createAsyncThunk(
-	'bonusPlanTemplate/autoBonus/getContacts',
+	'addbonusPlanTemplate/autoBonus/getContacts',
 
 	// const response = await axios.get('/api/bonus-plan/contacts', {
 	// 	params: routeParams
@@ -36,7 +36,7 @@ export const getAutoBonus = createAsyncThunk(
 );
 
 export const addContact = createAsyncThunk(
-	'bonusPlanTemplate/autoBonus/addContact',
+	'addbonusPlanTemplate/autoBonus/addContact',
 	async (contact, { dispatch, getState }) => {
 		// console.log(contact, contact.routeParam);
 		const response = await axios.post('/api/bonus-plan-template/add-contact', { contact });
@@ -49,7 +49,7 @@ export const addContact = createAsyncThunk(
 );
 
 export const updateContact = createAsyncThunk(
-	'bonusPlanTemplate/autoBonus/updateContact',
+	'addbonusPlanTemplate/autoBonus/updateContact',
 	async (contact, { dispatch, getState }) => {
 		const response = await axios.post('/api/bonus-plan-template/update-contact', { contact });
 		const data = await response.data;
@@ -61,7 +61,7 @@ export const updateContact = createAsyncThunk(
 );
 
 export const removeContact = createAsyncThunk(
-	'bonusPlanTemplate/autoBonus/removeContact',
+	'addbonusPlanTemplate/autoBonus/removeContact',
 	async (contact, { dispatch, getState }) => {
 		const response = await axios.post('/api/bonus-plan-template/remove-contact', { contact });
 		const data = await response.data;
@@ -74,7 +74,7 @@ export const removeContact = createAsyncThunk(
 );
 
 export const removeContacts = createAsyncThunk(
-	'bonusPlanTemplate/autoBonus/removeContacts',
+	'addbonusPlanTemplate/autoBonus/removeContacts',
 	async (contactIds, { dispatch, getState }) => {
 		const response = await axios.post('/api/bonus-plan-template/remove-contacts', { contactIds });
 		const data = await response.data;
@@ -86,7 +86,7 @@ export const removeContacts = createAsyncThunk(
 );
 
 export const toggleStarredContact = createAsyncThunk(
-	'bonusPlanTemplate/autoBonus/toggleStarredContact',
+	'addbonusPlanTemplate/autoBonus/toggleStarredContact',
 	async (contactId, { dispatch, getState }) => {
 		const response = await axios.post('/api/bonus-plan-template/toggle-starred-contact', { contactId });
 		const data = await response.data;
@@ -100,7 +100,7 @@ export const toggleStarredContact = createAsyncThunk(
 );
 
 export const toggleStarredContacts = createAsyncThunk(
-	'bonusPlanTemplate/autoBonus/toggleStarredContacts',
+	'addbonusPlanTemplate/autoBonus/toggleStarredContacts',
 	async (contactIds, { dispatch, getState }) => {
 		const response = await axios.post('/api/bonus-plan-template/toggle-starred-contacts', { contactIds });
 		const data = await response.data;
@@ -114,7 +114,7 @@ export const toggleStarredContacts = createAsyncThunk(
 );
 
 export const setContactsStarred = createAsyncThunk(
-	'bonusPlanTemplate/autoBonus/setContactsStarred',
+	'addbonusPlanTemplate/autoBonus/setContactsStarred',
 	async (contactIds, { dispatch, getState }) => {
 		const response = await axios.post('/api/bonus-plan-template/set-contacts-starred', { contactIds });
 		const data = await response.data;
@@ -128,7 +128,7 @@ export const setContactsStarred = createAsyncThunk(
 );
 
 export const setContactsUnstarred = createAsyncThunk(
-	'bonusPlanTemplate/autoBonus/setContactsUnstarred',
+	'addbonusPlanTemplate/autoBonus/setContactsUnstarred',
 	async (contactIds, { dispatch, getState }) => {
 		const response = await axios.post('/api/bonus-plan-template/set-contacts-unstarred', { contactIds });
 		const data = await response.data;
@@ -144,11 +144,11 @@ export const setContactsUnstarred = createAsyncThunk(
 const contactsAdapter = createEntityAdapter({});
 
 export const { selectAll: selectContacts, selectById: selectContactsById } = contactsAdapter.getSelectors(
-	state => state.bonusPlanTemplate.autoBonus
+	state => state.addbonusPlanTemplate.autoBonus
 );
 
 const contactsSlice = createSlice({
-	name: 'bonusPlanTemplate/autoBonus',
+	name: 'addbonusPlanTemplate/autoBonus',
 	initialState: contactsAdapter.getInitialState({
 		searchText: '',
 		routeParams: {},

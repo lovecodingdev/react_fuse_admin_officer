@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import {realDb} from '../../../../../@fake-db/db/firebase'
 
-export const getTemplateData = createAsyncThunk('bonusPlanTemplate/templates/getTemplateData', (uid, { getState }) =>
+export const getTemplateData = createAsyncThunk('addbonusPlanTemplate/templates/getTemplateData', (uid, { getState }) =>
 	
 new Promise((resolve, reject) => {
 	var belongTo = localStorage.getItem('@BELONGTO')
@@ -23,7 +23,7 @@ new Promise((resolve, reject) => {
 }));
 
 const userSlice = createSlice({
-	name: 'bonusPlanTemplate/templates',
+	name: 'addbonusPlanTemplate/templates',
 	initialState: {},
 	reducers: {},
 	extraReducers: {

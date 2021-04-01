@@ -32,11 +32,11 @@ const useStyles = makeStyles(theme => ({
 
 function ContactsList(props) {
 	const dispatch = useDispatch();
-	const template = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.template);
-	const tempData = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.tempData);
-	const data = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.data);
-	const addTempData = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.addTempData);
-	const removeTempData = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.removeTempData);
+	const template = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.autoBonus.template);
+	const tempData = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.autoBonus.tempData);
+	const data = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.autoBonus.data);
+	const addTempData = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.autoBonus.addTempData);
+	const removeTempData = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.autoBonus.removeTempData);
 	const [contacts, setContact] = useState(bonusPlanTemplate);
 
 	useEffect(() => {
@@ -85,8 +85,8 @@ function ContactsList(props) {
 	useEffect(() => {
 		dispatch(setData({ ...contacts }));
 	}, [contacts]);
-	const searchText = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.searchText);
-	const user = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.user);
+	const searchText = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.autoBonus.searchText);
+	const user = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.user);
 	const classes = useStyles(props);
 	const [state, setState] = useState({
 		autoBonus: [],

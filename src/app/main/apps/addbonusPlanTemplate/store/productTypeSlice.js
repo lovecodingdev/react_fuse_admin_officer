@@ -3,7 +3,7 @@ import axios from 'axios';
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
 export const getProductType = createAsyncThunk(
-	'bonusPlanTemplate/typeProduct/getProducts',
+	'addbonusPlanTemplate/typeProduct/getProducts',
 	() =>
 		new Promise((resolve, reject) => {
             var belongTo = localStorage.getItem('@BELONGTO')
@@ -32,11 +32,11 @@ export const getProductType = createAsyncThunk(
 const productsAdapter = createEntityAdapter({});
 
 export const { selectAll: selectTypeProduct, selectById: selectProductById } = productsAdapter.getSelectors(
-	state => state.bonusPlanTemplate.typeProduct
+	state => state.addbonusPlanTemplate.typeProduct
 );
 
 const productsSlice = createSlice({
-	name: 'bonusPlanTemplate/typeProduct',
+	name: 'addbonusPlanTemplate/typeProduct',
 	initialState: productsAdapter.getInitialState({
 		searchText: ''
 	}),

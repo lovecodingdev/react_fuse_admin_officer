@@ -53,4 +53,4 @@ function BonusPlanApp(props) {
 	);
 }
 
-export default withReducer('bonusPlanTemplate', reducer)(BonusPlanApp);
+export default withReducer('addbonusPlanTemplate', reducer)(BonusPlanApp);

@@ -117,7 +117,7 @@ function ContactsHeader(props) {
 			<div className="flex flex-1 items-center justify-center px-8 sm:px-12">
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
-						<Paper className="flex p-4 items-center w-full max-w-512 h-48 px-8 py-4 rounded-8 shadow">
+						<Paper className="flex p-4 items-center w-full max-w-216 h-48 px-8 py-4 rounded-8 shadow">
 							<SelectBox
 								id="outlined-basic"
 								label="Select Template"
@@ -129,7 +129,7 @@ function ContactsHeader(props) {
 								// willvalidation={false}
 								// validate={state.userValidation}
 							/>
-							<Input
+							{/* <Input
 								placeholder="New Bonus Plan Template Name"
 								className="flex flex-1 px-16"
 								disableUnderline
@@ -139,7 +139,7 @@ function ContactsHeader(props) {
 									'aria-label': 'Search'
 								}}
 								onChange={ev => setTemplateName(ev.target.value)}
-							/>
+							/> */}
 						</Paper>
 					</FuseAnimate>
 				</ThemeProvider>

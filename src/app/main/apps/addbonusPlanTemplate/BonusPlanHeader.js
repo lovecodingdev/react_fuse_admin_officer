@@ -20,11 +20,11 @@ import SelectBox from '../../components/SelectBox';
 
 function ContactsHeader(props) {
 	const dispatch = useDispatch();
-	const searchText = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.searchText);
+	const searchText = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.autoBonus.searchText);
 	const mainTheme = useSelector(selectMainTheme);
-	const user = useSelector(({bonusPlanTemplate})=> bonusPlanTemplate.user)
-	const data = useSelector(({bonusPlanTemplate})=> bonusPlanTemplate.autoBonus.data)
-	const bonusPlanTemplates = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.templates);
+	const user = useSelector(({addbonusPlanTemplate})=> addbonusPlanTemplate.user)
+	const data = useSelector(({addbonusPlanTemplate})=> addbonusPlanTemplate.autoBonus.data)
+	const bonusPlanTemplates = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.templates);
 	const [name, setName] = React.useState("")
 	const history = useHistory()
 	const [templateName, setTemplateName] = React.useState("")
@@ -115,7 +115,7 @@ function ContactsHeader(props) {
 				<ThemeProvider theme={mainTheme}>
 					<FuseAnimate animation="transition.slideLeftIn" delay={300}>
 						<Paper className="flex p-4 items-center w-full max-w-512 h-48 px-8 py-4 rounded-8 shadow">
-						<SelectBox
+						{/* <SelectBox
 								id="outlined-basic"
 								label="Select Template"
 								data={state.templates}
@@ -125,7 +125,7 @@ function ContactsHeader(props) {
 								handleChangeValue={handleChangeValue}
 								// willvalidation={false}
 								// validate={state.userValidation}
-							/>
+							/> */}
 							<Input
 								placeholder="New Bonus Plan Template Name"
 								className="flex flex-1 px-16"

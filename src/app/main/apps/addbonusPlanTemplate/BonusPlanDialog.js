@@ -57,7 +57,7 @@ function makeid(length) {
 function ContactDialog(props) {
 	const classes = useStyles();
 	const dispatch = useDispatch();
-	const contactDialog = useSelector(({ bonusPlanTemplate }) => bonusPlanTemplate.autoBonus.contactDialog);
+	const contactDialog = useSelector(({ addbonusPlanTemplate }) => addbonusPlanTemplate.autoBonus.contactDialog);
 	const productType = useSelector(selectTypeProduct);
 	const { form, handleChange, setForm } = useForm(defaultFormState);
 	const [productTypeList, setProductType] = React.useState([]);
