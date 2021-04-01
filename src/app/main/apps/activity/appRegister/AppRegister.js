@@ -210,7 +210,7 @@ function AppRegister(props) {
 									format="yyyy"
 									margin="normal"
 									id="date-picker-inline"
-									label="From Date"
+									label="Year"
 									value={date}
 									onChange={handleChangeYear}
 									KeyboardButtonProps={{
@@ -226,7 +226,7 @@ function AppRegister(props) {
 							<SelectBox
 								value={period}
 								onChange={ev => handleChangePeriod(ev)}
-								label="Report Period"
+								label="Month"
 								data={options.period.data}
 							/>
 						</FuseAnimate>
