@@ -6,9 +6,9 @@ var belongTo = localStorage.getItem('@BELONGTO')
 
 export const getLapseRate = createAsyncThunk(
 	'producrProfile/lapseRate/getLapseRate',
-	() =>
+	(year) =>
 		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`LapseRateReport/${belongTo}/`);
+			var starCountRef = realDb.ref(`LapseRateReport/${belongTo}/${year}/`);
 			var lapseRate = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();

@@ -84,7 +84,7 @@ function Dashboard(props) {
 		dispatch(getBonusPlans());
 		dispatch(getEntries(moment(date).format('yyyy')));	
 		dispatch(getVision(moment(date).format('yyyy')));	
-		dispatch(getLapseRate());	
+		dispatch(getLapseRate(moment(date).format('yyyy')));	
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch, date]);
 
@@ -177,7 +177,7 @@ function Dashboard(props) {
 
 				// Lapse Rate
 				policies.map(policy => {
-					if(policy.value==='Auto' || policy.value==='Health') {
+					if(policy.value==='Auto' || policy.value==='Fire') {
 						let tempCardData = [];
 						let tempCard = {};
 						const cardData = widgets[`Dashboard_LapseRate_${policy.value}_Panel`].cardData;
@@ -456,7 +456,7 @@ function Dashboard(props) {
 								<legend>Lapse Rate</legend>
 								{
 									policies.map(policy => {
-										if(policy.value==='Auto' || policy.value==='Health') {
+										if(policy.value==='Auto' || policy.value==='Fire') {
 											return(
 												<div className="widget flex w-full p-12">							
 													<Panel data={data.widgets[`Dashboard_LapseRate_${policy.value}_Panel`]} type='One Number' />						
