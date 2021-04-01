@@ -7,9 +7,9 @@ var UID = localStorage.getItem('@UID')
 
 export const getVision = createAsyncThunk(
 	'agencyApp/vision/getVision', 
-	() =>
+	(year) =>
 		new Promise((resolve, reject) => {
-			var starCountRef = realDb.ref(`Vision/${belongTo}/`);
+			var starCountRef = realDb.ref(`Vision/${year}/${belongTo}/`);
 			var vision = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();

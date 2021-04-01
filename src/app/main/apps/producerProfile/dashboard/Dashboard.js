@@ -83,7 +83,7 @@ function Dashboard(props) {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
 		dispatch(getEntries(moment(date).format('yyyy')));	
-		dispatch(getVision());	
+		dispatch(getVision(moment(date).format('yyyy')));	
 		dispatch(getLapseRate());	
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch, date]);

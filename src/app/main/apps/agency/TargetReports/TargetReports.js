@@ -53,7 +53,7 @@ function TargetReports(props) {
 		dispatch(getBonusPlans());
 		dispatch(getMarketings());
 		dispatch(getEntries(year));	
-		dispatch(getVision());	
+		dispatch(getVision(year));	
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 

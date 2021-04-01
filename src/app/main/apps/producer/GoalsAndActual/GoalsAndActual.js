@@ -45,7 +45,7 @@ function GoalsAndActual(props) {
 	useEffect(() => {
 		dispatch(getUsers());
 		dispatch(getEntries(year));	
-		dispatch(getVision());	
+		dispatch(getVision(year));	
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
