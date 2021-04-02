@@ -105,7 +105,7 @@ function ProjectDashboardApp(props) {
 	useEffect(() => {
 		if (projects.length > 0) {
 			var alignedJSON = arrayJSON(projects[0]);
-			updateData(alignedJSON)
+			var {numberRows, percentRows, perHouseHoldRows} = updateData(alignedJSON)
 		}
 	}, [projects]);
 
@@ -177,8 +177,8 @@ function ProjectDashboardApp(props) {
 					total: { ...state.autoRows[month].total, value: total }
 				}
 			};
-			updateData(temp)
-			dispatch(saveProduct(temp));
+			var {numberRows, percentRows, perHouseHoldRows} = updateData(temp)
+			dispatch(saveProduct({temp, numberRows, percentRows, perHouseHoldRows}));
 			// let numberRows = {
 			// 	...temp,
 			// 	[month]:{
@@ -1506,6 +1506,10 @@ function ProjectDashboardApp(props) {
 			householdRows: perHouseHoldRows,
 			graphData: widgets.widget5
 		});
+
+		return {numberRows, percentRows, perHouseHoldRows}
+
+
 	}
 	// return null;
 	if (_.isEmpty(widgets)) {
