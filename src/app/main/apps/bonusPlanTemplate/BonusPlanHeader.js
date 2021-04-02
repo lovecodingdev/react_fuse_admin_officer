@@ -63,8 +63,7 @@ function ContactsHeader(props) {
 			dispatch(addContact({ ...data, name: templateName }));
 			dispatch(getTemplateData());
 			dispatch(showMessage({ message: 'Successfully Saved!' }));
-			// setTemplateName('');
-			// history.goBack()
+
 		}
 	};
 
