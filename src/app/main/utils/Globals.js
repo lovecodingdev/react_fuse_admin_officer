@@ -137,11 +137,11 @@ export const months1 = [
 ];
 
 export const bonusPlanDbNames = {
-	Auto: { name: "Auto", db: "autoBonus", indDb: "individualAutoTargetBonus", teamDb: "teamAutoTargetBonus" },
-	Fire: { name: "Fire", db: "fireBonus", indDb: "individualFireTargetBonus", teamDb: "teamFireTargetBonus" },
-	Life: { name: "Life", db: "lifeBonus", indDb: "individualLifeTargetBonus", teamDb: "teamLifeTargetBonus" },
-	Health: { name: "Health", db: "healthBonus", indDb: "individualHealthTargetBonus", teamDb: "teamHealthTargetBonus" },
-	Bank: { name: "Bank", db: "bankBonus", indDb: "individualBankTargetBonus", teamDb: "teamBankTargetBonus" },
+	Auto: { name: "Auto", db: "autoBonus", indDb: "individualAutoTargetBonus", teamDb: "teamAutoTargetBonus", lapseDb: 'monthlyAgencyLapseAutoBonus', growthDb: 'monthlyAutoNetGrowthBonus' },
+	Fire: { name: "Fire", db: "fireBonus", indDb: "individualFireTargetBonus", teamDb: "teamFireTargetBonus", lapseDb: 'monthlyAgencyLapseFireBonus', growthDb: 'monthlyFireNetGrowthBonus' },
+	Life: { name: "Life", db: "lifeBonus", indDb: "individualLifeTargetBonus", teamDb: "teamLifeTargetBonus", lapseDb: 'monthlyAgencyLapseLifeBonus', growthDb: 'monthlyLifeNetGrowthBonus' },
+	Health: { name: "Health", db: "healthBonus", indDb: "individualHealthTargetBonus", teamDb: "teamHealthTargetBonus", lapseDb: 'monthlyAgencyLapseHealthBonus', growthDb: 'monthlyHealthNetGrowthBonus' },
+	Bank: { name: "Bank", db: "bankBonus", indDb: "individualBankTargetBonus", teamDb: "teamBankTargetBonus", lapseDb: 'monthlyAgencyLapseBankBonus', growthDb: 'monthlyBankNetGrowthBonus' },
     Total: { name: "Total", db: "totalBonus", indDb: "individualTotalTargetBonus" },
 	Other: { name: "Other", db: "otherBonus", indDb: "individualOtherTargetBonus" },
 };

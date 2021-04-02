@@ -86,7 +86,7 @@ function Dashboard(props) {
 
 	useEffect(() => {	
 		let temp = [];		
-		if(users.length>0 && bonusPlans.length>0) { 
+		if(users.length>0) { 
 			temp = getMain(entries, bonusPlans, [], users, vision, lapseRate);													
 		}
 		setMain(temp);
@@ -174,7 +174,7 @@ function Dashboard(props) {
 						let tempCard = {};
 						const cardData = widgets[`Dashboard_LapseRate_${policy.value}_Panel`].cardData;
 						tempCard = cardData[0];
-						tempCard = { ...tempCard, count: main[production][period][UID][policy.value]['lapseRate'] };
+						tempCard = { ...tempCard, count: main[production][period][UID][policy.value]['lapseRateChange'] };
 						tempCardData.push(tempCard);
 						widgets = {
 							...widgets, [`Dashboard_LapseRate_${policy.value}_Panel`]: {
