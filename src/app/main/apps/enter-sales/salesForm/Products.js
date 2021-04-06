@@ -138,6 +138,7 @@ function Products() {
 		policyPremiumValidation: false,
 		userValidation: false,
 		marketings: [],
+		previousPolicyNumber: '',
 		policyHolderType: 'individual',
 		usersList: [],
 		tempUserList: [],
@@ -659,6 +660,8 @@ function Products() {
 				datePolicyIsWritten: state.datePolicyIsWritten ? state.datePolicyIsWritten : '',
 				datePolicyIsIssued: state.datePolicyIsIssued ? state.datePolicyIsIssued : '',
 				// percentOfSaleCredit: parseFloat(state.percentOfSaleCredit),
+				previousPolicyNumber: state.previousPolicyNumber,
+				policies: state.policyType,
 				typeOfProduct: state.typeOfProduct,
 				policyPremium: parseFloat(state.policyPremium),
 				sourceOfBusiness: state.sourceOfBusiness,
@@ -1427,7 +1430,7 @@ function Products() {
 									<SelectBox
 										id="outlined-basic"
 										label="Type of Placeholder"
-										disabled={routeParams.id === 'edit'?true:false}
+										disabled={routeParams.id === 'edit' ? true : false}
 										data={policyholderTypeLists}
 										variant="outlined"
 										value={state.policyHolderType}
@@ -1449,7 +1452,7 @@ function Products() {
 
 									<FormControlLabel
 										className={classes.checkBox}
-										disabled={routeParams.id === 'edit'?true:false}
+										disabled={routeParams.id === 'edit' ? true : false}
 										control={
 											<Checkbox
 												checked={state.policyType.includes('Entries')}
@@ -1463,7 +1466,7 @@ function Products() {
 
 									<FormControlLabel
 										className={classes.checkBox}
-										disabled={routeParams.id === 'edit'?true:false}
+										disabled={routeParams.id === 'edit' ? true : false}
 										control={
 											<Checkbox
 												checked={state.policyType.includes('FireEntries')}
@@ -1477,7 +1480,7 @@ function Products() {
 
 									<FormControlLabel
 										className={classes.checkBox}
-										disabled={routeParams.id === 'edit'?true:false}
+										disabled={routeParams.id === 'edit' ? true : false}
 										control={
 											<Checkbox
 												checked={state.policyType.includes('HealthEntries')}
@@ -1491,7 +1494,7 @@ function Products() {
 
 									<FormControlLabel
 										className={classes.checkBox}
-										disabled={routeParams.id === 'edit'?true:false}
+										disabled={routeParams.id === 'edit' ? true : false}
 										control={
 											<Checkbox
 												checked={state.policyType.includes('LifeEntries')}
@@ -1504,7 +1507,7 @@ function Products() {
 									/>
 									<FormControlLabel
 										className={classes.checkBox}
-										disabled={routeParams.id === 'edit'?true:false}
+										disabled={routeParams.id === 'edit' ? true : false}
 										control={
 											<Checkbox
 												checked={state.policyType.includes('BankEntries')}
@@ -1515,6 +1518,20 @@ function Products() {
 										}
 										label="Bank"
 									/>
+
+									{state.policyType.length === 1 && state.policyHolderType === 'household' && (
+										<TextInput
+											id="outlined-basic"
+											label="Previous Policy Number"
+											variant="outlined"
+											value={state.previousPolicyNumber}
+											validation="previousPolicyNumber"
+											onChange={handleChangeValue}
+											willvalidation={false}
+											validate={false}
+											size={200}
+										/>
+									)}
 								</div>
 								{state.policyType.includes('Entries') && (
 									<div className="min-w-xl w-full flex flex-row justify-around flex-wrap">

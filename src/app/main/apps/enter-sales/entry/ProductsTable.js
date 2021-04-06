@@ -28,8 +28,6 @@ const useStyles = makeStyles(theme => ({
 	}
 }));
 
-
-
 function ProductsTable(props) {
 	const dispatch = useDispatch();
 	const products = useSelector(selectEntries);
@@ -37,7 +35,7 @@ function ProductsTable(props) {
 	const productType = useSelector(selectProductType);
 
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
-	
+
 	const displayName = useSelector(({ auth }) => auth.user.data.displayName);
 	const classes = useStyles();
 	const [loading, setLoading] = useState(true);
@@ -170,10 +168,12 @@ function ProductsTable(props) {
 				typeOfProductFire: item.typeOfProductFire,
 				typeOfProductHealth: item.typeOfProductHealth,
 				typeOfProductLife: item.typeOfProductLife,
+				typeOfProductBank: item.typeOfProductBank,
 				creditPercent: item.creditPercent,
 				creditType: item.creditType,
 				creditUser: item.creditUser,
-				user:item.user
+				previousPolicyNumber: item.previousPolicyNumber,
+				user: item.user
 			})
 		);
 	}
@@ -223,7 +223,7 @@ function ProductsTable(props) {
 								[
 									// order.id
 									o => {
-										return o.datePolicyIsWritten
+										return o.datePolicyIsWritten;
 										// switch (order.id) {
 
 										// 	case 'policyInformation': {
@@ -245,7 +245,13 @@ function ProductsTable(props) {
 									const isSelected = selected.indexOf(n.id) !== -1;
 									return (
 										<TableRow
-											className="h-48 cursor-pointer"
+											className={
+												Object.keys(n).includes('policies')
+													? n.policies.length === 1 && n.policyHolderType === 'household'
+														? `h-48 cursor-pointer bg-gray-600`
+														: `h-48 cursor-pointer`
+													: `h-48 cursor-pointer`
+											}
 											hover
 											role="checkbox"
 											aria-checked={isSelected}
@@ -287,25 +293,30 @@ function ProductsTable(props) {
 												{n.creditPercent}%
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-											{n.policyType[0] === 'Entries' && n.typeOfProduct}
+												{n.policyType[0] === 'Entries' && n.typeOfProduct}
 												{n.policyType[0] === 'FireEntries' && n.typeOfProductFire}
 												{n.policyType[0] === 'HealthEntries' && n.typeOfProductHealth}
 												{n.policyType[0] === 'LifeEntries' && n.typeOfProductLife}
+												{n.policyType[0] === 'BankEntries' && n.typeOfProductBank}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.user?n.user.data.displayName:users.map(user=>user.id===n.sellerId&& user.data.displayName)}
+												{n.user
+													? n.user.data.displayName
+													: users.map(
+															user => user.id === n.sellerId && user.data.displayName
+													  )}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.policyType[0]==='Entries'?"AutoEntries":n.policyType[0]}
+												{n.policyType[0] === 'Entries' ? 'AutoEntries' : n.policyType[0]}
 											</TableCell>
-											
+
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												${n.policyPremium}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
 												{n.sourceOfBusiness}
 											</TableCell>
-										
+
 											<TableCell
 												className="p-2 md:p-2 bg-indigo-200"
 												component="th"
