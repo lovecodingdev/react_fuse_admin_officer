@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 export default function SimpleSelect(props) {
 	const classes = useStyles();
     const [age, setAge] = React.useState('');
-    const { id, data, variant, value, handleChangeValue, validation, type, willvalidation, validate, size } = props;
+    const { id, data, variant, value, handleChangeValue, validation, disabled, willvalidation, validate, size } = props;
 
 	const handleChange = event => {
 		if (willvalidation) {
@@ -45,6 +45,7 @@ export default function SimpleSelect(props) {
 					style:{width:size},
 					
 				}}
+				disabled={disabled?disabled:false}
 			>
                 {data.length>0&&data.map((item, index)=>(
                     <MenuItem value={item.value} key={index}>{item.item}</MenuItem>
