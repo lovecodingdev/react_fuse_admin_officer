@@ -11,6 +11,7 @@ import NotesAppConfig from './notes/NotesAppConfig';
 import ActivityAppConfig from './activity/ActivityAppConfig';
 import ScrumboardAppConfig from './scrumboard/ScrumboardAppConfig';
 import TodoAppConfig from './todo/TodoAppConfig';
+import VisionAppConfig from './vision/VisionAppConfig';
 import BonusPlanAppConfig from './bonusPlan/bonusPlanConfig'
 import ProducerAppConfig from './producer/producerAppConfig'
 import AgencyAppConfig from './agency/agencyAppConfig'
@@ -38,6 +39,7 @@ const appsConfigs = [
 	ScrumboardAppConfig,
 	AcademyAppConfig,
 	NotesAppConfig,
+	VisionAppConfig,
 	ActivityAppConfig,
 	BonusPlanAppConfig,
 	ProducerAppConfig,

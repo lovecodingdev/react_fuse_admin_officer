@@ -44,8 +44,8 @@ function PossibleMoney(props) {
 	const [tabValue, setTabValue] = useState(0);
 	const [production, setProduction] = useState("Show Written Production");
 	const [bonus, setBonus] = useState('Include Initial Bonus in Calculation');
-	const [user, setUser] = useState("");
-	const [userList, setUserList] = useState("");
+	const [user, setUser] = useState(UID);
+	const [userList, setUserList] = useState([]);
 	const [year, setYear] = useState(moment().format('yyyy'));
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [title, setTitle] = useState('Possible Money');

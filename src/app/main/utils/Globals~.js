@@ -72,12 +72,12 @@ export const Options = {
 }
 
 export const policies = [
-    { id: "Auto", value: "Auto", entry: 'Entries', vision: 'autoPolicies', color: "" },
-    { id: "Fire", value: "Fire", entry: 'FireEntries', vision: 'firePolicies', color: "" },
-    { id: "Life", value: "Life", entry: 'LifeEntries', vision: 'lifePolicies', color: "" },
-    { id: "Health", value: "Health", entry: 'HealthEntries', vision: 'healthPolicies', color: "" },
-    { id: "Bank", value: "Bank", entry: 'BankEntries', vision: 'bankProducts', color: "" },
-    { id: "Total", value: "Total", entry: '', vision: 'totalProducts', color: "" },
+    { id: "Auto", value: "Auto", indDbName: "individualAutoTargetBonus", color: "" },
+    { id: "Fire", value: "Fire", indDbName: "individualFireTargetBonus", color: "" },
+    { id: "Life", value: "Life", indDbName: "individualLifeTargetBonus", color: "" },
+    { id: "Health", value: "Health", indDbName: "individualHealthTargetBonus", color: "" },
+    { id: "Bank", value: "Bank", indDbName: "individualBankTargetBonus", color: "" },
+    { id: "Total", value: "Total", indDbName: "", color: "" },
 ];
 
 export const months = [
@@ -142,8 +142,8 @@ export const bonusPlanDbNames = {
 	Life: { name: "Life", db: "lifeBonus", indDb: "individualLifeTargetBonus", teamDb: "teamLifeTargetBonus", lapseDb: 'monthlyAgencyLapseLifeBonus', growthDb: 'monthlyLifeNetGrowthBonus' },
 	Health: { name: "Health", db: "healthBonus", indDb: "individualHealthTargetBonus", teamDb: "teamHealthTargetBonus", lapseDb: 'monthlyAgencyLapseHealthBonus', growthDb: 'monthlyHealthNetGrowthBonus' },
 	Bank: { name: "Bank", db: "bankBonus", indDb: "individualBankTargetBonus", teamDb: "teamBankTargetBonus", lapseDb: 'monthlyAgencyLapseBankBonus', growthDb: 'monthlyBankNetGrowthBonus' },
-    Other: { name: "Other", db: "otherBonus", indDb: "individualOtherTargetBonus" },
     Total: { name: "Total", db: "totalBonus", indDb: "individualTotalTargetBonus" },
+	Other: { name: "Other", db: "otherBonus", indDb: "individualOtherTargetBonus" },
 };
 
 export const policiesAndPremium1 = [

@@ -22,6 +22,7 @@ import './db/quick-panel-db';
 import './db/scrumboard-db';
 import './db/search-db';
 import './db/todo-db';
+import './db/vision-db';
 import './db/activity-db';
 import './db/bonus-plan-db';
 import './db/bonus-plan-template-db';

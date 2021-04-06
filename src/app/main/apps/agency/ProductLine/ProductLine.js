@@ -45,7 +45,7 @@ function ProductLine(props) {
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [production, setProduction] = useState("Show Written Production");
 	const [report, setReport] = useState("Policies");
-	const [userList, setUserList] = useState("");
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Product Line');
 	

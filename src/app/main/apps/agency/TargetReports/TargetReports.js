@@ -41,7 +41,7 @@ function TargetReports(props) {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({ widgets });
 	const [main, setMain] = useState({});
-	const [user, setUser] = useState('');
+	const [user, setUser] = useState(UID);
 	const [year, setYear] = useState(moment().format('yyyy'));
 	const [production, setProduction] = useState("Show Written Production");
 	const [userList, setUserList] = useState([])

@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
+import { formattedString } from '../../utils/Function'
 
 export function Card(props) {
 	return(
@@ -21,8 +22,8 @@ export function Card(props) {
 			</div>
 		}
 		<div className="text-center pt-12 pb-28">
-			<Typography className={`text-${props.fontSize} leading-none ${props.color}`}>
-				{props.count}
+			<Typography className={`lg:text-52 md:text-40 sm:text-36 leading-none ${props.color}`}>
+				{`${formattedString(props.count)} ${props.endAdornment}`}
 			</Typography>
 			{props.label!=='' &&
 				<Typography className="text-16" color="textSecondary">
@@ -47,7 +48,7 @@ function Widget1(props) {
 				<Card {...props.data.cardData[0]} />
 			}	
 			{props.type==='Two Number' &&
-				<div className="flex flex-row justify-around">
+				<div className="flex flex-wrap justify-around">
 					<Card {...props.data.cardData[0]} />
 					<Card {...props.data.cardData[1]} />
 				</div>

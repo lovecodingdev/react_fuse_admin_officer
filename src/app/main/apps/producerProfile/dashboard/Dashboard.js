@@ -27,14 +27,12 @@ import DateFnsUtils from '@date-io/date-fns';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
 import Table from '../../../components/widgets/Table';
 import Panel from '../../../components/widgets/Panel';
-import DashboardPanel from '../../../components/widgets/DashboardPanel~';
 import Card from '../../../components/widgets/Panel';
 import BarChart from '../../../components/widgets/BarChart';
 import HorizontalBarChart from '../../../components/widgets/HorizontalBarChart';
 import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
-import SimpleHeader from '../../../components/widgets/SimpleHeader';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
 import { getMarketings, selectMarketings } from '../store/marketingsSlice';
@@ -43,7 +41,7 @@ import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
 import { getLapseRate, selectLapseRate } from '../store/lapseRateSlice';
 import { Options as options, policies } from '../../../utils/Globals';
-import { dividing, getMain } from '../../../utils/Function';
+import { dividing, ceil, getMain } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 // const UID = localStorage.getItem('@UID');
@@ -74,7 +72,7 @@ function Dashboard(props) {
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [production, setProduction] = useState("Show Written Production");
 	const [report, setReport] = useState("Policies");
-	const [userList, setUserList] = useState("");
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [date, setDate] = useState(moment());
 	const [title, setTitle] = useState('Welcome');
@@ -106,8 +104,10 @@ function Dashboard(props) {
 			if(widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel) {	
 				policies.map(policy => {					
 					if(policy.value !== 'Bank') {
+						indGoalsAndActual[`${policy.value}@realGoal`] = 0;
 						indGoalsAndActual[`${policy.value}@Goal`] = 0;
 						indGoalsAndActual[`${policy.value}@Actual`] = 0;
+						teamGoalsAndActual[`${policy.value}@realGoal`] = 0;
 						teamGoalsAndActual[`${policy.value}@Goal`] = 0;
 						teamGoalsAndActual[`${policy.value}@Actual`] = 0;						
 					}	
@@ -116,19 +116,27 @@ function Dashboard(props) {
 				});
 				users.map((user) => {
 					if(user.id === UID) { 		
-						policies.slice(0, 4).map((policy) => { 
-							indGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-							indGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];											
-							indGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-							indGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+						policies.map((policy) => { 
+							if(policy.value!=='Bank' && policy.value!=='Total') {	
+								indGoalsAndActual[`Total@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];							
+								indGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								indGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+								indGoalsAndActual[`${policy.value}@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];											
+								indGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								indGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+							}
 						});						
 					}	
 					if(user.belongTo === belongTo) { 						
-						policies.slice(0, 4).map((policy) => { 
-							teamGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-							teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];											
-							teamGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-							teamGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+						policies.map((policy) => { 
+							if(policy.value!=='Bank' && policy.value!=='Total') {
+								teamGoalsAndActual[`Total@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];
+								teamGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+								teamGoalsAndActual[`${policy.value}@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];											
+								teamGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								teamGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+							}							
 						});
 					}			
 				});		
@@ -141,7 +149,17 @@ function Dashboard(props) {
 						const cardData = widgets[`Dashboard_Multiline_GoalAndActual_${policy.value}_Panel`].cardData;
 						cardData.map(card => {
 							tempCard = card;
-							tempCard = { ...tempCard, count: indGoalsAndActual[`${policy.value}@${card.label}`] };
+
+							let color = 'text-green';
+							if(teamGoalsAndActual[`${policy.value}@real${card.label}`] > teamGoalsAndActual[`${policy.value}@${card.label}`]) {
+								color = 'text-red'
+							}
+							if(card.label === 'Goal') {
+								tempCard = { ...tempCard, count: indGoalsAndActual[`${policy.value}@real${card.label}`], color:color };
+							} else if(card.label === 'Actual') {
+								tempCard = { ...tempCard, count: indGoalsAndActual[`${policy.value}@${card.label}`] };
+							}
+							
 							tempCardData.push(tempCard);
 						});						
 						widgets = {
@@ -162,7 +180,17 @@ function Dashboard(props) {
 						const cardData = widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`].cardData;
 						cardData.map(card => {
 							tempCard = card;
-							tempCard = { ...tempCard, count: teamGoalsAndActual[`${policy.value}@${card.label}`] };
+							
+							let color = 'text-green';
+							if(teamGoalsAndActual[`${policy.value}@real${card.label}`] > teamGoalsAndActual[`${policy.value}@${card.label}`]) {
+								color = 'text-red'
+							}
+							if(card.label === 'Goal') {
+								tempCard = { ...tempCard, count: teamGoalsAndActual[`${policy.value}@real${card.label}`], color:color };
+							} else if(card.label === 'Actual') {
+								tempCard = { ...tempCard, count: teamGoalsAndActual[`${policy.value}@${card.label}`] };
+							}
+
 							tempCardData.push(tempCard);
 						});						
 						widgets = {
@@ -182,7 +210,7 @@ function Dashboard(props) {
 						let tempCard = {};
 						const cardData = widgets[`Dashboard_LapseRate_${policy.value}_Panel`].cardData;
 						tempCard = cardData[0];
-						tempCard = { ...tempCard, count: `${main[production][period][UID][policy.value]['https://www.freelancer.com/u/armkhasikyan?ref_project_id=29753788']}` };
+						tempCard = { ...tempCard, count: `${main[production][period][UID][policy.value]['lapseRateChange']}` };
 						tempCardData.push(tempCard);
 						widgets = {
 							...widgets, [`Dashboard_LapseRate_${policy.value}_Panel`]: {
@@ -195,9 +223,9 @@ function Dashboard(props) {
 				});	
 				
 				// Multiline Percentage
-				let tempData = [];
+				let tempData = [];				
 				let cardData = widgets.Dashboard_Multiline_Percentage_Panel.cardData[0];
-				cardData = { ...cardData, count: `${dividing(household*100, household+individual)} %` }; 
+				cardData = { ...cardData, count: `${ceil(dividing(household*100, household+individual))}` }; 
 				tempData.push(cardData);
 				widgets = {
 					...widgets, Dashboard_Multiline_Percentage_Panel: {
@@ -212,15 +240,24 @@ function Dashboard(props) {
 				let actual = widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW.datasets[1];
 				
 				let tempGoal = [];
+				let tempGoalBackgroundColor = [];
+				let tempGoalHoverBackgroundColor = [];
 				let tempActual = [];
 				let tempDatasets = [];
 				policies.map(policy => {
 					if(policy.value !== 'Bank' && policy.value !== 'Total') {
 						tempGoal.push(indGoalsAndActual[`${policy.value}@Goal`]);
+
+						let color = '#4CAF50';
+						if(indGoalsAndActual[`${policy.value}@realGoal`] > indGoalsAndActual[`${policy.value}@Goal`]) {
+							color = '#F44336'
+						}
+						tempGoalBackgroundColor.push(color);
+						tempGoalHoverBackgroundColor.push(color);
 						tempActual.push(indGoalsAndActual[`${policy.value}@Actual`]);						
 					}					
 				});
-				goal = { ...goal, data: tempGoal };
+				goal = { ...goal, data: tempGoal, backgroundColor: tempGoalBackgroundColor, hoverBackgroundColor: tempGoalHoverBackgroundColor };
 				actual = { ...actual, data: tempActual };
 				tempDatasets.push(goal);
 				tempDatasets.push(actual);
@@ -469,13 +506,13 @@ function Dashboard(props) {
 							</fieldset>	
 						</div>								
 					</FuseAnimateGroup>		
-					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>						
-						<div className="widget flex w-1/2 p-12">
-							<BarChart data={data.widgets.Dashboard_Personal_GoalVsActual_Chart} />
-						</div>						
-						<div className="widget flex w-1/2 p-12">
-							<BarChart data={data.widgets.Dashboard_Team_GoalVsActual_Chart} />
-						</div>
+					<FuseAnimateGroup className="flex flex-wrap justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>						
+						{/* <div className="widget flex w-1/2 p-12">
+							<BarChart widget={data.widgets.Dashboard_Personal_GoalVsActual_Chart} />
+						</div>						 */}
+						{/* <div className="widget flex w-1/2 p-12">
+							<BarChart widget={data.widgets.Dashboard_Team_GoalVsActual_Chart} />
+						</div> */}
 					</FuseAnimateGroup>																
 				</div>
 				

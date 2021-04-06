@@ -8,23 +8,23 @@ var UID = localStorage.getItem('@UID')
 export const getVision = createAsyncThunk(
 	'producrProfile/vision/getVision', 
 	(year) =>
-		new Promise((resolve, reject) => {
+		new Promise((resolve, reject) => {		
 			var starCountRef = realDb.ref(`Vision/${year}/${belongTo}/`);
-			var vision = [];
+			var vision = []; 
 			starCountRef.on('value', snapshot => {
-				const data = snapshot.val();
+				const data = snapshot.val(); 
 
-				if (data) {
-					Object.keys(data).map(item => {
-						vision.push(data[item]);
-					});
-				} 
-
-				if (data) {
-					resolve([data]);
+				// if (data) {
+				// 	Object.keys(data).map(item => {
+				// 		vision.push(data[item]);
+				// 	});
+				// } 
+				
+				if(data) {
+					return resolve([data]);
 				} else {
-					resolve({});
-				}				
+					resolve([]);
+				}
 			});
 		})
 );

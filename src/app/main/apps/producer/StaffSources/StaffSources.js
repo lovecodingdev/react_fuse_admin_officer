@@ -42,8 +42,8 @@ function StaffSources(props) {
 	const [year, setYear] = useState(moment().format('yyyy'));
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [production, setProduction] = useState("Show Written Production");
-	const [user, setUser] = useState("");
-	const [userList, setUserList] = useState("");
+	const [user, setUser] = useState(UID);
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Marketing Source Report');
 	

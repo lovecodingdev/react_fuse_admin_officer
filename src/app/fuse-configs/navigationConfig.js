@@ -27,6 +27,23 @@ const navigationConfig = [
 				exact: true
 			},
 			{
+				id: 'vision',
+				title: 'Vision',
+				translate: 'Vision',
+				type: 'collapse',
+				icon: 'remove_red_eye',
+				url: '/apps/vision',
+				children: [
+					{
+						id: 'vision',
+						title: 'Income Goals',
+						type: 'item',
+						url: '/apps/vision/income-goals',
+						exact: true
+					}
+				]
+			},
+			{
 				id: 'setup',
 				title: 'Set Up',
 				translate: 'Set Up',

@@ -11,16 +11,18 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
-					color: 'text-red',
+					color: 'text-green',
 					label: 'Goal',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 			]
 		},
@@ -32,16 +34,18 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
-					color: 'text-red',
+					color: 'text-green',
 					label: 'Goal',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				}
 			]
 		},
@@ -53,16 +57,18 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
-					color: 'text-red',
+					color: 'text-green',
 					label: 'Goal',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				}
 			]
 		},
@@ -74,16 +80,18 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
-					color: 'text-red',
+					color: 'text-green',
 					label: 'Goal',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				}
 			]
 		},
@@ -95,16 +103,18 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
-					color: 'text-red',
+					color: 'text-green',
 					label: 'Goal',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				}
 			]
 		},
@@ -116,16 +126,18 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
-					color: 'text-red',
+					color: 'text-green',
 					label: 'Goal',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 			]
 		},
@@ -137,16 +149,18 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
-					color: 'text-red',
+					color: 'text-green',
 					label: 'Goal',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				}
 			]
 		},
@@ -158,16 +172,18 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
-					color: 'text-red',
+					color: 'text-green',
 					label: 'Goal',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				}
 			]
 		},
@@ -179,16 +195,18 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
-					color: 'text-red',
+					color: 'text-green',
 					label: 'Goal',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				}
 			]
 		},
@@ -200,16 +218,18 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
-					color: 'text-red',
+					color: 'text-green',
 					label: 'Goal',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				},
 				{
 					title: '',
 					count: 0,
 					color: 'text-blue',
 					label: 'Actual',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: ''
 				}
 			]
 		},
@@ -223,7 +243,8 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: '',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: '%'
 				}
 			]
 		},
@@ -237,7 +258,8 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: '',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: '%'
 				},				
 			]
 		},
@@ -251,7 +273,8 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: '',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: '%'
 				},				
 			]
 		},
@@ -265,7 +288,8 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: '',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: '%'
 				},				
 			]
 		},
@@ -279,7 +303,8 @@ const activityAppDB = {
 					count: 0,
 					color: 'text-red',
 					label: '',					
-					fontSize: 72,
+					fontSize: 36,
+					endAdornment: '%'
 				},				
 			]
 		},			

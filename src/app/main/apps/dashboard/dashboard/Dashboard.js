@@ -25,13 +25,11 @@ import _ from '@lodash';
 import reducer from '../store';
 import Table from '../../../components/widgets/Table';
 import Panel from '../../../components/widgets/Panel';
-import DashboardPanel from '../../../components/widgets/DashboardPanel~';
 import Card from '../../../components/widgets/Panel';
 import BarChart from '../../../components/widgets/BarChart';
 import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
-import SimpleHeader from '../../../components/widgets/SimpleHeader';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
 import { getMarketings, selectMarketings } from '../store/marketingsSlice';
@@ -40,7 +38,7 @@ import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
 import { getLapseRate, selectLapseRate } from '../store/lapseRateSlice';
 import { Options as options, policies } from '../../../utils/Globals';
-import { dividing, getMain } from '../../../utils/Function';
+import { dividing, ceil, getMain } from '../../../utils/Function';
 import HorizontalBarChart from 'app/main/components/widgets/HorizontalBarChart';
 
 const belongTo = localStorage.getItem('@BELONGTO');
@@ -71,7 +69,7 @@ function Dashboard(props) {
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [production, setProduction] = useState("Show Written Production");
 	const [report, setReport] = useState("Policies");
-	const [userList, setUserList] = useState("");
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Welcome');
 	
@@ -101,7 +99,8 @@ function Dashboard(props) {
 			let individual = 0;	
 			if(widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel) {	
 				policies.map(policy => {					
-					if(policy.value !== 'Bank') {						
+					if(policy.value !== 'Bank') {		
+						teamGoalsAndActual[`${policy.value}@realGoal`] = 0;				
 						teamGoalsAndActual[`${policy.value}@Goal`] = 0;
 						teamGoalsAndActual[`${policy.value}@Actual`] = 0;						
 					}	
@@ -110,14 +109,17 @@ function Dashboard(props) {
 				});
 				users.map((user) => {					
 					if(user.belongTo === UID) { 
-						indGoalsAndActual[user.id] = { 'Total@Goal': 0, 'Total@Actual': 0 };						
+						indGoalsAndActual[user.id] = { 'Total@realGoal': 0, 'Total@Goal': 0, 'Total@Actual': 0 };						
 						policies.map((policy) => { 							
 							if(policy.value!=='Bank' && policy.value!=='Total') {
+								indGoalsAndActual[user.id][`Total@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];
 								indGoalsAndActual[user.id][`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
 								indGoalsAndActual[user.id][`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];																			
 
+								teamGoalsAndActual[`Total@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];
 								teamGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-								teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];											
+								teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+								teamGoalsAndActual[`${policy.value}@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];											
 								teamGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
 								teamGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
 							}							
@@ -154,7 +156,17 @@ function Dashboard(props) {
 						const cardData = widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`].cardData;
 						cardData.map(card => {
 							tempCard = card;
-							tempCard = { ...tempCard, count: teamGoalsAndActual[`${policy.value}@${card.label}`] };
+							
+							let color = 'text-green';
+							if(teamGoalsAndActual[`${policy.value}@real${card.label}`] > teamGoalsAndActual[`${policy.value}@${card.label}`]) {
+								color = 'text-red'
+							}
+							if(card.label === 'Goal') {
+								tempCard = { ...tempCard, count: teamGoalsAndActual[`${policy.value}@real${card.label}`], color:color };
+							} else if(card.label === 'Actual') {
+								tempCard = { ...tempCard, count: teamGoalsAndActual[`${policy.value}@${card.label}`] };
+							}
+
 							tempCardData.push(tempCard);
 						});						
 						widgets = {
@@ -174,7 +186,7 @@ function Dashboard(props) {
 						let tempCard = {};
 						const cardData = widgets[`Dashboard_LapseRate_${policy.value}_Panel`].cardData;
 						tempCard = cardData[0];
-						tempCard = { ...tempCard, count: main[production][period][UID][policy.value]['lapseRateChange'] };
+						tempCard = { ...tempCard, count: `${main[production][period][UID][policy.value]['lapseRateChange']}` };
 						tempCardData.push(tempCard);
 						widgets = {
 							...widgets, [`Dashboard_LapseRate_${policy.value}_Panel`]: {
@@ -189,7 +201,7 @@ function Dashboard(props) {
 				// Multiline Percentage
 				let tempData = [];
 				let cardData = widgets.Dashboard_Multiline_Percentage_Panel.cardData[0];
-				cardData = { ...cardData, count: `${dividing(household*100, household+individual)} %` }; 
+				cardData = { ...cardData, count: `${ceil(dividing(household*100, household+individual))}` }; 
 				tempData.push(cardData);
 				widgets = {
 					...widgets, Dashboard_Multiline_Percentage_Panel: {
@@ -204,17 +216,27 @@ function Dashboard(props) {
 				let actual = widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW.datasets[1];
 				
 				let tempGoal = [];
+				let tempGoalBackgroundColor = [];
+				let tempGoalHoverBackgroundColor = [];
 				let tempActual = [];
 				let tempDatasets = [];
 				let tempLabels = [];
 				users.map(user => {
 					if(user.belongTo === UID) {
-						tempGoal.push(indGoalsAndActual[user.id][`Total@Goal`]);
+						tempGoal.push(indGoalsAndActual[user.id][`Total@realGoal`]);
+
+						let color = '#4CAF50';
+						if(indGoalsAndActual[user.id][`Total@realGoal`] > indGoalsAndActual[user.id][`Total@Goal`]) {
+							color = '#F44336'
+						}
+						tempGoalBackgroundColor.push(color);
+						tempGoalHoverBackgroundColor.push(color);
+
 						tempActual.push(indGoalsAndActual[user.id][`Total@Actual`]);
 						tempLabels.push(user.data.displayName);					
 					}					
 				});
-				goal = { ...goal, data: tempGoal };
+				goal = { ...goal, data: tempGoal, backgroundColor: tempGoalBackgroundColor, hoverBackgroundColor: tempGoalHoverBackgroundColor };
 				actual = { ...actual, data: tempActual };
 				tempDatasets.push(goal);
 				tempDatasets.push(actual);
