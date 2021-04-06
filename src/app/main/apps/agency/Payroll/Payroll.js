@@ -23,6 +23,8 @@ import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
+import { getLapseRate, selectLapseRate } from '../store/lapseRateSlice';
+import { getPolicyGrowth, selectPolicyGrowth } from '../store/policyGrowthSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { months, Options as options, policies } from '../../../utils/Globals';
 import { dividing, getLevel, getMain } from '../../../utils/Function';
@@ -37,6 +39,8 @@ function Payroll(props) {
 	let widgets = useSelector(selectWidgets);
 	const users = useSelector(selectUsers);
 	const bonusPlans = useSelector(selectBonusPlans);
+	const lapseRate = useSelector(selectLapseRate);
+	const policyGrowth = useSelector(selectPolicyGrowth);
 	const entries = useSelector(selectEntries);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({});
@@ -53,16 +57,18 @@ function Payroll(props) {
 	useEffect(() => {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
+		dispatch(getLapseRate(year));
+		dispatch(getPolicyGrowth(year));	
 		dispatch(getEntries(year));
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);	
 
 	useEffect(() => {				
-		if(users.length>0 && bonusPlans.length>0 && entries.length>0) {	
-			const temp = getMain(entries, bonusPlans, [], users, [], []);										
+		if(users.length>0 && entries.length>0) {	
+			const temp = getMain(entries, bonusPlans, [], users, [], lapseRate, policyGrowth);										
 			setMain(temp);
 		}
-	}, [entries, bonusPlans, users]);
+	}, [entries, bonusPlans, users, lapseRate, policyGrowth]);
 
 	useEffect(() => {	
 		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {
@@ -125,9 +131,30 @@ function Payroll(props) {
 									}
 								}
 
-								totalPolicies += row<12 && col<9 && col%2===1 && parseFloat(value);
-								totalBonuses += row<12 && col>0 && col<9 && col%2===0 && parseFloat(value);
-								totalBonuses += row<12 && col>11 && col<17 && parseFloat(value);
+								// getting Lapse Rate Bonus
+								else if(header.value==='Lapse Rate % Bonus') { 					
+									value = 
+										parseFloat(main[production][period][user.id]['Auto']['lapseBonus']) +
+										parseFloat(main[production][period][user.id]['Fire']['lapseBonus']);
+								}
+
+								// getting Policy Growth Bonus
+								else if(header.value==='Policy Growth Bonuses') { 					
+									value = 
+										parseFloat(main[production][period][user.id]['Auto']['growthBonus']) +
+										parseFloat(main[production][period][user.id]['Fire']['growthBonus']);
+								}	
+								
+								// getting Special Promotion
+								else if(header.value==='Special Promotion') { 					
+									value = 
+										parseFloat(main[production][period][user.id]['Auto']['specialPromotion']) +
+										parseFloat(main[production][period][user.id]['Fire']['specialPromotion']);
+								}	
+
+								totalPolicies += col<9 && col%2===1 && parseFloat(value);
+								totalBonuses += col>0 && col<9 && col%2===0 && parseFloat(value);
+								totalBonuses += col>11 && col<18 && parseFloat(value);
 
 								tableContent[user.data.displayName][header.value] = value;
 								tableContent['Total'][header.value] += tableContent[user.data.displayName][header.value];																			
@@ -216,11 +243,33 @@ function Payroll(props) {
 												value += teamTargetBonus;
 											}
 										}
-									}									
+									}
+									
+									// getting Lapse Rate Bonus
+									else if(header.value==='Lapse Rate % Bonus') { 					
+										value += 
+											parseFloat(main[production][month.value][user.id]['Auto']['lapseBonus']) +
+											parseFloat(main[production][month.value][user.id]['Fire']['lapseBonus']);
+									}
+
+									// getting Policy Growth Bonus
+									else if(header.value==='Policy Growth Bonuses') { 					
+										value += 
+											parseFloat(main[production][month.value][user.id]['Auto']['growthBonus']) +
+											parseFloat(main[production][month.value][user.id]['Fire']['growthBonus']);
+									}	
+									
+									// getting Special Promotion
+									else if(header.value==='Special Promotion') { 					
+										value += 
+											parseFloat(main[production][month.value][user.id]['Auto']['specialPromotion']) +
+											parseFloat(main[production][month.value][user.id]['Fire']['specialPromotion']);
+									}	
 								});
-								totalPolicies += row<12 && col<9 && col%2===1 && parseFloat(value);
-								totalBonuses += row<12 && col>0 && col<9 && col%2===0 && parseFloat(value);
-								totalBonuses += row<12 && col>11 && col<17 && parseFloat(value);
+
+								totalPolicies += col<9 && col%2===1 && parseFloat(value);
+								totalBonuses += col>0 && col<9 && col%2===0 && parseFloat(value);
+								totalBonuses += col>11 && col<17 && parseFloat(value);
 
 								tableContent[user.data.displayName][header.value] = value;
 								tableContent['Total'][header.value] += tableContent[user.data.displayName][header.value];																			
@@ -311,11 +360,32 @@ function Payroll(props) {
 											}
 										}
 									}
+
+									// getting Lapse Rate Bonus
+									else if(header.value==='Lapse Rate % Bonus') { 					
+										value += 
+											parseFloat(main[production][month.value][user.id]['Auto']['lapseBonus']) +
+											parseFloat(main[production][month.value][user.id]['Fire']['lapseBonus']);
+									}
+
+									// getting Policy Growth Bonus
+									else if(header.value==='Policy Growth Bonuses') { 					
+										value += 
+											parseFloat(main[production][month.value][user.id]['Auto']['growthBonus']) +
+											parseFloat(main[production][month.value][user.id]['Fire']['growthBonus']);
+									}	
+									
+									// getting Special Promotion
+									else if(header.value==='Special Promotion') { 					
+										value += 
+											parseFloat(main[production][month.value][user.id]['Auto']['specialPromotion']) +
+											parseFloat(main[production][month.value][user.id]['Fire']['specialPromotion']);
+									}	
 								}									
 							});
-							totalPolicies += row<12 && col<9 && col%2===1 && parseFloat(value);
-							totalBonuses += row<12 && col>0 && col<9 && col%2===0 && parseFloat(value);
-							totalBonuses += row<12 && col>11 && col<17 && parseFloat(value);
+							totalPolicies += col<9 && col%2===1 && parseFloat(value);
+							totalBonuses += col>0 && col<9 && col%2===0 && parseFloat(value);
+							totalBonuses += col>11 && col<17 && parseFloat(value);
 
 							tableContent[month.value][header.value] = value;
 							tableContent['Total'][header.value] += tableContent[month.value][header.value];																			
