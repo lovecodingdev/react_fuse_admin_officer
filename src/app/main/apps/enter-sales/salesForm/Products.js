@@ -95,11 +95,11 @@ function Products() {
 	const products = useSelector(selectEntries);
 	const users = useSelector(selectUsers);
 	const bonus = useSelector(selectBonus);
-	const bonusLists = alignBonus(bonus);
-	console.log(bonusLists);
+	const bonusLists = alignBonus(bonus);	
 	const productType = useSelector(selectProductType);
 	const marketing = useSelector(selectMarketing);
 	const routeParams = useParams();
+	const [route, setRoute] = useState(routeParams.id)
 	const history = useHistory();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const editData = useSelector(({ eCommerceApp }) => eCommerceApp.products.editData);
@@ -215,7 +215,7 @@ function Products() {
 			});
 			temp.push({ item: 'Office Count', value: 'OfficeCount' });
 		}
-		if (routeParams.id === 'edit' && editData) {
+		if (route === 'edit' && editData) {
 			console.log(editData);
 			if (bonus.length > 0) {
 				if (editData.user) {
@@ -247,7 +247,7 @@ function Products() {
 						});
 						setState({
 							...state,
-							...data,
+							...editData,
 							productLists: tempBonus,
 							fireProductList: tempFireBonus,
 							healthProductList: tempHealthBonus,
@@ -310,7 +310,7 @@ function Products() {
 						});
 						setState({
 							...state,
-							...data,
+							...editData,
 							productLists: tempBonus,
 							fireProductList: tempFireBonus,
 							healthProductList: tempHealthBonus,
@@ -376,7 +376,7 @@ function Products() {
 					});
 					setState({
 						...state,
-						...data,
+						...editData,
 						productLists: tempBonus,
 						fireProductList: tempFireBonus,
 						healthProductList: tempHealthBonus,
@@ -624,11 +624,11 @@ function Products() {
 		if (
 			// !state.percentOfSaleCreditValidation &&
 			// !state.typeOfProductValidation &&
-			!state.policyPremiumValidation &&
-			!state.policyHolderTypeValidation &&
+			// !state.policyPremiumValidation &&
+			// !state.policyHolderTypeValidation &&
 			// state.percentOfSaleCredit &&
 			// state.typeOfProduct &&
-			state.policyHolderType &&
+			// state.policyHolderType &&
 			state.policyType.length > 0
 		) {
 			return true;
@@ -661,7 +661,7 @@ function Products() {
 				datePolicyIsIssued: state.datePolicyIsIssued ? state.datePolicyIsIssued : '',
 				// percentOfSaleCredit: parseFloat(state.percentOfSaleCredit),
 				previousPolicyNumber: state.previousPolicyNumber,
-				policies: state.policyType,
+				policies: routeParams.id="edit"?state.policies: state.policyType,
 				typeOfProduct: state.typeOfProduct,
 				policyPremium: parseFloat(state.policyPremium),
 				sourceOfBusiness: state.sourceOfBusiness,
@@ -1264,9 +1264,8 @@ function Products() {
 					}
 				}
 			}
-			console.log(requestForm);
 			if (uid && belongTo) {
-				if (routeParams.id === 'edit' && editData) {
+				if (route === 'edit' && editData) {
 					dispatch(updateProduct(requestForm)).then(() => {
 						history.goBack();
 					});

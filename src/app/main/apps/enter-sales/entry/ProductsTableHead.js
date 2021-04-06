@@ -235,9 +235,9 @@ function ProductsTableHead(props) {
 				aria-labelledby="alert-dialog-title"
 				aria-describedby="alert-dialog-description"
 			>
-				<DialogTitle id="alert-dialog-title">{'Are you really revoke this user?'}</DialogTitle>
+				<DialogTitle id="alert-dialog-title">{'Are you really delete this item?'}</DialogTitle>
 				<DialogContent>
-					<DialogContentText id="alert-dialog-description">You will lost this users data.</DialogContentText>
+					<DialogContentText id="alert-dialog-description">You will lost this data.</DialogContentText>
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleClose} color="primary">
