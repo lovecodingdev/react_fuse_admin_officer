@@ -33,6 +33,48 @@ export const bonusPlanTemplate = {
         "routeParam" : "all"
       }
     },
+    "bankBonus" : {
+      "1611355979931" : {
+        "dollar" : "",
+        "id" : 1611355979931,
+        "name" : "Short-Term Disability",
+        "percent" : 17.5,
+        "planType" : "healthBonus",
+        "routeParam" : "all"
+      },
+      "1611355989290" : {
+        "dollar" : "",
+        "id" : 1611355989290,
+        "name" : "Long-Term Disability",
+        "percent" : 17.5,
+        "planType" : "healthBonus",
+        "routeParam" : "all"
+      },
+      "1611355998903" : {
+        "dollar" : "",
+        "id" : 1611355998903,
+        "name" : "Hospital Income",
+        "percent" : "12.5",
+        "planType" : "healthBonus",
+        "routeParam" : "all"
+      },
+      "1611356007374" : {
+        "dollar" : "",
+        "id" : 1611356007374,
+        "name" : "ICDI ",
+        "percent" : 10,
+        "planType" : "healthBonus",
+        "routeParam" : "all"
+      },
+      "1611356017003" : {
+        "dollar" : "",
+        "id" : 1611356017003,
+        "name" : "Med Sup",
+        "percent" : 8,
+        "planType" : "healthBonus",
+        "routeParam" : "all"
+      }
+    },
     "fireBonus" : {
       "1611355831655" : {
         "dollar" : "",

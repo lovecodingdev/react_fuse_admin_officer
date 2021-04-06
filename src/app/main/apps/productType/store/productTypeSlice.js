@@ -59,7 +59,8 @@ export const { selectAll: selectMarketing, selectById: selectMarketingById } = p
 const productsSlice = createSlice({
 	name: 'productType/productType',
 	initialState: productsAdapter.getInitialState({
-		searchText: ''
+		searchText: '',
+		policy: "Entries",
 	}),
 	reducers: {
 		setProductsSearchText: {
@@ -67,13 +68,16 @@ const productsSlice = createSlice({
 				state.searchText = action.payload;
 			},
 			prepare: event => ({ payload: event.target.value || '' })
-		}
+		},
+		setPolicy: (state, action) => {
+			state.policy = action.payload;
+		},
 	},
 	extraReducers: {
 		[getMarketing.fulfilled]: productsAdapter.setAll
 	}
 });
 
-export const { setProductsSearchText } = productsSlice.actions;
+export const { setProductsSearchText, setPolicy } = productsSlice.actions;
 
 export default productsSlice.reducer;

@@ -52,7 +52,7 @@ const productLists = [
 
 const policyholderTypeLists = [
 	{ item: 'Household', value: 'household' },
-	{ item: 'Individual', value: 'individual' },
+	{ item: 'Individual', value: 'individual' }
 	// { item: 'Multiline Policy', value: 'multiline_policy' }
 ];
 
@@ -65,7 +65,8 @@ const typeList = [
 	{ item: 'Auto', value: 'Entries' },
 	{ item: 'Fire', value: 'FireEntries' },
 	{ item: 'Life', value: 'LifeEntries' },
-	{ item: 'Health', value: 'HealthEntries' }
+	{ item: 'Health', value: 'HealthEntries' },
+	{ item: 'Bank', value: 'BankEntries' }
 ];
 
 const alignBonus = bonus => {
@@ -139,23 +140,27 @@ function Products() {
 		marketings: [],
 		policyHolderType: 'individual',
 		usersList: [],
-		tempUserList:[],
+		tempUserList: [],
 		productLists: [],
 		fireProductList: [],
 		healthProductList: [],
+		bankProductList: [],
 		lifeProductList: [],
 		creditTypeAuto: 'solo_credit',
 		creditTypeFire: 'solo_credit',
 		creditTypeHealth: 'solo_credit',
 		creditTypeLife: 'solo_credit',
+		creditTypeBank: 'solo_credit',
 		creditPercentAuto: '',
 		creditPercentFire: '',
 		creditPercentHealth: '',
 		creditPercentFire: '',
+		creditPercentBank: '',
 		creditUserAuto: '',
 		creditUserFire: '',
 		creditUserHealth: '',
-		creditUserLife: ''
+		creditUserLife: '',
+		creditUserBank: ''
 	});
 
 	useEffect(() => {
@@ -188,6 +193,7 @@ function Products() {
 		var tempFireBonus = [];
 		var tempHealthBonus = [];
 		var tempLifeBonus = [];
+		var tempBankBonus = [];
 		if (productType.length > 0) {
 			Object.keys(productType[0]).map(i => {
 				tempProductList.push({
@@ -205,7 +211,6 @@ function Products() {
 			users.map(item => {
 				temp.push({ item: item.data.displayName, value: item });
 				tempUsers.push({ item: item.data.displayName, value: item.id });
-
 			});
 			temp.push({ item: 'Office Count', value: 'OfficeCount' });
 		}
@@ -249,21 +254,26 @@ function Products() {
 							policyInformationLife: editData.policyInformation,
 							policyInformationFire: editData.policyInformation,
 							policyInformationHealth: editData.policyInformation,
+							policyInformationBank: editData.policyInformation,
 							policyPremiumFire: editData.policyPremium,
 							policyPremiumLife: editData.policyPremium,
 							policyPremiumHealth: editData.policyPremium,
+							policyPremiumBank: editData.policyPremium,
 							creditTypeAuto: editData.creditType,
 							creditTypeFire: editData.creditType,
 							creditTypeHealth: editData.creditType,
 							creditTypeLife: editData.creditType,
+							creditTypeBank: editData.creditType,
 							creditPercentAuto: editData.creditPercent,
 							creditPercentFire: editData.creditPercent,
 							creditPercentHealth: editData.creditPercent,
 							creditPercentLife: editData.creditPercent,
+							creditPercentBank: editData.creditPercent,
 							creditUserAuto: editData.creditUser,
 							creditUserFire: editData.creditUser,
 							creditUserHealth: editData.creditUser,
-							creditUserLife: editData.creditUser
+							creditUserLife: editData.creditUser,
+							creditUserBank: editData.creditUser
 						});
 					} else {
 						Object.keys(bonus[0][editData.user.uid]['autoBonus']).map(item => {
@@ -291,6 +301,12 @@ function Products() {
 								value: bonus[0][editData.user.uid]['lifeBonus'][item].name
 							});
 						});
+						Object.keys(bonus[0][editData.user.uid]['bankBonus']).map(item => {
+							tempBankBonus.push({
+								item: bonus[0][editData.user.uid]['bankBonus'][item].name,
+								value: bonus[0][editData.user.uid]['bankBonus'][item].name
+							});
+						});
 						setState({
 							...state,
 							...data,
@@ -298,24 +314,30 @@ function Products() {
 							fireProductList: tempFireBonus,
 							healthProductList: tempHealthBonus,
 							lifeProductList: tempLifeBonus,
+							bankProductList: tempBankBonus,
 							policyInformationLife: editData.policyInformation,
 							policyInformationFire: editData.policyInformation,
 							policyInformationHealth: editData.policyInformation,
+							policyInformationBank: editData.policyInformation,
 							policyPremiumFire: editData.policyPremium,
 							policyPremiumLife: editData.policyPremium,
 							policyPremiumHealth: editData.policyPremium,
+							policyPremiumBank: editData.policyPremium,
 							creditTypeAuto: editData.creditType,
 							creditTypeFire: editData.creditType,
 							creditTypeHealth: editData.creditType,
 							creditTypeLife: editData.creditType,
+							creditTypeBank: editData.creditType,
 							creditPercentAuto: editData.creditPercent,
 							creditPercentFire: editData.creditPercent,
 							creditPercentHealth: editData.creditPercent,
 							creditPercentLife: editData.creditPercent,
+							creditPercentBank: editData.creditPercent,
 							creditUserAuto: editData.creditUser,
 							creditUserFire: editData.creditUser,
 							creditUserHealth: editData.creditUser,
-							creditUserLife: editData.creditUser
+							creditUserLife: editData.creditUser,
+							creditUserBank: editData.creditUser
 						});
 					}
 				} else {
@@ -344,6 +366,13 @@ function Products() {
 							value: bonus[0][uid]['lifeBonus'][item].name
 						});
 					});
+
+					Object.keys(bonus[0][uid]['bankBonus']).map(item => {
+						tempBankBonus.push({
+							item: bonus[0][uid]['bankBonus'][item].name,
+							value: bonus[0][uid]['bankBonus'][item].name
+						});
+					});
 					setState({
 						...state,
 						...data,
@@ -351,24 +380,30 @@ function Products() {
 						fireProductList: tempFireBonus,
 						healthProductList: tempHealthBonus,
 						lifeProductList: tempLifeBonus,
+						bankProductList: tempLifeBonus,
 						policyInformationLife: editData.policyInformation,
 						policyInformationFire: editData.policyInformation,
 						policyInformationHealth: editData.policyInformation,
+						policyInformationBank: editData.policyInformation,
 						policyPremiumFire: editData.policyPremium,
 						policyPremiumLife: editData.policyPremium,
 						policyPremiumHealth: editData.policyPremium,
+						policyPremiumBank: editData.policyPremium,
 						creditTypeAuto: editData.creditType,
 						creditTypeFire: editData.creditType,
 						creditTypeHealth: editData.creditType,
 						creditTypeLife: editData.creditType,
+						creditTypeBank: editData.creditType,
 						creditPercentAuto: editData.creditPercent,
 						creditPercentFire: editData.creditPercent,
 						creditPercentHealth: editData.creditPercent,
 						creditPercentLife: editData.creditPercent,
+						creditPercentBank: editData.creditPercent,
 						creditUserAuto: editData.creditUser,
 						creditUserFire: editData.creditUser,
 						creditUserHealth: editData.creditUser,
-						creditUserLife: editData.creditUser
+						creditUserLife: editData.creditUser,
+						creditUserBank: editData.creditUser
 					});
 				}
 			}
@@ -376,30 +411,36 @@ function Products() {
 				...state,
 				...editData,
 				usersList: temp,
-				tempUserList:tempUsers,
+				tempUserList: tempUsers,
 				marketings: tempMarketing,
 				productLists: tempBonus,
 				fireProductList: tempFireBonus,
 				healthProductList: tempHealthBonus,
 				lifeProductList: tempLifeBonus,
+				bankProductList: tempLifeBonus,
 				policyInformationLife: editData.policyInformation,
 				policyInformationFire: editData.policyInformation,
 				policyInformationHealth: editData.policyInformation,
+				policyInformationBank: editData.policyInformation,
 				policyPremiumFire: editData.policyPremium,
 				policyPremiumLife: editData.policyPremium,
 				policyPremiumHealth: editData.policyPremium,
+				policyPremiumBank: editData.policyPremium,
 				creditTypeAuto: editData.creditType,
 				creditTypeFire: editData.creditType,
 				creditTypeHealth: editData.creditType,
 				creditTypeLife: editData.creditType,
+				creditTypeBank: editData.creditType,
 				creditPercentAuto: editData.creditPercent,
 				creditPercentFire: editData.creditPercent,
 				creditPercentHealth: editData.creditPercent,
 				creditPercentLife: editData.creditPercent,
+				creditPercentBank: editData.creditPercent,
 				creditUserAuto: editData.creditUser,
 				creditUserFire: editData.creditUser,
 				creditUserHealth: editData.creditUser,
-				creditUserLife: editData.creditUser
+				creditUserLife: editData.creditUser,
+				creditUserBank: editData.creditUser
 			});
 		} else {
 			if (bonus.length > 0) {
@@ -428,6 +469,13 @@ function Products() {
 						value: bonus[0][uid]['lifeBonus'][item].name
 					});
 				});
+
+				Object.keys(bonus[0][uid]['bankBonus']).map(item => {
+					tempBankBonus.push({
+						item: bonus[0][uid]['bankBonus'][item].name,
+						value: bonus[0][uid]['bankBonus'][item].name
+					});
+				});
 			}
 			setState({
 				...state,
@@ -438,21 +486,25 @@ function Products() {
 				fireProductList: tempFireBonus,
 				healthProductList: tempHealthBonus,
 				lifeProductList: tempLifeBonus,
+				bankProductList: tempLifeBonus,
 				policyInformationLife: editData.policyInformation,
 				policyInformationFire: editData.policyInformation,
 				policyInformationHealth: editData.policyInformation,
+				policyInformationBank: editData.policyInformation,
 				policyPremiumFire: editData.policyPremium,
 				policyPremiumLife: editData.policyPremium,
 				policyPremiumHealth: editData.policyPremium,
-				
+				policyPremiumBank: editData.policyPremium,
 				creditPercentAuto: editData.creditPercent,
 				creditPercentFire: editData.creditPercent,
 				creditPercentHealth: editData.creditPercent,
 				creditPercentLife: editData.creditPercent,
+				creditPercentBank: editData.creditPercent,
 				creditUserAuto: editData.creditUser,
 				creditUserFire: editData.creditUser,
 				creditUserHealth: editData.creditUser,
-				creditUserLife: editData.creditUser
+				creditUserLife: editData.creditUser,
+				creditUserBank: editData.creditUser
 			});
 		}
 	}, [users, marketing, productType, editData, bonus]);
@@ -468,6 +520,7 @@ function Products() {
 		var tempFireBonus = [];
 		var tempHealthBonus = [];
 		var tempLifeBonus = [];
+		var tempBankBonus = [];
 		console.log(data);
 		if (Object.keys(data)[0] === 'policyHolderType') {
 			setState({
@@ -502,13 +555,21 @@ function Products() {
 						value: bonus[0][uid]['lifeBonus'][item].name
 					});
 				});
+
+				Object.keys(bonus[0][uid]['bankBonus']).map(item => {
+					tempBankBonus.push({
+						item: bonus[0][uid]['bankBonus'][item].name,
+						value: bonus[0][uid]['bankBonus'][item].name
+					});
+				});
 				setState({
 					...state,
 					...data,
 					productLists: tempBonus,
 					fireProductList: tempFireBonus,
 					healthProductList: tempHealthBonus,
-					lifeProductList: tempLifeBonus
+					lifeProductList: tempLifeBonus,
+					bankProductList: tempBankBonus
 				});
 			} else {
 				Object.keys(bonus[0][data.user.uid]['autoBonus']).map(item => {
@@ -536,13 +597,21 @@ function Products() {
 						value: bonus[0][data.user.uid]['lifeBonus'][item].name
 					});
 				});
+
+				Object.keys(bonus[0][data.user.uid]['bankBonus']).map(item => {
+					tempBankBonus.push({
+						item: bonus[0][data.user.uid]['bankBonus'][item].name,
+						value: bonus[0][data.user.uid]['bankBonus'][item].name
+					});
+				});
 				setState({
 					...state,
 					...data,
 					productLists: tempBonus,
 					fireProductList: tempFireBonus,
 					healthProductList: tempHealthBonus,
-					lifeProductList: tempLifeBonus
+					lifeProductList: tempLifeBonus,
+					bankProductList: tempBankBonus
 				});
 			}
 		} else {
@@ -799,6 +868,54 @@ function Products() {
 							requestForm.push(form);
 						}
 					}
+
+					if (state.typeOfProductBank && state.policyType.includes('BankEntries')) {
+						if (state.user === 'OfficeCount') {
+							form = {
+								...form,
+								dollarBonus:
+									Math.ceil(
+										((parseFloat(state.policyPremiumBank) *
+											parseInt(
+												state.creditTypeBank === 'solo_credit' ? 100 : state.creditPercentBank
+											)) /
+											100) *
+											(parseInt(bonusLists[uid][state.typeOfProductBank]) / 100) *
+											100
+									) / 100,
+								policyType: ['BankEntries'],
+								typeOfProductBank: state.typeOfProductBank,
+								policyPremium: state.policyPremiumBank,
+								policyInformation: state.policyInformationBank,
+								creditPercent: state.creditTypeBank === 'solo_credit' ? 100 : state.creditPercentBank,
+								creditUser: state.creditUserBank,
+								creditType: state.creditTypeBank
+							};
+							requestForm.push(form);
+						} else {
+							form = {
+								...form,
+								dollarBonus:
+									Math.ceil(
+										((parseFloat(state.policyPremiumBank) *
+											parseInt(
+												state.creditTypeBank === 'solo_credit' ? 100 : state.creditPercentBank
+											)) /
+											100) *
+											(parseInt(bonusLists[state.user.id][state.typeOfProductBank]) / 100) *
+											100
+									) / 100,
+								policyType: ['BankEntries'],
+								typeOfProductBank: state.typeOfProductBank,
+								policyPremium: state.policyPremiumBank,
+								policyInformation: state.policyInformationBank,
+								creditPercent: state.creditTypeBank === 'solo_credit' ? 100 : state.creditPercentBank,
+								creditUser: state.creditUserBank,
+								creditType: state.creditTypeBank
+							};
+							requestForm.push(form);
+						}
+					}
 				} else {
 					if (state.typeOfProduct && state.policyType.includes('Entries')) {
 						form = {
@@ -889,6 +1006,30 @@ function Products() {
 							creditPercent: state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife,
 							creditUser: state.creditUserLife,
 							creditType: state.creditTypeLife
+						};
+						requestForm.push(form);
+					}
+
+					if (state.typeOfProductBank && state.policyType.includes('BankEntries')) {
+						form = {
+							...form,
+							dollarBonus:
+								Math.ceil(
+									((parseFloat(state.policyPremiumBank) *
+										parseInt(
+											state.creditTypeBank === 'solo_credit' ? 100 : state.creditPercentBank
+										)) /
+										100) *
+										(parseInt(bonusLists[uid][state.typeOfProductBank]) / 100) *
+										100
+								) / 100,
+							policyType: ['BankEntries'],
+							typeOfProductBank: state.typeOfProductBank,
+							policyPremium: state.policyPremiumBank,
+							policyInformation: state.policyInformationBank,
+							creditPercent: state.creditTypeBank === 'solo_credit' ? 100 : state.creditPercentBank,
+							creditUser: state.creditUserBank,
+							creditType: state.creditTypeBank
 						};
 						requestForm.push(form);
 					}
@@ -1016,6 +1157,36 @@ function Products() {
 							requestForm.push(form);
 						}
 					}
+
+					if (state.typeOfProductBank && state.policyType.includes('BankEntries')) {
+						if (state.user === 'OfficeCount') {
+							form = {
+								...form,
+								dollarBonus: '',
+								policyType: ['BankEntries'],
+								typeOfProductBank: state.typeOfProductBank,
+								policyPremium: state.policyPremiumBank,
+								policyInformation: state.policyInformationBank,
+								creditPercent: state.creditTypeBank === 'solo_credit' ? 100 : state.creditPercentBank,
+								creditUser: state.creditUserBank,
+								creditType: state.creditTypeBank
+							};
+							requestForm.push(form);
+						} else {
+							form = {
+								...form,
+								dollarBonus: '',
+								policyType: ['BankEntries'],
+								typeOfProductBank: state.typeOfProductBank,
+								policyPremium: state.policyPremiumBank,
+								policyInformation: state.policyInformationBank,
+								creditPercent: state.creditTypeBank === 'solo_credit' ? 100 : state.creditPercentBank,
+								creditUser: state.creditUserBank,
+								creditType: state.creditTypeBank
+							};
+							requestForm.push(form);
+						}
+					}
 				} else {
 					if (state.typeOfProduct && state.policyType.includes('Entries')) {
 						form = {
@@ -1070,6 +1241,21 @@ function Products() {
 							creditPercent: state.creditTypeLife === 'solo_credit' ? 100 : state.creditPercentLife,
 							creditUser: state.creditUserLife,
 							creditType: state.creditTypeLife
+						};
+						requestForm.push(form);
+					}
+
+					if (state.typeOfProductBank && state.policyType.includes('BankEntries')) {
+						form = {
+							...form,
+							dollarBonus: '',
+							policyType: ['BankEntries'],
+							typeOfProductBank: state.typeOfProductBank,
+							policyPremium: state.policyPremiumBank,
+							policyInformation: state.policyInformationBank,
+							creditPercent: state.creditTypeBank === 'solo_credit' ? 100 : state.creditPercentBank,
+							creditUser: state.creditUserBank,
+							creditType: state.creditTypeBank
 						};
 						requestForm.push(form);
 					}
@@ -1146,7 +1332,7 @@ function Products() {
 								<Icon className="text-20">
 									{theme.direction === 'ltr' ? 'arrow_back' : 'arrow_forward'}
 								</Icon>
-								<span className="mx-4">Sales</span>
+								<span className="mx-4">Sale</span>
 							</Typography>
 						</FuseAnimate>
 
@@ -1241,6 +1427,7 @@ function Products() {
 									<SelectBox
 										id="outlined-basic"
 										label="Type of Placeholder"
+										disabled={routeParams.id === 'edit'?true:false}
 										data={policyholderTypeLists}
 										variant="outlined"
 										value={state.policyHolderType}
@@ -1262,6 +1449,7 @@ function Products() {
 
 									<FormControlLabel
 										className={classes.checkBox}
+										disabled={routeParams.id === 'edit'?true:false}
 										control={
 											<Checkbox
 												checked={state.policyType.includes('Entries')}
@@ -1275,6 +1463,7 @@ function Products() {
 
 									<FormControlLabel
 										className={classes.checkBox}
+										disabled={routeParams.id === 'edit'?true:false}
 										control={
 											<Checkbox
 												checked={state.policyType.includes('FireEntries')}
@@ -1288,6 +1477,7 @@ function Products() {
 
 									<FormControlLabel
 										className={classes.checkBox}
+										disabled={routeParams.id === 'edit'?true:false}
 										control={
 											<Checkbox
 												checked={state.policyType.includes('HealthEntries')}
@@ -1301,6 +1491,7 @@ function Products() {
 
 									<FormControlLabel
 										className={classes.checkBox}
+										disabled={routeParams.id === 'edit'?true:false}
 										control={
 											<Checkbox
 												checked={state.policyType.includes('LifeEntries')}
@@ -1310,6 +1501,19 @@ function Products() {
 											/>
 										}
 										label="Life"
+									/>
+									<FormControlLabel
+										className={classes.checkBox}
+										disabled={routeParams.id === 'edit'?true:false}
+										control={
+											<Checkbox
+												checked={state.policyType.includes('BankEntries')}
+												onChange={handleChecked}
+												name="BankEntries"
+												color="primary"
+											/>
+										}
+										label="Bank"
 									/>
 								</div>
 								{state.policyType.includes('Entries') && (
@@ -1625,6 +1829,87 @@ function Products() {
 													onChange={handleChangeValue}
 													willvalidation={true}
 													validate={state.creditPercentLifeValidation}
+													size={150}
+												/>
+											</>
+										)}
+									</div>
+								)}
+
+								{state.policyType.includes('BankEntries') && (
+									<div className="min-w-xl w-full flex flex-row justify-around flex-wrap">
+										<SelectBox
+											id="outlined-basic"
+											label="Credit Type"
+											data={creditLists}
+											variant="outlined"
+											value={state.creditTypeBank}
+											validation="creditTypeBank"
+											handleChangeValue={handleChangeValue}
+											willvalidation={false}
+											size={150}
+										/>
+										<FormattedInput
+											id="outlined-basic"
+											label="Bank Premium"
+											variant="outlined"
+											value={state.policyPremiumBank}
+											validation="policyPremiumBank"
+											type="percent"
+											willvalidation={true}
+											validate={state.policyPremiumValidation}
+											handleChangeValue={handleChangeValue}
+											size={150}
+										/>
+
+										<TextInput
+											id="outlined-basic"
+											label="Policy Information"
+											variant="outlined"
+											value={state.policyInformationBank}
+											validation="policyInformationBank"
+											onChange={handleChangeValue}
+											willvalidation={false}
+											validate={false}
+											size={350}
+										/>
+
+										<SelectBox
+											id="outlined-basic"
+											label="Product Type of Bank"
+											data={state.bankProductList}
+											variant="outlined"
+											value={state.typeOfProductBank}
+											validation="typeOfProductBank"
+											handleChangeValue={handleChangeValue}
+											willvalidation={true}
+											validate={state.typeOfProductBankValidation}
+											size={250}
+										/>
+
+										{state.creditTypeLife === 'split_credit' && (
+											<>
+												<SelectBox
+													id="outlined-basic"
+													label="Credit User"
+													data={state.tempUserList}
+													variant="outlined"
+													value={state.creditUserBank}
+													validation="creditUserBank"
+													handleChangeValue={handleChangeValue}
+													willvalidation={false}
+													validate={state.creditUserBankValidation}
+												/>
+												<TextInput
+													id="outlined-basic"
+													label="Sale Credit"
+													variant="outlined"
+													value={state.creditPercentBank}
+													validation="creditPercentBank"
+													type="percent"
+													onChange={handleChangeValue}
+													willvalidation={true}
+													validate={state.creditPercentBankValidation}
 													size={150}
 												/>
 											</>

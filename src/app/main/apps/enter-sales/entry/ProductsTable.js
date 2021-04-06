@@ -221,24 +221,24 @@ function ProductsTable(props) {
 							{_.orderBy(
 								data,
 								[
-									order.id
-									// o => {
-									// 	console.log(order.id)
-									// 	switch (order.id) {
+									// order.id
+									o => {
+										return o.datePolicyIsWritten
+										// switch (order.id) {
 
-									// 		case 'policyInformation': {
-									// 			return 'policyInformation';
-									// 		}
-									// 		case 'datePolicyIsWritten': {
-									// 			return 'datePolicyIsWritten';
-									// 		}
-									// 		default: {
-									// 			return order.id;
-									// 		}
-									// 	}
-									// }
+										// 	case 'policyInformation': {
+										// 		return 'policyInformation';
+										// 	}
+										// 	case 'datePolicyIsWritten': {
+										// 		return 'datePolicyIsWritten';
+										// 	}
+										// 	default: {
+										// 		return order.id;
+										// 	}
+										// }
+									}
 								],
-								[order.direction]
+								['desc']
 							)
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map(n => {

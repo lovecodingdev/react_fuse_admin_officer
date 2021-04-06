@@ -2,17 +2,15 @@ import { createSlice, createAsyncThunk, createEntityAdapter } from '@reduxjs/too
 import axios from 'axios';
 import { realDb } from '../../../../../@fake-db/db/firebase';
 
-
-
 export const getEntries = createAsyncThunk(
 	'eCommerceApp/products/getProducts',
 	() =>
 		new Promise((resolve, reject) => {
 			var belongTo = localStorage.getItem('@BELONGTO');
-			var year = new Date().getFullYear()
+			var year = new Date().getFullYear();
 			var starCountRef = realDb.ref(`Sales/${year}/${belongTo}`);
 			// var uid = localStorage.getItem('@UID');
-			
+
 			var entries = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
@@ -61,16 +59,20 @@ export const removeProducts = createAsyncThunk(
 		const response = await axios.post('/api/e-commerce-app/remove-products', { productIds });
 		const data = await response.data;
 		const uid = localStorage.getItem('@UID');
-		console.log(`Sales/${belongTo}/Entries/${uid}/${productIds[0]}`)
+		var year = new Date().getFullYear();
+		console.log(`Sales/${year}/${belongTo}/Entries/${uid}/${productIds[0]}`);
+		console.log(productIds);
 		productIds.map(item => {
-			var starCountRef = realDb.ref(`Sales/${belongTo}/Entries/${uid}/${item}`);
-			var starAutoRef = realDb.ref(`Sales/${belongTo}/LifeEntries/${uid}/${item}`);
-			var starFireRef = realDb.ref(`Sales/${belongTo}/FireEntries/${uid}/${item}`);
-			var starHealthRef = realDb.ref(`Sales/${belongTo}/HealthEntries/${uid}/${item}`);
+			var starCountRef = realDb.ref(`Sales/${year}/${belongTo}/Entries/${uid}/${item}`);
+			var starAutoRef = realDb.ref(`Sales/${year}/${belongTo}/LifeEntries/${uid}/${item}`);
+			var starFireRef = realDb.ref(`Sales/${year}/${belongTo}/FireEntries/${uid}/${item}`);
+			var starHealthRef = realDb.ref(`Sales/${year}/${belongTo}/HealthEntries/${uid}/${item}`);
+			var starBankRef = realDb.ref(`Sales/${year}/${belongTo}/BankEntries/${uid}/${item}`);
 			starCountRef.remove();
 			starAutoRef.remove();
 			starFireRef.remove();
 			starHealthRef.remove();
+			starBankRef.remove();
 		});
 
 		dispatch(getEntries());

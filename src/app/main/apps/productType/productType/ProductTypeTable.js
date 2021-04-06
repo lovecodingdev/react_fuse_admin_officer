@@ -22,6 +22,7 @@ import moment from 'moment';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
 
+
 const useStyles = makeStyles(theme => ({
 	root: {
 		'& > *': {
@@ -45,9 +46,9 @@ function ProductsTable(props) {
 	const dispatch = useDispatch();
 	const products = useSelector(selectMarketing);
 	const searchText = useSelector(({ productType }) => productType.productType.searchText);
-
+	const policy = useSelector(({ productType }) => productType.productType.policy);
 	const classes = useStyles();
-	const [loading, setLoading] = useState(true);
+	const [loading, setLoading] = useState(false);
 	const [selected, setSelected] = useState([]);
 	const [data, setData] = useState(products);
 	const [page, setPage] = useState(0);
@@ -61,19 +62,18 @@ function ProductsTable(props) {
 		productTypeNameValidation: false
 	});
 
-	useEffect(() => {
-		dispatch(getMarketing()).then(() => setLoading(false));
-	}, [dispatch]);
+	
 
 	useEffect(() => {
 		if (searchText.length !== 0) {
 			console.log(searchText);
-			setData(_.filter(products, item => item.productTypeName.toLowerCase().includes(searchText.toLowerCase())));
-			setPage(0);
+			// setData(_.filter(products, item => item.productTypeName.toLowerCase().includes(searchText.toLowerCase())));
+			// setPage(0);
 		} else {
-			setData(products);
+
+			setData(_.filter(products, item => item.policy===policy));
 		}
-	}, [products, searchText]);
+	}, [products, searchText, policy]);
 
 	function handleRequestSort(event, property) {
 		const id = property;
@@ -146,11 +146,11 @@ function ProductsTable(props) {
 	}
 
 	function onSave() {
-		console.log(checkValidation());
 		if (checkValidation()) {
 			let form = {
 				id: state.id ? state.id : Date.now(),
-				productTypeName: state.productTypeName,				
+				productTypeName: state.productTypeName,		
+				policy: policy		
 			};			
 
 			dispatch(saveMarketing(form));
