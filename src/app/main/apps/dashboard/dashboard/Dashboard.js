@@ -211,9 +211,9 @@ function Dashboard(props) {
 				}
 			}
 
-			if(widgets.Dashboard_Personal_GoalVsActual_Chart) { 
-				let goal = widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW.datasets[0];
-				let actual = widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW.datasets[1];
+			if(widgets.Dashboard_Users_GoalVsActual_Chart) { 
+				let goal = widgets.Dashboard_Users_GoalVsActual_Chart.mainChart.TW.datasets[0];
+				let actual = widgets.Dashboard_Users_GoalVsActual_Chart.mainChart.TW.datasets[1];
 				
 				let tempGoal = [];
 				let tempGoalBackgroundColor = [];
@@ -225,12 +225,14 @@ function Dashboard(props) {
 					if(user.belongTo === UID) {
 						tempGoal.push(indGoalsAndActual[user.id][`Total@realGoal`]);
 
-						let color = '#4CAF50';
+						let backgroundColor = '#42BFF7';
+						let hoverBackgroundColor = '#87CDF7';
 						if(indGoalsAndActual[user.id][`Total@realGoal`] > indGoalsAndActual[user.id][`Total@Goal`]) {
-							color = '#F44336'
+							backgroundColor = '#C6ECFD';
+							hoverBackgroundColor = '#D7EFFD';
 						}
-						tempGoalBackgroundColor.push(color);
-						tempGoalHoverBackgroundColor.push(color);
+						tempGoalBackgroundColor.push(backgroundColor);
+						tempGoalHoverBackgroundColor.push(hoverBackgroundColor);
 
 						tempActual.push(indGoalsAndActual[user.id][`Total@Actual`]);
 						tempLabels.push(user.data.displayName);					
@@ -242,10 +244,10 @@ function Dashboard(props) {
 				tempDatasets.push(actual);
 
 				widgets = {
-					...widgets, Dashboard_Personal_GoalVsActual_Chart: {
-						...widgets.Dashboard_Personal_GoalVsActual_Chart, mainChart: {
-							...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart, TW: {
-								...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.TW, datasets: [
+					...widgets, Dashboard_Users_GoalVsActual_Chart: {
+						...widgets.Dashboard_Users_GoalVsActual_Chart, mainChart: {
+							...widgets.Dashboard_Users_GoalVsActual_Chart.mainChart, TW: {
+								...widgets.Dashboard_Users_GoalVsActual_Chart.mainChart.TW, datasets: [
 									...tempDatasets
 								]
 							}
@@ -254,11 +256,11 @@ function Dashboard(props) {
 				}
 
 				widgets = {
-					...widgets, Dashboard_Personal_GoalVsActual_Chart: {
-						...widgets.Dashboard_Personal_GoalVsActual_Chart, mainChart: {
-							...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart, options: {
-								...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.options, scales: {
-									...widgets.Dashboard_Personal_GoalVsActual_Chart.mainChart.options.scales, yAxes: [
+					...widgets, Dashboard_Users_GoalVsActual_Chart: {
+						...widgets.Dashboard_Users_GoalVsActual_Chart, mainChart: {
+							...widgets.Dashboard_Users_GoalVsActual_Chart.mainChart, options: {
+								...widgets.Dashboard_Users_GoalVsActual_Chart.mainChart.options, scales: {
+									...widgets.Dashboard_Users_GoalVsActual_Chart.mainChart.options.scales, yAxes: [
 										{
 											stacked: false,
 											display: true,
@@ -274,8 +276,8 @@ function Dashboard(props) {
 					}
 				}
 				widgets = {
-					...widgets, Dashboard_Personal_GoalVsActual_Chart: {
-						...widgets.Dashboard_Personal_GoalVsActual_Chart, data: {
+					...widgets, Dashboard_Users_GoalVsActual_Chart: {
+						...widgets.Dashboard_Users_GoalVsActual_Chart, data: {
 							Auto: widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel,
 							Fire: widgets.Dashboard_Multiline_GoalAndActual_Fire_Panel,
 							Life: widgets.Dashboard_Multiline_GoalAndActual_Life_Panel,
@@ -472,7 +474,7 @@ function Dashboard(props) {
 					</FuseAnimateGroup>	
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-2/4 p-12">							
-							<HorizontalBarChart data={data.widgets.Dashboard_Personal_GoalVsActual_Chart} type='One Number' />						
+							<HorizontalBarChart data={data.widgets.Dashboard_Users_GoalVsActual_Chart} type='One Number' />						
 						</div>														
 					</FuseAnimateGroup>																		
 				</div>

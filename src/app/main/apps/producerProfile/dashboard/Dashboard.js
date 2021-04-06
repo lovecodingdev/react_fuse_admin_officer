@@ -248,12 +248,14 @@ function Dashboard(props) {
 					if(policy.value !== 'Bank' && policy.value !== 'Total') {
 						tempGoal.push(indGoalsAndActual[`${policy.value}@Goal`]);
 
-						let color = '#4CAF50';
+						let backgroundColor = '#42BFF7';
+						let hoverBackgroundColor = '#87CDF7';
 						if(indGoalsAndActual[`${policy.value}@realGoal`] > indGoalsAndActual[`${policy.value}@Goal`]) {
-							color = '#F44336'
+							backgroundColor = '#C6ECFD';
+							hoverBackgroundColor = '#D7EFFD';
 						}
-						tempGoalBackgroundColor.push(color);
-						tempGoalHoverBackgroundColor.push(color);
+						tempGoalBackgroundColor.push(backgroundColor);
+						tempGoalHoverBackgroundColor.push(hoverBackgroundColor);
 						tempActual.push(indGoalsAndActual[`${policy.value}@Actual`]);						
 					}					
 				});
@@ -507,9 +509,9 @@ function Dashboard(props) {
 						</div>								
 					</FuseAnimateGroup>		
 					<FuseAnimateGroup className="flex flex-wrap justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>						
-						{/* <div className="widget flex w-1/2 p-12">
-							<BarChart widget={data.widgets.Dashboard_Personal_GoalVsActual_Chart} />
-						</div>						 */}
+						<div className="widget flex w-1/2 p-12">
+							<BarChart data={data.widgets.Dashboard_Personal_GoalVsActual_Chart} />
+						</div>						
 						{/* <div className="widget flex w-1/2 p-12">
 							<BarChart widget={data.widgets.Dashboard_Team_GoalVsActual_Chart} />
 						</div> */}

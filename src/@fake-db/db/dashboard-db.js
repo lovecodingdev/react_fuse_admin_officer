@@ -309,7 +309,7 @@ const activityAppDB = {
 			]
 		},			
 		{
-			id: 'Dashboard_Personal_GoalVsActual_Chart',
+			id: 'Dashboard_Users_GoalVsActual_Chart',
 			title: "Personal Product Goal Vs Actual",			
 			mainChart: {
 				TW: {					
@@ -368,6 +368,74 @@ const activityAppDB = {
 									display: true
 								},
 								labels: [],
+							}
+						]
+					}
+				}
+			},
+			data: {},
+		},
+		{
+			id: 'Dashboard_Personal_GoalVsActual_Chart',
+			title: "Personal Product Goal Vs Actual",			
+			mainChart: {
+				TW: {					
+					labels: [],
+					datasets: [
+						{
+							type: 'bar', 
+							barPercentage: 0.5,
+							label: 'Goal',
+							data: [],
+							backgroundColor: '#42BFF7',
+							hoverBackgroundColor: '#87CDF7',
+							categoryPercentage: 1,
+						},
+						{
+							type: 'bar',
+							barPercentage: 0.5,
+							label: 'Actual',
+							data: [],
+							backgroundColor: '#C6ECFD',
+							hoverBackgroundColor: '#D7EFFD',
+							categoryPercentage: 1
+						},										
+					]
+				},
+				options: {
+					responsive: true,
+					maintainAspectRatio: false,
+					legend: {
+						display: true,
+						position: 'bottom'
+					},
+					tooltips: {
+						mode: 'label'
+					},
+					scales: {
+						xAxes: [
+							{
+								
+								stacked: false,
+								display: true,
+								gridLines: {
+									display: true
+								},
+								labels: [],
+							}
+						],
+						yAxes: [
+							{
+								stacked: false,
+								type: 'linear',
+								display: true,
+								position: 'left',
+								gridLines: {
+									display: true
+								},
+								labels: {
+									show: true
+								}
 							}
 						]
 					}
