@@ -661,7 +661,7 @@ function Products() {
 				datePolicyIsIssued: state.datePolicyIsIssued ? state.datePolicyIsIssued : '',
 				// percentOfSaleCredit: parseFloat(state.percentOfSaleCredit),
 				previousPolicyNumber: state.previousPolicyNumber,
-				policies: routeParams.id="edit"?state.policies: state.policyType,
+				policies: route==="edit"?state.policies: state.policyType,
 				typeOfProduct: state.typeOfProduct,
 				policyPremium: parseFloat(state.policyPremium),
 				sourceOfBusiness: state.sourceOfBusiness,
