@@ -300,7 +300,7 @@ function ProductsTable(props) {
 												{n.policyType[0] === 'BankEntries' && n.typeOfProductBank}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.user
+												{(typeof(n.user)==='object')
 													? n.user.data.displayName
 													: users.map(
 															user => user.id === n.sellerId && user.data.displayName
