@@ -172,6 +172,7 @@ function ProductsTable(props) {
 				creditPercent: item.creditPercent,
 				creditType: item.creditType,
 				creditUser: item.creditUser,
+				policies: item.policies,
 				previousPolicyNumber: item.previousPolicyNumber,
 				user: item.user
 			})

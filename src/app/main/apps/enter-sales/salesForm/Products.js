@@ -25,6 +25,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import { showMessage } from 'app/store/fuse/messageSlice';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -95,11 +96,11 @@ function Products() {
 	const products = useSelector(selectEntries);
 	const users = useSelector(selectUsers);
 	const bonus = useSelector(selectBonus);
-	const bonusLists = alignBonus(bonus);	
+	const bonusLists = alignBonus(bonus);
 	const productType = useSelector(selectProductType);
 	const marketing = useSelector(selectMarketing);
 	const routeParams = useParams();
-	const [route, setRoute] = useState(routeParams.id)
+	const [route, setRoute] = useState(routeParams.id);
 	const history = useHistory();
 	const searchText = useSelector(({ eCommerceApp }) => eCommerceApp.products.searchText);
 	const editData = useSelector(({ eCommerceApp }) => eCommerceApp.products.editData);
@@ -137,6 +138,7 @@ function Products() {
 		typeOfProductLifeValidation: false,
 		policyPremiumValidation: false,
 		userValidation: false,
+		previousPolicyNumberValidation: false,
 		marketings: [],
 		previousPolicyNumber: '',
 		policyHolderType: 'individual',
@@ -621,28 +623,43 @@ function Products() {
 	}
 
 	function checkValidation() {
-		if (
-			// !state.percentOfSaleCreditValidation &&
-			// !state.typeOfProductValidation &&
-			// !state.policyPremiumValidation &&
-			// !state.policyHolderTypeValidation &&
-			// state.percentOfSaleCredit &&
-			// state.typeOfProduct &&
-			// state.policyHolderType &&
-			state.policyType.length > 0
-		) {
-			return true;
-		} else {
-			setState({
-				...state,
-				// percentOfSaleCreditValidation: state.percentOfSaleCredit ? false : true,
-				typeOfProductValidation: state.typeOfProduct ? false : true,
-				policyPremiumValidation: state.policyPremium ? false : true,
-				policyHolderTypeValidation: state.policyHolderType ? false : true,
-				typeValidation: state.policyType.length > 0 ? false : true
-			});
-			return false;
+		// if (
+		// 	// !state.percentOfSaleCreditValidation &&
+		// 	// !state.typeOfProductValidation &&
+		// 	// !state.policyPremiumValidation &&
+		// 	// !state.policyHolderTypeValidation &&
+		// 	// state.percentOfSaleCredit &&
+		// 	// state.typeOfProduct &&
+		// 	// state.policyHolderType &&
+		// 	typeof(state.user)==='object'
+		// ) {
+
+		// 	return true;
+		// } else if (typeof(state.user)!=='object'&& previousPolicyNumber) {
+		// 	// setState({
+		// 	// 	...state,
+		// 	// 	// percentOfSaleCreditValidation: state.percentOfSaleCredit ? false : true,
+		// 	// 	typeOfProductValidation: state.typeOfProduct ? false : true,
+		// 	// 	policyPremiumValidation: state.policyPremium ? false : true,
+		// 	// 	policyHolderTypeValidation: state.policyHolderType ? false : true,
+		// 	// 	typeValidation: state.policyType.length > 0 ? false : true
+		// 	// });
+		// 	return false;
+		// }
+		if (state.policyType.length === 1&& state.policyHolderType==='household') {
+			if (typeof state.user === 'object') {
+				return true;
+			} else {
+				if (state.previousPolicyNumber) {
+					return true;
+				} else {
+					setState({...state, previousPolicyNumberValidation:true})
+					dispatch(showMessage({ message: 'Please Enter Previous Policy Number!' }))
+					return false;
+				}
+			}
 		}
+		return true
 	}
 
 	function onSave() {
@@ -661,7 +678,7 @@ function Products() {
 				datePolicyIsIssued: state.datePolicyIsIssued ? state.datePolicyIsIssued : '',
 				// percentOfSaleCredit: parseFloat(state.percentOfSaleCredit),
 				previousPolicyNumber: state.previousPolicyNumber,
-				policies: route==="edit"?state.policies: state.policyType,
+				policies: route === 'edit' ? state.policies : state.policyType,
 				typeOfProduct: state.typeOfProduct,
 				policyPremium: parseFloat(state.policyPremium),
 				sourceOfBusiness: state.sourceOfBusiness,
@@ -1526,8 +1543,8 @@ function Products() {
 											value={state.previousPolicyNumber}
 											validation="previousPolicyNumber"
 											onChange={handleChangeValue}
-											willvalidation={false}
-											validate={false}
+											willvalidation={true}
+											validate={state.previousPolicyNumberValidation}
 											size={200}
 										/>
 									)}
