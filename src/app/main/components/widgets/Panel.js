@@ -9,7 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
-import { formattedString } from '../../utils/Function'
+import { formattedString, formattedNumber } from '../../utils/Function'
 
 export function Card(props) {
 	return(
@@ -23,7 +23,7 @@ export function Card(props) {
 		}
 		<div className="text-center pt-12 pb-28">
 			<Typography className={`lg:text-52 md:text-40 sm:text-36 leading-none ${props.color}`}>
-				{`${formattedString(props.count)} ${props.endAdornment}`}
+				{`${formattedNumber(props.count)} ${props.endAdornment}`}
 			</Typography>
 			{props.label!=='' &&
 				<Typography className="text-16" color="textSecondary">

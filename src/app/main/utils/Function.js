@@ -41,8 +41,18 @@ export const formattedString = (val) => {
   }
 }
 
+export const formattedNumber = (val) => {
+  if(IsNumeric(val)) { 
+    return ceil(val);
+  } else if(IsNumeric(val) && isNaN(val)) {
+    return 0;
+  } else {
+    return ceil(val);
+  }
+}
+
 export const IsNumeric = (input) => {
-    return (input - 0) == input && (''+input).trim().length > 0;
+    return (input - 0) === input && (''+input).trim().length > 0;
 }
 
 export const getLevel =(policyCount, policyName, bonusPlans) => { 

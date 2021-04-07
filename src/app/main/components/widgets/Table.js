@@ -205,7 +205,7 @@ function Widget(props) {
 												id='contact phone number'
 												key={`input_${rowNum}_${colNum}`}
 												type='number'
-												value={tableContent[rowKey][colKey]===0 ? '' : tableContent[rowKey][colKey]}
+												value={formattedString(tableContent[rowKey][colKey])}
 												onChange={ev => handleInputChange(props.tableName, rowNum, colNum, rowKey, colKey, ev.target.value)}
 												size='small'
 												readOnly={false}

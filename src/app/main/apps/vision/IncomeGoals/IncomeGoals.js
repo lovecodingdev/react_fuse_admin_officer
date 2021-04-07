@@ -31,8 +31,7 @@ import { getVision, selectVision, saveVision } from '../store/visionSlice';
 import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { months1, policies, incomeAvgsRows, incomeGoalsRows, incomeGoalsHeaders, incomeBonusesHeaders, toUntrimed } from '../../../utils/Globals';
-import { ceil, swap, getLevel, getOtherActivityBonus } from '../../../utils/Function';
-import { dateComparer } from '@material-ui/data-grid';
+import { swap, getLevel, getOtherActivityBonus } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -110,8 +109,12 @@ function IncomeGoals(props) {
 		var temp = [];
 		if (users.length > 0) {
 			users.map(user => {
-				if(user.belongTo === UID)
-					temp.push({ item: user.data.displayName, value: user.id });
+				if(user.belongTo === UID) {
+					if(user.id === UID)
+						temp.push({ item: 'Team Goals', value: user.id });
+					else 
+						temp.push({ item: user.data.displayName, value: user.id });
+				}						
 			});
 			setUserList(temp);
 		}
@@ -208,15 +211,26 @@ function IncomeGoals(props) {
 
 	useEffect(() => { 	
 		const tableName = cell.tableName;
-		const row = cell.row;
+		let row = cell.row;
 		const col = cell.col;
-		const rowKey = cell.rowKey;
+		let rowKey = cell.rowKey;
 		const colKey = cell.colKey;
-		const value = parseFloat(cell.value === '' ? 0 : cell.value);
+		let value = parseFloat(cell.value === '' ? 0 : cell.value);
 		let value1 = 0;	
-		let r = row;	
+		let r = row;
+		let rr = 12;	
 		const maxRow = 16;
 		const skipCol = 5;
+
+		if(tableName==='GOALS' && col>=5 && col<=11) {
+			return;
+		}
+		if(tableName==='GOALS' &&  row >= 12 && row<16) {
+			row = (row % 12) * 3;
+			rowKey = months1[row];
+			value = parseFloat(cell.value === '' ? 0 : cell.value / 3);
+			r = row
+		}
 
 		if(tableName === "AVERAGES") {
 			avgsTableContent = { 				
@@ -225,13 +239,19 @@ function IncomeGoals(props) {
 				} 					
 			};
 			r = 0;	
-		}
+		}		
 			
 		const avgCols = Object.keys(avgsTableContent["Average Annual Premium"]);
 		const goalCols = Object.keys(goalsTableContent["January"]);
 		const bonusCols = Object.keys(bonusesTableContent["January"]);
-		for (let i = r; i < 12; i++) {
-			const t = (i - i % 3) / 3 + 12; 
+		
+		for (let i = r; i < rr; i ++) {			
+			const startQuarterIndex = (r - r % 3) / 3;
+			const quarterIndex = (i - i % 3) / 3;
+			if(quarterIndex>startQuarterIndex) 
+				break;
+
+			const t = quarterIndex + 12; 
 			if(tableName==="AVERAGES")
 				value1 = parseFloat(goalsTableContent[months1[i]][goalCols[col]] * value);
 			else 						
@@ -243,7 +263,7 @@ function IncomeGoals(props) {
 				// Total Policies				
 				goalsTableContent[months1[i]][goalCols[skipCol]] = 
 					goalsTableContent[months1[i]][goalCols[0]]+
-					goalsTableContent[months1[i]][goalCols[1]]+
+					goalsTableContent[months1[i]][goalCols[1]]+ 
 					goalsTableContent[months1[i]][goalCols[2]]+
 					goalsTableContent[months1[i]][goalCols[3]]+
 					goalsTableContent[months1[i]][goalCols[4]]; 
