@@ -49,7 +49,8 @@ function Register() {
 		name: '',
 		cardNumber: '',
 		subscriptionStatus: false,
-		token: ''
+		token: '',
+		subscriptionInfo:{}
 	});
 	const [count, setCount] = useState([]);
 	const routeParams = useParams();
@@ -59,7 +60,7 @@ function Register() {
 
 	function setPaymentState(result) {
 		console.log(result);
-		setState({ ...state, subscriptionStatus: result });
+		setState({ ...state, subscriptionStatus: true, subscriptionInfo: result.data });
 	}
 
 	useEffect(() => {
@@ -110,7 +111,7 @@ function Register() {
 									</div>
 								</FuseAnimate>
 
-								{selectedTab === 1 && <FirebaseRegisterTab state={state.subscriptionStatus} />}
+								{selectedTab === 1 && <FirebaseRegisterTab state={state.subscriptionStatus} subscriptionInfo={state.subscriptionInfo}/>}
 							</CardContent>
 
 							<div className="flex flex-col items-center justify-center pb-32">

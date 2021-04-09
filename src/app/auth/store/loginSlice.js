@@ -4,7 +4,7 @@ import firebaseService from 'app/services/firebaseService';
 import { auth, realDb } from '../../../@fake-db/db/firebase';
 import jwtService from 'app/services/jwtService';
 import { setUserData } from './userSlice';
-import { createUserSettingsFirebase } from './userSlice';
+import { createUserSettingsFirebase, loginUserSettingsFirebase } from './userSlice';
 import md5 from 'md5';
 import history from '@history';
 
@@ -58,7 +58,7 @@ export const submitLoginWithFireBase = ({ username, password }) => async dispatc
 					if (flag) {
 						belongTo = user.user.uid
 						dispatch(
-							createUserSettingsFirebase({
+							loginUserSettingsFirebase({
 								...user.user,
 								displayName: user.user.displayName,
 								email: user.user.email,
@@ -69,7 +69,7 @@ export const submitLoginWithFireBase = ({ username, password }) => async dispatc
 					} else {
 						if (belongTo) {
 							dispatch(
-								createUserSettingsFirebase({
+								loginUserSettingsFirebase({
 									...user.user,
 									displayName: user.user.displayName,
 									email: user.user.email,

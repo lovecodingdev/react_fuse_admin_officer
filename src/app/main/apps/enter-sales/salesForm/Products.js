@@ -647,9 +647,9 @@ function Products() {
 		// 	return false;
 		// }
 		if (state.policyType.length === 1&& state.policyHolderType==='household') {
-			if (typeof state.user === 'object') {
-				return true;
-			} else {
+			// if (typeof state.user === 'object') {
+			// 	return true;
+			// } else {
 				if (state.previousPolicyNumber) {
 					return true;
 				} else {
@@ -657,7 +657,7 @@ function Products() {
 					dispatch(showMessage({ message: 'Please Enter Previous Policy Number!' }))
 					return false;
 				}
-			}
+			// }
 		}
 		return true
 	}

@@ -214,7 +214,7 @@ const CheckoutForm = (props) => {
 			</fieldset>
 			{error && <ErrorMessage>{error.message}</ErrorMessage>}
 			<SubmitButton processing={processing} error={error} disabled={!stripe}>
-				Pay and Register
+				Pay
 			</SubmitButton>
 		</form>
 	);

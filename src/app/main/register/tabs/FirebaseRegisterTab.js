@@ -48,9 +48,9 @@ function FirebaseRegisterTab(props) {
 			return
 		}
 		if(routeParams.id.length===32){
-			dispatch(registerWithFirebase({...model, role: "admin", belongTo}));
+			dispatch(registerWithFirebase({...model, role: "admin", belongTo, subscriptionInfo: props.subscriptionInfo}));
 		} else if(routeParams.id.length===150) {
-			dispatch(registerWithFirebase({...model, role: "agency",belongTo}));
+			dispatch(registerWithFirebase({...model, role: "agency",belongTo, subscriptionInfo:{}}));
 		}		
 	}
 

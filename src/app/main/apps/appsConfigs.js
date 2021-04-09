@@ -25,6 +25,7 @@ import TimeReportAppConfig from './time-report/timeReportAppConfig'
 import BonusPlanTemplateConfig from './bonusPlanTemplate/bonusPlanConfig'
 import AddBonusPlanTemplateConfig from './addbonusPlanTemplate/bonusPlanConfig'
 import producerProfileAppConfig from './producerProfile/producerProfileAppConfig'
+import SubscriptionAppConfig from './subscription/subscriptionAppConfig'
 
 const appsConfigs = [
 	AnalyticsDashboardAppConfig,
@@ -53,7 +54,8 @@ const appsConfigs = [
 	TimeReportAppConfig,
 	BonusPlanTemplateConfig,
 	producerProfileAppConfig,
-	AddBonusPlanTemplateConfig
+	AddBonusPlanTemplateConfig,
+	SubscriptionAppConfig
 ];
 
 export default appsConfigs;

@@ -217,6 +217,15 @@ const navigationConfig = [
 				icon: 'align_vertical_bottom',
 				exact: true
 			},
+			{
+				id: 'policy-growth',
+				title: 'Subscription',
+				type: 'item',
+				auth:authRoles.admin,
+				url: '/apps/subscription',
+				icon: 'subscriptions',
+				exact: true
+			},
 			
 			// {
 			// 	id: 'time-report',

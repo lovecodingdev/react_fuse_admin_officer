@@ -29,7 +29,7 @@ export const registerWithFirebase = model => async dispatch => {
 
 		return () => false;
 	}
-	const { email, password, displayName, role, belongTo } = model;
+	const { email, password, displayName, role, belongTo, subscriptionInfo } = model;
 
 	return auth
 		.createUserWithEmailAndPassword(email, password)
@@ -64,7 +64,8 @@ export const registerWithFirebase = model => async dispatch => {
 							displayName,
 							email,
 							role,
-							belongTo
+							belongTo,
+							subscriptionInfo
 						})
 					);
 				});
@@ -92,7 +93,8 @@ export const registerWithFirebase = model => async dispatch => {
 						displayName,
 						email,
 						role,
-						belongTo: response.user.uid
+						belongTo: response.user.uid,
+						subscriptionInfo
 					})
 				);
 			}

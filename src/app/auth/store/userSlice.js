@@ -43,7 +43,7 @@ export const setUserDataFirebase = (user, authUser) => async dispatch => {
 	}
 
 	// Create missing user settings
-	return dispatch(createUserSettingsFirebase(authUser));
+	// return dispatch(createUserSettingsFirebase(authUser));
 };
 
 export const createUserSettingsFirebase = authUser => async (dispatch, getState) => {
@@ -64,11 +64,44 @@ export const createUserSettingsFirebase = authUser => async (dispatch, getState)
 			displayName: authUser.displayName,
 			email: authUser.email,
 			settings: { ...fuseDefaultSettings }
-		}
+		},
+		subscriptionInfo: authUser.subscriptionInfo,
+		createdDate: Date.now()
 	});
 	currentUser.updateProfile(user.data);
 
 	dispatch(updateUserData(user));
+
+	return dispatch(setUserData(user));
+};
+
+export const loginUserSettingsFirebase = authUser => async (dispatch, getState) => {
+	const guestUser = getState().auth.user;
+	const fuseDefaultSettings = getState().fuse.settings.defaults;
+	const { currentUser } = firebase.auth();
+
+	/**
+	 * Merge with current Settings
+	 */
+	const user = _.merge({}, guestUser, {
+		uid: authUser.uid,
+		from: 'firebase',
+		role: [authUser.role],
+		belongTo:authUser.belongTo,
+		active:true,
+		data: {
+			displayName: authUser.displayName,
+			email: authUser.email,
+			settings: { ...fuseDefaultSettings }
+		},
+		subscriptionInfo: authUser.subscriptionInfo
+	});
+	currentUser.updateProfile(user.data);
+
+	localStorage.setItem("@UID", user.uid)
+	localStorage.setItem("@BELONGTO", user.belongTo)
+
+	// dispatch(updateUserData(user));
 
 	return dispatch(setUserData(user));
 };
