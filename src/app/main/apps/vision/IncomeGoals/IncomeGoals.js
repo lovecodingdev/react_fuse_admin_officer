@@ -42,6 +42,7 @@ let bonusesTableContent = {};
 
 function IncomeGoals(props) {
 	const dispatch = useDispatch();
+	const role = useSelector(({ auth }) => auth.user.role[0]); 
 	const users = useSelector(selectUsers);
 	const vision = useSelector(selectVision);
 	let widgets = useSelector(selectWidgets);
@@ -109,12 +110,18 @@ function IncomeGoals(props) {
 		var temp = [];
 		if (users.length > 0) {
 			users.map(user => {
-				if(user.belongTo === UID) {
-					if(user.id === UID)
-						temp.push({ item: 'Team Goals', value: user.id });
-					else 
-						temp.push({ item: user.data.displayName, value: user.id });
-				}						
+				if(user.belongTo === belongTo) {
+					if(role === 'admin') {
+						if(user.id === belongTo)
+							temp.push({ item: 'Team Goals', value: user.id });
+						else 
+							temp.push({ item: user.data.displayName, value: user.id });	
+					} else if(role === 'agency') {
+						if(user.id===UID || user.role[0]==='producer') {
+							temp.push({ item: user.data.displayName, value: user.id });	
+						}
+					}
+				}									
 			});
 			setUserList(temp);
 		}

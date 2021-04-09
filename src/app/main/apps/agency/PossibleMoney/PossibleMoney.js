@@ -29,8 +29,6 @@ import { dividing, getLevel, getMain } from '../../../utils/Function';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
-const auth = JSON.parse(localStorage.getItem('persist:data')); 
-const displayName = JSON.parse(auth.auth).user.data.displayName;
 
 function PossibleMoney(props) {
 	const dispatch = useDispatch();
