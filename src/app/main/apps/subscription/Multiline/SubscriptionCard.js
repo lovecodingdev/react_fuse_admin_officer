@@ -9,8 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
 
-
-
 const useStyles = makeStyles(theme => ({
 	header: {
 		height: 600,
@@ -20,16 +18,26 @@ const useStyles = makeStyles(theme => ({
 	cardHeader: {
 		backgroundColor: theme.palette.primary[800],
 		color: theme.palette.getContrastText(theme.palette.primary[800])
+	},
+	cardCurrentHeader: {
+		backgroundColor: theme.palette.secondary.dark,
+		color: theme.palette.getContrastText(theme.palette.primary[800])
 	}
 }));
 
 export default function SimpleCard(props) {
 	const classes = useStyles();
-    
 
 	return (
 		<Card className="rounded-8 mx-6">
-			<div className={clsx(classes.cardHeader, 'px-24 py-16')}>
+			<div
+				className={
+					Object.keys(props.currentSubscription).length > 0 &&
+					props.price === props.currentSubscription.plan.amount / 100
+						? clsx(classes.cardCurrentHeader, 'px-24 py-16')
+						: clsx(classes.cardHeader, 'px-24 py-16')
+				}
+			>
 				{Object.keys(props.currentSubscription).length > 0 &&
 				props.price === props.currentSubscription.plan.amount / 100 ? (
 					<Typography variant="subtitle1" color="inherit">
@@ -89,7 +97,6 @@ export default function SimpleCard(props) {
 					</Button>
 				)}
 			</div>
-            
 		</Card>
 	);
 }
