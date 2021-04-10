@@ -105,27 +105,30 @@ function Multiline(props) {
 
 	const { count, openPay } = state;
 	useEffect(() => {
-		setMembership(user);
+		if (user.length > 0) {
+			setMembership(user);
+		}
 	}, [user]);
 
 	async function setMembership(user) {
 		try {
 			const response = await axios.post(firebaseFunctionGetProductsEndpoint);
-			// const res = await axios.post(firebaseFunctionGetSubscrioption);
 
 			if (response.data) {
-				console.log(response.data);
 				if (user.length > 0) {
 					if (Object.keys(user[0]).includes('subscriptionInfo')) {
+						console.log('------------------there is not user data with subscription-------------');
 						setState({
 							...state,
 							count: response.data.data,
 							currentSubscription: user[0].subscriptionInfo.response
 						});
 					} else {
+						console.log('------------------there is not user data without subscription-------------');
 						setState({ ...state, count: response.data.data, currentSubscription: {} });
 					}
 				} else {
+					console.log('------------------there is not user data-------------');
 					setState({ ...state, count: response.data.data, currentSubscription: {} });
 				}
 			}
@@ -185,7 +188,7 @@ function Multiline(props) {
 						{!openPay && (
 							<FuseAnimate animation="transition.slideUpIn" delay={400}>
 								<div className="flex">
-									{console.log('-----------------------------', count)}
+									{console.log('-----------------------------', state.currentSubscription)}
 									{count.length > 0 &&
 										count.map(item => {
 											return (
@@ -217,10 +220,14 @@ function Multiline(props) {
 						aria-labelledby="alert-dialog-title"
 						aria-describedby="alert-dialog-description"
 					>
-						<DialogTitle id="alert-dialog-title">{'Are you really revoke this user?'}</DialogTitle>
+						<DialogTitle id="alert-dialog-title">{'Are you really cancel this plan?'}</DialogTitle>
 						<DialogContent>
 							<DialogContentText id="alert-dialog-description">
-								You will lost this users data.
+								{`Your account can use for ${
+									Object.keys(state.currentSubscription).length>0 && state.currentSubscription.plan.interval
+								} ${
+									Object.keys(state.currentSubscription).length>0 && state.currentSubscription.plan.interval_count
+								} from now.`}
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>
