@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
 	header: {
@@ -69,9 +70,20 @@ export default function SimpleCard(props) {
 					<Typography variant="subtitle1" className="">
 						Producer Management
 					</Typography>
-					<Typography variant="subtitle1" className="">
+					
+
+					{Object.keys(props.currentSubscription).length > 0 &&
+					props.price === props.currentSubscription.plan.amount / 100 ? (
+						<Typography variant="subtitle1" className="">
+							{`Expire Date: ${moment
+								.unix(props.currentSubscription.current_period_end)
+								.format("DD-MM-YYYY")}`}
+						</Typography>
+					) : (
+						<Typography variant="subtitle1" className="">
 						Team Management
 					</Typography>
+					)}
 				</div>
 			</CardContent>
 
