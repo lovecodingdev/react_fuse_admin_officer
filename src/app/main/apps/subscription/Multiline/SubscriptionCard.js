@@ -75,7 +75,7 @@ export default function SimpleCard(props) {
 					{Object.keys(props.currentSubscription).length > 0 &&
 					props.price === props.currentSubscription.plan.amount / 100 ? (
 						<Typography variant="subtitle1" className="">
-							{`Expire Date: ${moment
+							{`End Date: ${moment
 								.unix(props.currentSubscription.current_period_end)
 								.format("DD-MM-YYYY")}`}
 						</Typography>
