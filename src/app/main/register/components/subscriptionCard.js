@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 export default function SimpleCard(props) {
 	const classes = useStyles();
 
-	const [quantity, setQuantity]= useState(1)
+	const [quantity, setQuantity] = useState(1);
 
 	return (
 		<Card className="rounded-8 mx-6 w-lg">
@@ -47,6 +47,11 @@ export default function SimpleCard(props) {
 						</Typography>
 					</div>
 				</div>
+				<div className="flex justify-center">
+					<Typography variant="subtitle1" color="textSecondary">
+						$250 one-time installation fee
+					</Typography>
+				</div>
 
 				<Divider className="my-32" />
 
@@ -63,7 +68,14 @@ export default function SimpleCard(props) {
 							<Typography variant="subtitle1" className="">
 								Per Member
 							</Typography>
-							<TextField className="h-50" id="outlined-basic" label="Members" variant="outlined" type="number" onChange={(e)=>setQuantity(e.target.value)}/>
+							<TextField
+								className="h-50"
+								id="outlined-basic"
+								label="Members"
+								variant="outlined"
+								type="number"
+								onChange={e => setQuantity(e.target.value)}
+							/>
 						</>
 					)}
 				</div>

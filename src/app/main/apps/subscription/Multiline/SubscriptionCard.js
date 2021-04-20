@@ -64,6 +64,7 @@ export default function SimpleCard(props) {
 						</Typography>
 					</div>
 				</div>
+				
 
 				<Divider className="my-32" />
 
