@@ -317,7 +317,7 @@ function ProductsTable(props) {
 												// onClick={() => n.data && goBonusPlan(n.uid)}
 											>
 												{/* <span>$</span> */}
-
+												{n.active && (
 												<SelectBox
 													id="outlined-basic"
 													label="Select Template"
@@ -330,7 +330,7 @@ function ProductsTable(props) {
 													}
 													// willvalidation={false}
 													// validate={state.userValidation}
-												/>
+												/>)}
 											</TableCell>
 
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
