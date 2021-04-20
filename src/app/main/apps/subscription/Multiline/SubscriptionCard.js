@@ -75,6 +75,14 @@ export default function SimpleCard(props) {
 							</Typography>
 						</>
 					)}
+					{Object.keys(props.currentSubscription).length > 0 &&
+						props.price === props.currentSubscription.plan.amount / 100 && (
+							<Typography variant="subtitle1" className="">
+								{`End Date: ${moment
+									.unix(props.currentSubscription.current_period_end)
+									.format('DD-MM-YYYY')}`}
+							</Typography>
+						)}
 					{props.nickname && (
 						<>
 							<Typography variant="subtitle1" className="">
@@ -97,15 +105,6 @@ export default function SimpleCard(props) {
 							/>
 						</>
 					)}
-
-					{Object.keys(props.currentSubscription).length > 0 &&
-						props.price === props.currentSubscription.plan.amount / 100 && (
-							<Typography variant="subtitle1" className="">
-								{`End Date: ${moment
-									.unix(props.currentSubscription.current_period_end)
-									.format('DD-MM-YYYY')}`}
-							</Typography>
-						)}
 				</div>
 			</CardContent>
 
@@ -121,14 +120,14 @@ export default function SimpleCard(props) {
 						Update
 					</Button>
 				) : ( */}
-					<Button
-						variant="contained"
-						color="secondary"
-						className="w-128"
-						onClick={() => props.setBuy(props.token, quantity)}
-					>
-						Update
-					</Button>
+				<Button
+					variant="contained"
+					color="secondary"
+					className="w-128"
+					onClick={() => props.setBuy(props.token, quantity)}
+				>
+					Update
+				</Button>
 				{/* )} */}
 			</div>
 		</Card>
