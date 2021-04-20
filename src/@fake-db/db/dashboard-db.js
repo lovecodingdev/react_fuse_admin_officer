@@ -96,6 +96,29 @@ const activityAppDB = {
 			]
 		},
 		{
+			id: 'Dashboard_Multiline_GoalAndActual_Bank_Panel',
+			title: 'Bank',
+			subTitle: '',
+			cardData: [
+				{
+					title: '',
+					count: 0,
+					color: 'text-green',
+					label: 'Goal',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
+					color: 'text-blue',
+					label: 'Actual',					
+					fontSize: 36,
+					endAdornment: ''
+				}
+			]
+		},
+		{
 			id: 'Dashboard_Multiline_GoalAndActual_Total_Panel',
 			title: 'Total',
 			subTitle: '',
@@ -190,6 +213,29 @@ const activityAppDB = {
 		{
 			id: 'Dashboard_Multiline_Team_GoalAndActual_Health_Panel',
 			title: 'Health',
+			subTitle: '',
+			cardData: [
+				{
+					title: '',
+					count: 0,
+					color: 'text-green',
+					label: 'Goal',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
+					color: 'text-blue',
+					label: 'Actual',					
+					fontSize: 36,
+					endAdornment: ''
+				}
+			]
+		},
+		{
+			id: 'Dashboard_Multiline_Team_GoalAndActual_Bank_Panel',
+			title: 'Bank',
 			subTitle: '',
 			cardData: [
 				{
