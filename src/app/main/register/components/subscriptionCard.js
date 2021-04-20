@@ -7,7 +7,8 @@ import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
 	header: {
@@ -24,8 +25,10 @@ const useStyles = makeStyles(theme => ({
 export default function SimpleCard(props) {
 	const classes = useStyles();
 
+	const [quantity, setQuantity]= useState(1)
+
 	return (
-		<Card className="rounded-8 mx-6">
+		<Card className="rounded-8 mx-6 w-lg">
 			<div className={clsx(classes.cardHeader, 'px-24 py-16')}>
 				<Typography variant="subtitle1" color="inherit">
 					BASIC
@@ -48,12 +51,21 @@ export default function SimpleCard(props) {
 				<Divider className="my-32" />
 
 				<div className="flex flex-col">
-					<Typography variant="subtitle1" className="">
-						Producer Management
-					</Typography>
-					<Typography variant="subtitle1" className="">
-						Team Management
-					</Typography>
+					{!props.nickname && (
+						<>
+							<Typography variant="subtitle1" className="">
+								Can Manage 4 Memebers
+							</Typography>
+						</>
+					)}
+					{props.nickname && (
+						<>
+							<Typography variant="subtitle1" className="">
+								Per Member
+							</Typography>
+							<TextField className="h-50" id="outlined-basic" label="Members" variant="outlined" type="number" onChange={(e)=>setQuantity(e.target.value)}/>
+						</>
+					)}
 				</div>
 			</CardContent>
 
@@ -62,7 +74,7 @@ export default function SimpleCard(props) {
 					variant="contained"
 					color="secondary"
 					className="w-128"
-					onClick={() => props.setBuy(props.token)}
+					onClick={() => props.setBuy(props.token, quantity)}
 				>
 					Pay and Register
 				</Button>

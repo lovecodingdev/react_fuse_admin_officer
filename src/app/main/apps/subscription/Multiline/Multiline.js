@@ -100,7 +100,8 @@ function Multiline(props) {
 		count: [],
 		currentSubscription: {},
 		token: '',
-		openPay: false
+		openPay: false,
+		quantity:1
 	});
 
 	const { count, openPay } = state;
@@ -141,8 +142,8 @@ function Multiline(props) {
 		// setState({ ...state, showPaymentForm: true, token: token });
 	}
 
-	function setBuy(token) {
-		setState({ ...state, token, openPay: true });
+	function setBuy(token, quantity) {
+		setState({ ...state, token, openPay: true, quantity });
 	}
 
 	function setPaymentState(result) {
@@ -199,6 +200,7 @@ function Multiline(props) {
 													token={item.id}
 													currentSubscription={state.currentSubscription}
 													handleClickOpen={handleClickOpen}
+													nickname={item.nickname}
 												/>
 											);
 										})}
@@ -209,7 +211,7 @@ function Multiline(props) {
 						{openPay && (
 							<FuseAnimate animation="transition.slideUpIn" delay={400}>
 								<Elements stripe={stripePromise}>
-									<CardElements setPaymentState={setPaymentState} token={state.token} />
+									<CardElements setPaymentState={setPaymentState} token={state.token} quantity={state.quantity} handleDelete={handleDelete}/>
 								</Elements>
 							</FuseAnimate>
 						)}

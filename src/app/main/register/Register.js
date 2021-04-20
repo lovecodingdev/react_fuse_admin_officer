@@ -50,17 +50,20 @@ function Register() {
 		cardNumber: '',
 		subscriptionStatus: false,
 		token: '',
-		subscriptionInfo:{}
+		subscriptionInfo:{},
+		quantity: 1,
+		email:''
 	});
 	const [count, setCount] = useState([]);
 	const routeParams = useParams();
-	function handleTabChange(token) {
-		setState({ ...state, showPaymentForm: true, token: token });
+	function handleTabChange(token, quantity) {
+		console.log({ ...state, showPaymentForm: true, token: token, quantity })
+		setState({ ...state, showPaymentForm: true, token: token, quantity });
 	}
 
-	function setPaymentState(result) {
-		console.log(result);
-		setState({ ...state, subscriptionStatus: true, subscriptionInfo: result.data });
+	function setPaymentState(result, email) {
+		console.log(result.data);
+		setState({ ...state, subscriptionStatus: true, subscriptionInfo: result.data , email});
 	}
 
 	useEffect(() => {
@@ -111,7 +114,7 @@ function Register() {
 									</div>
 								</FuseAnimate>
 
-								{selectedTab === 1 && <FirebaseRegisterTab state={state.subscriptionStatus} subscriptionInfo={state.subscriptionInfo}/>}
+								{selectedTab === 1 && <FirebaseRegisterTab state={state.subscriptionStatus} subscriptionInfo={state.subscriptionInfo} email={state.email}/>}
 							</CardContent>
 
 							<div className="flex flex-col items-center justify-center pb-32">
@@ -175,7 +178,7 @@ function Register() {
 					<div
 						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-32')}
 					>
-						<div className="max-w-640">
+						<div className="max-w-lg">
 							{routeParams.id.length === 32 && !state.showPaymentForm && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
 									<div className="flex">
@@ -187,6 +190,7 @@ function Register() {
 														price={item.amount / 100}
 														interval={item.interval_count + ' ' + item.interval}
 														token={item.id}
+														nickname={item.nickname}
 													/>
 												);
 											})}
@@ -196,7 +200,7 @@ function Register() {
 							{routeParams.id.length === 32 && state.showPaymentForm && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
 									<Elements stripe={stripePromise}>
-										<CardElements setPaymentState={setPaymentState} token={state.token} />
+										<CardElements setPaymentState={setPaymentState} token={state.token} quantity={state.quantity}/>
 									</Elements>
 								</FuseAnimate>
 							)}

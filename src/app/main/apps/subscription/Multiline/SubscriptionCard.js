@@ -1,5 +1,3 @@
-import FuseAnimate from '@fuse/core/FuseAnimate';
-import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -7,8 +5,9 @@ import Divider from '@material-ui/core/Divider';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles(theme => ({
 	header: {
@@ -28,6 +27,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function SimpleCard(props) {
 	const classes = useStyles();
+
+	const [quantity, setQuantity] = useState(1);
 
 	return (
 		<Card className="rounded-8 mx-6">
@@ -67,28 +68,49 @@ export default function SimpleCard(props) {
 				<Divider className="my-32" />
 
 				<div className="flex flex-col">
-					<Typography variant="subtitle1" className="">
-						Producer Management
-					</Typography>
-					
+					{!props.nickname && (
+						<>
+							<Typography variant="subtitle1" className="">
+								Can Manage 4 Memebers
+							</Typography>
+						</>
+					)}
+					{props.nickname && (
+						<>
+							<Typography variant="subtitle1" className="">
+								Per Member
+							</Typography>
+							<Typography variant="subtitle1" className="">
+								{Object.keys(props.currentSubscription).length > 0 &&
+									`Current plan is ${props.currentSubscription.plan.amount / 100}$ * ${
+										props.currentSubscription.quantity
+									}`}
+							</Typography>
+
+							<TextField
+								className="h-50"
+								id="outlined-basic"
+								label="Members"
+								variant="outlined"
+								type="number"
+								onChange={e => setQuantity(e.target.value)}
+							/>
+						</>
+					)}
 
 					{Object.keys(props.currentSubscription).length > 0 &&
-					props.price === props.currentSubscription.plan.amount / 100 ? (
-						<Typography variant="subtitle1" className="">
-							{`End Date: ${moment
-								.unix(props.currentSubscription.current_period_end)
-								.format("DD-MM-YYYY")}`}
-						</Typography>
-					) : (
-						<Typography variant="subtitle1" className="">
-						Team Management
-					</Typography>
-					)}
+						props.price === props.currentSubscription.plan.amount / 100 && (
+							<Typography variant="subtitle1" className="">
+								{`End Date: ${moment
+									.unix(props.currentSubscription.current_period_end)
+									.format('DD-MM-YYYY')}`}
+							</Typography>
+						)}
 				</div>
 			</CardContent>
 
 			<div className="flex justify-center pb-32">
-				{Object.keys(props.currentSubscription).length > 0 &&
+				{/* {Object.keys(props.currentSubscription).length > 0 &&
 				props.price === props.currentSubscription.plan.amount / 100 ? (
 					<Button
 						variant="contained"
@@ -96,18 +118,18 @@ export default function SimpleCard(props) {
 						className="w-128"
 						onClick={() => props.handleClickOpen()}
 					>
-						Cancel this Subscription
+						Update
 					</Button>
-				) : (
+				) : ( */}
 					<Button
 						variant="contained"
 						color="secondary"
 						className="w-128"
-						onClick={() => props.setBuy(props.token)}
+						onClick={() => props.setBuy(props.token, quantity)}
 					>
-						Buy
+						Update
 					</Button>
-				)}
+				{/* )} */}
 			</div>
 		</Card>
 	);

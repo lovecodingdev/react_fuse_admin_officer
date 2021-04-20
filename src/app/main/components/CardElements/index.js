@@ -1,10 +1,12 @@
-
 import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import './styles.css';
 import axios from 'axios';
-import { firebaseFunctionCreateCustomerAndSubscription } from 'app/fuse-configs/endpointConfig';
+import {
+	firebaseFunctionCreateCustomerAndSubscription,
+	firebaseFunctionGetClient
+} from 'app/fuse-configs/endpointConfig';
 
 const CARD_OPTIONS = {
 	iconStyle: 'solid',
@@ -91,7 +93,7 @@ const ResetButton = ({ onClick }) => (
 	</button>
 );
 
-const CheckoutForm = (props) => {
+const CheckoutForm = props => {
 	const stripe = useStripe();
 	const elements = useElements();
 	const [error, setError] = useState(null);
@@ -120,26 +122,47 @@ const CheckoutForm = (props) => {
 			setProcessing(true);
 		}
 
-		const payload = await stripe.createToken(elements.getElement(CardElement));
-		console.log(payload.token);
-		if (payload.token) {
-			var form = {
-				customerEmail: billingDetails.email,
-				name: billingDetails.name,
-				planId: props.token,
-				stripeToken: payload.token.id
-			};
-			const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
-			setProcessing(false);
-			console.log(response)
-			if(response){
-				setPaymentMethod(response);
-				props.setPaymentState(response)
-			} else {
-				setError(response.error);
+		const clientResult = await axios.post(firebaseFunctionGetClient, {
+			amount: 250 * 100
+		});
+
+		const clientSecret = clientResult.data.clientSecret;
+		console.log(clientSecret);
+		const { error: confirmError } = await stripe.confirmCardPayment(clientSecret, {
+			payment_method: {
+				card: elements.getElement(CardElement),
+				billing_details: {
+					name: billingDetails.name,
+					email: billingDetails.email
+				}
+			}
+			
+		});
+
+		if (confirmError) {
+			console.log('-----confirm--error---', confirmError);
+		} else {
+			const payload = await stripe.createToken(elements.getElement(CardElement));
+			console.log(payload.token);
+			if (payload.token) {
+				var form = {
+					customerEmail: billingDetails.email,
+					name: billingDetails.name,
+					priceId: props.token,
+					stripeToken: payload.token.id,
+					quantity: props.quantity
+				};
+				const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
+				setProcessing(false);
+				console.log(response);
+				if (response) {
+					setPaymentMethod(response);
+					props.setPaymentState(response, billingDetails.email);
+				} else {
+					setError(response.error);
+				}
 			}
 		}
-
 	};
 
 	const reset = () => {

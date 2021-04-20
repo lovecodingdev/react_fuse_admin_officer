@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { showMessage } from 'app/store/fuse/messageSlice';
 import firebaseService from 'app/services/firebaseService';
 import { auth, realDb } from '../../../@fake-db/db/firebase';
-import { bonusPlanTemplate } from 'app/services/jsons.js';
+import { bonusPlanTemplate, marketingTemplate } from 'app/services/jsons.js';
 import jwtService from 'app/services/jwtService';
 import { createUserSettingsFirebase, setUserData } from './userSlice';
 import md5 from 'md5';
@@ -86,6 +86,13 @@ export const registerWithFirebase = model => async dispatch => {
 				});
 				realDb.ref(`BonusPlanTemplate/${response.user.uid}/Team Bonus Plan Template/`).set({
 					...bonusPlanTemplate
+				});
+				realDb.ref(`BonusPlanTemplate/${response.user.uid}/Team Bonus Plan Template/`).set({
+					...bonusPlanTemplate
+				});
+
+				realDb.ref(`Marketing/${response.user.uid}/`).set({
+					...marketingTemplate
 				});
 				dispatch(
 					createUserSettingsFirebase({

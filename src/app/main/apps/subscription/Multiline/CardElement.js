@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
@@ -91,7 +90,7 @@ const ResetButton = ({ onClick }) => (
 	</button>
 );
 
-const CheckoutForm = (props) => {
+const CheckoutForm = props => {
 	const stripe = useStripe();
 	const elements = useElements();
 	const [error, setError] = useState(null);
@@ -120,26 +119,28 @@ const CheckoutForm = (props) => {
 			setProcessing(true);
 		}
 
+		await props.handleDelete()
+
 		const payload = await stripe.createToken(elements.getElement(CardElement));
 		console.log(payload.token);
 		if (payload.token) {
 			var form = {
 				customerEmail: billingDetails.email,
 				name: billingDetails.name,
-				planId: props.token,
-				stripeToken: payload.token.id
+				priceId: props.token,
+				stripeToken: payload.token.id,
+				quantity: props.quantity
 			};
 			const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
 			setProcessing(false);
-			console.log(response)
-			if(response){
+			console.log(response);
+			if (response) {
 				setPaymentMethod(response);
-				props.setPaymentState(response)
+				props.setPaymentState(response);
 			} else {
 				setError(response.error);
 			}
 		}
-
 	};
 
 	const reset = () => {

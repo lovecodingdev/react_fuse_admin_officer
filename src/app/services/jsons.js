@@ -876,4 +876,88 @@ export const bonusPlanTemplate = {
       }
     }
   }
+
+export const marketingTemplate = {
+  "1611236497305" : {
+    "id" : 1611236497305,
+    "marketingName" : "Center of Influence"
+  },
+  "1611236501113" : {
+    "id" : 1611236501113,
+    "marketingName" : "Client Request"
+  },
+  "1611236505081" : {
+    "id" : 1611236505081,
+    "marketingName" : "Direct Mail Letter"
+  },
+  "1611236509137" : {
+    "id" : 1611236509137,
+    "marketingName" : "Internet Lead >>"
+  },
+  "1611236513473" : {
+    "id" : 1611236513473,
+    "marketingName" : "Multiline Review"
+  },
+  "1611236517162" : {
+    "id" : 1611236517162,
+    "marketingName" : "Networking Meeting"
+  },
+  "1611236520873" : {
+    "id" : 1611236520873,
+    "marketingName" : "Call In"
+  },
+  "1611236524866" : {
+    "id" : 1611236524866,
+    "marketingName" : "Outbound Calling"
+  },
+  "1611236528921" : {
+    "id" : 1611236528921,
+    "marketingName" : "Personal Visit"
+  },
+  "1611236533089" : {
+    "id" : 1611236533089,
+    "marketingName" : "Postcard\t"
+  },
+  "1611236536793" : {
+    "id" : 1611236536793,
+    "marketingName" : "Referral \t"
+  },
+  "1611236543593" : {
+    "id" : 1611236543593,
+    "marketingName" : "Salesperson Pivot \t"
+  },
+  "1611236547266" : {
+    "id" : 1611236547266,
+    "marketingName" : "Sign\t"
+  },
+  "1611236550737" : {
+    "id" : 1611236550737,
+    "marketingName" : "Television\t"
+  },
+  "1611236556761" : {
+    "id" : 1611236556761,
+    "marketingName" : "Transfer \t"
+  },
+  "1611236560361" : {
+    "id" : 1611236560361,
+    "marketingName" : "Walk-In \t"
+  },
+  "1611236564035" : {
+    "id" : 1611236564035,
+    "marketingName" : "Website\t"
+  },
+  "1611236567737" : {
+    "id" : 1611236567737,
+    "marketingName" : "Web Search\t"
+  },
+  "1611236571025" : {
+    "id" : 1611236571025,
+    "marketingName" : "Yellow Pages\t"
+  },
+  "1611236574732" : {
+    "id" : 1611236574732,
+    "marketingName" : "Other\t"
+  }
+}
+
   

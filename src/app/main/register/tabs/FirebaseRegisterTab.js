@@ -96,8 +96,8 @@ function FirebaseRegisterTab(props) {
 					validationErrors={{
 						isEmail: 'Please enter a valid email'
 					}}
-					disabled={routeParams.email!=='0'?true:false}
-					value={routeParams.email!=='0'?routeParams.email:''}
+					disabled={true}
+					value={routeParams.email!=='0'?routeParams.email:props.email}
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">
