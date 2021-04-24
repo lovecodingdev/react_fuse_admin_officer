@@ -48,7 +48,7 @@ function ProductsTable(props) {
 	const products = useSelector(selectUsers);
 	const searchText = useSelector(({ users }) => users.users.searchText);
 	const bonusPlanTemplates = useSelector(({ users }) => users.templates);
-	console.log(bonusPlanTemplates);
+	let belongTo = localStorage.getItem('@BELONGTO')
 	const isAdmin = useSelector(({ auth }) => auth.user.role[0]);
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
@@ -252,7 +252,7 @@ function ProductsTable(props) {
 							{_.orderBy(data, [order.id], [order.direction])
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((n, index) => {
-									if (isAdmin === 'agency' && n.role && n.role[0] === 'agency') {
+									if ((isAdmin === 'agency' && n.role && n.role[0] === 'agency')|| (n.role[0] === 'admin')) {
 										return;
 									}
 									const isSelected = selected.indexOf(n.id) !== -1;

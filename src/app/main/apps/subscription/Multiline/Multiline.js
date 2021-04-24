@@ -78,11 +78,11 @@ function Multiline(props) {
 				console.log(response);
 				let temp = { ...user[0] };
 				delete temp.subscriptionInfo;
-				if (response) {
-					realDb.ref(`admin/${uid}/`).set({
-						...temp
-					});
-				}
+				// if (response) {
+				// 	realDb.ref(`admin/${uid}/`).set({
+				// 		...temp
+				// 	});
+				// }
 				dispatch(getUsers());
 			}
 		} catch (error) {
@@ -99,9 +99,10 @@ function Multiline(props) {
 	const [state, setState] = useState({
 		count: [],
 		currentSubscription: {},
+		secondSubscription:{},
 		token: '',
 		openPay: false,
-		quantity:1
+		quantity: 0
 	});
 
 	const { count, openPay } = state;
@@ -112,51 +113,58 @@ function Multiline(props) {
 	}, [user]);
 
 	async function setMembership(user) {
+		let temp = {}
 		try {
 			const response = await axios.post(firebaseFunctionGetProductsEndpoint);
-
+			
 			if (response.data) {
-				if (user.length > 0) {
-					if (Object.keys(user[0]).includes('subscriptionInfo')) {
-						console.log('------------------there is not user data with subscription-------------');
-						setState({
-							...state,
-							count: response.data.data,
-							currentSubscription: user[0].subscriptionInfo.response
-						});
-					} else {
-						console.log('------------------there is not user data without subscription-------------');
-						setState({ ...state, count: response.data.data, currentSubscription: {} });
+				
+				response.data.data.map(item=>{
+					
+					if(item.nickname==='seat'){
+						temp = item
 					}
+					
+				})
+				console.log('--------------------------',temp)
+				if(Object.keys(user[0].subscriptionInfo).includes('secondResponse')){
+					setState({
+						...state,
+						currentSubscription: user[0].subscriptionInfo.response,
+						secondSubscription: user[0].subscriptionInfo.secondResponse,
+						seatSubscription: temp
+					});
 				} else {
-					console.log('------------------there is not user data-------------');
-					setState({ ...state, count: response.data.data, currentSubscription: {} });
+					setState({
+						...state,
+						currentSubscription: user[0].subscriptionInfo.response,
+						seatSubscription: temp
+					});
 				}
 			}
 		} catch (error) {
 			console.log(error);
 		}
+
+		
+		
 	}
 
-	function handleTabChange(token) {
-		// setState({ ...state, showPaymentForm: true, token: token });
-	}
 
-	function setBuy(token, quantity) {
-		setState({ ...state, token, openPay: true, quantity });
+	function setBuy(secondSubscription,quantity) {
+		setState({ ...state, openPay: true, quantity, secondSubscription });
 	}
 
 	function setPaymentState(result) {
-		console.log(result);
-		setState({ ...state, openPay: false, subscriptionInfo: result.data });
-		let temp = { ...user[0] };
-		let uid = localStorage.getItem('@BELONGTO');
-		temp.subscriptionInfo = result.data;
+		console.log(result);		
 
-		realDb.ref(`admin/${uid}/`).set({
-			...temp
+		let uid = localStorage.getItem('@BELONGTO');
+
+		realDb.ref(`admin/${uid}/subscriptionInfo/secondResponse`).set({
+			...result
 		});
 		dispatch(getUsers());
+		setState({ ...state, openPay: false });
 	}
 
 	if (loading) {
@@ -189,29 +197,33 @@ function Multiline(props) {
 						{!openPay && (
 							<FuseAnimate animation="transition.slideUpIn" delay={400}>
 								<div className="flex">
-									{console.log('-----------------------------', state.currentSubscription)}
-									{count.length > 0 &&
-										count.map(item => {
-											return (
-												<SubscriptionCard
-													setBuy={setBuy}
-													price={item.amount / 100}
-													interval={item.interval_count + ' ' + item.interval}
-													token={item.id}
-													currentSubscription={state.currentSubscription}
-													handleClickOpen={handleClickOpen}
-													nickname={item.nickname}
-												/>
-											);
-										})}
+									{state.currentSubscription && (
+										<SubscriptionCard
+											setBuy={setBuy}
+											// price={item.amount / 100}
+											// interval={item.interval_count + ' ' + item.interval}
+											// token={item.id}
+											currentSubscription={state.currentSubscription}
+											secondSubscription={state.secondSubscription}
+											handleClickOpen={handleClickOpen}
+											// nickname={item.nickname}
+										/>
+									)}
 								</div>
 							</FuseAnimate>
 						)}
 
-						{openPay && (
+						{openPay && user.length > 0 && (
 							<FuseAnimate animation="transition.slideUpIn" delay={400}>
 								<Elements stripe={stripePromise}>
-									<CardElements setPaymentState={setPaymentState} token={state.token} quantity={state.quantity} handleDelete={handleDelete}/>
+									<CardElements
+										setPaymentState={setPaymentState}
+										quantity={state.quantity}
+										handleDelete={handleDelete}
+										planInfo={user[0].subscriptionInfo}
+										secondSubscription={state.secondSubscription}
+										seatSubscription={state.seatSubscription}
+									/>
 								</Elements>
 							</FuseAnimate>
 						)}
@@ -225,11 +237,11 @@ function Multiline(props) {
 						<DialogTitle id="alert-dialog-title">{'Are you really cancel this plan?'}</DialogTitle>
 						<DialogContent>
 							<DialogContentText id="alert-dialog-description">
-								{`Your account can use for ${
+								{/* {`Your account can use for ${
 									Object.keys(state.currentSubscription).length>0 && state.currentSubscription.plan.interval
 								} ${
 									Object.keys(state.currentSubscription).length>0 && state.currentSubscription.plan.interval_count
-								} from now.`}
+								} from now.`} */}
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>

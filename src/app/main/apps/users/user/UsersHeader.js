@@ -5,23 +5,46 @@ import Input from '@material-ui/core/Input';
 import Paper from '@material-ui/core/Paper';
 import { ThemeProvider } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectMainTheme } from 'app/store/fuse/settingsSlice';
-import { setProductsSearchText } from '../store/userSlice';
+import { setProductsSearchText, getUsers, selectUsers, } from '../store/userSlice';
 import {
 	openUserDialog
 } from '../store/userSlice';
+import { showMessage } from 'app/store/fuse/messageSlice';
+
 
 function ProductsHeader(props) {
 	const dispatch = useDispatch();
+	const [count, setCount] = useState(5)
 	const searchText = useSelector(({ users }) => users.users.searchText);
 	const mainTheme = useSelector(selectMainTheme);
-
+	const products = useSelector(selectUsers);
+	
 	function addNewUser () {
-		dispatch(openUserDialog())
+		if(count>=products.length){
+			dispatch(openUserDialog())
+		} else {
+			dispatch(showMessage({ message: "You can't add member anymore. Please upgrade the subscription plan." }))
+		}		
 	}
+
+	useEffect(()=>{
+		if(products){
+			products.map(item=>{
+				if(Object.keys(item).includes('subscriptionInfo')){
+					
+					console.log(item.subscriptionInfo)
+					if(Object.keys(item.subscriptionInfo).includes('secondResponse')){
+						setCount(count+parseInt(item.subscriptionInfo.secondResponse.quantity))
+						console.log('------------------------',count+parseInt(item.subscriptionInfo.secondResponse.quantity))
+					}
+				}
+			})
+		}
+	},[products])
 
 	return (
 		<div className="flex flex-1 w-full items-center justify-between">

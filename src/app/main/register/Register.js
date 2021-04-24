@@ -1,7 +1,6 @@
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
-import { makeStyles } from '@material-ui/core/styles';
 import { darken } from '@material-ui/core/styles/colorManipulator';
 import { useParams } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
@@ -10,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CardElements from '../components/CardElements';
 import FirebaseRegisterTab from './tabs/FirebaseRegisterTab';
+import FirebaseRegisterTabAgency from './tabs/FirebaseRegisterTabAgency';
 import JWTRegisterTab from './tabs/JWTRegisterTab';
 import SubscriptionCard from './components/subscriptionCard';
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
@@ -17,6 +17,13 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { firebaseFunctionGetProductsEndpoint } from 'app/fuse-configs/endpointConfig';
 import axios from 'axios';
+import TextField from '@material-ui/core/TextField';
+import { fade, ThemeProvider, withStyles, makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { Paper } from '@material-ui/core';
+import { registerWithFirebase } from 'app/auth/store/registerSlice';
+import { auth } from '../../../@fake-db/db/firebase';
+import { useDispatch } from 'react-redux';
+import { registerError } from 'app/auth/store/registerSlice';
 
 const publicKeyTest =
 	'pk_test_51IFn0pAfN4Ms4oOXNtWGRfBvhbBdJ0zIV4bCiefjGeRgt8eMDfq7Cm4jovgdj5BfdQm2qbV6oL7jzgcQ13jQ70l800ocRcNzky';
@@ -44,26 +51,57 @@ const useStyles = makeStyles(theme => ({
 function Register() {
 	const classes = useStyles();
 	const [selectedTab, setSelectedTab] = useState(1);
+	const dispatch = useDispatch();
 	const [state, setState] = useState({
 		showPaymentForm: false,
+		showSubscriptionForm: true,
 		name: '',
 		cardNumber: '',
 		subscriptionStatus: false,
 		token: '',
-		subscriptionInfo:{},
-		quantity: 1,
-		email:''
+		subscriptionInfo: {},
+		quantity: 0,
+		email: '',
+		showLoginForm: false,
+		seatSubscription: {},
+		selectedSubscription: {},
+		model: {}
 	});
 	const [count, setCount] = useState([]);
 	const routeParams = useParams();
-	function handleTabChange(token, quantity) {
-		console.log({ ...state, showPaymentForm: true, token: token, quantity })
-		setState({ ...state, showPaymentForm: true, token: token, quantity });
+	function handleTabChange(token, item) {
+		console.log({ ...state, subscriptionStatus: true, token: token });
+		let tempSeatSubscription = {};
+		count.map(item => {
+			if (item.nickname === 'seat') {
+				tempSeatSubscription = { ...item };
+			}
+		});
+		setState({
+			...state,
+			showLoginForm: true,
+			token: token,
+			showSubscriptionForm: false,
+			selectedSubscription: item,
+			seatSubscription: tempSeatSubscription
+		});
 	}
 
-	function setPaymentState(result, email) {
-		console.log(result.data);
-		setState({ ...state, subscriptionStatus: true, subscriptionInfo: result.data , email});
+	function setPaymentState(model) {
+		console.log(model);
+		auth.fetchSignInMethodsForEmail(model.email)
+			.then(res => {
+				if (res[0] === 'password') {
+					dispatch(
+						registerError({ email: 'This email is registered already. Please try again with other email.' })
+					);
+				} else {
+					setState({ ...state, showPaymentForm: true, showLoginForm: false, model });
+				}
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	}
 
 	useEffect(() => {
@@ -78,6 +116,34 @@ function Register() {
 		}
 	}
 
+	function setQuantity(value) {
+		setState({ ...state, quantity: value });
+	}
+
+	function handleSubmit(res) {
+		// props.setPaymentState(model)
+
+		if (routeParams.id.length === 32) {
+			dispatch(
+				registerWithFirebase({
+					...state.model,
+					role: 'admin',
+					belongTo: routeParams.belongTo,
+					subscriptionInfo: res.data
+				})
+			);
+		} else if (routeParams.id.length === 150) {
+			dispatch(
+				registerWithFirebase({
+					...state.model,
+					role: 'agency',
+					belongTo: routeParams.belongTo,
+					subscriptionInfo: {}
+				})
+			);
+		}
+	}
+
 	return (
 		<div
 			className={clsx(
@@ -87,7 +153,7 @@ function Register() {
 		>
 			<FuseAnimate animation="transition.expandIn">
 				<div className="flex w-full max-w-400 md:max-w-3xl rounded-12 shadow-2xl overflow-hidden">
-					{state.subscriptionStatus && routeParams.id.length === 32 && (
+					{state.showLoginForm && routeParams.id.length === 32 && (
 						<Card
 							className={clsx(
 								classes.leftSection,
@@ -114,7 +180,14 @@ function Register() {
 									</div>
 								</FuseAnimate>
 
-								{selectedTab === 1 && <FirebaseRegisterTab state={state.subscriptionStatus} subscriptionInfo={state.subscriptionInfo} email={state.email}/>}
+								{selectedTab === 1 && (
+									<FirebaseRegisterTab
+										state={state.subscriptionStatus}
+										subscriptionInfo={state.subscriptionInfo}
+										email={state.email}
+										setPaymentState={setPaymentState}
+									/>
+								)}
 							</CardContent>
 
 							<div className="flex flex-col items-center justify-center pb-32">
@@ -158,7 +231,7 @@ function Register() {
 									</div>
 								</FuseAnimate>
 
-								{selectedTab === 1 && <FirebaseRegisterTab state={true} />}
+								{selectedTab === 1 && <FirebaseRegisterTabAgency state={true} />}
 							</CardContent>
 
 							<div className="flex flex-col items-center justify-center pb-32">
@@ -179,20 +252,22 @@ function Register() {
 						className={clsx(classes.rightSection, 'hidden md:flex flex-1 items-center justify-center p-32')}
 					>
 						<div className="max-w-lg">
-							{routeParams.id.length === 32 && !state.showPaymentForm && (
+							{routeParams.id.length === 32 && state.showSubscriptionForm && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
 									<div className="flex">
 										{count.length > 0 &&
 											count.map(item => {
-												return (
-													<SubscriptionCard
-														setBuy={handleTabChange}
-														price={item.amount / 100}
-														interval={item.interval_count + ' ' + item.interval}
-														token={item.id}
-														nickname={item.nickname}
-													/>
-												);
+												if (!item.nickname)
+													return (
+														<SubscriptionCard
+															setBuy={handleTabChange}
+															price={item.amount / 100}
+															interval={item.interval_count + ' ' + item.interval}
+															token={item.id}
+															nickname={item.nickname}
+															item={item}
+														/>
+													);
 											})}
 									</div>
 								</FuseAnimate>
@@ -200,7 +275,14 @@ function Register() {
 							{routeParams.id.length === 32 && state.showPaymentForm && (
 								<FuseAnimate animation="transition.slideUpIn" delay={400}>
 									<Elements stripe={stripePromise}>
-										<CardElements setPaymentState={setPaymentState} token={state.token} quantity={state.quantity}/>
+										<CardElements
+											handleSubmit={handleSubmit}
+											token={state.token}
+											quantity={state.quantity}
+											selectedSubscription={state.selectedSubscription}
+											seatSubscription={state.seatSubscription}
+											email = {state.model.email}
+										/>
 									</Elements>
 								</FuseAnimate>
 							)}
@@ -212,13 +294,62 @@ function Register() {
 									</Typography>
 								</FuseAnimate>
 							)}
-
-							{/* <FuseAnimate delay={500}>
-								<Typography variant="subtitle1" color="inherit" className="mt-32">
-									Powerful and professional admin template for Web Applications, CRM, CMS, Admin
-									Panels and more.
-								</Typography>
-							</FuseAnimate> */}
+							{state.showLoginForm && routeParams.id.length === 32 && (
+								<FuseAnimate delay={500} color="inherit">
+									<div>
+										<Typography variant="h3" color="inherit" className="font-800 leading-tight">
+											Payment
+										</Typography>
+										<div className="flex justify-between">
+											<Typography variant="subtitle1" color="inherit" className="mt-32">
+												Set up fee:
+											</Typography>
+											<Typography variant="subtitle1" color="inherit" className="mt-32">
+												$250
+											</Typography>
+										</div>
+										<div className="flex justify-between">
+											<Typography variant="subtitle1" color="inherit" className="mt-32">
+												{state.selectedSubscription.interval === 'month'
+													? 'Monthly Subscription:'
+													: 'Annual Subscription:'}
+											</Typography>
+											<Typography variant="subtitle1" color="inherit" className="mt-32">
+												${state.selectedSubscription.amount / 100}
+											</Typography>
+										</div>
+										<div className="flex justify-between">
+											<Typography variant="subtitle1" color="inherit" className="mt-32">
+												Addition seat: &nbsp;&nbsp;&nbsp;&nbsp;
+											</Typography>
+											<Paper className="flex items-center justify-center max-w-96">
+												<TextField
+													className=" max-w-96"
+													id="outlined-basic"
+													label="Members"
+													variant="outlined"
+													type="number"
+													onChange={e => setQuantity(e.target.value)}
+												/>
+											</Paper>
+											<Typography variant="subtitle1" color="inherit" className="mt-32">
+												&nbsp;*&nbsp;$25/month
+											</Typography>
+										</div>
+										<div className="flex justify-between">
+											<Typography variant="subtitle1" color="inherit" className="mt-32">
+												Total:
+											</Typography>
+											<Typography variant="subtitle1" color="inherit" className="mt-32">
+												$
+												{state.selectedSubscription.amount / 100 +
+													250 +
+													(state.seatSubscription.amount / 100) * state.quantity}
+											</Typography>
+										</div>
+									</div>
+								</FuseAnimate>
+							)}
 						</div>
 					</div>
 				</div>

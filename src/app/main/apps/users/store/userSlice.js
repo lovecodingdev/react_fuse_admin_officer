@@ -17,6 +17,8 @@ export const getUsers = createAsyncThunk(
 			var agencyCountRef = realDb.ref(`agency/`);
 			var invitationCountRef = realDb.ref(`Invitation/${belongTo}/`);
 			var bonusRef = realDb.ref(`BonusPlan/${belongTo}/`);
+			var uid = localStorage.getItem('@UID')
+			var adminRef = realDb.ref(`admin/${uid}/`);
 			var users = [];
 			bonusRef.on('value', snapData => {
 				const snapshotData = snapData.val();
@@ -55,7 +57,15 @@ export const getUsers = createAsyncThunk(
 								});
 							}
 
-							resolve(users);
+							adminRef.on('value', snapAdmin=>{
+								const adminData = snapAdmin.val()
+								if(adminData){
+									users.push(adminData)
+								}
+								resolve(users);
+							})
+
+							
 						});
 					});
 				});

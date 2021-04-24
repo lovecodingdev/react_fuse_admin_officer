@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import { CardElement, Elements, useElements, useStripe } from '@stripe/react-stripe-js';
 import './styles.css';
 import axios from 'axios';
-import { firebaseFunctionCreateCustomerAndSubscription } from 'app/fuse-configs/endpointConfig';
+import {
+	firebaseFunctionCreateCustomerAndSubscription,
+	firebaseFunctionCancelSubscriptionEndpoint,
+	firebaseFunctionUpdateSubscription
+} from 'app/fuse-configs/endpointConfig';
 
 const CARD_OPTIONS = {
 	iconStyle: 'solid',
@@ -103,6 +107,18 @@ const CheckoutForm = props => {
 		name: ''
 	});
 
+	useEffect(() => {
+		if (Object.keys(props.planInfo).length > 0) {
+			setBillingDetails({
+				...billingDetails,
+				email: props.planInfo.customer.email,
+				name: props.planInfo.customer.name
+			});
+		}
+	}, [props.planInfo]);
+
+	console.log('====================================', props.seatSubscription);
+
 	const handleSubmit = async event => {
 		event.preventDefault();
 
@@ -119,40 +135,75 @@ const CheckoutForm = props => {
 			setProcessing(true);
 		}
 
-		await props.handleDelete()
+		// await props.handleDelete();
+
+		// const response = await axios.post(firebaseFunctionCancelSubscriptionEndpoint, {
+		// 	subscriptionID: props.planInfo.response.id
+		// });
 
 		const payload = await stripe.createToken(elements.getElement(CardElement));
-		console.log(payload.token);
-		if (payload.token) {
+		// console.log(payload.token);
+		console.log(props.secondSubscription)
+		if(Object.keys(props.secondSubscription).length>0){			
+			let form = { subscriptionId: props.secondSubscription.id, quantity: props.quantity };
+			const response = await axios.post(firebaseFunctionUpdateSubscription, form);
+			console.log(response.data.response)
+			props.setPaymentState(response.data.response)			
+		} else {
+			
+			let items = [];
+			items.push({ price: props.seatSubscription.id, quantity: props.quantity });
 			var form = {
 				customerEmail: billingDetails.email,
 				name: billingDetails.name,
 				priceId: props.token,
 				stripeToken: payload.token.id,
-				quantity: props.quantity
+				quantity: props.quantity,
+				items: items
 			};
+			console.log(form)
 			const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
-			setProcessing(false);
-			console.log(response);
-			if (response) {
-				setPaymentMethod(response);
-				props.setPaymentState(response);
-			} else {
-				setError(response.error);
-			}
+			props.setPaymentState(response.data.response)
 		}
+		
+		// let items = [];
+		// if (props.quantity) {
+		// 	items.push({ price: props.planInfo.response.items.data[0].price.id, quantity: 1 });
+		// 	items.push({ price: props.planInfo.response.items.data[1].price.id, quantity: props.quantity });
+		// } else {
+		// 	items.push({ price: props.planInfo.response.items.data[0].price.id, quantity: 1 });
+		// }
+		// if (payload.token) {
+		// 	var form = {
+		// 		customerEmail: billingDetails.email,
+		// 		name: billingDetails.name,
+		// 		priceId: props.token,
+		// 		stripeToken: payload.token.id,
+		// 		quantity: props.quantity,
+		// 		items: items
+		// 	};
+		// 	const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
+		// 	setProcessing(false);
+		// 	console.log('-------------',response);
+		// 	if (response) {
+		// 		// setPaymentMethod(response);
+		// 		// props.setPaymentState(response);
+		// 	} else {
+		// 		setError(response.error);
+		// 	}
+		// }
 	};
 
-	const reset = () => {
-		setError(null);
-		setProcessing(false);
-		setPaymentMethod(null);
-		setBillingDetails({
-			email: '',
-			phone: '',
-			name: ''
-		});
-	};
+	// const reset = () => {
+	// 	setError(null);
+	// 	setProcessing(false);
+	// 	setPaymentMethod(null);
+	// 	setBillingDetails({
+	// 		email: '',
+	// 		phone: '',
+	// 		name: ''
+	// 	});
+	// };
 
 	return paymentMethod ? (
 		<div className="Result">
@@ -215,7 +266,7 @@ const CheckoutForm = props => {
 			</fieldset>
 			{error && <ErrorMessage>{error.message}</ErrorMessage>}
 			<SubmitButton processing={processing} error={error} disabled={!stripe}>
-				Pay
+				Update
 			</SubmitButton>
 		</form>
 	);

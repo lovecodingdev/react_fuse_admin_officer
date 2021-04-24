@@ -28,10 +28,10 @@ export default function SimpleCard(props) {
 	const [quantity, setQuantity] = useState(1);
 
 	return (
-		<Card className="rounded-8 mx-6 w-lg">
+		<Card className="rounded-8 mx-6 w-540">
 			<div className={clsx(classes.cardHeader, 'px-24 py-16')}>
 				<Typography variant="subtitle1" color="inherit">
-					BASIC
+					{props.item.interval === 'month' ? 'Monthly Plan' : 'Annual Plan'}
 				</Typography>
 			</div>
 
@@ -47,22 +47,18 @@ export default function SimpleCard(props) {
 						</Typography>
 					</div>
 				</div>
-				<div className="flex justify-center">
-					<Typography variant="subtitle1" color="textSecondary">
-						$250 one-time installation fee
-					</Typography>
-				</div>
 
 				<Divider className="my-32" />
 
 				<div className="flex flex-col">
-					{!props.nickname && (
-						<>
-							<Typography variant="subtitle1" className="">
-								Can Manage 4 Memebers
-							</Typography>
-						</>
-					)}
+					<Typography variant="subtitle1" color="textSecondary">
+						$250 setup fee
+					</Typography>
+
+					<Typography variant="subtitle1" color="textSecondary">
+						$25 monthly additional seat
+					</Typography>
+
 					{props.nickname && (
 						<>
 							<Typography variant="subtitle1" className="">
@@ -86,9 +82,9 @@ export default function SimpleCard(props) {
 					variant="contained"
 					color="secondary"
 					className="w-128"
-					onClick={() => props.setBuy(props.token, quantity)}
+					onClick={() => props.setBuy(props.token, props.item)}
 				>
-					Pay and Register
+					Choose
 				</Button>
 			</div>
 		</Card>

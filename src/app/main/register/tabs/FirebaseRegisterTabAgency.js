@@ -43,16 +43,15 @@ function FirebaseRegisterTab(props) {
 	}
 
 	function handleSubmit(model) {
-		props.setPaymentState(model)
-		// if(routeParams.belongTo==='admin'&&!props.state){
-		// 	dispatch(showMessage({ message: 'Please choose the membership!' }))
-		// 	return
-		// }
-		// if(routeParams.id.length===32){
-		// 	dispatch(registerWithFirebase({...model, role: "admin", belongTo, subscriptionInfo: props.subscriptionInfo}));
-		// } else if(routeParams.id.length===150) {
-		// 	dispatch(registerWithFirebase({...model, role: "agency",belongTo, subscriptionInfo:{}}));
-		// }		
+		if(routeParams.belongTo==='admin'&&!props.state){
+			dispatch(showMessage({ message: 'Please choose the membership!' }))
+			return
+		}
+		if(routeParams.id.length===32){
+			dispatch(registerWithFirebase({...model, role: "admin", belongTo, subscriptionInfo: props.subscriptionInfo}));
+		} else if(routeParams.id.length===150) {
+			dispatch(registerWithFirebase({...model, role: "agency",belongTo, subscriptionInfo:{}}));
+		}		
 	}
 
 	return (
@@ -97,8 +96,8 @@ function FirebaseRegisterTab(props) {
 					validationErrors={{
 						isEmail: 'Please enter a valid email'
 					}}
-					// disabled={true}
-					value={routeParams.email!=='0'?routeParams.email:props.email}
+					disabled={routeParams.email!=='0'?true:false}
+					value={routeParams.email!=='0'?routeParams.email:''}
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">

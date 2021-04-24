@@ -101,7 +101,7 @@ const CheckoutForm = props => {
 	const [processing, setProcessing] = useState(false);
 	const [paymentMethod, setPaymentMethod] = useState(null);
 	const [billingDetails, setBillingDetails] = useState({
-		email: '',
+		email: props.email,
 		phone: '',
 		name: ''
 	});
@@ -141,23 +141,33 @@ const CheckoutForm = props => {
 
 		if (confirmError) {
 			console.log('-----confirm--error---', confirmError);
+			setProcessing(false);
 		} else {
 			const payload = await stripe.createToken(elements.getElement(CardElement));
 			console.log(payload.token);
 			if (payload.token) {
+				let items = []
+				if(props.quantity){
+					items.push({price:props.selectedSubscription.id, quantity:1})
+					items.push({price:props.seatSubscription.id, quantity:props.quantity})
+				} else {
+					items.push({price:props.selectedSubscription.id, quantity:1})
+				}
+				console.log(items)
 				var form = {
 					customerEmail: billingDetails.email,
 					name: billingDetails.name,
 					priceId: props.token,
 					stripeToken: payload.token.id,
-					quantity: props.quantity
+					quantity: props.quantity,
+					items:items
 				};
 				const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
 				setProcessing(false);
-				console.log(response);
-				if (response) {
+				console.log('============================================',response);
+				if (response.data) {
 					setPaymentMethod(response);
-					props.setPaymentState(response, billingDetails.email);
+					props.handleSubmit(response);
 				} else {
 					setError(response.error);
 				}

@@ -7,6 +7,7 @@ export const firebaseFunctionCancelSubscriptionEndpoint = endpoint + '/calcelSub
 export const firebaseFunctionGetSubscrioption = endpoint + '/getSubscription'
 export const firebaseFunctionGetCardTokenEndpoint = endpoint + '/getCardToken';
 export const firebaseFunctionCreateCustomerAndSubscription = endpoint + '/createCustomerAndSubscription';
+export const firebaseFunctionUpdateSubscription = endpoint + '/updateSubscription';
 export const firebaseFunctionGetClient=  endpoint+'/clientResult';
 export const deployOfficerEndpoint = 'https://officer-staging.netlify.app';
 export const deployProducerEndpoint = 'https://producer-staging.netlify.app';
