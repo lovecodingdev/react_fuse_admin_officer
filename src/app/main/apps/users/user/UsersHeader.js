@@ -39,7 +39,6 @@ function ProductsHeader(props) {
 					console.log(item.subscriptionInfo)
 					if(Object.keys(item.subscriptionInfo).includes('secondResponse')){
 						setCount(count+parseInt(item.subscriptionInfo.secondResponse.quantity))
-						console.log('------------------------',count+parseInt(item.subscriptionInfo.secondResponse.quantity))
 					}
 				}
 			})
