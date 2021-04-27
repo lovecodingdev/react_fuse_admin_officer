@@ -252,7 +252,9 @@ function ProductsTable(props) {
 							{_.orderBy(data, [order.id], [order.direction])
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((n, index) => {
-									if ((isAdmin === 'agency' && n.role && n.role[0] === 'agency')|| (n.role[0] === 'admin')) {
+									console.log('---------------------------------------------------', n)
+									if (Object.keys(n).includes('role')) {
+										if(n.role[0] === 'admin')
 										return;
 									}
 									const isSelected = selected.indexOf(n.id) !== -1;
