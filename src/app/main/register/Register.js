@@ -329,7 +329,8 @@ function Register() {
 													label="Members"
 													variant="outlined"
 													type="number"
-													onChange={e => setQuantity(e.target.value)}
+													value={state.quantity}
+													onChange={e => setQuantity(parseInt(e.target.value)>0?e.target.value:'')}
 												/>
 											</Paper>
 											<Typography variant="subtitle1" color="inherit" className="mt-32">
