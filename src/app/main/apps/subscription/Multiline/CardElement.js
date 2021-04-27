@@ -162,13 +162,13 @@ const CheckoutForm = props => {
 					quantity: props.quantity,
 					items:items
 				};
-				
+
 				const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
 				setProcessing(false);
 				console.log('============================================',response);
 				if (response.data) {
 					setPaymentMethod(response);
-					props.createPaymentState({ data:{...response.data, card: {...payload.token.card}}})
+					props.createPaymentState({ ...response.data, card: {...payload.token.card}, active: true})
 				} else {
 					setError(response.error);
 				}

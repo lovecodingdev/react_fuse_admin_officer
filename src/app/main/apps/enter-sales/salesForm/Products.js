@@ -247,6 +247,12 @@ function Products() {
 								value: bonus[0][uid]['lifeBonus'][item].name
 							});
 						});
+						Object.keys(bonus[0][uid]['bankBonus']).map(item => {
+							tempBankBonus.push({
+								item: bonus[0][uid]['bankBonus'][item].name,
+								value: bonus[0][uid]['bankBonus'][item].name
+							});
+						});
 						setState({
 							...state,
 							...editData,
@@ -254,6 +260,7 @@ function Products() {
 							fireProductList: tempFireBonus,
 							healthProductList: tempHealthBonus,
 							lifeProductList: tempLifeBonus,
+							bankProductList:tempBankBonus,
 							policyInformation:editData.policyInformation,
 							policyInformationLife: editData.policyInformation,
 							policyInformationFire: editData.policyInformation,
@@ -387,7 +394,7 @@ function Products() {
 						fireProductList: tempFireBonus,
 						healthProductList: tempHealthBonus,
 						lifeProductList: tempLifeBonus,
-						bankProductList: tempLifeBonus,
+						bankProductList: tempBankBonus,
 						policyInformation:editData.policyInformation,
 						policyInformationLife: editData.policyInformation,
 						policyInformationFire: editData.policyInformation,
@@ -426,7 +433,7 @@ function Products() {
 				fireProductList: tempFireBonus,
 				healthProductList: tempHealthBonus,
 				lifeProductList: tempLifeBonus,
-				bankProductList: tempLifeBonus,
+				bankProductList: tempBankBonus,
 				policyInformation: editData.policyInformation,
 				policyInformationLife: editData.policyInformation,
 				policyInformationFire: editData.policyInformation,
@@ -497,7 +504,7 @@ function Products() {
 				fireProductList: tempFireBonus,
 				healthProductList: tempHealthBonus,
 				lifeProductList: tempLifeBonus,
-				bankProductList: tempLifeBonus,
+				bankProductList: tempBankBonus,
 				policyInformation:editData.policyInformation,
 				policyInformationLife: editData.policyInformation,
 				policyInformationFire: editData.policyInformation,
