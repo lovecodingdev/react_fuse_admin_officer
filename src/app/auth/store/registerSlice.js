@@ -54,9 +54,9 @@ export const registerWithFirebase = model => async dispatch => {
 						teamBonus: true
 					});
 
-					realDb.ref(`ProductType/${belongTo}/`).set({
-						...productTypes
-					});
+					// realDb.ref(`ProductType/${belongTo}/`).set({
+					// 	...productTypes
+					// });
 
 					var inviteUserRef = realDb.ref(
 						`Invitation/${belongTo}/${email.replace('.', '').replace('.', '').replace('.', '')}`
@@ -92,7 +92,7 @@ export const registerWithFirebase = model => async dispatch => {
 					...bonusPlanTemplate
 				});
 
-				realDb.ref(`ProductType/${belongTo}/`).set({
+				realDb.ref(`ProductType/${response.user.uid}/`).set({
 					...productTypes
 				});
 
