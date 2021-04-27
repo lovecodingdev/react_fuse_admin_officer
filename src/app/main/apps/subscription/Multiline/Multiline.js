@@ -193,8 +193,7 @@ function Multiline(props) {
 		let uid = localStorage.getItem('@BELONGTO');
 
 		realDb.ref(`admin/${uid}/subscriptionInfo/`).set({
-			...result,
-			active: true
+			...result
 		});
 		dispatch(getUsers());
 		setState({ ...state, openPay: false, resume: false });

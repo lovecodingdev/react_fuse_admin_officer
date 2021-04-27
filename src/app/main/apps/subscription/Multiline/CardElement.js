@@ -162,25 +162,27 @@ const CheckoutForm = props => {
 					quantity: props.quantity,
 					items:items
 				};
+				
 				const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
 				setProcessing(false);
 				console.log('============================================',response);
 				if (response.data) {
 					setPaymentMethod(response);
-					props.createPaymentState({...response, data:{...response.data, card: {...payload.token.card}}})
+					props.createPaymentState({ data:{...response.data, card: {...payload.token.card}}})
 				} else {
 					setError(response.error);
 				}
 
 				console.log(form)
 		} else {
-			if(Object.keys(props.secondSubscription).length>0){			
+			if(Object.keys(props.secondSubscription).length>0){		
+				console.log('---------------------------------------------------')	
 				let form = { subscriptionId: props.secondSubscription.id, quantity: props.quantity };
 				const response = await axios.post(firebaseFunctionUpdateSubscription, form);
 				console.log(response.data.response)
 				props.setPaymentState(response.data.response)			
 			} else {
-				
+				console.log('===================================================')	
 				let items = [];
 				items.push({ price: props.seatSubscription.id, quantity: props.quantity });
 				var form = {
