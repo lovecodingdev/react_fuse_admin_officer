@@ -142,29 +142,61 @@ const CheckoutForm = props => {
 		// });
 
 		const payload = await stripe.createToken(elements.getElement(CardElement));
-		// console.log(payload.token);
-		console.log(props.secondSubscription)
-		if(Object.keys(props.secondSubscription).length>0){			
-			let form = { subscriptionId: props.secondSubscription.id, quantity: props.quantity };
-			const response = await axios.post(firebaseFunctionUpdateSubscription, form);
-			console.log(response.data.response)
-			props.setPaymentState(response.data.response)			
+		console.log(payload.token);
+		console.log(props.currentSubscription)
+		console.log(props.seatSubscription)
+		if(props.resume){
+			let items = []
+				if(props.quantity){
+					items.push({price:props.currentSubscription.plan.id, quantity:1})
+					items.push({price:props.seatSubscription.id, quantity:props.quantity})
+				} else {
+					items.push({price:props.currentSubscription.plan.id, quantity:1})
+				}
+
+				var form = {
+					customerEmail: billingDetails.email,
+					name: billingDetails.name,
+					priceId: props.token,
+					stripeToken: payload.token.id,
+					quantity: props.quantity,
+					items:items
+				};
+				const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
+				setProcessing(false);
+				console.log('============================================',response);
+				if (response.data) {
+					setPaymentMethod(response);
+					props.createPaymentState({...response, data:{...response.data, card: {...payload.token.card}}})
+				} else {
+					setError(response.error);
+				}
+
+				console.log(form)
 		} else {
-			
-			let items = [];
-			items.push({ price: props.seatSubscription.id, quantity: props.quantity });
-			var form = {
-				customerEmail: billingDetails.email,
-				name: billingDetails.name,
-				priceId: props.token,
-				stripeToken: payload.token.id,
-				quantity: props.quantity,
-				items: items
-			};
-			console.log(form)
-			const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
-			props.setPaymentState(response.data.response)
+			if(Object.keys(props.secondSubscription).length>0){			
+				let form = { subscriptionId: props.secondSubscription.id, quantity: props.quantity };
+				const response = await axios.post(firebaseFunctionUpdateSubscription, form);
+				console.log(response.data.response)
+				props.setPaymentState(response.data.response)			
+			} else {
+				
+				let items = [];
+				items.push({ price: props.seatSubscription.id, quantity: props.quantity });
+				var form = {
+					customerEmail: billingDetails.email,
+					name: billingDetails.name,
+					priceId: props.token,
+					stripeToken: payload.token.id,
+					quantity: props.quantity,
+					items: items
+				};
+				console.log(form)
+				const response = await axios.post(firebaseFunctionCreateCustomerAndSubscription, form);
+				props.setPaymentState(response.data.response)
+			}
 		}
+		
 		
 		// let items = [];
 		// if (props.quantity) {

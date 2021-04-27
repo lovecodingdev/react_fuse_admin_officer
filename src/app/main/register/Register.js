@@ -129,7 +129,7 @@ function Register() {
 					...state.model,
 					role: 'admin',
 					belongTo: routeParams.belongTo,
-					subscriptionInfo: res.data
+					subscriptionInfo: {...res.data, active: true}
 				})
 			);
 		} else if (routeParams.id.length === 150) {

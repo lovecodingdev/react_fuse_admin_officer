@@ -37,41 +37,41 @@ export const bonusPlanTemplate = {
       "1611355979931" : {
         "dollar" : "",
         "id" : 1611355979931,
-        "name" : "Short-Term Disability",
-        "percent" : 17.5,
-        "planType" : "healthBonus",
+        "name" : "Checking Accounts",
+        "percent" : 1,
+        "planType" : "bankBonus",
         "routeParam" : "all"
       },
       "1611355989290" : {
         "dollar" : "",
         "id" : 1611355989290,
-        "name" : "Long-Term Disability",
-        "percent" : 17.5,
-        "planType" : "healthBonus",
+        "name" : "Savings Account",
+        "percent" : 1,
+        "planType" : "bankBonus",
         "routeParam" : "all"
       },
       "1611355998903" : {
         "dollar" : "",
         "id" : 1611355998903,
-        "name" : "Hospital Income",
-        "percent" : "12.5",
-        "planType" : "healthBonus",
+        "name" : "Retirement Money Market Accounts",
+        "percent" : 1,
+        "planType" : "bankBonus",
         "routeParam" : "all"
       },
       "1611356007374" : {
         "dollar" : "",
         "id" : 1611356007374,
-        "name" : "ICDI ",
-        "percent" : 10,
-        "planType" : "healthBonus",
+        "name" : "Certificate of Deposits",
+        "percent" : 1,
+        "planType" : "bankBonus",
         "routeParam" : "all"
       },
       "1611356017003" : {
         "dollar" : "",
         "id" : 1611356017003,
-        "name" : "Med Sup",
-        "percent" : 8,
-        "planType" : "healthBonus",
+        "name" : "Credit Cards",
+        "percent" : 1,
+        "planType" : "bankBonus",
         "routeParam" : "all"
       }
     },
@@ -959,5 +959,150 @@ export const marketingTemplate = {
     "marketingName" : "Other\t"
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export const productTypes = {
+  "1617714531130" : {
+    "id" : 1617714531130,
+    "policy" : "Entries",
+    "productTypeName" : "Personally Produced"
+  },
+  "1617714559392" : {
+    "id" : 1617714559392,
+    "policy" : "Entries",
+    "productTypeName" : "Raw New"
+  },
+  "1617714564312" : {
+    "id" : 1617714564312,
+    "policy" : "Entries",
+    "productTypeName" : "Add On"
+  },
+  "1617714570167" : {
+    "id" : 1617714570167,
+    "policy" : "Entries",
+    "productTypeName" : "Transfer In"
+  },
+  "1617714577015" : {
+    "id" : 1617714577015,
+    "policy" : "FireEntries",
+    "productTypeName" : "Personally Produced"
+  },
+  "1617714582431" : {
+    "id" : 1617714582431,
+    "policy" : "FireEntries",
+    "productTypeName" : "Raw New"
+  },
+  "1617714587351" : {
+    "id" : 1617714587351,
+    "policy" : "FireEntries",
+    "productTypeName" : "Client Request"
+  },
+  "1617714592679" : {
+    "id" : 1617714592679,
+    "policy" : "FireEntries",
+    "productTypeName" : "Transfer In"
+  },
+  "1617714600911" : {
+    "id" : 1617714600911,
+    "policy" : "LifeEntries",
+    "productTypeName" : "Term"
+  },
+  "1617714604711" : {
+    "id" : 1617714604711,
+    "policy" : "LifeEntries",
+    "productTypeName" : "Whole Life"
+  },
+  "1617714608815" : {
+    "id" : 1617714608815,
+    "policy" : "LifeEntries",
+    "productTypeName" : "Universal Life"
+  },
+  "1617714612655" : {
+    "id" : 1617714612655,
+    "policy" : "LifeEntries",
+    "productTypeName" : "UL Bump"
+  },
+  "1617714616679" : {
+    "id" : 1617714616679,
+    "policy" : "LifeEntries",
+    "productTypeName" : "Limited Pay"
+  },
+  "1617714620935" : {
+    "id" : 1617714620935,
+    "policy" : "LifeEntries",
+    "productTypeName" : "Final Expense"
+  },
+  "1617714625176" : {
+    "id" : 1617714625176,
+    "policy" : "LifeEntries",
+    "productTypeName" : "Single Premium"
+  },
+  "1617714632134" : {
+    "id" : 1617714632134,
+    "policy" : "HealthEntries",
+    "productTypeName" : "Short-Term Disability"
+  },
+  "1617714636575" : {
+    "id" : 1617714636575,
+    "policy" : "HealthEntries",
+    "productTypeName" : "Long-Term Disability"
+  },
+  "1617714641526" : {
+    "id" : 1617714641526,
+    "policy" : "HealthEntries",
+    "productTypeName" : "Hospital Income"
+  },
+  "1617714647263" : {
+    "id" : 1617714647263,
+    "policy" : "HealthEntries",
+    "productTypeName" : "ICDI"
+  },
+  "1617714653887" : {
+    "id" : 1617714653887,
+    "policy" : "HealthEntries",
+    "productTypeName" : "Med Sup"
+  }
+  ,
+  "1617714653888" : {
+    "id" : 1617714653888,
+    "policy" : "BankEntries",
+    "productTypeName" : "Checking Accounts"
+  }
+  ,
+  "1617714653889" : {
+    "id" : 1617714653889,
+    "policy" : "BankEntries",
+    "productTypeName" : "Savings Account"
+  },
+  "1617714653890" : {
+    "id" : 1617714653890,
+    "policy" : "BankEntries",
+    "productTypeName" : "Retirement Money Market Accounts"
+  },
+  "1617714653891" : {
+    "id" : 1617714653891,
+    "policy" : "BankEntries",
+    "productTypeName" : "Certificate of Deposits"
+  },
+  "1617714653892" : {
+    "id" : 1617714653892,
+    "policy" : "BankEntries",
+    "productTypeName" : "Credit Cards"
+  }
+}
+
 
   

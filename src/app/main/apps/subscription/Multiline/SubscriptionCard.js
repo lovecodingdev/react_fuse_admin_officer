@@ -95,26 +95,54 @@ export default function SimpleCard(props) {
 					)} */}
 					{Object.keys(props.currentSubscription).length > 0 && (
 						<Typography variant="subtitle1" className="">
-							{`End Date: ${moment
+							{props.state?`Next Payment Date: ${moment
 								.unix(props.currentSubscription.current_period_end)
-								.format('DD-MM-YYYY')}`}
+								.format('DD-MM-YYYY')}`:`End date: ${moment
+									.unix(props.currentSubscription.current_period_end)
+									.format('DD-MM-YYYY')}`}
 						</Typography>
 					)}
 				</div>
 			</CardContent>
 
 			<div className="flex justify-center pb-32">
-				<Button
-					variant="contained"
-					color="secondary"
-					className="w-128"
-					onClick={() => {
-						if (quantity > 0) props.setBuy(props.secondSubscription, quantity);
-					}}
-				>
-					Update
-				</Button>
-				{/* )} */}
+				{props.active && (
+					<Button
+						variant="contained"
+						color="secondary"
+						className="w-128 mr-5"
+						onClick={() => {
+							props.handleClickOpen(props.secondSubscription.id, props.currentSubscription.id);
+						}}
+					>
+						Cancel Plan
+					</Button>
+				)}
+				{props.active && (
+					<Button
+						variant="contained"
+						color="secondary"
+						className="w-128"
+						onClick={() => {
+							if (quantity > 0) props.setBuy(props.secondSubscription, quantity);
+						}}
+					>
+						Update Plan
+					</Button>
+				)}
+
+				{!props.active && (
+					<Button
+						variant="contained"
+						color="secondary"
+						className="w-128"
+						onClick={() => {
+							if (quantity > 0) props.resumePlan(quantity);
+						}}
+					>
+						Resume Subscription
+					</Button>
+				)}
 			</div>
 		</Card>
 	);

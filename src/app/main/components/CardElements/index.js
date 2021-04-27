@@ -147,7 +147,7 @@ const CheckoutForm = props => {
 			console.log(payload.token);
 			if (payload.token) {
 				let items = []
-				if(props.quantity){
+				if(props.quantity!=='0'&&props.quantity){
 					items.push({price:props.selectedSubscription.id, quantity:1})
 					items.push({price:props.seatSubscription.id, quantity:props.quantity})
 				} else {
@@ -166,8 +166,8 @@ const CheckoutForm = props => {
 				setProcessing(false);
 				console.log('============================================',response);
 				if (response.data) {
-					setPaymentMethod(response);
-					props.handleSubmit(response);
+					setPaymentMethod({...response, data:{...response.data, card: {...payload.token.card}}});
+					props.handleSubmit({...response, data:{...response.data, card: {...payload.token.card}}});
 				} else {
 					setError(response.error);
 				}
