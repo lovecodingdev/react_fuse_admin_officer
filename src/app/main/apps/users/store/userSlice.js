@@ -7,6 +7,7 @@ import {
 	deployOfficerEndpoint,
 	deployProducerEndpoint
 } from 'app/fuse-configs/endpointConfig';
+import md5 from 'md5'
 
 export const getUsers = createAsyncThunk(
 	'users/users/getUsers',
@@ -134,7 +135,7 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 				deployOfficerEndpoint +
 				'/register/' +
 				contact.belongTo +
-				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l'>` +
+				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l/`+contact.email +`'>` +
 				deployOfficerEndpoint +
 				'/register/' +
 				contact.belongTo +
@@ -151,7 +152,8 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 				`<a href='` +
 				deployProducerEndpoint +
 				'/register/' +
-				contact.belongTo +
+				contact.belongTo +`/` +
+				contact.email
 				`'>` +
 				deployProducerEndpoint +
 				'/register/' +
