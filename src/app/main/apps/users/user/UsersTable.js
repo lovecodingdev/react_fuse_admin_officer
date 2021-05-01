@@ -48,7 +48,7 @@ function ProductsTable(props) {
 	const products = useSelector(selectUsers);
 	const searchText = useSelector(({ users }) => users.users.searchText);
 	const bonusPlanTemplates = useSelector(({ users }) => users.templates);
-	console.log(bonusPlanTemplates);
+	let belongTo = localStorage.getItem('@BELONGTO')
 	const isAdmin = useSelector(({ auth }) => auth.user.role[0]);
 	const [loading, setLoading] = useState(true);
 	const [selected, setSelected] = useState([]);
@@ -252,7 +252,9 @@ function ProductsTable(props) {
 							{_.orderBy(data, [order.id], [order.direction])
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((n, index) => {
-									if (isAdmin === 'agency' && n.role && n.role[0] === 'agency') {
+									console.log('---------------------------------------------------', n)
+									if (Object.keys(n).includes('role')) {
+										if(n.role[0] === 'admin')
 										return;
 									}
 									const isSelected = selected.indexOf(n.id) !== -1;
@@ -317,7 +319,7 @@ function ProductsTable(props) {
 												// onClick={() => n.data && goBonusPlan(n.uid)}
 											>
 												{/* <span>$</span> */}
-
+												{n.active && (
 												<SelectBox
 													id="outlined-basic"
 													label="Select Template"
@@ -330,7 +332,7 @@ function ProductsTable(props) {
 													}
 													// willvalidation={false}
 													// validate={state.userValidation}
-												/>
+												/>)}
 											</TableCell>
 
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">

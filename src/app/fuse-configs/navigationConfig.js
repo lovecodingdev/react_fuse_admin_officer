@@ -119,7 +119,7 @@ const navigationConfig = [
 					},
 					{
 						id: 'staff-multiline',
-						title: 'Staff Multiline',
+						title: 'Team Member HH penetration',
 						type: 'item',
 						url: '/apps/producer/staff-multiline',
 						exact: true

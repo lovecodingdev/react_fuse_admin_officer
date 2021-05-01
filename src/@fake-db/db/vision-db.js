@@ -2,8 +2,7 @@ import _ from '@lodash';
 import mock from '../mock';
 import { db, realDb } from './firebase';
 
-var belongTo = localStorage.getItem('@BELONGTO')
-var UID = localStorage.getItem('@UID')
+
 
 const visionAppDB = {
 	widgets: [
@@ -971,6 +970,8 @@ mock.onGet('/api/vision-app/vision').reply(() => {
 });
 
 mock.onPost('/api/vision-app/vision/save').reply(request => {
+	var belongTo = localStorage.getItem('@BELONGTO')
+	var UID = localStorage.getItem('@UID')
 	const data = JSON.parse(request.data);
 	let product = data;
 

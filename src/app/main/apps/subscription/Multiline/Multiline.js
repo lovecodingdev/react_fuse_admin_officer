@@ -37,6 +37,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 import CardElements from './CardElement';
 import { loadStripe } from '@stripe/stripe-js';
+import CardInfo from './CardInfo';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -52,7 +53,7 @@ function Multiline(props) {
 
 	let user = useSelector(selectUsers);
 	const [loading, setLoading] = useState(true);
-	const [data, setData] = useState({ widgets });
+	// const [data, setData] = useState({ widgets });
 
 	const [year, setYear] = useState(moment().format('yyyy'));
 
@@ -72,12 +73,25 @@ function Multiline(props) {
 		try {
 			if (Object.keys(user[0]).includes('subscriptionInfo')) {
 				const uid = localStorage.getItem('@BELONGTO');
+				const ids = [user[0].subscriptionInfo.response.id];
+				if (Object.keys(user[0].subscriptionInfo).includes('secondResponse')) {
+					if (user[0].subscriptionInfo.secondResponse.id.includes('si_')) {
+						ids.push(user[0].subscriptionInfo.secondResponse.subscription);
+					} else {
+						ids.push(user[0].subscriptionInfo.secondResponse.id);
+					}
+				}
+
+				console.log(ids);
+
 				const response = await axios.post(firebaseFunctionCancelSubscriptionEndpoint, {
-					subscriptionID: user[0].subscriptionInfo.response.id
+					subscriptionID: ids
 				});
+
 				console.log(response);
-				let temp = { ...user[0] };
-				delete temp.subscriptionInfo;
+				let temp = { ...user[0], subscriptionInfo: { ...user[0].subscriptionInfo, active: false } };
+				// delete temp.subscriptionInfo;
+				console.log(temp);
 				if (response) {
 					realDb.ref(`admin/${uid}/`).set({
 						...temp
@@ -90,17 +104,24 @@ function Multiline(props) {
 		}
 	};
 
-	console.log(user);
+	// console.log(user);
 	useEffect(() => {
-		dispatch(getUsers());
-		dispatch(getWidgets()).then(() => setLoading(false));
+		dispatch(getUsers()).then(() => setLoading(false));
+		// dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
 	const [state, setState] = useState({
 		count: [],
 		currentSubscription: {},
+		secondSubscription: {},
 		token: '',
-		openPay: false
+		openPay: false,
+		quantity: 0,
+		active: true,
+		resume: false,
+		name: '',
+		visa: '',
+		brand: ''
 	});
 
 	const { count, openPay } = state;
@@ -111,25 +132,38 @@ function Multiline(props) {
 	}, [user]);
 
 	async function setMembership(user) {
+		let temp = {};
 		try {
 			const response = await axios.post(firebaseFunctionGetProductsEndpoint);
 
 			if (response.data) {
-				if (user.length > 0) {
-					if (Object.keys(user[0]).includes('subscriptionInfo')) {
-						console.log('------------------there is not user data with subscription-------------');
-						setState({
-							...state,
-							count: response.data.data,
-							currentSubscription: user[0].subscriptionInfo.response
-						});
-					} else {
-						console.log('------------------there is not user data without subscription-------------');
-						setState({ ...state, count: response.data.data, currentSubscription: {} });
+				response.data.data.map(item => {
+					if (item.nickname === 'seat') {
+						temp = item;
 					}
+				});
+				console.log('--------------------------', temp);
+				if (Object.keys(user[0].subscriptionInfo).includes('secondResponse')) {
+					setState({
+						...state,
+						currentSubscription: user[0].subscriptionInfo.response,
+						secondSubscription: user[0].subscriptionInfo.secondResponse,
+						active: user[0].subscriptionInfo.active,
+						seatSubscription: temp,
+						name: user[0].subscriptionInfo.customer.name,
+						visa: user[0].subscriptionInfo.card.last4,
+						brand: user[0].subscriptionInfo.card.brand
+					});
 				} else {
-					console.log('------------------there is not user data-------------');
-					setState({ ...state, count: response.data.data, currentSubscription: {} });
+					setState({
+						...state,
+						currentSubscription: user[0].subscriptionInfo.response,
+						seatSubscription: temp,
+						active: user[0].subscriptionInfo.active,
+						name: user[0].subscriptionInfo.customer.name,
+						visa: user[0].subscriptionInfo.card.last4,
+						brand: user[0].subscriptionInfo.card.brand
+					});
 				}
 			}
 		} catch (error) {
@@ -137,42 +171,53 @@ function Multiline(props) {
 		}
 	}
 
-	function handleTabChange(token) {
-		// setState({ ...state, showPaymentForm: true, token: token });
-	}
-
-	function setBuy(token) {
-		setState({ ...state, token, openPay: true });
+	function setBuy(secondSubscription, quantity) {
+		setState({ ...state, openPay: true, quantity, secondSubscription });
 	}
 
 	function setPaymentState(result) {
 		console.log(result);
-		setState({ ...state, openPay: false, subscriptionInfo: result.data });
-		let temp = { ...user[0] };
-		let uid = localStorage.getItem('@BELONGTO');
-		temp.subscriptionInfo = result.data;
 
-		realDb.ref(`admin/${uid}/`).set({
-			...temp
+		let uid = localStorage.getItem('@BELONGTO');
+
+		realDb.ref(`admin/${uid}/subscriptionInfo/secondResponse`).set({
+			...result
 		});
 		dispatch(getUsers());
+		setState({ ...state, openPay: false, resume: false });
+	}
+
+	function createPaymentState(result) {
+		console.log(result);
+
+		let uid = localStorage.getItem('@BELONGTO');
+
+		realDb.ref(`admin/${uid}/subscriptionInfo/`).set({
+			...result
+		});
+		dispatch(getUsers());
+		setState({ ...state, openPay: false, resume: false });
+	}
+
+	function resumePlan(quantity) {
+		setState({ ...state, openPay: true, quantity, resume: true });
 	}
 
 	if (loading) {
 		return <FuseLoading />;
 	}
 
-	if (data.length === 0) {
-		return (
-			<FuseAnimate delay={100}>
-				<div className="flex flex-1 items-center justify-center h-full">
-					<Typography color="textSecondary" variant="h5">
-						There are no data!
-					</Typography>
-				</div>
-			</FuseAnimate>
-		);
-	}
+	// if (data.length === 0) {
+	// 	return (
+	// 		<FuseAnimate delay={100}>
+	// 			<div className="flex flex-1 items-center justify-center h-full">
+	// 				<Typography color="textSecondary" variant="h5">
+	// 					There are no data!
+	// 				</Typography>
+	// 			</div>
+	// 		</FuseAnimate>
+	// 	);
+	// }
 
 	return (
 		<FusePageCarded
@@ -184,32 +229,50 @@ function Multiline(props) {
 			header={<Header title={title}></Header>}
 			content={
 				<div className="w-full p-12 flex items-center justify-center">
-					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
+					<FuseAnimateGroup
+						className="flex flex-wrap items-center flex-col"
+						enter={{ animation: 'transition.slideUpBigIn' }}
+					>
 						{!openPay && (
-							<FuseAnimate animation="transition.slideUpIn" delay={400}>
-								<div className="flex">
-									{console.log('-----------------------------', state.currentSubscription)}
-									{count.length > 0 &&
-										count.map(item => {
-											return (
-												<SubscriptionCard
-													setBuy={setBuy}
-													price={item.amount / 100}
-													interval={item.interval_count + ' ' + item.interval}
-													token={item.id}
-													currentSubscription={state.currentSubscription}
-													handleClickOpen={handleClickOpen}
-												/>
-											);
-										})}
-								</div>
-							</FuseAnimate>
+							<>
+								<FuseAnimate animation="transition.slideUpIn" delay={400}>
+									<div className="flex">
+										{state.currentSubscription && (
+											<SubscriptionCard
+												setBuy={setBuy}
+												currentSubscription={state.currentSubscription}
+												secondSubscription={state.secondSubscription}
+												handleClickOpen={handleClickOpen}
+												active={state.active}
+												resumePlan={resumePlan}
+											/>
+										)}
+									</div>
+								</FuseAnimate>
+								<FuseAnimate animation="transition.slideUpIn" delay={400}>
+									<div className="flex">
+										{state.currentSubscription && (
+											<CardInfo name={state.name} brand={state.brand} visa={state.visa} />
+										)}
+									</div>
+								</FuseAnimate>
+							</>
 						)}
 
-						{openPay && (
+						{openPay && user.length > 0 && (
 							<FuseAnimate animation="transition.slideUpIn" delay={400}>
 								<Elements stripe={stripePromise}>
-									<CardElements setPaymentState={setPaymentState} token={state.token} />
+									<CardElements
+										setPaymentState={setPaymentState}
+										createPaymentState={createPaymentState}
+										quantity={state.quantity}
+										handleDelete={handleDelete}
+										planInfo={user[0].subscriptionInfo}
+										currentSubscription={state.currentSubscription}
+										secondSubscription={state.secondSubscription}
+										seatSubscription={state.seatSubscription}
+										resume={state.resume}
+									/>
 								</Elements>
 							</FuseAnimate>
 						)}
@@ -223,11 +286,11 @@ function Multiline(props) {
 						<DialogTitle id="alert-dialog-title">{'Are you really cancel this plan?'}</DialogTitle>
 						<DialogContent>
 							<DialogContentText id="alert-dialog-description">
-								{`Your account can use for ${
+								{/* {`Your account can use for ${
 									Object.keys(state.currentSubscription).length>0 && state.currentSubscription.plan.interval
 								} ${
 									Object.keys(state.currentSubscription).length>0 && state.currentSubscription.plan.interval_count
-								} from now.`}
+								} from now.`} */}
 							</DialogContentText>
 						</DialogContent>
 						<DialogActions>

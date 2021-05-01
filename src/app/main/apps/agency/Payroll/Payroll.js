@@ -28,6 +28,7 @@ import { getPolicyGrowth, selectPolicyGrowth } from '../store/policyGrowthSlice'
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { months, Options as options, policies } from '../../../utils/Globals';
 import { dividing, getLevel, getMain } from '../../../utils/Function';
+import DownloadBtn from 'app/fuse-layouts/shared-components/DownloadButton';
 
 const belongTo = localStorage.getItem('@BELONGTO');
 const UID = localStorage.getItem('@UID');
@@ -43,7 +44,7 @@ function Payroll(props) {
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({});
 	const [main, setMain] = useState({});
-	const [production, setProduction] = useState("Show Written Production");
+	const [production, setProduction] = useState('Show Written Production');
 	const [bonus, setBonus] = useState('Include Initial Bonus in Calculation');
 	const [user, setUser] = useState(UID);
 	const [userList, setUserList] = useState([]);
@@ -51,77 +52,88 @@ function Payroll(props) {
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Payroll');
-	
+
 	useEffect(() => {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
 		dispatch(getLapseRate(year));
-		dispatch(getPolicyGrowth(year));	
+		dispatch(getPolicyGrowth(year));
 		dispatch(getEntries(year));
 		dispatch(getWidgets()).then(() => setLoading(false));
-	}, [dispatch]);	
+	}, [dispatch]);
 
-	useEffect(() => {				
-		if(users.length>0 && entries.length>0) {	
-			const temp = getMain(entries, bonusPlans, [], users, [], lapseRate, policyGrowth);										
+	useEffect(() => {
+		if (users.length > 0 && entries.length > 0) {
+			const temp = getMain(entries, bonusPlans, [], users, [], lapseRate, policyGrowth);
 			setMain(temp);
 		}
 	}, [entries, bonusPlans, users, lapseRate, policyGrowth]);
 
-	useEffect(() => {	
-		if(!_.isEmpty(widgets) && !_.isEmpty(main)) {
-			if(widgets.Agency_Payroll_Table) {
-				let tableRows = [{
-					id: 'Total',
-					value: 'Total',
-					color: '',
-					border: 'border-b-4',
-				}];
+	useEffect(() => {
+		if (!_.isEmpty(widgets) && !_.isEmpty(main)) {
+			if (widgets.Agency_Payroll_Table) {
+				let tableRows = [
+					{
+						id: 'Total',
+						value: 'Total',
+						color: '',
+						border: 'border-b-4'
+					}
+				];
 				let tableContent = {
 					Total: {}
 				};
 				const tableHeaders = widgets.Agency_Payroll_Table.table.headers;
-				
+
 				users.map((user, row) => {
-					if(user.belongTo === UID) {
+					if (user.belongTo === UID) {
 						tableRows.push({
 							id: user.data.displayName,
 							value: user.data.displayName,
 							color: '',
-							border: '',
+							border: ''
 						});
-						
+
 						let totalPolicies = 0;
-						let totalBonuses = 0;	
+						let totalBonuses = 0;
 						tableContent[user.data.displayName] = {};
-						tableHeaders.map((header, col) => { 
-							let value = 0;							
-							if(header.value !== 'Producer') {
-								if(!tableContent['Total'].hasOwnProperty(header.value)) {
+						tableHeaders.map((header, col) => {
+							let value = 0;
+							if (header.value !== 'Producer') {
+								if (!tableContent['Total'].hasOwnProperty(header.value)) {
 									tableContent['Total'][header.value] = 0;
 								}
-								if(col < 9) {
-									value = main[production][period][user.id][header.value.split(' ')[0]][header.value.split(' ')[1]];
-								} 
-								
+								if (col < 9) {
+									value =
+										main[production][period][user.id][header.value.split(' ')[0]][
+											header.value.split(' ')[1]
+										];
+								}
+
 								// getting IndividualTargetBonuses & Team Target Bonuses
-								else if(header.value==='Individual Target Bonuses' || header.value==='Team Target Bonuses') {
-									if(bonusPlans.length > 0) {
+								else if (
+									header.value === 'Individual Target Bonuses' ||
+									header.value === 'Team Target Bonuses'
+								) {
+									if (bonusPlans.length > 0) {
 										let indTargetBonuses = 0;
 										let teamTargetBonus = 0;
 										policies.map(policy => {
-											if(policy.value !== 'Total') {
-												const policyCount = main[production][period][user.id][policy.value]['Policies'];
+											if (policy.value !== 'Total') {
+												const policyCount =
+													main[production][period][user.id][policy.value]['Policies'];
 												indTargetBonuses += parseFloat(
-													(
-														main[production][period][user.id]['Auto']['Premium'] / 2 +
-														main[production][period][user.id]['Fire']['Premium']
-													) * getLevel(policyCount, policy.value, bonusPlans).amount / 100	
+													((main[production][period][user.id]['Auto']['Premium'] / 2 +
+														main[production][period][user.id]['Fire']['Premium']) *
+														getLevel(policyCount, policy.value, bonusPlans).amount) /
+														100
 												);
-												teamTargetBonus += parseFloat(getLevel(policyCount, `Team${policy.value}`, bonusPlans).amount);
+												teamTargetBonus += parseFloat(
+													getLevel(policyCount, `Team${policy.value}`, bonusPlans).amount
+												);
 											}
 										});
-										if(header.value === 'Individual Target Bonuses') {
+										if (header.value === 'Individual Target Bonuses') {
 											value = indTargetBonuses;
 										} else if (header.value === 'Team Target Bonuses') {
 											value = teamTargetBonus;
@@ -130,228 +142,273 @@ function Payroll(props) {
 								}
 
 								// getting Lapse Rate Bonus
-								else if(header.value==='Lapse Rate % Bonus') { 					
-									value = 
+								else if (header.value === 'Lapse Rate % Bonus') {
+									value =
 										parseFloat(main[production][period][user.id]['Auto']['lapseBonus']) +
 										parseFloat(main[production][period][user.id]['Fire']['lapseBonus']);
 								}
 
 								// getting Policy Growth Bonus
-								else if(header.value==='Policy Growth Bonuses') { 					
-									value = 
+								else if (header.value === 'Policy Growth Bonuses') {
+									value =
 										parseFloat(main[production][period][user.id]['Auto']['growthBonus']) +
 										parseFloat(main[production][period][user.id]['Fire']['growthBonus']);
-								}	
-								
+								}
+
 								// getting Special Promotion
-								else if(header.value==='Special Promotion') { 					
-									value = 
+								else if (header.value === 'Special Promotion') {
+									value =
 										parseFloat(main[production][period][user.id]['Auto']['specialPromotion']) +
 										parseFloat(main[production][period][user.id]['Fire']['specialPromotion']);
-								}	
+								}
 
-								totalPolicies += col<9 && col%2===1 && parseFloat(value);
-								totalBonuses += col>0 && col<9 && col%2===0 && parseFloat(value);
-								totalBonuses += col>11 && col<18 && parseFloat(value);
+								totalPolicies += col < 9 && col % 2 === 1 && parseFloat(value);
+								totalBonuses += col > 0 && col < 9 && col % 2 === 0 && parseFloat(value);
+								totalBonuses += col > 11 && col < 18 && parseFloat(value);
 
 								tableContent[user.data.displayName][header.value] = value;
-								tableContent['Total'][header.value] += tableContent[user.data.displayName][header.value];																			
-							} 							
+								tableContent['Total'][header.value] +=
+									tableContent[user.data.displayName][header.value];
+							}
 						});
 						tableContent[user.data.displayName]['Total Policies'] = totalPolicies;
-						tableContent[user.data.displayName]['Total Bonuses'] = totalBonuses;	
+						tableContent[user.data.displayName]['Total Bonuses'] = totalBonuses;
 						tableContent['Total']['Total Policies'] = tableContent[user.data.displayName]['Total Policies'];
 						tableContent['Total']['Total Bonuses'] = tableContent[user.data.displayName]['Total Bonuses'];
 					}
 				});
 				widgets = {
-					...widgets, Agency_Payroll_Table: {
-						...widgets.Agency_Payroll_Table, table: {
-							...widgets.Agency_Payroll_Table.table, rows: 
-								tableRows							
+					...widgets,
+					Agency_Payroll_Table: {
+						...widgets.Agency_Payroll_Table,
+						table: {
+							...widgets.Agency_Payroll_Table.table,
+							rows: tableRows
 						}
 					}
 				};
 				widgets = {
-					...widgets, Agency_Payroll_Table: {
-						...widgets.Agency_Payroll_Table, table: {
-							...widgets.Agency_Payroll_Table.table, tableContent: 
-								tableContent							
+					...widgets,
+					Agency_Payroll_Table: {
+						...widgets.Agency_Payroll_Table,
+						table: {
+							...widgets.Agency_Payroll_Table.table,
+							tableContent: tableContent
 						}
 					}
 				};
 			}
 
 			// Agency_Payroll_Yearly_Table
-			if(widgets.Agency_Payroll_Yearly_Table) {
-				let tableRows = [{
-					id: 'Total',
-					value: 'Total',
-					color: '',
-					border: 'border-b-4',
-				}];
+			if (widgets.Agency_Payroll_Yearly_Table) {
+				let tableRows = [
+					{
+						id: 'Total',
+						value: 'Total',
+						color: '',
+						border: 'border-b-4'
+					}
+				];
 				let tableContent = {
 					Total: {}
 				};
 				const tableHeaders = widgets.Agency_Payroll_Table.table.headers;
-				
+
 				users.map((user, row) => {
-					if(user.belongTo === UID) {
+					if (user.belongTo === UID) {
 						tableRows.push({
 							id: user.data.displayName,
 							value: user.data.displayName,
 							color: '',
-							border: '',
+							border: ''
 						});
-						
+
 						let totalPolicies = 0;
-						let totalBonuses = 0;	
+						let totalBonuses = 0;
 						tableContent[user.data.displayName] = {};
-						tableHeaders.map((header, col) => { 
-							let value = 0;							
-							if(header.value !== 'Producer') {
-								if(!tableContent['Total'].hasOwnProperty(header.value)) {
+						tableHeaders.map((header, col) => {
+							let value = 0;
+							if (header.value !== 'Producer') {
+								if (!tableContent['Total'].hasOwnProperty(header.value)) {
 									tableContent['Total'][header.value] = 0;
 								}
 								months.map(month => {
-									if(col < 9) {
-										value += parseFloat(main[production][month.value][user.id][header.value.split(' ')[0]][header.value.split(' ')[1]]);										
-									} 
-									
+									if (col < 9) {
+										value += parseFloat(
+											main[production][month.value][user.id][header.value.split(' ')[0]][
+												header.value.split(' ')[1]
+											]
+										);
+									}
+
 									// getting IndividualTargetBonuses & Team Target Bonuses
-									else if(header.value==='Individual Target Bonuses' || header.value==='Team Target Bonuses') {
-										if(bonusPlans.length > 0) {
+									else if (
+										header.value === 'Individual Target Bonuses' ||
+										header.value === 'Team Target Bonuses'
+									) {
+										if (bonusPlans.length > 0) {
 											let indTargetBonuses = 0;
 											let teamTargetBonus = 0;
 											policies.map(policy => {
-												if(policy.value !== 'Total') {
-													const policyCount = main[production][month.value][user.id][policy.value]['Policies'];
+												if (policy.value !== 'Total') {
+													const policyCount =
+														main[production][month.value][user.id][policy.value][
+															'Policies'
+														];
 													indTargetBonuses += parseFloat(
-														(
-															main[production][month.value][user.id]['Auto']['Premium'] / 2 +
-															main[production][month.value][user.id]['Fire']['Premium']
-														) * getLevel(policyCount, policy.value, bonusPlans).amount / 100	
+														((main[production][month.value][user.id]['Auto']['Premium'] /
+															2 +
+															main[production][month.value][user.id]['Fire']['Premium']) *
+															getLevel(policyCount, policy.value, bonusPlans).amount) /
+															100
 													);
-													teamTargetBonus += parseFloat(getLevel(policyCount, `Team${policy.value}`, bonusPlans).amount);
+													teamTargetBonus += parseFloat(
+														getLevel(policyCount, `Team${policy.value}`, bonusPlans).amount
+													);
 												}
 											});
-											if(header.value === 'Individual Target Bonuses') {
+											if (header.value === 'Individual Target Bonuses') {
 												value += indTargetBonuses;
 											} else if (header.value === 'Team Target Bonuses') {
 												value += teamTargetBonus;
 											}
 										}
 									}
-									
+
 									// getting Lapse Rate Bonus
-									else if(header.value==='Lapse Rate % Bonus') { 					
-										value += 
+									else if (header.value === 'Lapse Rate % Bonus') {
+										value +=
 											parseFloat(main[production][month.value][user.id]['Auto']['lapseBonus']) +
 											parseFloat(main[production][month.value][user.id]['Fire']['lapseBonus']);
 									}
 
 									// getting Policy Growth Bonus
-									else if(header.value==='Policy Growth Bonuses') { 					
-										value += 
+									else if (header.value === 'Policy Growth Bonuses') {
+										value +=
 											parseFloat(main[production][month.value][user.id]['Auto']['growthBonus']) +
 											parseFloat(main[production][month.value][user.id]['Fire']['growthBonus']);
-									}	
-									
+									}
+
 									// getting Special Promotion
-									else if(header.value==='Special Promotion') { 					
-										value += 
-											parseFloat(main[production][month.value][user.id]['Auto']['specialPromotion']) +
-											parseFloat(main[production][month.value][user.id]['Fire']['specialPromotion']);
-									}	
+									else if (header.value === 'Special Promotion') {
+										value +=
+											parseFloat(
+												main[production][month.value][user.id]['Auto']['specialPromotion']
+											) +
+											parseFloat(
+												main[production][month.value][user.id]['Fire']['specialPromotion']
+											);
+									}
 								});
 
-								totalPolicies += col<9 && col%2===1 && parseFloat(value);
-								totalBonuses += col>0 && col<9 && col%2===0 && parseFloat(value);
-								totalBonuses += col>11 && col<17 && parseFloat(value);
+								totalPolicies += col < 9 && col % 2 === 1 && parseFloat(value);
+								totalBonuses += col > 0 && col < 9 && col % 2 === 0 && parseFloat(value);
+								totalBonuses += col > 11 && col < 17 && parseFloat(value);
 
 								tableContent[user.data.displayName][header.value] = value;
-								tableContent['Total'][header.value] += tableContent[user.data.displayName][header.value];																			
-							} 							
+								tableContent['Total'][header.value] +=
+									tableContent[user.data.displayName][header.value];
+							}
 						});
 						tableContent[user.data.displayName]['Total Policies'] = totalPolicies;
-						tableContent[user.data.displayName]['Total Bonuses'] = totalBonuses;	
-						tableContent['Total']['Total Policies'] += tableContent[user.data.displayName]['Total Policies'];
+						tableContent[user.data.displayName]['Total Bonuses'] = totalBonuses;
+						tableContent['Total']['Total Policies'] +=
+							tableContent[user.data.displayName]['Total Policies'];
 						tableContent['Total']['Total Bonuses'] += tableContent[user.data.displayName]['Total Bonuses'];
 					}
 				});
 				widgets = {
-					...widgets, Agency_Payroll_Yearly_Table: {
-						...widgets.Agency_Payroll_Yearly_Table, table: {
-							...widgets.Agency_Payroll_Yearly_Table.table, rows: 
-								tableRows							
+					...widgets,
+					Agency_Payroll_Yearly_Table: {
+						...widgets.Agency_Payroll_Yearly_Table,
+						table: {
+							...widgets.Agency_Payroll_Yearly_Table.table,
+							rows: tableRows
 						}
 					}
 				};
 				widgets = {
-					...widgets, Agency_Payroll_Yearly_Table: {
-						...widgets.Agency_Payroll_Yearly_Table, table: {
-							...widgets.Agency_Payroll_Yearly_Table.table, tableContent: 
-								tableContent							
+					...widgets,
+					Agency_Payroll_Yearly_Table: {
+						...widgets.Agency_Payroll_Yearly_Table,
+						table: {
+							...widgets.Agency_Payroll_Yearly_Table.table,
+							tableContent: tableContent
 						}
 					}
 				};
 			}
 
 			// Agency_Payroll_Summary_Table
-			if(widgets.Agency_Payroll_Summary_Table) {
-				let tableRows = [{
-					id: 'Total',
-					value: 'Total',
-					color: '',
-					border: 'border-b-4',
-				}];
+			if (widgets.Agency_Payroll_Summary_Table) {
+				let tableRows = [
+					{
+						id: 'Total',
+						value: 'Total',
+						color: '',
+						border: 'border-b-4'
+					}
+				];
 				let tableContent = {
 					Total: {}
 				};
 				const tableHeaders = widgets.Agency_Payroll_Summary_Table.table.headers;
-				
+
 				months.map((month, row) => {
 					// if(user.belongTo === UID) {
 					tableRows.push({
 						id: month.value,
 						value: month.value,
 						color: '',
-						border: '',
+						border: ''
 					});
-					
+
 					let totalPolicies = 0;
-					let totalBonuses = 0;	
+					let totalBonuses = 0;
 					tableContent[month.value] = {};
-					tableHeaders.map((header, col) => { 
-						let value = 0;							
-						if(header.value !== 'Producer') {
-							if(!tableContent['Total'].hasOwnProperty(header.value)) {
+					tableHeaders.map((header, col) => {
+						let value = 0;
+						if (header.value !== 'Producer') {
+							if (!tableContent['Total'].hasOwnProperty(header.value)) {
 								tableContent['Total'][header.value] = 0;
 							}
 							users.map(user => {
-								if(user.belongTo === UID) {
-									if(col < 9) {
-										value += parseFloat(main[production][month.value][user.id][header.value.split(' ')[0]][header.value.split(' ')[1]]);										
-									} 
-									
+								if (user.belongTo === UID) {
+									if (col < 9) {
+										value += parseFloat(
+											main[production][month.value][user.id][header.value.split(' ')[0]][
+												header.value.split(' ')[1]
+											]
+										);
+									}
+
 									// getting IndividualTargetBonuses & Team Target Bonuses
-									else if(header.value==='Individual Target Bonuses' || header.value==='Team Target Bonuses') {
-										if(bonusPlans.length > 0) {
+									else if (
+										header.value === 'Individual Target Bonuses' ||
+										header.value === 'Team Target Bonuses'
+									) {
+										if (bonusPlans.length > 0) {
 											let indTargetBonuses = 0;
 											let teamTargetBonus = 0;
 											policies.map(policy => {
-												if(policy.value !== 'Total') {
-													const policyCount = main[production][month.value][user.id][policy.value]['Policies'];
+												if (policy.value !== 'Total') {
+													const policyCount =
+														main[production][month.value][user.id][policy.value][
+															'Policies'
+														];
 													indTargetBonuses += parseFloat(
-														(
-															main[production][month.value][user.id]['Auto']['Premium'] / 2 +
-															main[production][month.value][user.id]['Fire']['Premium']
-														) * getLevel(policyCount, policy.value, bonusPlans).amount / 100	
+														((main[production][month.value][user.id]['Auto']['Premium'] /
+															2 +
+															main[production][month.value][user.id]['Fire']['Premium']) *
+															getLevel(policyCount, policy.value, bonusPlans).amount) /
+															100
 													);
-													teamTargetBonus += parseFloat(getLevel(policyCount, `Team${policy.value}`, bonusPlans).amount);
+													teamTargetBonus += parseFloat(
+														getLevel(policyCount, `Team${policy.value}`, bonusPlans).amount
+													);
 												}
 											});
-											if(header.value === 'Individual Target Bonuses') {
+											if (header.value === 'Individual Target Bonuses') {
 												value += indTargetBonuses;
 											} else if (header.value === 'Team Target Bonuses') {
 												value += teamTargetBonus;
@@ -360,76 +417,84 @@ function Payroll(props) {
 									}
 
 									// getting Lapse Rate Bonus
-									else if(header.value==='Lapse Rate % Bonus') { 					
-										value += 
+									else if (header.value === 'Lapse Rate % Bonus') {
+										value +=
 											parseFloat(main[production][month.value][user.id]['Auto']['lapseBonus']) +
 											parseFloat(main[production][month.value][user.id]['Fire']['lapseBonus']);
 									}
 
 									// getting Policy Growth Bonus
-									else if(header.value==='Policy Growth Bonuses') { 					
-										value += 
+									else if (header.value === 'Policy Growth Bonuses') {
+										value +=
 											parseFloat(main[production][month.value][user.id]['Auto']['growthBonus']) +
 											parseFloat(main[production][month.value][user.id]['Fire']['growthBonus']);
-									}	
-									
+									}
+
 									// getting Special Promotion
-									else if(header.value==='Special Promotion') { 					
-										value += 
-											parseFloat(main[production][month.value][user.id]['Auto']['specialPromotion']) +
-											parseFloat(main[production][month.value][user.id]['Fire']['specialPromotion']);
-									}	
-								}									
+									else if (header.value === 'Special Promotion') {
+										value +=
+											parseFloat(
+												main[production][month.value][user.id]['Auto']['specialPromotion']
+											) +
+											parseFloat(
+												main[production][month.value][user.id]['Fire']['specialPromotion']
+											);
+									}
+								}
 							});
-							totalPolicies += col<9 && col%2===1 && parseFloat(value);
-							totalBonuses += col>0 && col<9 && col%2===0 && parseFloat(value);
-							totalBonuses += col>11 && col<17 && parseFloat(value);
+							totalPolicies += col < 9 && col % 2 === 1 && parseFloat(value);
+							totalBonuses += col > 0 && col < 9 && col % 2 === 0 && parseFloat(value);
+							totalBonuses += col > 11 && col < 17 && parseFloat(value);
 
 							tableContent[month.value][header.value] = value;
-							tableContent['Total'][header.value] += tableContent[month.value][header.value];																			
-						} 							
+							tableContent['Total'][header.value] += tableContent[month.value][header.value];
+						}
 					});
 					tableContent[month.value]['Total Policies'] = totalPolicies;
-					tableContent[month.value]['Total Bonuses'] = totalBonuses;	
+					tableContent[month.value]['Total Bonuses'] = totalBonuses;
 					tableContent['Total']['Total Policies'] += tableContent[month.value]['Total Policies'];
 					tableContent['Total']['Total Bonuses'] += tableContent[month.value]['Total Bonuses'];
 					// }
 				});
 				widgets = {
-					...widgets, Agency_Payroll_Summary_Table: {
-						...widgets.Agency_Payroll_Summary_Table, table: {
-							...widgets.Agency_Payroll_Summary_Table.table, rows: 
-								tableRows							
+					...widgets,
+					Agency_Payroll_Summary_Table: {
+						...widgets.Agency_Payroll_Summary_Table,
+						table: {
+							...widgets.Agency_Payroll_Summary_Table.table,
+							rows: tableRows
 						}
 					}
 				};
 				widgets = {
-					...widgets, Agency_Payroll_Summary_Table: {
-						...widgets.Agency_Payroll_Summary_Table, table: {
-							...widgets.Agency_Payroll_Summary_Table.table, tableContent: 
-								tableContent							
+					...widgets,
+					Agency_Payroll_Summary_Table: {
+						...widgets.Agency_Payroll_Summary_Table,
+						table: {
+							...widgets.Agency_Payroll_Summary_Table.table,
+							tableContent: tableContent
 						}
 					}
 				};
 			}
 		}
 
-		console.log('---------widgets', widgets)
-		setData({ widgets }); 
+		console.log('---------widgets', widgets);
+		setData({ widgets });
 	}, [widgets, main, production, period]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
 	}
 
-	function handleChangePeriod(event) { 
+	function handleChangePeriod(event) {
 		setPeriod(event.target.value);
 	}
 
-	function handleChangeProduction(event) { 
+	function handleChangeProduction(event) {
 		setProduction(event.target.value);
 	}
-	
+
 	if (loading) {
 		return <FuseLoading />;
 	}
@@ -455,7 +520,7 @@ function Payroll(props) {
 			}}
 			header={
 				<Header title={title}>
-					{tabValue===0 &&
+					{tabValue === 0 && (
 						<div className="flex flex-1 items-center justify-center px-12">
 							<FuseAnimate animation="transition.slideUpIn" delay={300}>
 								<SelectBox
@@ -466,7 +531,7 @@ function Payroll(props) {
 								/>
 							</FuseAnimate>
 						</div>
-					}
+					)}
 					<div className="flex flex-1 items-center justify-center px-12">
 						<FuseAnimate animation="transition.slideUpIn" delay={300}>
 							<SelectBox
@@ -476,7 +541,7 @@ function Payroll(props) {
 								data={options.production.data}
 							/>
 						</FuseAnimate>
-					</div>					
+					</div>
 				</Header>
 			}
 			contentToolbar={
@@ -487,34 +552,36 @@ function Payroll(props) {
 					textColor="primary"
 					variant="scrollable"
 					scrollButtons="auto"
-					classes={{ root: 'w-full h-64' }}
+					classes={{ root: 'w-full h-64 relative' }}
 				>
 					<Tab className="h-64 normal-case" label="Month Report" />
-					<Tab className="h-64 normal-case" label="Year Totals" />	
-					<Tab className="h-64 normal-case" label="Summary Report" />													
+					<Tab className="h-64 normal-case" label="Year Totals" />
+					<Tab className="h-64 normal-case" label="Summary Report" />
+					<div className="absolute right-192 top-10">
+						<DownloadBtn />
+					</div>
 				</Tabs>
 			}
 			content={
 				<div className="w-full p-12">
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
-						{tabValue===0 &&						
+						{tabValue === 0 && (
 							<div className="p-12">
 								<Table data={data.widgets.Agency_Payroll_Table} />
-							</div>						
-						}
-						{tabValue===1 &&						
+							</div>
+						)}
+						{tabValue === 1 && (
 							<div className="p-12">
 								<Table data={data.widgets.Agency_Payroll_Yearly_Table} />
-							</div>						
-						}
-						{tabValue===2 &&						
+							</div>
+						)}
+						{tabValue === 2 && (
 							<div className="p-12">
 								<Table data={data.widgets.Agency_Payroll_Summary_Table} />
-							</div>						
-						}
+							</div>
+						)}
 					</FuseAnimateGroup>
 				</div>
-				
 			}
 			innerScroll
 		/>

@@ -99,11 +99,11 @@ function Dashboard(props) {
 			let individual = 0;	
 			if(widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel) {	
 				policies.map(policy => {					
-					if(policy.value !== 'Bank') {		
+					// if(policy.value !== 'Bank') {		
 						teamGoalsAndActual[`${policy.value}@realGoal`] = 0;				
 						teamGoalsAndActual[`${policy.value}@Goal`] = 0;
 						teamGoalsAndActual[`${policy.value}@Actual`] = 0;						
-					}	
+					// }	
 					household += main[production][period][UID][policy.value]['household'];
 					individual += main[production][period][UID][policy.value]['individual'];			
 				});
@@ -111,7 +111,7 @@ function Dashboard(props) {
 					if(user.belongTo === UID) { 
 						indGoalsAndActual[user.id] = { 'Total@realGoal': 0, 'Total@Goal': 0, 'Total@Actual': 0 };						
 						policies.map((policy) => { 							
-							if(policy.value!=='Bank' && policy.value!=='Total') {
+							if( policy.value!=='Total') {
 								indGoalsAndActual[user.id][`Total@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];
 								indGoalsAndActual[user.id][`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
 								indGoalsAndActual[user.id][`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];																			
@@ -150,7 +150,7 @@ function Dashboard(props) {
 
 				// Team Goal vs Actual
 				policies.map(policy => {
-					if(policy.value !== 'Bank') {
+					// if(policy.value !== 'Bank') {
 						let tempCardData = [];
 						let tempCard = {};
 						const cardData = widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`].cardData;
@@ -176,7 +176,7 @@ function Dashboard(props) {
 								]
 							}					
 						}
-					}					
+					// }					
 				});	
 
 				// Lapse Rate
@@ -296,7 +296,7 @@ function Dashboard(props) {
 				let tempActual = [];
 				let tempDatasets = [];
 				policies.map(policy => {
-					if(policy.value !== 'Bank' && policy.value !== 'Total') {
+					if(policy.value !== 'Total') {
 						tempGoal.push(teamGoalsAndActual[`${policy.value}@Goal`]);
 						tempActual.push(teamGoalsAndActual[`${policy.value}@Actual`]);						
 					}					
@@ -330,7 +330,7 @@ function Dashboard(props) {
 											gridLines: {
 												display: true
 											},
-											labels: ['Auto', 'Fire', 'Life', 'Health'],
+											labels: ['Auto', 'Fire', 'Life', 'Health', 'Bank'],
 										}
 									]
 								}																	
@@ -431,16 +431,16 @@ function Dashboard(props) {
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-full p-12">
 							<fieldset className='"widget flex w-full rounded-8 border-1'>
-								<legend>Team Product Goal Vs Actual</legend>															
+								<legend>Production Goal Vs Actual</legend>															
 									{
 										policies.map(policy => {
-											if(policy.value!=='Bank') {
+											// if(policy.value!=='Bank') {
 												return(
 													<div className="widget flex w-1/5 p-12">							
 														<Panel data={data.widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`]} type='Two Number' />						
 													</div>
 												)
-											}
+											// }
 											
 										})
 									}
@@ -450,7 +450,7 @@ function Dashboard(props) {
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-full p-12">
 							<fieldset className='"widget flex w-2/4 mr-12 rounded-8 border-1'>
-								<legend>Multiline Percentage</legend>
+								<legend>HH%</legend>
 								<div className="widget flex w-full p-12">							
 									<Panel data={data.widgets.Dashboard_Multiline_Percentage_Panel} type='One Number' />						
 								</div>
