@@ -95,7 +95,7 @@ function IncomeGoals(props) {
 					} 
 				} 
 			});
-		});
+		}); console.log('--------------------------------',tempGoals);
 		dispatch(saveVision({ Averages: tempAvgs, Goals: tempGoals, Bonuses: tempBonuses, year: moment(date).format('yyyy'), userId: user }));
 	}
 
