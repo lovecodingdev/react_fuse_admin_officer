@@ -102,10 +102,6 @@ function IncomeGoals(props) {
 					}
 				};
 			});
-<<<<<<< HEAD
-		}); console.log('--------------------------------',tempGoals);
-		dispatch(saveVision({ Averages: tempAvgs, Goals: tempGoals, Bonuses: tempBonuses, year: moment(date).format('yyyy'), userId: user }));
-=======
 		});
 		dispatch(
 			saveVision({
@@ -116,7 +112,6 @@ function IncomeGoals(props) {
 				userId: user
 			})
 		);
->>>>>>> 46f63f267f2bcad388333ec3f3e6f8ca860fc585
 	}
 
 	useEffect(() => {
