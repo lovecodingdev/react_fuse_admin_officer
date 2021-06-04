@@ -38,7 +38,7 @@ const CardField = ({ onChange }) => (
 	</div>
 );
 
-const Field = ({ label, id, type, placeholder, required, autoComplete, value, onChange }) => (
+const Field = ({ label, id, type, placeholder, required, autoComplete, value, onChange, disable }) => (
 	<div className="FormRow">
 		<label htmlFor={id} className="FormRowLabel">
 			{label}
@@ -52,6 +52,7 @@ const Field = ({ label, id, type, placeholder, required, autoComplete, value, on
 			autoComplete={autoComplete}
 			value={value}
 			onChange={onChange}
+			disabled = {disable?disable:false}
 		/>
 	</div>
 );
@@ -219,6 +220,7 @@ const CheckoutForm = props => {
 					placeholder="janedoe@gmail.com"
 					required
 					autoComplete="email"
+					disable={true}
 					value={billingDetails.email}
 					onChange={e => {
 						setBillingDetails({ ...billingDetails, email: e.target.value });

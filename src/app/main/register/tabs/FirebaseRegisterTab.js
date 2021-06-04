@@ -1,7 +1,7 @@
 import { TextFieldFormsy } from '@fuse/core/formsy';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Formsy from 'formsy-react';
 import React, { useEffect, useRef, useState } from 'react';
@@ -9,16 +9,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registerWithFirebase } from 'app/auth/store/registerSlice';
 import { showMessage } from 'app/store/fuse/messageSlice';
 
-
 function FirebaseRegisterTab(props) {
 	const routeParams = useParams();
 
-	const belongTo = routeParams.belongTo
+	const belongTo = routeParams.belongTo;
 	const dispatch = useDispatch();
 	const register = useSelector(({ auth }) => auth.register);
 
 	const [isFormValid, setIsFormValid] = useState(false);
-	
+
 	const formRef = useRef(null);
 
 	useEffect(() => {
@@ -28,11 +27,7 @@ function FirebaseRegisterTab(props) {
 			});
 			disableButton();
 		}
-		
-		
 	}, [register]);
-
-	
 
 	function disableButton() {
 		setIsFormValid(false);
@@ -43,7 +38,7 @@ function FirebaseRegisterTab(props) {
 	}
 
 	function handleSubmit(model) {
-		props.setPaymentState(model)
+		props.setPaymentState(model);
 		// if(routeParams.belongTo==='admin'&&!props.state){
 		// 	dispatch(showMessage({ message: 'Please choose the membership!' }))
 		// 	return
@@ -52,7 +47,7 @@ function FirebaseRegisterTab(props) {
 		// 	dispatch(registerWithFirebase({...model, role: "admin", belongTo, subscriptionInfo: props.subscriptionInfo}));
 		// } else if(routeParams.id.length===150) {
 		// 	dispatch(registerWithFirebase({...model, role: "agency",belongTo, subscriptionInfo:{}}));
-		// }		
+		// }
 	}
 
 	return (
@@ -98,7 +93,7 @@ function FirebaseRegisterTab(props) {
 						isEmail: 'Please enter a valid email'
 					}}
 					// disabled={true}
-					value={routeParams.email!=='0'?routeParams.email:props.email}
+					value={routeParams.email !== '0' ? routeParams.email : props.email}
 					InputProps={{
 						endAdornment: (
 							<InputAdornment position="end">
@@ -117,9 +112,14 @@ function FirebaseRegisterTab(props) {
 					type="password"
 					name="password"
 					label="Password"
-					validations="equalsField:password-confirm"
+					validations={{
+						equalsField: 'password-confirm',
+						matchRegexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
+					}}
 					validationErrors={{
-						equalsField: 'Passwords do not match'
+						equalsField: 'Passwords do not match',
+						matchRegexp:
+							'Please enter passsword with capital letter, and low case letter, and number, and more 8 length'
 					}}
 					InputProps={{
 						endAdornment: (
@@ -139,9 +139,14 @@ function FirebaseRegisterTab(props) {
 					type="password"
 					name="password-confirm"
 					label="Confirm Password"
-					validations="equalsField:password"
+					validations={{
+						equalsField: 'password-confirm',
+						matchRegexp: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
+					}}
 					validationErrors={{
-						equalsField: 'Passwords do not match'
+						equalsField: 'Passwords do not match',
+						matchRegexp:
+							'Please enter passsword with capital letter, and low case letter, and number, and more 8 length'
 					}}
 					InputProps={{
 						endAdornment: (

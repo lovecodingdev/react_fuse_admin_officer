@@ -7,7 +7,7 @@ import {
 	deployOfficerEndpoint,
 	deployProducerEndpoint
 } from 'app/fuse-configs/endpointConfig';
-import md5 from 'md5'
+import md5 from 'md5';
 
 export const getUsers = createAsyncThunk(
 	'users/users/getUsers',
@@ -18,7 +18,7 @@ export const getUsers = createAsyncThunk(
 			var agencyCountRef = realDb.ref(`agency/`);
 			var invitationCountRef = realDb.ref(`Invitation/${belongTo}/`);
 			var bonusRef = realDb.ref(`BonusPlan/${belongTo}/`);
-			var uid = localStorage.getItem('@UID')
+			var uid = localStorage.getItem('@UID');
 			var adminRef = realDb.ref(`admin/${uid}/`);
 			var users = [];
 			bonusRef.on('value', snapData => {
@@ -58,15 +58,13 @@ export const getUsers = createAsyncThunk(
 								});
 							}
 
-							adminRef.on('value', snapAdmin=>{
-								const adminData = snapAdmin.val()
-								if(adminData){
-									users.push(adminData)
+							adminRef.on('value', snapAdmin => {
+								const adminData = snapAdmin.val();
+								if (adminData) {
+									users.push(adminData);
 								}
 								resolve(users);
-							})
-
-							
+							});
 						});
 					});
 				});
@@ -77,13 +75,13 @@ export const getUsers = createAsyncThunk(
 export const saveUser = createAsyncThunk('users/users/saveUser', async (product, { dispatch, getState }) => {
 	// const response = await axios.post('/api/users/save', product);
 	// const data = await response.data;
-	
+
 	var belongTo = localStorage.getItem('@BELONGTO');
-	console.log(product)
+	console.log(product);
 	console.log({
 		name: product.template,
 		teamBonus: product.teamBonus
-	})
+	});
 	console.log(`BonusPlan/${belongTo}/${product.uid}/`);
 	realDb.ref(`BonusPlan/${belongTo}/${product.uid}/`).set({
 		name: product.template,
@@ -135,7 +133,9 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 				deployOfficerEndpoint +
 				'/register/' +
 				contact.belongTo +
-				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l/`+contact.email +`'>` +
+				`/pdElqKJexpOGk3s31VWMVTbQAgvmBRAyYLtt3KTJhEhRQ8YfMZIa6TU29SURp4NVDvttUuL6t0qjpwMSu2fp4h2LgpTMupdEoP8bGxGeOkMJ3Yg3X51GWHpxvWkdjiMw5PyvWqJQXsaXfeysGSA05l/` +
+				contact.email +
+				`'>` +
 				deployOfficerEndpoint +
 				'/register/' +
 				contact.belongTo +
@@ -152,8 +152,9 @@ export const addUser = createAsyncThunk('users/user/addUser', async (contact, { 
 				`<a href='` +
 				deployProducerEndpoint +
 				'/register/' +
-				contact.belongTo +`/` +
-				contact.email
+				contact.belongTo +
+				`/` +
+				contact.email +
 				`'>` +
 				deployProducerEndpoint +
 				'/register/' +

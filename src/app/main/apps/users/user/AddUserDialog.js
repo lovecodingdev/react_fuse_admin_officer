@@ -19,6 +19,12 @@ import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
 import { showMessage } from 'app/store/fuse/messageSlice';
+import {
+	firebaseFuncitonSendEmailEndpoint,
+	firebaseFunctionDeleteUserEndpoint,
+	deployOfficerEndpoint,
+	deployProducerEndpoint
+} from 'app/fuse-configs/endpointConfig';
 
 const defaultFormState = {
 	id: '',
@@ -98,11 +104,15 @@ function AddUserDialog(props) {
 		event.preventDefault();
 
 		if (addUserDialog.type === 'new') {
+			console.log(form.email)
+			
 			dispatch(addUser({ ...form })).then(
 				dispatch(showMessage({ message: 'Invitation sent to email. Please check the email!' }))
 			);
 		} else {
+			
 			dispatch(addUser({ ...form }));
+
 		}
 		closeComposeDialog();
 	}
