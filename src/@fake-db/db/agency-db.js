@@ -8263,7 +8263,7 @@ const agencyAppDB = {
 					{ id: 18, value: 'Special Promotion', type: false },
 					{ id: 19, value: 'Total Policies', type: true },
 					{ id: 20, value: 'Total Bonuses', type: false },
-					{ id: 21, value: 'Bonus Verified?', type: true },
+					// { id: 21, value: 'Bonus Verified?', type: true },
 					{ id: 22, value: 'Amount Paid to Producer', type: true }
 				],				
 				rows: [],
@@ -8296,8 +8296,8 @@ const agencyAppDB = {
 					{ id: 18, value: 'Special Promotion', type: false },
 					{ id: 19, value: 'Total Policies', type: true },
 					{ id: 20, value: 'Total Bonuses', type: false },
-					{ id: 21, value: 'Bonus Verified?', type: true },
-					{ id: 22, value: 'Amount Paid to Producer', type: true }
+					// { id: 21, value: 'Bonus Verified?', type: true },
+					// { id: 22, value: 'Amount Paid to Producer', type: true }
 				],				
 				rows: [],
 				tableContent : {},
@@ -8380,14 +8380,15 @@ mock.onGet('/api/agency-app/users').reply(() => new Promise((resolve, reject) =>
 	})
 }));
 
-mock.onPost('/api/agency-app/bonusVerified/save').reply(request => {
+mock.onPost('/api/agency-app/bonusVerified/save').reply(request => { 
 	var belongTo = localStorage.getItem('@BELONGTO');
-	var UID = localStorage.getItem('@UID');
 	const data = JSON.parse(request.data);
 	let product = data;
-console.log('==================', data);
-	realDb.ref(`BonusVerified/${data.year}/${belongTo}/${data.userId}`).set({
-		test: 'OK'
+
+	realDb.ref(`BonusVerified/${data.year}/${belongTo}/${data.uid}/${data.period}`).set({
+		id: data.uid,
+		month: data.period,
+		checked: data.checked
 	});
 
 	return [200, product];

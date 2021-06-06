@@ -42,14 +42,13 @@ function Payroll(props) {
 	const lapseRate = useSelector(selectLapseRate);
 	const policyGrowth = useSelector(selectPolicyGrowth);
 	const entries = useSelector(selectEntries);
-	const selected = useSelector(selectBonusVerified);
+	let bonusVerified = useSelector(selectBonusVerified);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({});
 	const [main, setMain] = useState({});
 	const [production, setProduction] = useState('Show Written Production');
 	const [bonus, setBonus] = useState('Include Initial Bonus in Calculation');
 	const [user, setUser] = useState(UID);
-	const [userList, setUserList] = useState([]);
 	const [year, setYear] = useState(moment().format('yyyy'));
 	const [period, setPeriod] = useState(moment().format('MMMM'));
 	const [tabValue, setTabValue] = useState(0);
@@ -66,7 +65,7 @@ function Payroll(props) {
 	}, [dispatch]);
 
 	useEffect(() => {
-		if (users.length > 0 && entries.length > 0) {
+		if (users.length > 0 && entries.length > 0) {			
 			const temp = getMain(entries, bonusPlans, [], users, [], lapseRate, policyGrowth);
 			setMain(temp);
 		}
@@ -166,6 +165,13 @@ function Payroll(props) {
 										parseFloat(main[production][period][user.id]['Auto']['specialPromotion']) +
 										parseFloat(main[production][period][user.id]['Fire']['specialPromotion']);
 								}
+								else if(header.value==='Bonus Verified?' && bonusVerified.length > 0) {								
+									const verified = bonusVerified[0];
+									value = 
+										verified.hasOwnProperty(user.id) &&
+										verified[user.id].hasOwnProperty(period) && 
+										verified[user.id][period].checked;																		
+								}
 
 								totalPolicies += col < 9 && col % 2 === 1 && parseFloat(value);
 								totalBonuses += col > 0 && col < 9 && col % 2 === 0 && parseFloat(value);
@@ -218,7 +224,7 @@ function Payroll(props) {
 				let tableContent = {
 					Total: {}
 				};
-				const tableHeaders = widgets.Agency_Payroll_Table.table.headers;
+				const tableHeaders = widgets.Agency_Payroll_Yearly_Table.table.headers;
 
 				users.map((user, row) => {
 					if (user.belongTo === UID) {
@@ -490,7 +496,7 @@ function Payroll(props) {
 
 		console.log('---------widgets', widgets);
 		setData({ widgets });
-	}, [widgets, main, production, period]);
+	}, [widgets, main, production, period, bonusVerified]);
 
 	function handleChangeTab(event, value) {
 		setTabValue(value);
@@ -504,9 +510,30 @@ function Payroll(props) {
 		setProduction(event.target.value);
 	}
 
-	function handleCheck(event, uid, rowKey, rowNum) {
-		console.log('=====================================', event.target.checked, uid, rowKey, rowNum)
+	function handleCheck(event, uid, rowKey, rowNum, tableId) {
+		if(
+			bonusVerified.length > 0 &&
+			bonusVerified[0].hasOwnProperty(uid) &&
+			bonusVerified[0][uid].hasOwnProperty(period)	
+		) {
+			const w = data.widgets;
+			widgets = {
+				...w, Agency_Payroll_Table: {
+					...w.Agency_Payroll_Table, table: {
+						...w.Agency_Payroll_Table.table, tableContent: {
+							...w.Agency_Payroll_Table.table.tableContent, [rowKey]: {
+								...w.Agency_Payroll_Table.table.tableContent[rowKey], 
+								['Bonus Verified?']: event.target.checked
+							}
+						}
+					}
+				}
+			};
 
+			setData({ widgets });
+		}
+		
+		dispatch(saveBonusVerified({ checked: event.target.checked, uid, year, period }));
 	}
 
 	if (loading) {
@@ -581,17 +608,17 @@ function Payroll(props) {
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						{tabValue === 0 && (
 							<div className="p-12">
-								<Table data={data.widgets.Agency_Payroll_Table} onCheck={handleCheck} selected={selected} />
+								<Table data={data.widgets.Agency_Payroll_Table} onCheck={handleCheck} />
 							</div>
 						)}
 						{tabValue === 1 && (
 							<div className="p-12">
-								<Table data={data.widgets.Agency_Payroll_Yearly_Table} onCheck={handleCheck} selected={selected} />
+								<Table data={data.widgets.Agency_Payroll_Yearly_Table} onCheck={handleCheck} />
 							</div>
 						)}
 						{tabValue === 2 && (
 							<div className="p-12">
-								<Table data={data.widgets.Agency_Payroll_Summary_Table} onCheck={handleCheck} selected={selected} />
+								<Table data={data.widgets.Agency_Payroll_Summary_Table} onCheck={handleCheck} />
 							</div>
 						)}
 					</FuseAnimateGroup>

@@ -19,7 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import TextInput from '../TextInput';
 import { formattedString } from '../../utils/Function'
 
-function Widget(props) { 
+function Widget(props) {
 	const dispatch = useDispatch(); 
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -28,6 +28,7 @@ function Widget(props) {
 		id: null
 	});
 
+	const tableId = props.data.id;
 	const tableContent = props.data.table.tableContent; 
 	const headers = props.data.table.headers;
 	const rows = props.data.table.rows;
@@ -45,7 +46,7 @@ function Widget(props) {
 		props.onInputChange({tableName, row, col, rowKey, colKey,  value});
 	}
 
-	function handleCheck(event, uid, rowKey, rowNum) {
+	function handleCheck(event, uid, rowKey, rowNum, tableId) {
 		props.onCheck(event, uid, rowKey, rowNum);
 	}
 
@@ -215,8 +216,8 @@ function Widget(props) {
 											colKey==='Bonus Verified?' &&
 											rowKey!=='Total' &&  
 												<Checkbox
-													checked={selected[rowKey]}
-													onChange={event => handleCheck(event, rows[rowNum].uid, rowKey, rowNum)}
+													checked={tableContent[rowKey][headers[colNum+1].value]}
+													onChange={event => handleCheck(event, rows[rowNum].uid, rowKey, rowNum, tableId)}
 												/>
 										}
 									

@@ -8,27 +8,29 @@ export const getBonusVerified = createAsyncThunk(
 	'agencyApp/bonusVerified/getBonusVerified',
 	(year) =>
 		new Promise((resolve, reject) => {			
-			var starCountRef = realDb.ref(`BonusVerified/${belongTo}/`);
+			var starCountRef = realDb.ref(`BonusVerified/${year}/${belongTo}`);
 			var bonusVerified = [];
 			starCountRef.on('value', snapshot => {
 				const data = snapshot.val();
 
-				if (data) {
-					Object.keys(data).map(item => {
-						bonusVerified.push(data[item]);
-					});
+				if(data) {
+					bonusVerified = data;
 				}
+				// if (data) {
+				// 	Object.keys(data).map(item => {
+				// 		bonusVerified.push(data[item]);
+				// 	});
+				// }
 
-				resolve(bonusVerified);
+				resolve([bonusVerified]);
 			});
 		})
 );
 
-export const saveBonusVerified = createAsyncThunk('agencyApp/bonusVerified/saveBonusVerified', async (params, { dispatch, getState }) => {
+export const saveBonusVerified = createAsyncThunk('agencyApp/bonusVerified/saveBonusVerified', async (params, { dispatch, getState }) => { 
 	const response = await axios.post('/api/agency-app/bonusVerified/save', params); 
 	const data = await response.data;
 
-	// dispatch(getBonusVerified(data.year));
 	return data;
 });
 
