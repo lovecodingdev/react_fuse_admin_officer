@@ -113,8 +113,11 @@ export const deleteUser = createAsyncThunk('users/users/deleteUser', async (UID,
 	const response = await axios.post(firebaseFunctionDeleteUserEndpoint, form);
 	var agencyDelRef = realDb.ref(`agency/${UID}`);
 	var userDelRef = realDb.ref(`users/${UID}`);
+	var invitationRef = realDb.ref(`Invitation/${uid}/${UID}`);
+	
 	agencyDelRef.remove();
 	userDelRef.remove();
+	invitationRef.remove();
 	console.log(response, UID);
 
 	dispatch(getUsers());

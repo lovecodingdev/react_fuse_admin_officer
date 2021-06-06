@@ -22,6 +22,15 @@ new Promise((resolve, reject) => {
 	});
 }));
 
+export const removeTemplate = createAsyncThunk(
+	'bonusPlanTemplate/removeTemplate', async (templateName, { dispatch, getState }) => {
+		var UID = localStorage.getItem('@UID');
+		realDb.ref(`BonusPlanTemplate/${UID}/${templateName}`).remove();
+
+		dispatch(getTemplateData(UID));
+	}
+);
+
 const userSlice = createSlice({
 	name: 'bonusPlanTemplate/templates',
 	initialState: {},

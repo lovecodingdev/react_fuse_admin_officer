@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import _ from '@lodash';
 import clsx from 'clsx';
 import FuseScrollbars from '@fuse/core/FuseScrollbars';
+import Checkbox from '@material-ui/core/Checkbox';
 import Avatar from '@material-ui/core/Avatar';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -18,7 +19,7 @@ import Typography from '@material-ui/core/Typography';
 import TextInput from '../TextInput';
 import { formattedString } from '../../utils/Function'
 
-function Widget(props) {
+function Widget(props) { 
 	const dispatch = useDispatch(); 
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -32,6 +33,7 @@ function Widget(props) {
 	const rows = props.data.table.rows;
 	const columns = props.data.table.columns;
 	const sortTableContent = [];
+	const selected = props.selected;
 
 	if(props.sortable) {
 		rows.map((row, rowNum) => {
@@ -41,6 +43,10 @@ function Widget(props) {
 
 	function handleInputChange(tableName, row, col, rowKey, colKey,  value) {
 		props.onInputChange({tableName, row, col, rowKey, colKey,  value});
+	}
+
+	function handleCheck(event, uid, rowKey, rowNum) {
+		props.onCheck(event, uid, rowKey, rowNum);
 	}
 
 	function handleChangePage(event, value) {
@@ -189,15 +195,29 @@ function Widget(props) {
 										{
 											!props.editable && 
 											columns.length===0 && 
-											headers.length>0 && 
+											headers.length>0 &&
+											colKey!=='Bonus Verified?' && 
 												formattedString(tableContent[rowKey][headers[colNum+1].value])
 										}
 
 										{
 											!props.editable && 
 											columns.length!==0 && 
-											headers.length>0 && 
+											headers.length>0 &&
+											colKey!=='Bonus Verified?' &&  
 												formattedString(tableContent[rowKey][headers[colNum].value])
+										}
+
+										{
+											!props.editable && 
+											columns.length===0 && 
+											headers.length>0 &&
+											colKey==='Bonus Verified?' &&
+											rowKey!=='Total' &&  
+												<Checkbox
+													checked={selected[rowKey]}
+													onChange={event => handleCheck(event, rows[rowNum].uid, rowKey, rowNum)}
+												/>
 										}
 									
 										{props.editable &&

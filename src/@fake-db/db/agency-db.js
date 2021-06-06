@@ -8379,3 +8379,16 @@ mock.onGet('/api/agency-app/users').reply(() => new Promise((resolve, reject) =>
 		resolve(agencyAppDB.users);
 	})
 }));
+
+mock.onPost('/api/agency-app/bonusVerified/save').reply(request => {
+	var belongTo = localStorage.getItem('@BELONGTO');
+	var UID = localStorage.getItem('@UID');
+	const data = JSON.parse(request.data);
+	let product = data;
+console.log('==================', data);
+	realDb.ref(`BonusVerified/${data.year}/${belongTo}/${data.userId}`).set({
+		test: 'OK'
+	});
+
+	return [200, product];
+});

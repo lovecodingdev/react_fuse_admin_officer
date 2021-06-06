@@ -66,7 +66,7 @@ function ProductsTable(props) {
 	});
 	const [open, setOpen] = React.useState(false);
 
-	const handleClickOpen = uid => {
+	const handleClickOpen = uid => { 
 		setOpen(true);
 		selectedUID = uid;
 	};
@@ -98,7 +98,7 @@ function ProductsTable(props) {
 		}
 	}, [bonusPlanTemplates]);
 
-	useEffect(() => {
+	useEffect(() => { 
 		if (searchText.length !== 0) {
 			setData(_.filter(products, item => item.data.displayName.toLowerCase().includes(searchText.toLowerCase())));
 			setPage(0);
@@ -253,10 +253,10 @@ function ProductsTable(props) {
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 								.map((n, index) => {
 									console.log('---------------------------------------------------', n)
-									if (Object.keys(n).includes('role')) {
-										if(n.role[0] === 'admin')
-										return;
-									}
+									// if (Object.keys(n).includes('role')) {
+									// 	if(n.role[0] === 'admin')
+									// 	return;
+									// }
 									const isSelected = selected.indexOf(n.id) !== -1;
 									return (
 										<TableRow
@@ -336,7 +336,7 @@ function ProductsTable(props) {
 											</TableCell>
 
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.active && (
+												{n.active && Object.keys(n).includes('role') && n.role[0]==='producer' && (
 													<Button
 														className="whitespace-nowrap normal-case"
 														variant="contained"
@@ -355,12 +355,12 @@ function ProductsTable(props) {
 												{n.active ? 'Active' : n.belongTo ? 'Revoked' : 'Invite sent'}
 											</TableCell>
 											<TableCell className="p-2 md:p-2" component="th" scope="row" align="center">
-												{n.active && (
+												{n.active && Object.keys(n).includes('role') && n.role[0]==='admin' ? '' : (
 													<Button
 														className="whitespace-nowrap normal-case"
 														variant="contained"
 														color="secondary"
-														onClick={() => handleClickOpen(n.uid)}
+														onClick={() => handleClickOpen(n.id)}
 													>
 														<span className="hidden sm:flex">Revoke</span>
 													</Button>

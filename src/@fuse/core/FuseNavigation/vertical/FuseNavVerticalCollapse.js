@@ -63,7 +63,8 @@ function isUrlInChildren(parent, url) {
 
 function FuseNavVerticalCollapse(props) {
 	const userRole = useSelector(({ auth }) => auth.user.role);
-	const [open, setOpen] = useState(() => needsToBeOpened(props.location, props.item));
+	// const [open, setOpen] = useState(() => needsToBeOpened(props.location, props.item));
+	const [open, setOpen] = useState(true);
 	const { item, nestedLevel } = props;
 	const classes = useStyles({
 		itemPadding: nestedLevel > 0 ? 40 + nestedLevel * 16 : 24

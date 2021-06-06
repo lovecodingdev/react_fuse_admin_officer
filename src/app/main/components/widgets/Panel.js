@@ -1,15 +1,7 @@
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
 import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import clsx from 'clsx';
 import React from 'react';
-import { formattedString, formattedNumber } from '../../utils/Function'
+import { formattedNumber } from '../../utils/Function'
 
 export function Card(props) {
 	return(
@@ -22,7 +14,7 @@ export function Card(props) {
 			</div>
 		}
 		<div className="text-center pt-12 pb-28">
-			<Typography className={`lg:text-52 md:text-40 sm:text-36 leading-none ${props.color}`}>
+			<Typography className={`lg:text-40 md:text-30 sm:text-20 leading-none ${props.color}`}>
 				{`${formattedNumber(props.count)} ${props.endAdornment}`}
 			</Typography>
 			{props.label!=='' &&

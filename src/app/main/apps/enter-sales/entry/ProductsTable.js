@@ -44,8 +44,8 @@ function ProductsTable(props) {
 	const [page, setPage] = useState(0);
 	const [rowsPerPage, setRowsPerPage] = useState(10);
 	const [order, setOrder] = useState({
-		direction: 'asc',
-		id: null
+		direction: 'desc',
+		id: 'datePolicyIsWritten'
 	});
 	const [usersList, setUserList] = useState([]);
 	const [state, setState] = React.useState({
@@ -224,7 +224,8 @@ function ProductsTable(props) {
 								[
 									// order.id
 									o => {
-										return o.datePolicyIsWritten;
+										// return o.datePolicyIsWritten;
+										return o[order.id];
 										// switch (order.id) {
 
 										// 	case 'policyInformation': {
@@ -239,10 +240,10 @@ function ProductsTable(props) {
 										// }
 									}
 								],
-								['desc']
+								[order.direction]
 							)
 								.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-								.map(n => {
+								.map(n => { 
 									const isSelected = selected.indexOf(n.id) !== -1;
 									return (
 										<TableRow

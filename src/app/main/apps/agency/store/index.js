@@ -7,6 +7,7 @@ import entries from './entriesSlice';
 import marketings from './marketingsSlice';
 import users from './usersSlice';
 import vision from './visionSlice';
+import bonusVerified from './bonusVerifiedSlice';
 
 const reducer = combineReducers({
 	widgets,
@@ -17,6 +18,7 @@ const reducer = combineReducers({
 	entries,
 	marketings,
 	vision,
+	bonusVerified
 });
 
 export default reducer;

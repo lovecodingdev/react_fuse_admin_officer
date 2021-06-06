@@ -26,6 +26,7 @@ import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
 import { getLapseRate, selectLapseRate } from '../store/lapseRateSlice';
 import { getPolicyGrowth, selectPolicyGrowth } from '../store/policyGrowthSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
+import { getBonusVerified, selectBonusVerified, saveBonusVerified } from '../store/bonusVerifiedSlice';
 import { months, Options as options, policies } from '../../../utils/Globals';
 import { dividing, getLevel, getMain } from '../../../utils/Function';
 import DownloadBtn from 'app/fuse-layouts/shared-components/DownloadButton';
@@ -41,6 +42,7 @@ function Payroll(props) {
 	const lapseRate = useSelector(selectLapseRate);
 	const policyGrowth = useSelector(selectPolicyGrowth);
 	const entries = useSelector(selectEntries);
+	const selected = useSelector(selectBonusVerified);
 	const [loading, setLoading] = useState(true);
 	const [data, setData] = useState({});
 	const [main, setMain] = useState({});
@@ -59,6 +61,7 @@ function Payroll(props) {
 		dispatch(getLapseRate(year));
 		dispatch(getPolicyGrowth(year));
 		dispatch(getEntries(year));
+		dispatch(getBonusVerified(year))
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
@@ -77,7 +80,8 @@ function Payroll(props) {
 						id: 'Total',
 						value: 'Total',
 						color: '',
-						border: 'border-b-4'
+						border: 'border-b-4',
+						uid: 'Total'
 					}
 				];
 				let tableContent = {
@@ -91,7 +95,8 @@ function Payroll(props) {
 							id: user.data.displayName,
 							value: user.data.displayName,
 							color: '',
-							border: ''
+							border: '',
+							uid: user.uid
 						});
 
 						let totalPolicies = 0;
@@ -206,7 +211,8 @@ function Payroll(props) {
 						id: 'Total',
 						value: 'Total',
 						color: '',
-						border: 'border-b-4'
+						border: 'border-b-4',
+						uid: 'Total'
 					}
 				];
 				let tableContent = {
@@ -220,7 +226,8 @@ function Payroll(props) {
 							id: user.data.displayName,
 							value: user.data.displayName,
 							color: '',
-							border: ''
+							border: '',
+							uid: user.uid
 						});
 
 						let totalPolicies = 0;
@@ -346,7 +353,8 @@ function Payroll(props) {
 						id: 'Total',
 						value: 'Total',
 						color: '',
-						border: 'border-b-4'
+						border: 'border-b-4',
+						uid: 'Total'
 					}
 				];
 				let tableContent = {
@@ -360,7 +368,8 @@ function Payroll(props) {
 						id: month.value,
 						value: month.value,
 						color: '',
-						border: ''
+						border: '',
+						uid: user.uid
 					});
 
 					let totalPolicies = 0;
@@ -495,6 +504,11 @@ function Payroll(props) {
 		setProduction(event.target.value);
 	}
 
+	function handleCheck(event, uid, rowKey, rowNum) {
+		console.log('=====================================', event.target.checked, uid, rowKey, rowNum)
+
+	}
+
 	if (loading) {
 		return <FuseLoading />;
 	}
@@ -567,17 +581,17 @@ function Payroll(props) {
 					<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
 						{tabValue === 0 && (
 							<div className="p-12">
-								<Table data={data.widgets.Agency_Payroll_Table} />
+								<Table data={data.widgets.Agency_Payroll_Table} onCheck={handleCheck} selected={selected} />
 							</div>
 						)}
 						{tabValue === 1 && (
 							<div className="p-12">
-								<Table data={data.widgets.Agency_Payroll_Yearly_Table} />
+								<Table data={data.widgets.Agency_Payroll_Yearly_Table} onCheck={handleCheck} selected={selected} />
 							</div>
 						)}
 						{tabValue === 2 && (
 							<div className="p-12">
-								<Table data={data.widgets.Agency_Payroll_Summary_Table} />
+								<Table data={data.widgets.Agency_Payroll_Summary_Table} onCheck={handleCheck} selected={selected} />
 							</div>
 						)}
 					</FuseAnimateGroup>

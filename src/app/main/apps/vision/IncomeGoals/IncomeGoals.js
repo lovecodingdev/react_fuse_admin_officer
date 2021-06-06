@@ -342,11 +342,16 @@ function IncomeGoals(props) {
 						(value1 * avgsTableContent['Average Bonus'][avgCols[col]]) / 100;
 				}
 				const level = getLevel(goalsTableContent[months1[i]][goalCols[col]], policies[col].value, bonusPlans);
+				if(policies[col].value === 'Bank') {
+					console.log('---------------------',policies[col].value, level)
+				}
 				bonusesTableContent[months1[i]][bonusCols[col + skipCol]] = Math.round(
-					((goalsTableContent[months1[i]]['Annual Auto Premium'] / 2 +
-						goalsTableContent[months1[i]]['Annual Fire Premium']) *
-						level.amount) /
-						100
+					(
+						(
+							goalsTableContent[months1[i]]['Annual Auto Premium'] / 2 +
+							goalsTableContent[months1[i]]['Annual Fire Premium']
+						) * level.amount
+					) / 100
 				);
 
 				// Total Premium
@@ -515,7 +520,7 @@ function IncomeGoals(props) {
 				<div className="w-full flex flex-col p-12">
 					<div className="flex items-center justify-center p-12">
 						<FuseAnimateGroup
-							className="flex flex-wrap w-1/3"
+							className="flex flex-wrap w-1/2"
 							enter={{ animation: 'transition.slideUpBigIn' }}
 						>
 							<Table
