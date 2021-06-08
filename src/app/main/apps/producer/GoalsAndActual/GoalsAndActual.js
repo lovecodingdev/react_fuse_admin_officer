@@ -100,14 +100,18 @@ function GoalsAndActual(props) {
 							tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.id][policy.value]["Goals"]
 							tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
 							totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
-							totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];												
-							tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
-							tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
+							totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];	
+							if(user.id !== UID) {
+								tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
+								tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
+							}																		
 						});
 						tableContent[user.data.displayName]['Total@Goals'] = totalGoals;
-						tableContent[user.data.displayName]['Total@Actual'] = totalActual;														
-						tableContent['Total'][`Total@Goals`] += totalGoals;
-						tableContent['Total'][`Total@Actual`] += totalActual;
+						tableContent[user.data.displayName]['Total@Actual'] = totalActual;	
+						if(user.id !== UID) {
+							tableContent['Total'][`Total@Goals`] += totalGoals;
+							tableContent['Total'][`Total@Actual`] += totalActual;
+						}																				
 					}				
 				});
 				widgets = {
@@ -202,14 +206,18 @@ function GoalsAndActual(props) {
 							tableContent[user.data.displayName][`${policy.value}@Goals`] = main[production][period][user.id][policy.value]["Goals"]
 							tableContent[user.data.displayName][`${policy.value}@Actual`] = main[production][period][user.id][policy.value]["Policies"]
 							totalGoals += tableContent[user.data.displayName][`${policy.value}@Goals`];
-							totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];												
-							tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
-							tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
+							totalActual += tableContent[user.data.displayName][`${policy.value}@Actual`];	
+							if(user.id !== UID) {
+								tableContent['Total'][`${policy.value}@Goals`] += tableContent[user.data.displayName][`${policy.value}@Goals`]
+								tableContent['Total'][`${policy.value}@Actual`] += tableContent[user.data.displayName][`${policy.value}@Actual`]
+							}																			
 						});
 						tableContent[user.data.displayName]['Total@Goals'] = totalGoals;
-						tableContent[user.data.displayName]['Total@Actual'] = totalActual;										
-						tableContent['Total'][`Total@Goals`] += totalGoals;
-						tableContent['Total'][`Total@Actual`] += totalActual;
+						tableContent[user.data.displayName]['Total@Actual'] = totalActual;	
+						if(user.id !== UID) {
+							tableContent['Total'][`Total@Goals`] += totalGoals;
+							tableContent['Total'][`Total@Actual`] += totalActual;
+						}															
 					}				
 				});
 				widgets = {

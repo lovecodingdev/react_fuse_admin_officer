@@ -5,6 +5,7 @@ import { darken } from '@material-ui/core/styles/colorManipulator';
 import { useParams } from 'react-router-dom';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
+import FuseLoading from '@fuse/core/FuseLoading';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CardElements from '../components/CardElements';
@@ -24,6 +25,8 @@ import { registerWithFirebase } from 'app/auth/store/registerSlice';
 import { auth } from '../../../@fake-db/db/firebase';
 import { useDispatch } from 'react-redux';
 import { registerError } from 'app/auth/store/registerSlice';
+import { realDb } from '../../../@fake-db/db/firebase';
+import history from '@history';
 
 const publicKeyTest =
 	'pk_test_51IFn0pAfN4Ms4oOXNtWGRfBvhbBdJ0zIV4bCiefjGeRgt8eMDfq7Cm4jovgdj5BfdQm2qbV6oL7jzgcQ13jQ70l800ocRcNzky';
@@ -52,6 +55,7 @@ function Register() {
 	const classes = useStyles();
 	const [selectedTab, setSelectedTab] = useState(1);
 	const dispatch = useDispatch();
+	const [loading, setLoading] = useState(true);
 	const [state, setState] = useState({
 		showPaymentForm: false,
 		showSubscriptionForm: true,
@@ -68,7 +72,7 @@ function Register() {
 		model: {}
 	});
 	const [count, setCount] = useState([]);
-	const routeParams = useParams();
+	const routeParams = useParams(); 
 	function handleTabChange(token, item) {
 		console.log({ ...state, subscriptionStatus: true, token: token });
 		let tempSeatSubscription = {};
@@ -103,6 +107,17 @@ function Register() {
 				console.log(error);
 			});
 	}
+
+	useEffect(() => {
+		const belongTo = routeParams.belongTo;
+		const email = routeParams.email;
+		axios.post(`/api/auth/user/invitations`, { belongTo, email }).then(response => {
+			console.log('-----response', response.data);
+			history.push({ pathname: '/pages/errors/error-500' });
+		}).catch(error => {
+			console.log('---error', error);
+		});
+	}, [routeParams]);
 
 	useEffect(() => {
 		setMembership();
@@ -142,6 +157,10 @@ function Register() {
 				})
 			);
 		}
+	}
+
+	if (loading) {   
+		return <FuseLoading />;
 	}
 
 	return (

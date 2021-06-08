@@ -13,18 +13,12 @@ export const getBonusPlans = createAsyncThunk(
 			var bonusPlans = [];		
 			starCountRef.on('value', snapshot => { 
 				const data = snapshot.val();
-
-				// if (data) {
-				// 	Object.keys(data).map(item => {
-				// 		bonusPlans.push(data[item]);
-				// 	});
-				// }
 				
 				if(data) {
 					var templateRef = realDb.ref(`BonusPlanTemplate/${belongTo}/${data.name}`);
 					templateRef.on('value', snapshot => { 
 						const templatePlan = snapshot.val();	
-						
+					console.log('===========', `BonusPlanTemplate/${belongTo}/${data.name}`, templatePlan)	
 						if(templatePlan) {
 							resolve([templatePlan])
 						} else {

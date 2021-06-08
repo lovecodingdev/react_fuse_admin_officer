@@ -126,6 +126,7 @@ export const deleteUser = createAsyncThunk('users/users/deleteUser', async (UID,
 });
 
 export const addUser = createAsyncThunk('users/user/addUser', async (contact, { dispatch, getState }) => {
+	const deployOfficerEndpoint = 'http://localhost:3001'
 	if (contact.role === 'agency') {
 		var form = {
 			email: contact.email,

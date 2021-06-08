@@ -4,35 +4,22 @@ import moment from 'moment';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
 import FusePageSimple from '@fuse/core/FusePageSimple';
-import FusePageCarded from '@fuse/core/FusePageCarded';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
-import Hidden from '@material-ui/core/Hidden';
-import Icon from '@material-ui/core/Icon';
-import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import {
 	MuiPickersUtilsProvider,
-	KeyboardTimePicker,
 	KeyboardDatePicker,
   } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import _ from '@lodash';
 import reducer from '../store';
-import Table from '../../../components/widgets/Table';
 import Panel from '../../../components/widgets/Panel';
-import Card from '../../../components/widgets/Panel';
-import BarChart from '../../../components/widgets/BarChart';
-import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getWidgets, selectWidgets } from '../store/widgetsSlice';
 import { getBonusPlans, selectBonusPlans } from '../store/bonusPlansSlice';
-import { getMarketings, selectMarketings } from '../store/marketingsSlice';
 import { getEntries, selectEntries } from '../store/entriesSlice';
 import { getUsers, selectUsers } from '../store/usersSlice';
 import { getVision, selectVision } from '../store/visionSlice';
@@ -55,7 +42,6 @@ const useStyles = makeStyles(theme => ({
 function Dashboard(props) {
 	const dispatch = useDispatch();
 	const classes = useStyles(props);
-	const pageLayout = useRef(null);
 	let widgets = useSelector(selectWidgets);
 	const users = useSelector(selectUsers);
 	const bonusPlans = useSelector(selectBonusPlans);
@@ -67,10 +53,7 @@ function Dashboard(props) {
 	const [main, setMain] = useState({});
 	const [date, setDate] = useState(moment());
 	const [period, setPeriod] = useState(moment().format('MMMM'));
-	const [production, setProduction] = useState("Show Written Production");
-	const [report, setReport] = useState("Policies");
-	const [userList, setUserList] = useState([]);
-	const [tabValue, setTabValue] = useState(0);
+	const [production, setProduction] = useState("Show Written Production");	
 	const [title, setTitle] = useState('Welcome');
 	
 	useEffect(() => {
@@ -99,11 +82,10 @@ function Dashboard(props) {
 			let individual = 0;	
 			if(widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel) {	
 				policies.map(policy => {					
-					// if(policy.value !== 'Bank') {		
-						teamGoalsAndActual[`${policy.value}@realGoal`] = 0;				
-						teamGoalsAndActual[`${policy.value}@Goal`] = 0;
-						teamGoalsAndActual[`${policy.value}@Actual`] = 0;						
-					// }	
+					teamGoalsAndActual[`${policy.value}@realGoal`] = 0;				
+					teamGoalsAndActual[`${policy.value}@Goal`] = 0;
+					teamGoalsAndActual[`${policy.value}@Actual`] = 0;
+
 					household += main[production][period][UID][policy.value]['household'];
 					individual += main[production][period][UID][policy.value]['individual'];			
 				});
@@ -115,38 +97,19 @@ function Dashboard(props) {
 								indGoalsAndActual[user.id][`Total@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];
 								indGoalsAndActual[user.id][`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
 								indGoalsAndActual[user.id][`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];																			
-
-								teamGoalsAndActual[`Total@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];
-								teamGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-								teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];
-								teamGoalsAndActual[`${policy.value}@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];											
-								teamGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
-								teamGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+								
+								if(user.id === UID) {
+									teamGoalsAndActual[`Total@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];
+									teamGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+									teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+									teamGoalsAndActual[`${policy.value}@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];											
+									teamGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+									teamGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
+								}								
 							}							
 						});
 					}			
-				});		
-						
-				// // Personal Goal vs Actual
-				// policies.map(policy => {
-				// 	if(policy.value !== 'Bank') {
-				// 		let tempCardData = [];
-				// 		let tempCard = {};
-				// 		const cardData = widgets[`Dashboard_Multiline_GoalAndActual_${policy.value}_Panel`].cardData;
-				// 		cardData.map(card => {
-				// 			tempCard = card;
-				// 			tempCard = { ...tempCard, count: indGoalsAndActual[`${policy.value}@${card.label}`] };
-				// 			tempCardData.push(tempCard);
-				// 		});						
-				// 		widgets = {
-				// 			...widgets, [`Dashboard_Multiline_GoalAndActual_${policy.value}_Panel`]: {
-				// 				...widgets[`Dashboard_Multiline_GoalAndActual_${policy.value}_Panel`], cardData: [
-				// 					...tempCardData
-				// 				]
-				// 			}					
-				// 		}
-				// 	}					
-				// });
+				});											
 
 				// Team Goal vs Actual
 				policies.map(policy => {
@@ -222,7 +185,7 @@ function Dashboard(props) {
 				let tempDatasets = [];
 				let tempLabels = [];
 				users.map(user => {
-					if(user.belongTo === UID) {
+					if(user.id === UID) {
 						tempGoal.push(indGoalsAndActual[user.id][`Total@realGoal`]);
 
 						let backgroundColor = '#42BFF7';
@@ -354,11 +317,7 @@ function Dashboard(props) {
 
 		console.log('-----widgets', widgets)
 		setData({ widgets });
-	}, [widgets, main, period]);
-
-	function handleChangeTab(event, value) {
-		setTabValue(value);
-	}
+	}, [widgets, main, period]);	
 	
 	function handleChangePeriod(event) { 
 		setPeriod(event.target.value);

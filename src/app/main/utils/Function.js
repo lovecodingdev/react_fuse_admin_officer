@@ -128,7 +128,7 @@ export const getOtherActivityBonus = (name, bonusPlans) => {
   if(bonusPlans.length>0 && bonusPlans[0].hasOwnProperty('otherActivityBonus')) {
     let value = 0;
     Object.keys(bonusPlans[0]['otherActivityBonus']).map((key, n) => {
-      const item = bonusPlans[0]['otherActivityBonus'][key];      
+      const item = bonusPlans[0]['otherActivityBonus'][key];   
       if(item.name === name) {
         value = item.dollar;
       }
@@ -143,14 +143,17 @@ export const getMain = (entries, bonusPlans=[], marketings=[], users=[], vision=
   options.production.data.map((pro) => {  
     const production = pro.value;
     temp[production] = {};
+
     monthsAndQuarters.map((mon) => {		
       const month = mon.value;	
       const visionMonth = mon.visionValue;	
       temp[production][month] = {};
+
       users.map((user) => {
         const belongTo = user.belongTo;
         const userId = user.id;
         temp[production][month][userId] = {};
+        
         policies.map((pol) => {
           const policy = pol.value;
           const entry = pol.entry;
@@ -189,8 +192,8 @@ export const getMain = (entries, bonusPlans=[], marketings=[], users=[], vision=
           });	
 
           if(!month.includes('Totals')) {
-            const indBonusPlan = bonusPlans.length > 0 &&	bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy].indDb) ? bonusPlans[0][bonusPlanDbNames[policy].indDb] : {};				
-            const teamBonusPlan = bonusPlans.length > 0 &&	bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy].teamDb) ? bonusPlans[0][bonusPlanDbNames[policy].teamDb] : {};				
+            // const indBonusPlan = bonusPlans.length > 0 &&	bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy].indDb) ? bonusPlans[0][bonusPlanDbNames[policy].indDb] : {};				
+            // const teamBonusPlan = bonusPlans.length > 0 &&	bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy].teamDb) ? bonusPlans[0][bonusPlanDbNames[policy].teamDb] : {};				
             const lapseBonusPlan = bonusPlans.length > 0 &&	bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy].lapseDb) ? bonusPlans[0][bonusPlanDbNames[policy].lapseDb] : {};				
             const growthBonusPlan = bonusPlans.length > 0 &&	bonusPlans[0].hasOwnProperty(bonusPlanDbNames[policy].growthDb) ? bonusPlans[0][bonusPlanDbNames[policy].growthDb] : {};				
           
@@ -243,7 +246,7 @@ export const getMain = (entries, bonusPlans=[], marketings=[], users=[], vision=
                   const bonus = item.dollarBonus==='' ? 0 : item.dollarBonus;              
                   temp[production][month][userId][policy][item.typeOfProduct] += parseFloat(item.creditPercent / 100);
                   temp[production][month][userId][policy][item.sourceOfBusiness] += parseFloat(item.creditPercent / 100);              
-                  temp[production][month][userId][policy][item.policyHolderType] += 1;
+                  temp[production][month][userId][policy][item.policyHolderType] += 1; // household, individual
                   temp[production][month][userId][policy]['Bonuses'] += parseFloat(bonus);									
                   temp[production][month][userId][policy]['Premium'] += parseFloat(item.policyPremium) * parseFloat(item.creditPercent) * semiAnnual / 100;									
                   temp[production][month][userId][policy]['Policies'] += parseFloat(item.creditPercent / 100);	
@@ -251,12 +254,11 @@ export const getMain = (entries, bonusPlans=[], marketings=[], users=[], vision=
                   temp[production][month][userId][policy][`${item.typeOfProduct}@Bonuses`] += parseFloat(bonus);
                   temp[production][month][userId][policy][`${item.typeOfProduct}@Premium`] += parseFloat(item.policyPremium) * parseFloat(item.creditPercent) * semiAnnual / 100;
                   temp[production][month][userId][policy][`${item.typeOfProduct}@Policies`] += parseFloat(item.creditPercent / 100);	              
-                  temp[production][month][userId][policy][`${item.typeOfProduct}@Averages`] = dividing(temp[production][month][userId][policy][`${item.typeOfProduct}@Premium`], temp[production][month][userId][policy][`${item.typeOfProduct}@Policies`])                                
-                  
+                  temp[production][month][userId][policy][`${item.typeOfProduct}@Averages`] = dividing(temp[production][month][userId][policy][`${item.typeOfProduct}@Premium`], temp[production][month][userId][policy][`${item.typeOfProduct}@Policies`]);                                                  
                 }  
               });
             }
-
+      
             for(let i = 0; i < months1.indexOf(month); i ++) {
               const tempMonth = months1[i];
               if(temp[production][tempMonth][userId][policy]['Goals'] > temp[production][tempMonth][userId][policy]['Policies']) {
@@ -268,7 +270,6 @@ export const getMain = (entries, bonusPlans=[], marketings=[], users=[], vision=
             }
           }
           
-
           for(let i = 0; i < 4; i ++) {    
             if(month === `Quarter ${i+1} Totals`) {
               Object.keys(temp[production][`Quarter ${i+1} Totals`][userId][policy]).map(key => {
@@ -283,17 +284,26 @@ export const getMain = (entries, bonusPlans=[], marketings=[], users=[], vision=
                     temp[production][months[i*3].value][userId][policy][key] +
                     temp[production][months[i*3+1].value][userId][policy][key] +
                     temp[production][months[i*3+2].value][userId][policy][key];
-                }                
+                } 
+                if(key === 'realGoal') {
+                  temp[production][`Quarter ${i+1} Totals`][userId][policy][key] = 
+                    temp[production][months[i*3+2].value][userId][policy]['realGoal'];     
+                }              
               });
             }                            
           } 
           if(month === `Annual Totals`) {
             Object.keys(temp[production][`Annual Totals`][userId][policy]).map(key => {
-              temp[production][`Annual Totals`][userId][policy][key] = 
+              if(key === 'realGoal') {
+                temp[production][`Annual Totals`][userId][policy][key] = temp[production][`Quarter 4 Totals`][userId][policy]['realGoal']; 
+              } 
+              else {
+                temp[production][`Annual Totals`][userId][policy][key] = 
                   temp[production][`Quarter 1 Totals`][userId][policy][key] +
                   temp[production][`Quarter 2 Totals`][userId][policy][key] +
                   temp[production][`Quarter 3 Totals`][userId][policy][key] +
                   temp[production][`Quarter 4 Totals`][userId][policy][key]; 
+              }              
             });
           }            
         });          

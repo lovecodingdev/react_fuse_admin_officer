@@ -1,25 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import FuseAnimate from '@fuse/core/FuseAnimate';
 import FuseAnimateGroup from '@fuse/core/FuseAnimateGroup';
-import FusePageSimple from '@fuse/core/FusePageSimple';
 import FusePageCarded from '@fuse/core/FusePageCarded';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import FuseLoading from '@fuse/core/FuseLoading';
 import withReducer from 'app/store/withReducer';
-import { makeStyles } from '@material-ui/core/styles';
 import _ from '@lodash';
 import reducer from '../store';
-import { MuiPickersUtilsProvider, KeyboardTimePicker, KeyboardDatePicker } from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Table from '../../../components/widgets/Table';
-import Chart from '../../../components/widgets/BarChart';
-import PieChart from '../../../components/widgets/PieChart';
 import SelectBox from '../../../components/CustomSelectBox';
 import Header from '../../../components/widgets/Header';
 import { getUsers, selectUsers } from '../store/usersSlice';
@@ -58,7 +52,6 @@ function IncomeGoals(props) {
 	const [date, setDate] = useState(moment());
 	const [user, setUser] = useState(UID);
 	const [userList, setUserList] = useState([]);
-	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Income Goals');
 
 	function onSave() {
@@ -237,8 +230,7 @@ function IncomeGoals(props) {
 		setData({ widgets });
 	}, [widgets, main]);
 
-	useEffect(() => {
-		console.log(cell);
+	useEffect(() => {		
 		const tableName = cell.tableName;
 		let row = cell.row;
 		const col = cell.col;
@@ -342,9 +334,7 @@ function IncomeGoals(props) {
 						(value1 * avgsTableContent['Average Bonus'][avgCols[col]]) / 100;
 				}
 				const level = getLevel(goalsTableContent[months1[i]][goalCols[col]], policies[col].value, bonusPlans);
-				if(policies[col].value === 'Bank') {
-					console.log('---------------------',policies[col].value, level)
-				}
+			
 				bonusesTableContent[months1[i]][bonusCols[col + skipCol]] = Math.round(
 					(
 						(

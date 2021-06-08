@@ -2,6 +2,7 @@ import FuseUtils from '@fuse/utils';
 import _ from '@lodash';
 import jwt from 'jsonwebtoken';
 import mock from '../mock';
+import {realDb} from '../db/firebase'
 /* eslint-disable camelcase */
 
 const jwtConfig = {
@@ -200,3 +201,18 @@ mock.onPost('/api/auth/user/update').reply(config => {
 
 	return [200, user];
 });
+
+mock.onPost('/api/auth/user/invitations').reply((params) => new Promise((resolve, reject) => {
+	const { belongTo, email } = params.data;
+	var starCountRef = realDb.ref(`Invitation/${belongTo}`);
+	starCountRef.on('value', snapshot => {
+		const data = snapshot.val(); console.log('--------------------', data)
+	
+		if(data) {
+			resolve(data);
+		} else {
+			resolve([])
+		}
+		
+	})	
+}));

@@ -510,7 +510,7 @@ function Payroll(props) {
 		setProduction(event.target.value);
 	}
 
-	function handleCheck(event, uid, rowKey, rowNum, tableId) {
+	function handleCheck(event, uid, rowKey, rowNum, tableId) {console.log('=======', event.target.checked, uid, rowKey)
 		if(
 			bonusVerified.length > 0 &&
 			bonusVerified[0].hasOwnProperty(uid) &&
