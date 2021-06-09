@@ -123,12 +123,13 @@ function Products() {
 		datePolicyIsIssued: null,
 		percentOfSaleCredit: '',
 		typeOfProduct: '',
-		user: '',
+		user: 'OfficeCount',
 		policyType: ['Entries'],
 		policyPremium: '',
 		sourceOfBusiness: '',
 		adjustments: '',
 		dollarBonus: '',
+		policyHolderNameValidation:false,
 		policyTypeValidation: false,
 		policyHolderTypeValidation: false,
 		percentOfSaleCreditValidation: false,
@@ -663,6 +664,10 @@ function Products() {
 		// 	// });
 		// 	return false;
 		// }
+		if(!state.policyHolderName){
+			setState({...state, policyHolderNameValidation:state.policyHolderName?false:true})
+			return false
+		}
 		if (state.policyType.length === 1&& state.policyHolderType==='household') {
 			// if (typeof state.user === 'object') {
 			// 	return true;
@@ -1428,8 +1433,8 @@ function Products() {
 										value={state.policyHolderName}
 										validation="policyHolderName"
 										onChange={handleChangeValue}
-										willvalidation={false}
-										validate={false}
+										willvalidation={true}
+										validate={state.policyHolderNameValidation}
 										size={250}
 									/>
 									<KeyboardDatePicker
