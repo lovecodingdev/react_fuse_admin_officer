@@ -641,29 +641,7 @@ function Products() {
 	}
 
 	function checkValidation() {
-		// if (
-		// 	// !state.percentOfSaleCreditValidation &&
-		// 	// !state.typeOfProductValidation &&
-		// 	// !state.policyPremiumValidation &&
-		// 	// !state.policyHolderTypeValidation &&
-		// 	// state.percentOfSaleCredit &&
-		// 	// state.typeOfProduct &&
-		// 	// state.policyHolderType &&
-		// 	typeof(state.user)==='object'
-		// ) {
-
-		// 	return true;
-		// } else if (typeof(state.user)!=='object'&& previousPolicyNumber) {
-		// 	// setState({
-		// 	// 	...state,
-		// 	// 	// percentOfSaleCreditValidation: state.percentOfSaleCredit ? false : true,
-		// 	// 	typeOfProductValidation: state.typeOfProduct ? false : true,
-		// 	// 	policyPremiumValidation: state.policyPremium ? false : true,
-		// 	// 	policyHolderTypeValidation: state.policyHolderType ? false : true,
-		// 	// 	typeValidation: state.policyType.length > 0 ? false : true
-		// 	// });
-		// 	return false;
-		// }
+		
 		if(!state.policyHolderName){
 			setState({...state, policyHolderNameValidation:state.policyHolderName?false:true})
 			return false
@@ -680,6 +658,56 @@ function Products() {
 					return false;
 				}
 			// }
+		}
+
+		if(state.policyType.includes('Entries')&&!state.typeOfProduct){
+			setState({...state, typeOfProductValidation:state.typeOfProduct?false:true})
+			return false
+		}
+
+		if(state.policyType.includes('Entries')&&!state.policyPremium){
+			setState({...state, policyPremiumValidation:state.policyPremium?false:true})
+			return false
+		}
+
+		if(state.policyType.includes('FireEntries')&&!state.typeOfProductFire){
+			setState({...state, typeOfProductFireValidation:state.typeOfProductFire?false:true})
+			return false
+		}
+
+		if(state.policyType.includes('FireEntries')&&!state.policyPremiumFire){
+			setState({...state, policyPremiumFireValidation:state.policyPremiumFire?false:true})
+			return false
+		}
+
+		if(state.policyType.includes('HealthEntries')&&!state.typeOfProductHealth){
+			setState({...state, typeOfProductHealthValidation:state.typeOfProductHealth?false:true})
+			return false
+		}
+
+		if(state.policyType.includes('HealthEntries')&&!state.policyPremiumHealth){
+			setState({...state, policyPremiumHealthValidation:state.policyPremiumHealth?false:true})
+			return false
+		}
+
+		if(state.policyType.includes('LifeEntries')&&!state.typeOfProductLife){
+			setState({...state, typeOfProductLifeValidation:state.typeOfProductLife?false:true})
+			return false
+		}
+
+		if(state.policyType.includes('LifeEntries')&&!state.policyPremiumLife){
+			setState({...state, policyPremiumLifeValidation:state.policyPremiumLife?false:true})
+			return false
+		}
+
+		if(state.policyType.includes('BankEntries')&&!state.typeOfProductBank){
+			setState({...state, typeOfProductBankValidation:state.typeOfProductBank?false:true})
+			return false
+		}
+
+		if(state.policyType.includes('BankEntries')&&!state.policyPremiumBank){
+			setState({...state, policyPremiumBankValidation:state.policyPremiumBank?false:true})
+			return false
 		}
 		return true
 	}
@@ -1672,7 +1700,7 @@ function Products() {
 											validation="policyPremiumFire"
 											type="percent"
 											willvalidation={true}
-											validate={state.policyPremiumValidation}
+											validate={state.policyPremiumFireValidation}
 											handleChangeValue={handleChangeValue}
 											size={150}
 										/>
@@ -1753,7 +1781,7 @@ function Products() {
 											validation="policyPremiumHealth"
 											type="percent"
 											willvalidation={true}
-											validate={state.policyPremiumValidation}
+											validate={state.policyPremiumHealthValidation}
 											handleChangeValue={handleChangeValue}
 											size={150}
 										/>
@@ -1832,7 +1860,7 @@ function Products() {
 											validation="policyPremiumLife"
 											type="percent"
 											willvalidation={true}
-											validate={state.policyPremiumValidation}
+											validate={state.policyPremiumLifeValidation}
 											handleChangeValue={handleChangeValue}
 											size={150}
 										/>
@@ -1913,7 +1941,7 @@ function Products() {
 											validation="policyPremiumBank"
 											type="percent"
 											willvalidation={true}
-											validate={state.policyPremiumValidation}
+											validate={state.policyPremiumBankValidation}
 											handleChangeValue={handleChangeValue}
 											size={150}
 										/>

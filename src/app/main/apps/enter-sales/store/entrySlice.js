@@ -68,11 +68,21 @@ export const removeProducts = createAsyncThunk(
 			var starFireRef = realDb.ref(`Sales/${year}/${belongTo}/FireEntries/${uid}/${item}`);
 			var starHealthRef = realDb.ref(`Sales/${year}/${belongTo}/HealthEntries/${uid}/${item}`);
 			var starBankRef = realDb.ref(`Sales/${year}/${belongTo}/BankEntries/${uid}/${item}`);
+			var starOfficeBankRef = realDb.ref(`Sales/${year}/${belongTo}/BankEntries/OfficeCount/${item}`);
+			var starOfficeAutoRef = realDb.ref(`Sales/${year}/${belongTo}/Entries/OfficeCount/${item}`);
+			var starOfficeHealthRef = realDb.ref(`Sales/${year}/${belongTo}/HealthEntries/OfficeCount/${item}`);
+			var starOfficeLifeRef = realDb.ref(`Sales/${year}/${belongTo}/LifeEntries/OfficeCount/${item}`);
+			var starOfficeFireRef = realDb.ref(`Sales/${year}/${belongTo}/FireEntries/OfficeCount/${item}`);
 			starCountRef.remove();
 			starAutoRef.remove();
 			starFireRef.remove();
 			starHealthRef.remove();
 			starBankRef.remove();
+			starOfficeBankRef.remove();
+			starOfficeAutoRef.remove();
+			starOfficeHealthRef.remove();
+			starOfficeLifeRef.remove();
+			starOfficeFireRef.remove();
 		});
 
 		dispatch(getEntries());

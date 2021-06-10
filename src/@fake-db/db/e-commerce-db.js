@@ -60,6 +60,9 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 		data = { ...item, sellerId: item.uid };
 		var id = Date.now();
 		var year = new Date().getFullYear()
+		console.log(`Sales/${year}/${item.belongTo}/${item.policyType[0]}/${
+			item.user === 'OfficeCount' ? `OfficeCount` : item.user ? item.user.uid : data.sellerId
+		}/${id}`)
 		realDb
 			.ref(
 				`Sales/${year}/${item.belongTo}/${item.policyType[0]}/${
