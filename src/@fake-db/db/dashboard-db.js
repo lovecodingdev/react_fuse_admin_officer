@@ -11,8 +11,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -34,8 +42,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -57,8 +73,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -80,8 +104,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -103,8 +135,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -126,8 +166,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -149,8 +197,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -172,8 +228,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -195,8 +259,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -218,8 +290,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -241,8 +321,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},
@@ -264,8 +352,16 @@ const activityAppDB = {
 				{
 					title: '',
 					count: 0,
+					color: 'text-red',
+					label: 'Office',					
+					fontSize: 36,
+					endAdornment: ''
+				},
+				{
+					title: '',
+					count: 0,
 					color: 'text-green',
-					label: 'Goal',					
+					label: 'Team',					
 					fontSize: 36,
 					endAdornment: ''
 				},

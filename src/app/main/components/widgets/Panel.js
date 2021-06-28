@@ -14,11 +14,11 @@ export function Card(props) {
 			</div>
 		}
 		<div className="text-center pt-12 pb-28">
-			<Typography className={`lg:text-40 md:text-30 sm:text-20 leading-none ${props.color}`}>
+			<Typography className={`lg:text-32 md:text-24 sm:text-16 leading-none ${props.color}`}>
 				{`${formattedNumber(props.count)} ${props.endAdornment}`}
 			</Typography>
 			{props.label!=='' &&
-				<Typography className="text-16" color="textSecondary">
+				<Typography className="text-12" color="textSecondary">
 					{props.label}
 				</Typography>
 			}
@@ -43,6 +43,13 @@ function Widget1(props) {
 				<div className="flex flex-wrap justify-around">
 					<Card {...props.data.cardData[0]} />
 					<Card {...props.data.cardData[1]} />
+				</div>
+			}
+			{props.type==='Three Number' &&
+				<div className="flex flex-wrap justify-around">
+					<Card {...props.data.cardData[0]} />
+					<Card {...props.data.cardData[1]} />
+					<Card {...props.data.cardData[2]} />
 				</div>
 			}						
 			{props.data.subTitle!=='' && 

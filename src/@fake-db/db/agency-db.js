@@ -488,10 +488,10 @@ const agencyAppDB = {
 						id: 'December',
 						title: 'December'
 					},
-					{
-						id: 'Total',
-						title: 'Total'
-					}
+					// {
+					// 	id: 'Total',
+					// 	title: 'Total'
+					// }
 				],
 				rows: [
 					{
@@ -575,12 +575,12 @@ const agencyAppDB = {
 								classes: '',
 								icon: ''
 							},
-							{
-								id: 'total',
-								value: '',
-								classes: '',
-								icon: ''
-							}
+							// {
+							// 	id: 'total',
+							// 	value: '',
+							// 	classes: '',
+							// 	icon: ''
+							// }
 						]
 					},
 					{
@@ -975,10 +975,10 @@ const agencyAppDB = {
 						id: 'December',
 						title: 'December'
 					},
-					{
-						id: 'Total',
-						title: 'Total'
-					}
+					// {
+					// 	id: 'Total',
+					// 	title: 'Total'
+					// }
 				],
 				rows: [
 					{
@@ -1062,12 +1062,12 @@ const agencyAppDB = {
 								classes: '',
 								icon: ''
 							},
-							{
-								id: 'total',
-								value: '',
-								classes: '',
-								icon: ''
-							}
+							// {
+							// 	id: 'total',
+							// 	value: '',
+							// 	classes: '',
+							// 	icon: ''
+							// }
 						]
 					},
 					{
@@ -2458,10 +2458,10 @@ const agencyAppDB = {
 						id: 'December',
 						title: 'December'
 					},
-					{
-						id: 'Total',
-						title: 'Total'
-					}
+					// {
+					// 	id: 'Total',
+					// 	title: 'Total'
+					// }
 				],
 				rows: [
 					{
@@ -2545,12 +2545,12 @@ const agencyAppDB = {
 								classes: '',
 								icon: ''
 							},
-							{
-								id: 'total',
-								value: '',
-								classes: '',
-								icon: ''
-							}
+							// {
+							// 	id: 'total',
+							// 	value: '',
+							// 	classes: '',
+							// 	icon: ''
+							// }
 						]
 					},
 					{
@@ -2945,10 +2945,10 @@ const agencyAppDB = {
 						id: 'December',
 						title: 'December'
 					},
-					{
-						id: 'Total',
-						title: 'Total'
-					}
+					// {
+					// 	id: 'Total',
+					// 	title: 'Total'
+					// }
 				],
 				rows: [
 					{
@@ -3032,12 +3032,12 @@ const agencyAppDB = {
 								classes: '',
 								icon: ''
 							},
-							{
-								id: 'total',
-								value: '',
-								classes: '',
-								icon: ''
-							}
+							// {
+							// 	id: 'total',
+							// 	value: '',
+							// 	classes: '',
+							// 	icon: ''
+							// }
 						]
 					},
 					{
@@ -3432,10 +3432,10 @@ const agencyAppDB = {
 						id: 'December',
 						title: 'December'
 					},
-					{
-						id: 'Total',
-						title: 'Total'
-					}
+					// {
+					// 	id: 'Total',
+					// 	title: 'Total'
+					// }
 				],
 				rows: [
 					{
@@ -3519,12 +3519,12 @@ const agencyAppDB = {
 								classes: '',
 								icon: ''
 							},
-							{
-								id: 'total',
-								value: '',
-								classes: '',
-								icon: ''
-							}
+							// {
+							// 	id: 'total',
+							// 	value: '',
+							// 	classes: '',
+							// 	icon: ''
+							// }
 						]
 					},
 					{
