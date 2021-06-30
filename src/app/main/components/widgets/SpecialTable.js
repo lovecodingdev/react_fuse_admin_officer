@@ -52,7 +52,7 @@ function Widget10(props) {
 											return (
 												<TableCell key={cell.id} component="th" scope="row" align="center">
 													<Typography className={cell.classes}>
-														{formattedString(cell.value)}
+														{(row.id===2 || row.id===5) && cell.value!==0 ? `$ ${formattedString(cell.value)}` : formattedString(cell.value)}
 													</Typography>
 												</TableCell>
 											);
@@ -61,7 +61,8 @@ function Widget10(props) {
 								})}
 								
 							</TableRow>
-						))}
+						))}y
+						
 					</TableBody>
 				</Table>
 			</div>

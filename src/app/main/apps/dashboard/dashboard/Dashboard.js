@@ -83,7 +83,8 @@ function Dashboard(props) {
 			if(widgets.Dashboard_Multiline_GoalAndActual_Auto_Panel) {	
 				policies.map(policy => {					
 					teamGoalsAndActual[`${policy.value}@realGoal`] = 0;				
-					teamGoalsAndActual[`${policy.value}@Goal`] = 0;
+					teamGoalsAndActual[`${policy.value}@Office`] = 0;
+					teamGoalsAndActual[`${policy.value}@Team`] = 0;
 					teamGoalsAndActual[`${policy.value}@Actual`] = 0;
 
 					household += main[production][period][UID][policy.value]['household'];
@@ -91,19 +92,22 @@ function Dashboard(props) {
 				});
 				users.map((user) => {					
 					if(user.belongTo === UID) { 
-						indGoalsAndActual[user.id] = { 'Total@realGoal': 0, 'Total@Goal': 0, 'Total@Actual': 0 };						
+						indGoalsAndActual[user.id] = { 'Total@realGoal': 0, 'Total@Office': 0, 'Total@Team': 0, 'Total@Actual': 0 };						
 						policies.map((policy) => { 							
 							if( policy.value!=='Total') {
 								indGoalsAndActual[user.id][`Total@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];
-								indGoalsAndActual[user.id][`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+								indGoalsAndActual[user.id][`Total@Office`] += main[production][period][user.id][policy.value]["Goals"];
+								indGoalsAndActual[user.id][`Total@Team`] += main[production][period][user.id][policy.value]["Policies"];
 								indGoalsAndActual[user.id][`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];																			
 								
+								teamGoalsAndActual[`${policy.value}@Team`] += main[production][period][user.id][policy.value]["Policies"];
+								teamGoalsAndActual[`Total@Team`] += teamGoalsAndActual[`${policy.value}@Team`];
 								if(user.id === UID) {
 									teamGoalsAndActual[`Total@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];
-									teamGoalsAndActual[`Total@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+									teamGoalsAndActual[`Total@Office`] += main[production][period][user.id][policy.value]["Goals"];									
 									teamGoalsAndActual[`Total@Actual`] += main[production][period][user.id][policy.value]["Policies"];
 									teamGoalsAndActual[`${policy.value}@realGoal`] += main[production][period][user.id][policy.value]["realGoal"];											
-									teamGoalsAndActual[`${policy.value}@Goal`] += main[production][period][user.id][policy.value]["Goals"];
+									teamGoalsAndActual[`${policy.value}@Office`] += main[production][period][user.id][policy.value]["Goals"];									
 									teamGoalsAndActual[`${policy.value}@Actual`] += main[production][period][user.id][policy.value]["Policies"];
 								}								
 							}							
@@ -113,23 +117,13 @@ function Dashboard(props) {
 
 				// Team Goal vs Actual
 				policies.map(policy => {
-					// if(policy.value !== 'Bank') {
 						let tempCardData = [];
 						let tempCard = {};
 						const cardData = widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`].cardData;
 						cardData.map(card => {
 							tempCard = card;
-							
-							let color = 'text-green';
-							if(teamGoalsAndActual[`${policy.value}@real${card.label}`] > teamGoalsAndActual[`${policy.value}@${card.label}`]) {
-								color = 'text-red'
-							}
-							if(card.label === 'Goal') {
-								tempCard = { ...tempCard, count: teamGoalsAndActual[`${policy.value}@real${card.label}`], color:color };
-							} else if(card.label === 'Actual') {
-								tempCard = { ...tempCard, count: teamGoalsAndActual[`${policy.value}@${card.label}`] };
-							}
-
+						
+							tempCard = { ...tempCard, count: teamGoalsAndActual[`${policy.value}@${card.label}`] };							
 							tempCardData.push(tempCard);
 						});						
 						widgets = {
@@ -139,7 +133,6 @@ function Dashboard(props) {
 								]
 							}					
 						}
-					// }					
 				});	
 
 				// Lapse Rate
@@ -389,17 +382,15 @@ function Dashboard(props) {
 				<div className="w-full p-12">					
 					<FuseAnimateGroup className="flex flex-wrap items-center justify-center" enter={{ animation: 'transition.slideUpBigIn' }}>
 						<div className="widget flex w-full p-12">
-							<fieldset className='"widget flex w-full rounded-8 border-1'>
+							<fieldset className='"widget flex flex-wrap w-full rounded-8 border-1'>
 								<legend>Production Goal Vs Actual</legend>															
 									{
 										policies.map(policy => {
-											// if(policy.value!=='Bank') {
 												return(
-													<div className="widget flex w-1/5 p-12">							
-														<Panel data={data.widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`]} type='Two Number' />						
+													<div className="widget flex w-1/6 p-12">							
+														<Panel data={data.widgets[`Dashboard_Multiline_Team_GoalAndActual_${policy.value}_Panel`]} type='Three Number' />						
 													</div>
 												)
-											// }
 											
 										})
 									}

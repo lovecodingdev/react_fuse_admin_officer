@@ -43,17 +43,17 @@ function TargetReports(props) {
 	const [main, setMain] = useState({});
 	const [user, setUser] = useState(UID);
 	const [year, setYear] = useState(moment().format('yyyy'));
-	const [production, setProduction] = useState("Show Written Production");
-	const [userList, setUserList] = useState([])
+	const [production, setProduction] = useState('Show Written Production');
+	const [userList, setUserList] = useState([]);
 	const [tabValue, setTabValue] = useState(0);
 	const [title, setTitle] = useState('Target Report');
-	
+
 	useEffect(() => {
 		dispatch(getUsers());
 		dispatch(getBonusPlans());
 		dispatch(getMarketings());
-		dispatch(getEntries(year));	
-		dispatch(getVision(year));	
+		dispatch(getEntries(year));
+		dispatch(getVision(year));
 		dispatch(getWidgets()).then(() => setLoading(false));
 	}, [dispatch]);
 
@@ -61,57 +61,66 @@ function TargetReports(props) {
 		var temp = [];
 		if (users.length > 0) {
 			users.map(user => {
-				if(user.belongTo === UID)
-					temp.push({ item: user.data.displayName, value: user.id });
+				if (user.belongTo === UID) temp.push({ item: user.data.displayName, value: user.id });
 			});
 			setUserList(temp);
 		}
 	}, [users]);
 
-	useEffect(() => {		
-		if(users.length>0 && entries.length>0 && bonusPlans.length>0) {
-			const temp = getMain(entries, bonusPlans, [], users, [], []);										
+	useEffect(() => {
+		if (users.length > 0 && entries.length > 0 && bonusPlans.length > 0) {
+			const temp = getMain(entries, bonusPlans, [], users, [], []);
 			setMain(temp);
 		}
 	}, [entries, bonusPlans, users]);
 
-	useEffect(() => {	
-		if(!_.isEmpty(widgets) && !_.isEmpty(main) && user!=='') {
-			if(widgets.Agency_TargetReports_Auto_Table) {					
+	useEffect(() => {
+		if (!_.isEmpty(widgets) && !_.isEmpty(main) && user !== '') {
+			if (widgets.Agency_TargetReports_Auto_Table) {
 				policies.map(policy => {
 					let tempRows = [];
-					let policiesCells = [{
-						id: 'left_title',
-						value: 'Policies',
-						classes: 'bg-blue text-white',
-						icon: ''
-					}];
-					let annualPremiumCells = [{
-						id: 'left_title',
-						value: 'Anual Preminum',
-						classes: 'bg-green text-white',
-						icon: ''
-					}];
-					let levelReachedCells = [{
-						id: 'left_title',
-						value: 'Level Reached',
-						classes: 'bg-red text-white',
-						icon: ''
-					}];
-					let flatSAmountCells = [{
-						id: 'left_title',
-						value: 'Flat S Amount',
-						classes: 'bg-pink text-white',
-						icon: ''
-					}];
-					let targetBonusEarned = [{
-						id: 'left_title',
-						value: 'Target Bonus Earned',
-						classes: 'bg-orange text-white',
-						icon: ''
-					}];
-					if(policy.value !== 'Total') {
-						months.map((month) => { 
+					let policiesCells = [
+						{
+							id: 'left_title',
+							value: 'Policies',
+							classes: 'bg-blue text-white',
+							icon: ''
+						}
+					];
+					let annualPremiumCells = [
+						{
+							id: 'left_title',
+							value: 'Anual Preminum',
+							classes: 'bg-green text-white',
+							icon: ''
+						}
+					];
+					let levelReachedCells = [
+						{
+							id: 'left_title',
+							value: 'Level Reached',
+							classes: 'bg-red text-white',
+							icon: ''
+						}
+					];
+					let flatSAmountCells = [
+						{
+							id: 'left_title',
+							value: 'Flat S Amount',
+							classes: 'bg-pink text-white',
+							icon: ''
+						}
+					];
+					let targetBonusEarned = [
+						{
+							id: 'left_title',
+							value: 'Target Bonus Earned',
+							classes: 'bg-orange text-white',
+							icon: ''
+						}
+					];
+					if (policy.value !== 'Total') {
+						months.map(month => {
 							policiesCells.push({
 								id: month.value,
 								value: main[production][month.value][user][policy.value]['Policies'],
@@ -126,13 +135,19 @@ function TargetReports(props) {
 							});
 							levelReachedCells.push({
 								id: month.value,
-								value: getLevel(main[production][month.value][user][policy.value]['Policies'], policy.value).level,
+								value: getLevel(
+									main[production][month.value][user][policy.value]['Policies'],
+									policy.value
+								).level,
 								classes: '',
 								icon: ''
 							});
 							flatSAmountCells.push({
 								id: month.value,
-								value: getLevel(main[production][month.value][user][policy.value]['Policies'], policy.value).amount,
+								value: getLevel(
+									main[production][month.value][user][policy.value]['Policies'],
+									policy.value
+								).amount,
 								classes: '',
 								icon: ''
 							});
@@ -143,7 +158,7 @@ function TargetReports(props) {
 								icon: ''
 							});
 						});
-					
+
 						tempRows.push({
 							id: 1,
 							cells: policiesCells
@@ -164,107 +179,86 @@ function TargetReports(props) {
 							id: 5,
 							cells: targetBonusEarned
 						});
-		
-						widgets = {
-							...widgets, [`Agency_TargetReports_${policy.value}_Table`]: {
-								...widgets[`Agency_TargetReports_${policy.value}_Table`], title: 
-									policy.value.toUpperCase()
-							}				
-						}
-						widgets = {
-							...widgets, [`Agency_TargetReports_${policy.value}_Table`]: {
-								...widgets[`Agency_TargetReports_${policy.value}_Table`], table: {
-									...widgets[`Agency_TargetReports_${policy.value}_Table`].table, rows: [
-										...tempRows
-									]
-								}
-							}				
-						}
-					}	
-				});				
-			}
-		}	
 
-		console.log('---------widgets', widgets)
+						widgets = {
+							...widgets,
+							[`Agency_TargetReports_${policy.value}_Table`]: {
+								...widgets[`Agency_TargetReports_${policy.value}_Table`],
+								title: policy.value.toUpperCase()
+							}
+						};
+						widgets = {
+							...widgets,
+							[`Agency_TargetReports_${policy.value}_Table`]: {
+								...widgets[`Agency_TargetReports_${policy.value}_Table`],
+								table: {
+									...widgets[`Agency_TargetReports_${policy.value}_Table`].table,
+									rows: [...tempRows]
+								}
+							}
+						};
+					}
+				});
+			}
+		}
+
+		console.log('---------widgets', widgets);
 		setData({ widgets });
 	}, [widgets, main, user, production]);
 
-	
-
 	function getLevel(policyCount, policyName) {
-		let dbName = "";
-		if(policyName==="Auto")
-			dbName = "individualAutoTargetBonus";
-			// dbName = "teamAutoTargetBonus";
-		if(policyName==="Fire")
-			dbName = "individualFireTargetBonus";
-			// dbName = "teamFireTargetBonus";
-		if(policyName==="Life")
-			dbName = "individualLifeTargetBonus";
-			// dbName = "teamLifeTargetBonus";
-		if(policyName==="Health")
-			dbName = "individualHealthTargetBonus";
-			// dbName = "teamHealthTargetBonus";
-		if(policyName==="Bank")
-			dbName = "individualBankTargetBonus";
-			// dbName = "teamBankTargetBonus";
-		if(policyName==="Other")
-			dbName = "individualOtherTargetBonus";	
-			// dbName = "teamOtherTargetBonus";	
+		let dbName = '';
+		if (policyName === 'Auto') dbName = 'individualAutoTargetBonus';
+		if (policyName === 'Fire') dbName = 'individualFireTargetBonus';
+		if (policyName === 'Life') dbName = 'individualLifeTargetBonus';
+		if (policyName === 'Health') dbName = 'individualHealthTargetBonus';
+		if (policyName === 'Bank') dbName = 'individualBankTargetBonus';
+		if (policyName === 'Other') dbName = 'individualOtherTargetBonus';
 
-		let level = { 
-			level: "", 
-			policies: 0, 
-			amount: 0, 
-			nextLevel: "", 
-			nextPolicies: 0, 
-			nextAmount: 0, 
-			maxLevel: "", 
-			maxPolicies: 0, 
-			maxAmount: 0 
+		let level = {
+			level: '',
+			policies: 0,
+			amount: 0,
+			nextLevel: '',
+			nextPolicies: 0,
+			nextAmount: 0,
+			maxLevel: '',
+			maxPolicies: 0,
+			maxAmount: 0
 		};
-		let count = 0
-		if(bonusPlans.length>0 && bonusPlans[0].hasOwnProperty(dbName)) {
+		let count = 0;
+		if (bonusPlans.length > 0 && bonusPlans[0].hasOwnProperty(dbName)) {
 			Object.keys(bonusPlans[0][dbName]).map((key, n) => {
 				const item = bonusPlans[0][dbName][key];
-				if(policyCount > 0) {
-					if(n===0) {
-						level.level = "None Reached";
+				if (policyCount > 0) {
+					if (n === 0) {
+						level.level = 'None Reached';
 					}
-					if(policyCount >= item.policies) { 
-						level.level = item.level; 
+					if (policyCount >= item.policies) {
+						level.level = item.level;
 						level.policies = item.policies;
 						level.amount = item.amount;
-						count ++;
-					}	
-					if(n === count) { 				
+						count++;
+					}
+					if (n === count) {
 						level.nextLevel = item.level;
 						level.nextPolicies = item.policies;
 						level.nextAmount = item.amount;
-					}	
-					if(n === Object.keys(bonusPlans[0][dbName]).length-1) {
+					}
+					if (n === Object.keys(bonusPlans[0][dbName]).length - 1) {
 						level.maxLevel = item.level;
 						level.maxPolicies = item.policies;
 						level.maxAmount = item.amount;
-						;
 					}
-				}							
+				}
 			});
-		} 
-		
+		}
+
 		return level;
 	}
 
-	function handleChangeTab(event, value) {
-		setTabValue(value);
-	}
-	
-	function handleChangeUser(event) { 
+	function handleChangeUser(event) {
 		setUser(event.target.value);
-	}
-
-	function handleChangeProduction(event) {
-		setProduction(event.target.value);
 	}
 
 	if (loading) {
@@ -301,37 +295,37 @@ function TargetReports(props) {
 								data={userList}
 							/>
 						</FuseAnimate>
-					</div>					
+					</div>
 				</Header>
 			}
 			content={
-				<div className="w-full p-12">	
-					<div className='p-12'>
-						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Table data={data.widgets.Agency_TargetReports_Auto_Table} />						
-						</FuseAnimateGroup>	
+				<div className="w-full p-12">
+					<div className="p-12">
+						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
+							<Table data={data.widgets.Agency_TargetReports_Auto_Table} />
+						</FuseAnimateGroup>
 					</div>
-					<div className='p-12'>
-						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Table data={data.widgets.Agency_TargetReports_Fire_Table} />						
-						</FuseAnimateGroup>	
+					<div className="p-12">
+						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
+							<Table data={data.widgets.Agency_TargetReports_Fire_Table} />
+						</FuseAnimateGroup>
 					</div>
-					<div className='p-12'>
-						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Table data={data.widgets.Agency_TargetReports_Life_Table} />						
-						</FuseAnimateGroup>	
+					<div className="p-12">
+						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
+							<Table data={data.widgets.Agency_TargetReports_Life_Table} />
+						</FuseAnimateGroup>
 					</div>
-					<div className='p-12'>
-						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Table data={data.widgets.Agency_TargetReports_Health_Table} />						
-						</FuseAnimateGroup>	
+					<div className="p-12">
+						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
+							<Table data={data.widgets.Agency_TargetReports_Health_Table} />
+						</FuseAnimateGroup>
 					</div>
-					<div className='p-12'>
-						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>								
-							<Table data={data.widgets.Agency_TargetReports_Bank_Table} />						
-						</FuseAnimateGroup>	
-					</div>	
-				</div>			
+					<div className="p-12">
+						<FuseAnimateGroup className="flex flex-wrap" enter={{ animation: 'transition.slideUpBigIn' }}>
+							<Table data={data.widgets.Agency_TargetReports_Bank_Table} />
+						</FuseAnimateGroup>
+					</div>
+				</div>
 			}
 			innerScroll
 		/>
