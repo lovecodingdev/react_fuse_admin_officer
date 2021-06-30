@@ -74,7 +74,6 @@ mock.onPost('/api/e-commerce-app/product/save').reply(async request => {
 				id: id
 			});
 	});
-
 	return [200, product];
 });
 
